@@ -44,13 +44,69 @@ TODO
 
 --- middle
 
-Introduction
-============
+# Introduction
 
-TODO
+End-to-end security is a requirement for instant messaging systems
+and is commonly deployed in many such systems designed over the past
+few years. TODO
 
-Security Considerations
-=======================
+
+# General Setting
+
+## Clients
+
+## Messaging Server
+
+## Authentication Service
+
+# Threat Model
+
+# System Requirements
+
+## Functional Requirements
+
+### Asynchronous Delivery
+
+### Asynchronous Key Update
+
+### Recovery After State Loss
+
+## Message Protection
+
+### Message Secrecy
+
+### Message Authentication
+
+### Security of Attachments
+
+## Support for Group Messaging
+
+### Secrecy After Member Exit
+
+## Support for Multiple Devices
+
+### Adding New Devices
+
+## System Resilience
+
+### Forward Secrecy
+
+###  Post-Compromise Secrecy
+
+### Offline/old Devices
+
+## Protection Against Server Misbehavior
+
+### Deterministic Group Membership
+
+### Servers and Post-Compromise Secrecy
+
+### Unauthorized Device Additions
+
+
+
+
+# Security Considerations
 
 TODO
 
