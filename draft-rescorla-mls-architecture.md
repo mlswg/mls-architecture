@@ -67,6 +67,34 @@ not at the authentication level).
 
 # General Setting
 
+[TODO: Need some ASCII art]
+
+A model system is shown in [TODO: Figure].
+
+The messaging service presents as two abstract services:
+
+- An Authentication Server (AS) which is responsible for maintaining
+  user identities, issuing credentials which allow them to
+  authenticate to each other, and potentially distributing
+  user keying material.
+
+- A Message Switch (MS) which is responsible for delivering messages
+  between users. In the case of group messaging, the message
+  switch may also be responsible for acting as an "exploder"
+  where the sender sends a single message to a group and
+  the switch then forwards it to each recipient.
+
+In many systems, the AS and the MS are actually operated by the
+same entity and may even be the same server. However, they
+are logically distinct, and in other systems may be operated
+by different entities so we show them as separate here.
+
+
+
+
+
+
+
 ## Clients
 
 ## Messaging Server
@@ -74,6 +102,8 @@ not at the authentication level).
 ## Authentication Service
 
 # Threat Model
+
+
 
 # System Requirements
 
