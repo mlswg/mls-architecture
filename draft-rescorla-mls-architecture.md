@@ -37,7 +37,6 @@ author:
 normative:
   RFC2119:
 
-
 --- abstract
 
 TODO
@@ -48,7 +47,22 @@ TODO
 
 End-to-end security is a requirement for instant messaging systems
 and is commonly deployed in many such systems designed over the past
-few years. TODO
+few years. In this context, what end-to-end means is that the
+users of the system enjoy some level of security -- with the precise
+level depending on the system design -- even when the messaging
+service they are using misbehaves.
+
+Messaging Layer Security (MLS) specifies an architecture (this document)
+and an abstract protocol [TODO:XREF] for providing end-to-end security
+in this setting. MLS is not intended as a full instant messaging
+protocol but rather is intended to be embedded in a concrete protocol
+such as XMPP [TODO:REF]. In addition, it does not specify a complete
+wire encoding, but rather a set of abstract data structures which
+can then be mapped onto a variety of concrete encodings, such as
+TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and JSON {{?RFC7159}}.
+Implementations which adopt compatible encodings should be able to
+have some degree of interoperability at the message level (though perhaps
+not at the authentication level).
 
 
 # General Setting
