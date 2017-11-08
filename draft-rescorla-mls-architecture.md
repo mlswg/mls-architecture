@@ -127,9 +127,17 @@ A typical scenario might look something like this:
 
 ### Asynchronous Delivery
 
+Messaging systems that implement MLS must provide a transport layer for delivering messages asynchronously.
+
+This transport layer must also support delivery ACKs and NACKs and a mechanism for retrying message delivery.
+
 ### Asynchronous Key Update
 
+Clients participating in conversations protected using MLS must be able to update shared keys asynchronously.
+
 ### Recovery After State Loss
+
+Conversation participants whose local MLS state is lost or corrupted must be able to reinitialize their state and continue participating in the conversation.
 
 ## Message Protection
 
@@ -141,7 +149,11 @@ A typical scenario might look something like this:
 
 ## Support for Group Messaging
 
+Messaging systems that implement MLS must provide support for conversations involving 2 or more participants.
+
 ### Secrecy After Member Exit
+
+Message secrecy properties must be preserved after any participant exits the conversation.
 
 ## Support for Multiple Devices
 
