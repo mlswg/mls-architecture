@@ -27,7 +27,6 @@ author:
     name: Emad Omara
     organization: Google
     email: emadomara@google.com
-
  -
     ins: S. Inguva
     name: Srinivas Inguva
@@ -86,7 +85,7 @@ The messaging service presents as two abstract services:
 
 In many systems, the AS and the MS are actually operated by the
 same entity and may even be the same server. However, they
-are logically distinct, and in other systems may be operated
+are logically distinct and, in other systems, may be operated
 by different entities so we show them as separate here. Other
 partitions are also possible, such as having a separate directory
 server.
@@ -117,8 +116,8 @@ A typical scenario might look something like this:
 
 ## Authentication Service
 
-# Threat Model
 
+# Threat Model
 
 
 # System Requirements
@@ -127,17 +126,22 @@ A typical scenario might look something like this:
 
 ### Asynchronous Delivery
 
-Messaging systems that implement MLS must provide a transport layer for delivering messages asynchronously.
+Messaging systems that implement MLS must provide a transport
+layer for delivering messages asynchronously.
 
-This transport layer must also support delivery ACKs and NACKs and a mechanism for retrying message delivery.
+This transport layer must also support delivery ACKs and NACKs
+and a mechanism for retrying message delivery.
 
 ### Asynchronous Key Update
 
-Clients participating in conversations protected using MLS must be able to update shared keys asynchronously.
+Clients participating in conversations protected using MLS must
+be able to update shared keys asynchronously.
 
 ### Recovery After State Loss
 
-Conversation participants whose local MLS state is lost or corrupted must be able to reinitialize their state and continue participating in the conversation.
+Conversation participants whose local MLS state is lost or corrupted
+must be able to reinitialize their state and continue participating
+in the conversation.
 
 ## Message Protection
 
@@ -149,11 +153,13 @@ Conversation participants whose local MLS state is lost or corrupted must be abl
 
 ## Support for Group Messaging
 
-Messaging systems that implement MLS must provide support for conversations involving 2 or more participants.
+Messaging systems that implement MLS must provide support for
+conversations involving 2 or more participants.
 
 ### Secrecy After Member Exit
 
-Message secrecy properties must be preserved after any participant exits the conversation.
+Message secrecy properties must be preserved after any participant
+exits the conversation.
 
 ## Support for Multiple Devices
 
@@ -174,8 +180,6 @@ Message secrecy properties must be preserved after any participant exits the con
 ### Servers and Post-Compromise Secrecy
 
 ### Unauthorized Device Additions
-
-
 
 
 # Security Considerations
