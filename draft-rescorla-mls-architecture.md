@@ -119,6 +119,30 @@ A typical scenario might look something like this:
 
 # Threat Model
 
+The design of the protocol is considering a variety of adversaries
+in order to mitigate several categories of attacks across parts of
+the MLS architecture.
+
+Between clients and the authentication service (AS), clients and the
+messaging server (MS) and across clients, we assume the attacker to be
+an active network attacker. This means an adversary which has
+complete control over the network used to communicate between the
+parties [RFC3552].
+This assumption remains valid for communications accross multiple
+authentication or messaging servers if these have to collaborate
+to provide a client with some kind of information.
+
+Additionnally, the MLS threat model considers possible compromissions
+of both the authentication or messaging servers. In this case
+the protocol provide resilience against multiple scenarios described
+in the following sections. Typically, the messaging server will not
+be able to inject messages in the group conversation or compromise
+the identity of the group members. Regarding the authentication service,
+it will typically not be able to defeat the security of the
+group conversations if compromised after the initial key establishment,
+and will not be able to alter the delivery of messages to the members
+of the group.
+
 
 # System Requirements
 
