@@ -151,6 +151,11 @@ in the conversation.
 
 ### Security of Attachments
 
+While MLS does a separation between messages and attachments, the
+protocol does enforce the same security properties for attachments
+as it does for messages. In particular attachments benefits from
+the same confidentiality and authentication properties.
+
 ## Support for Group Messaging
 
 Messaging systems that implement MLS must provide support for
