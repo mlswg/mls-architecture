@@ -70,20 +70,20 @@ not at the authentication level).
 
 A model system is shown in [TODO: Figure].
 
-The messaging service presents as two abstract services:
+The Messaging Service (MS) presents as two abstract services:
 
-- An Authentication Server (AS) which is responsible for maintaining
+- An Authentication Service (AS) which is responsible for maintaining
   user identities, issuing credentials which allow them to
   authenticate to each other, and potentially distributing
   user keying material.
 
-- A Message Switch (MS) which is responsible for delivering messages
-  between users. In the case of group messaging, the message
-  switch may also be responsible for acting as an "exploder"
+- A Delivery Service (DS) which is responsible for delivering messages
+  between users. In the case of group messaging, the delivery service
+  may also be responsible for acting as an "exploder"
   where the sender sends a single message to a group and
   the switch then forwards it to each recipient.
 
-In many systems, the AS and the MS are actually operated by the
+In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
 are logically distinct and, in other systems, may be operated
 by different entities so we show them as separate here. Other
@@ -95,15 +95,15 @@ A typical scenario might look something like this:
 1. Alice, Bob, and Charlie create accounts with the messaging
    service and obtain credentials from the AS.
 
-1. Alice, Bob, and Charlie authenticate to the MS and store
+1. Alice, Bob, and Charlie authenticate to the DS and store
    some keying material which can be used to encrypt to them
    for the first time.
 
 1. When Alice wants to send a message to Bob and Charlie, she
-   contacts the MS and looks up their keying material. She
+   contacts the DS and looks up their keying material. She
    uses those keys to establish a set of keys which she can
    use to send to Bob and Charlie. She then sends the
-   encrypted message(s) to the MS, which forwards them to
+   encrypted message(s) to the DS, which forwards them to
    the ultimate recipients.
 
 1. Bob and/or Charlie respond to Alice's message. Their messages
@@ -112,7 +112,7 @@ A typical scenario might look something like this:
 
 ## Clients
 
-## Messaging Server
+## Delivery Service
 
 ## Authentication Service
 
