@@ -147,8 +147,8 @@ in the conversation.
 
 The trust establishment step of the MLS protocol is followed by a
 conversation protection step where encryption is used by clients to
-transmit authenticated messages to other clients through the MS.
-This ensures that the MS doesn't have access to this Group-private content.
+transmit authenticated messages to other clients through the DS.
+This ensures that the DS doesn't have access to this Group-private content.
 MLS provide security properties such repudiability and unlinkability
 additionnally to message secrecy, integrity and authentication
 (see below).
@@ -158,13 +158,13 @@ additionnally to message secrecy, integrity and authentication
 Message Secrecy in the context of MLS means that only intended
 recipients, currently valid members of the group, should be able to
 read the message. A corollary to that statement is that AS
-and MS can't read the content of messages sent between Members as
+and DS can't read the content of messages sent between Members as
 they are not Members of the Group. It is expected from MLS to
 optionnally provide additional protections regarding traffic analysis
 techniques to reduce the ability of adversaries or a compromised
 member of the messaging system to deduce the content of the messages
 depending on (for example) their size. One of these protection is
-typically padding messages in order to produce ciphertext of standard
+typically padding messages in order to produce ciphertexts of standard
 length. While this protection is highly recommended it is not
 mandatory as it can be costly in terms of performance for clients
 and the MS.
