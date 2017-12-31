@@ -112,33 +112,33 @@ A typical scenario might look something like this:
 
 ## Clients
 
-## Messaging Server
+## Delivery Service
 
-The Messaging Switch (MS) is expected to play multiple roles in the
+The Delivery Service (DS) is expected to play multiple roles in the
 MLS architecture.
 
-Multiple levels of security and trust for the MS are considered by MLS
-according to each tasks performed by the MS.
+Multiple levels of security and trust for the DS are considered by MLS
+according to each tasks performed by the DS.
 
 ### Delivery of the initial keying material
 
 In the MLS group communication establishment process, the first step
-exercised by the MS is to store the initial cryptographic key material
+exercised by the DS is to store the initial cryptographic key material
 provided by every Member. This key material represents the initial public
 identity of the Member and will subsequently be used to establish
 the set of keys that will be used by the Members to communicate with
 other members of the group.
 
 In an Untrusted setting, it is assumed by the MLS threat model that
-the identity provided by the MS to an honest Member of the Group can
+the identity provided by the DS to an honest Member of the Group can
 be incorrect. Hence, MLS offers the clients a way of multilaterally
 verify the relationship between the other members of the group expected
 identities and the keys provided by the MS through a public Key
 Transparency (KT) log. While this is useful to circumvent trust issues
-in the case of a potentially corrupted MS, this check can be
+in the case of a potentially corrupted DS, this check can be
 computationnaly costly for the clients.
 
-In a Trusted setting, the MS is expected to always provide the correct
+In a Trusted setting, the DS is expected to always provide the correct
 and most up-to-date information to a Member requiring another Member's
 initial keying material. Still, clients can choose to examine the KT log,
 if available, to make sure the keys they will be using are correct.
@@ -146,22 +146,22 @@ if available, to make sure the keys they will be using are correct.
 ### Delivery of messages and attachments
 
 Delivery in order and resilience against intermittent message loss
-are the two main properties expected by MLS from the MS.
-Another guarantee provided by MLS is that clients will know after
+are the two main properties expected by MLS from the DS.
+Another guarantee provided by MLS is that Clients will know after
 receiving a message by a Member that all previous message sent by
 this member have been properly received.
 
-Additionally the MS is expected to be able, depending on the expectations
+Additionally the DS is expected to be able, depending on the expectations
 of the Group, to send acknowledgments (ACKs or NACKs) and to exercise
 retries when a message has not been delivered properly to a client.
 Meanwhile, it is possible for multiple reasons that messages can be
-indefinitely hold by an dishonest or malfunctionning MS, a network loss, etc.
-In this Denial of Service scenario, the receiver has no knowledge
+indefinitely hold by an dishonest or malfunctionning DS, a network loss, etc.
+In this Denial Of Service scenario, the receiver has no knowledge
 of this situation until it tries sending a message to the Group
 and receives no valid acknowledgment.
 
 It is typically expected that servers that are not trusted regarding
-correct delivery will not be trusted regarding the Group membership
+correct delivery will not be trusted regarding the group membership
 information either.
 
 ### Membership knowledge
@@ -171,20 +171,20 @@ must not be able to gain access to information about the identity of
 group members and the number of clients.
 
 To prevent that from happening, the MLS threat model considers the case
-of a corrupted or untrusted MS that would leak all information at its
-disposal. Hence, in this Untrusted MS scenario, MLS will enforce that
-the MS MUST NOT be aware these informations. While not providing the
-MS with this information might be enough in certain scenarios, the
+of a corrupted or untrusted DS that would leak all information at its
+disposal. Hence, in this Untrusted DS scenario, MLS will enforce that
+the DS MUST NOT be aware these informations. While not providing the
+DS with this information might be enough in certain scenarios, the
 strong threat model of MLS in this scenario provides counter measures
-against potential traffic analysis that could be done at the MS level.
+against potential traffic analysis that could be done at the DS level.
 
 ### Membership and offline members
 
 Clients that have been offline for a long time or not performing
 mandatory security operations will affect the security of the
-group in different ways depending on the amount of trust given to the MS.
+group in different ways depending on the amount of trust given to the DS.
 
-In the scenario where the MS is Trusted, the MLS design ensures that
+In the scenario where the DS is Trusted, the MLS design ensures that
 the protocol provides security against permanently offline members or
 devices by signaling to the Members of the Group that one endpoint has
 been kicked out of the delivery. This is an absolute requirement to
