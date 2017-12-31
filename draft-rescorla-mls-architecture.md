@@ -112,7 +112,7 @@ A typical scenario might look something like this:
 
 ## Clients
 
-Endpoints that are not an AS nor a MS are called Clients. These
+Endpoints that are not an AS nor a DS are called Clients. These
 clients will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS.
 
