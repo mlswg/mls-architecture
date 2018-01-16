@@ -119,6 +119,47 @@ A typical scenario might look something like this:
 
 # Threat Model
 
+In order to mitigate several categories of attacks across parts of
+the MLS architecture, we assume the attacker to be an active network
+attacker. This means an adversary which has complete control over the
+network used to communicate between the parties [RFC3552].
+This assumption remains valid for communications across multiple
+authentication or delivery servers if these have to collaborate
+to provide a client with some kind of information.
+
+Additionally, the MLS threat model considers possible compromissions
+of both Clients and the Authentication (AS) or Delivery (DS) services. In these case
+the protocol provide resilience against multiple scenarios described
+in the following sections. Typically, the Delivery Service (DS) will not
+be able to inject messages in the group conversation or compromise
+the identity of the group members.
+Depending on the level of trust given by the group to the DS, the
+MLS protocol will provide the group, the AS and the DS with specific
+sets of security properties. Different scenarios are considered in this
+architecture document and are described in subsequent sections of this
+document:
+
+1. Client compromise: the client actively forwards secret keys, messages,
+   group membership or metadata to the adversary (this dishonest client
+   scenario is the only case able to defeat completely the security
+   properties provided by MLS). Specific client keys, long term key or
+   messages might be compromised, in this scenarios MLS will provide
+   limited security.
+
+2. Delivery Service (DS) compromise: the initial keying material delivery
+   can provide wrong or adversarial keys the client (Untrusted DS).
+   The DS can provide previously correct initial keys that may not be
+   up to date anymore when multiple DS are involved (Trusted DS).
+   Reliability of in-order delivery or message delivery all-together
+   might be compromised for multiple reasons such as networking failure,
+   active network attacks... Additionally, there is a scenario where a
+   compromised DS could potentially leak group membership if it has this
+   knowledge (Untrusted and Trusted DS).
+
+3. Authentication service (AS) compromise: a compromised AS could
+   provide incorrect or adversarial identities to clients.
+   [TODO: Expand on compromised authentication service]
+
 
 # System Requirements
 
