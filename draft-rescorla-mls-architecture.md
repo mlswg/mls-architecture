@@ -70,20 +70,20 @@ not at the authentication level).
 
 A model system is shown in [TODO: Figure].
 
-The messaging service presents as two abstract services:
+The Messaging Service (MS) presents as two abstract services:
 
-- An Authentication Server (AS) which is responsible for maintaining
+- An Authentication Service (AS) which is responsible for maintaining
   user identities, issuing credentials which allow them to
   authenticate to each other, and potentially distributing
   user keying material.
 
-- A Message Switch (MS) which is responsible for delivering messages
-  between users. In the case of group messaging, the message
-  switch may also be responsible for acting as an "exploder"
+- A Delivery Service (DS) which is responsible for delivering messages
+  between users. In the case of group messaging, the delivery service
+  may also be responsible for acting as an "exploder"
   where the sender sends a single message to a group and
   the switch then forwards it to each recipient.
 
-In many systems, the AS and the MS are actually operated by the
+In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
 are logically distinct and, in other systems, may be operated
 by different entities so we show them as separate here. Other
@@ -95,15 +95,15 @@ A typical scenario might look something like this:
 1. Alice, Bob, and Charlie create accounts with the messaging
    service and obtain credentials from the AS.
 
-1. Alice, Bob, and Charlie authenticate to the MS and store
+1. Alice, Bob, and Charlie authenticate to the DS and store
    some keying material which can be used to encrypt to them
    for the first time.
 
 1. When Alice wants to send a message to Bob and Charlie, she
-   contacts the MS and looks up their keying material. She
+   contacts the DS and looks up their keying material. She
    uses those keys to establish a set of keys which she can
    use to send to Bob and Charlie. She then sends the
-   encrypted message(s) to the MS, which forwards them to
+   encrypted message(s) to the DS, which forwards them to
    the ultimate recipients.
 
 1. Bob and/or Charlie respond to Alice's message. Their messages
@@ -111,6 +111,23 @@ A typical scenario might look something like this:
    thus providing post-compromise security {{post-compromise-secrecy}}.
 
 ## Clients
+
+Endpoints that are not an AS nor a DS are called Clients. These
+clients will typically correspond to end-user devices such as phones,
+web clients or other devices running MLS.
+
+Each client owns a set of keys that uniquely define the identity of
+its endpoints.
+A single end-user may operate multiple devices simultaneously
+(e.g., a desktop and a phone) or sequentially (e.g., replacing
+one phone with another).
+
+MLS has been designed to provide similar security guarantees to all
+clients. Note that while MLS provide some level of security resilience
+against of a compromised clients, the maximum security level requires
+the endpoints to connect to the messaging service on a regular basis
+and to use compliant implementations in order to realize security
+operations such as deleting intermediate cryptographic keys.
 
 ## Delivery Service
 
@@ -196,6 +213,47 @@ post-compromise security.
 
 # Threat Model
 
+In order to mitigate several categories of attacks across parts of
+the MLS architecture, we assume the attacker to be an active network
+attacker. This means an adversary which has complete control over the
+network used to communicate between the parties [RFC3552].
+This assumption remains valid for communications across multiple
+authentication or delivery servers if these have to collaborate
+to provide a client with some kind of information.
+
+Additionally, the MLS threat model considers possible compromissions
+of both Clients and the Authentication (AS) or Delivery (DS) services. In these case
+the protocol provide resilience against multiple scenarios described
+in the following sections. Typically, the Delivery Service (DS) will not
+be able to inject messages in the group conversation or compromise
+the identity of the group members.
+Depending on the level of trust given by the group to the DS, the
+MLS protocol will provide the group, the AS and the DS with specific
+sets of security properties. Different scenarios are considered in this
+architecture document and are described in subsequent sections of this
+document:
+
+1. Client compromise: the client actively forwards secret keys, messages,
+   group membership or metadata to the adversary (this dishonest client
+   scenario is the only case able to defeat completely the security
+   properties provided by MLS). Specific client keys, long term key or
+   messages might be compromised, in this scenarios MLS will provide
+   limited security.
+
+2. Delivery Service (DS) compromise: the initial keying material delivery
+   can provide wrong or adversarial keys the client (Untrusted DS).
+   The DS can provide previously correct initial keys that may not be
+   up to date anymore when multiple DS are involved (Trusted DS).
+   Reliability of in-order delivery or message delivery all-together
+   might be compromised for multiple reasons such as networking failure,
+   active network attacks... Additionally, there is a scenario where a
+   compromised DS could potentially leak group membership if it has this
+   knowledge (Untrusted and Trusted DS).
+
+3. Authentication service (AS) compromise: a compromised AS could
+   provide incorrect or adversarial identities to clients.
+   [TODO: Expand on compromised authentication service]
+
 
 # System Requirements
 
@@ -222,9 +280,63 @@ in the conversation.
 
 ## Message Protection
 
+The trust establishment step of the MLS protocol is followed by a
+conversation protection step where encryption is used by clients to
+transmit authenticated messages to other clients through the DS.
+This ensures that the DS doesn't have access to this Group-private content.
+MLS provide security properties such repudiability and unlinkability
+additionnally to message secrecy, integrity and authentication
+(see below).
+
 ### Message Secrecy
 
-### Message Authentication
+Message Secrecy in the context of MLS means that only intended
+recipients, currently valid members of the group, should be able to
+read the message. A corollary to that statement is that AS
+and DS can't read the content of messages sent between Members as
+they are not Members of the Group. It is expected from MLS to
+optionnally provide additional protections regarding traffic analysis
+techniques to reduce the ability of adversaries or a compromised
+member of the messaging system to deduce the content of the messages
+depending on (for example) their size. One of these protection is
+typically padding messages in order to produce ciphertexts of standard
+length. While this protection is highly recommended it is not
+mandatory as it can be costly in terms of performance for clients
+and the MS.
+
+MLS provides additional protection regarding secrecy of past messages
+and future messages. These cryptographic security properties are
+Perfect Forward Secrecy (PFS) and Post-Compromise Security (PCS).
+PFS ensures that access to all encrypted traffic history combined
+with an access to all current keying material on clients will not
+defeat the secrecy properties of messages older than the oldest key.
+Note that this means that clients have the extremely important role
+of deleting appropriate keys as soon as they have been used with
+the expected message, otherwise the secrecy of the messages and the
+security for MLS is considerably weakened.
+
+### Message Authentication and Integrity
+
+Message Integrity and Authentication are properties enforced by MLS.
+When the protocol is under attack, it is typically expected by the threat
+model that messages will be altered, dropped or substituted by the
+adversary. MLS guarantees that under these circumstances an honest
+client will not accept one of these scenarios and will reject messages
+modified in transit or that have not by successfully authenticated as
+a message from the correct Member.
+
+In messaging systems, authentication is a very important part of the
+design especially in strong adversarial environnements. This requires
+MLS to provide message repudiability and unlinkability properties.
+These guarantee that only Members of the group are able to verify
+that a message has been sent by a specific Member but will not allow
+an external entity having access to all history and keys to link a
+message to a specific client, or by extension Member, (Repudiability)
+and doesn't allow an external entity to link a specific Member to a
+set of specific messages in the conversation (Unlinkability).
+(Note that MLS is specifically careful about the case where a Member
+of the group is leaking the messages and keys in that scenario.)
+
 
 ### Security of Attachments
 
