@@ -112,6 +112,23 @@ A typical scenario might look something like this:
 
 ## Clients
 
+Endpoints that are not an AS nor a DS are called Clients. These
+clients will typically correspond to end-user devices such as phones,
+web clients or other devices running MLS.
+
+Each client owns a set of keys that uniquely define the identity of
+its endpoints.
+A single end-user may operate multiple devices simultaneously
+(e.g., a desktop and a phone) or sequentially (e.g., replacing
+one phone with another).
+
+MLS has been designed to provide similar security guarantees to all
+clients. Note that while MLS provide some level of security resilience
+against of a compromised clients, the maximum security level requires
+the endpoints to connect to the messaging service on a regular basis
+and to use compliant implementations in order to realize security
+operations such as deleting intermediate cryptographic keys.
+
 ## Delivery Service
 
 ## Authentication Service
