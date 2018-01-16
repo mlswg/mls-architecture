@@ -70,20 +70,20 @@ not at the authentication level).
 
 A model system is shown in [TODO: Figure].
 
-The messaging service presents as two abstract services:
+The Messaging Service (MS) presents as two abstract services:
 
-- An Authentication Server (AS) which is responsible for maintaining
+- An Authentication Service (AS) which is responsible for maintaining
   user identities, issuing credentials which allow them to
   authenticate to each other, and potentially distributing
   user keying material.
 
-- A Message Switch (MS) which is responsible for delivering messages
-  between users. In the case of group messaging, the message
-  switch may also be responsible for acting as an "exploder"
+- A Delivery Service (DS) which is responsible for delivering messages
+  between users. In the case of group messaging, the delivery service
+  may also be responsible for acting as an "exploder"
   where the sender sends a single message to a group and
   the switch then forwards it to each recipient.
 
-In many systems, the AS and the MS are actually operated by the
+In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
 are logically distinct and, in other systems, may be operated
 by different entities so we show them as separate here. Other
@@ -95,15 +95,15 @@ A typical scenario might look something like this:
 1. Alice, Bob, and Charlie create accounts with the messaging
    service and obtain credentials from the AS.
 
-1. Alice, Bob, and Charlie authenticate to the MS and store
+1. Alice, Bob, and Charlie authenticate to the DS and store
    some keying material which can be used to encrypt to them
    for the first time.
 
 1. When Alice wants to send a message to Bob and Charlie, she
-   contacts the MS and looks up their keying material. She
+   contacts the DS and looks up their keying material. She
    uses those keys to establish a set of keys which she can
    use to send to Bob and Charlie. She then sends the
-   encrypted message(s) to the MS, which forwards them to
+   encrypted message(s) to the DS, which forwards them to
    the ultimate recipients.
 
 1. Bob and/or Charlie respond to Alice's message. Their messages
@@ -129,12 +129,53 @@ the endpoints to connect to the messaging service on a regular basis
 and to use compliant implementations in order to realize security
 operations such as deleting intermediate cryptographic keys.
 
-## Messaging Server
+## Delivery Service
 
 ## Authentication Service
 
 
 # Threat Model
+
+In order to mitigate several categories of attacks across parts of
+the MLS architecture, we assume the attacker to be an active network
+attacker. This means an adversary which has complete control over the
+network used to communicate between the parties [RFC3552].
+This assumption remains valid for communications across multiple
+authentication or delivery servers if these have to collaborate
+to provide a client with some kind of information.
+
+Additionally, the MLS threat model considers possible compromissions
+of both Clients and the Authentication (AS) or Delivery (DS) services. In these case
+the protocol provide resilience against multiple scenarios described
+in the following sections. Typically, the Delivery Service (DS) will not
+be able to inject messages in the group conversation or compromise
+the identity of the group members.
+Depending on the level of trust given by the group to the DS, the
+MLS protocol will provide the group, the AS and the DS with specific
+sets of security properties. Different scenarios are considered in this
+architecture document and are described in subsequent sections of this
+document:
+
+1. Client compromise: the client actively forwards secret keys, messages,
+   group membership or metadata to the adversary (this dishonest client
+   scenario is the only case able to defeat completely the security
+   properties provided by MLS). Specific client keys, long term key or
+   messages might be compromised, in this scenarios MLS will provide
+   limited security.
+
+2. Delivery Service (DS) compromise: the initial keying material delivery
+   can provide wrong or adversarial keys the client (Untrusted DS).
+   The DS can provide previously correct initial keys that may not be
+   up to date anymore when multiple DS are involved (Trusted DS).
+   Reliability of in-order delivery or message delivery all-together
+   might be compromised for multiple reasons such as networking failure,
+   active network attacks... Additionally, there is a scenario where a
+   compromised DS could potentially leak group membership if it has this
+   knowledge (Untrusted and Trusted DS).
+
+3. Authentication service (AS) compromise: a compromised AS could
+   provide incorrect or adversarial identities to clients.
+   [TODO: Expand on compromised authentication service]
 
 
 # System Requirements
