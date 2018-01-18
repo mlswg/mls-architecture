@@ -208,7 +208,7 @@ been kicked out of the delivery. This is an absolute requirement to
 preserve security properties such as forward secrecy of messages or
 post-compromise security.
 
-## Authentication Service
+## Authentication Service [Benjamin]
 
 
 # Threat Model
