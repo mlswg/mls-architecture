@@ -340,7 +340,7 @@ of the group is leaking the messages and keys in that scenario.)
 
 ### Security of Attachments
 
-## Support for Group Messaging
+## Support for Group Messaging [Benjamin]
 
 Messaging systems that implement MLS must provide support for
 conversations involving 2 or more participants.
@@ -350,7 +350,7 @@ conversations involving 2 or more participants.
 Message secrecy properties must be preserved after any participant
 exits the conversation.
 
-## Support for Multiple Devices
+## Support for Multiple Devices [Benjamin]
 
 ### Adding New Devices
 
