@@ -38,7 +38,10 @@ normative:
 
 --- abstract
 
-TODO
+This document specifies version 1.0 of the Messaging Layer Security (MLS) protocol.
+MLS allows group messaging for a large number of clients over the Internet with
+the help of services providing authentication of group members and delivery of messages
+and in a way that is designed to prevent eavesdropping, tampering, and message forgery.
 
 --- middle
 
@@ -208,8 +211,14 @@ been kicked out of the delivery. This is an absolute requirement to
 preserve security properties such as forward secrecy of messages or
 post-compromise security.
 
-## Authentication Service [Benjamin]
+## Authentication Service
 
+The identity of the Members of a Group in MLS is verified via an
+Authentication Service which might be completely independent from the
+Delivery Service provider. This "long term" identity can be used to
+derive multiple ephemeral authentication keys for signing MLS messages
+on a Client, but may derive more keys to be able to use different
+ephemeral keys linked to the main identity key across multiple devices.
 
 # Threat Model
 
@@ -257,7 +266,20 @@ document:
 
 # System Requirements
 
+As the MLS protocol provides an important service to users, its
+functionnal safety and its security is a very important part of
+the protocol design. Specifically, MLS is designed to bas as
+resilient as possible against adversarial interaction and Denial
+of Service (DOS) attacks. This said, even if the MS service is
+rendered unavailable by attackers, the protocol will ensure that
+strong security properties are enforced in all cases.
+
 ## Functional Requirements
+
+MLS is designed as a large scale group messaging protocol and
+hence requires to provide performance and safety to its users.
+To allow this, the design provides group keys and asynchronous
+delivery of messages.
 
 ### Asynchronous Delivery
 
@@ -276,7 +298,11 @@ be able to update shared keys asynchronously.
 
 Conversation participants whose local MLS state is lost or corrupted
 must be able to reinitialize their state and continue participating
-in the conversation.
+in the conversation. This requires to keep track of the group key that
+must be used to decrypt the next message. Loss of the current group
+key may force the user to recompute it for the latest message and
+hence loose messages encrypted with keys in-between the old and
+the new group keys.
 
 ## Message Protection
 
@@ -340,19 +366,45 @@ of the group is leaking the messages and keys in that scenario.)
 
 ### Security of Attachments
 
-## Support for Group Messaging [Benjamin]
+The security properties expected for attachments in the MLS protocol are
+very similar to the ones expected from messages. The distinction between
+messages and attachments stems from the fact that the typical average time
+between the download of a message and the one from the attachements
+may be different. For many reasons, the usual one being the lack of
+high bandwith network connectivity, the lifetime of the cryptographic
+keys for attachments is usually higher than for messages, hence slightly
+weakening the PCS guarantees for attachments.
+
+## Support for Group Messaging
 
 Messaging systems that implement MLS must provide support for
-conversations involving 2 or more participants.
+conversations involving 2 or more participants. The aim in terms of group
+size for MLS is situated around 50K clients. This typically include
+many Members using multiple devices. The main advantage of MLS in the
+group messaging context is the fact that it uses a shared group key to
+encrypt messages, hence avoiding the requirement of establishing one to one
+end-to-end connections with members of the group.
 
 ### Secrecy After Member Exit
 
 Message secrecy properties must be preserved after any participant
-exits the conversation.
+exits the conversation. In order to ensure this, the MLS protocol ensures
+that a new group key is derived from secrets only known by the legitimate
+members of the new group, effectively making it impossible to the member
+that exited the group to decrypt new messages.
 
-## Support for Multiple Devices [Benjamin]
+## Support for Multiple Devices
+
+It is typically expected from Members of the Group to own different devices.
 
 ### Adding New Devices
+
+A new device can join the group and will be considered as a new client by
+the protocol. Hence this client will not gain access to the history even if
+it is owned by an owner who is already a Member of the Group.
+Restoring history is typically not allowed at the protocol level but can still
+be achieved at the application layer by an out-of-band process provided
+by the service provider.
 
 ## System Resilience
 
