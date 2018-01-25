@@ -311,10 +311,30 @@ Restoring history is typically not allowed at the protocol level but can still
 be achieved at the application layer by an out-of-band process provided
 by the service provider.
 
+### Compatibility with future versions of MLS
+
+One of the main requirements of the protocol is to make sure that if multiple
+versions of MLS coexist in the future, the protocol provides a strong and
+unambiguous version negotiation mechanism. This mechanism prevents from
+version downgrade attacks where an attacker would actively rewrite handshake
+messages with a lower protocol version than the ones originally offered by
+the endpoints. When multiple versions of MLS are available, the negotiation
+protocol guarantees that the version agreed upon will be the highest version
+supported in commun by the group. As no other version exist at the moment,
+this document does not do any recommandation on alternative techniques such
+as using different versions of MLS for different subgroups.
+
 ## Security Requirements
 
 [[TODO: should these be stated as assertions ("MLS guarantees that...") or
 goals ("MLS aims to guarantee that...")?]]
+
+### Connections between Clients and Servers (one-to-one)
+
+In the case where clients need to connect to an AS or a DS to obtain specific
+informations that are not availaible. Clients MUST use the Transport Layer
+Security (TLS) protocol version 1.3 or higher. Clients MUST NOT use any legacy
+versions of TLS.
 
 ### Message Secrecy and Authentication
 
