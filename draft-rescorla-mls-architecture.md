@@ -111,7 +111,7 @@ A typical scenario might look something like this:
 
 1. Bob and/or Charlie respond to Alice's message. Their messages
    might include new keys which allow the joint keys to be updated,
-   thus providing post-compromise security {{post-compromise-secrecy}}.
+   thus providing post-compromise security.
 
 ## Clients
 
@@ -266,33 +266,29 @@ document:
 
 # System Requirements
 
-As the MLS protocol provides an important service to users, its
-functionnal safety and its security is a very important part of
-the protocol design. Specifically, MLS is designed to bas as
-resilient as possible against adversarial interaction and Denial
-of Service (DOS) attacks. This said, even if the MS service is
-rendered unavailable by attackers, the protocol will ensure that
-strong security properties are enforced in all cases.
+As the MLS protocol provides an important service to users, its functional
+safety and security are very important parts of the protocol
+design. Specifically, MLS is designed to be as resilient as possible against
+adversarial interaction and (where possible) Denial of Service (DOS) attacks.
 
 ## Functional Requirements
 
-MLS is designed as a large scale group messaging protocol and
-hence requires to provide performance and safety to its users.
-To allow this, the design provides group keys and asynchronous
-delivery of messages.
+MLS is designed as a large scale group messaging protocol and hence requires to
+provide performance and safety to its users.  Messaging systems that implement
+MLS must provide support for conversations involving 2 or more participants,
+and aim to scale to approximately 50,000 clients, typically including many
+Members using multiple devices.
 
-### Asynchronous Delivery
+### Asynchronous Usage
 
-Messaging systems that implement MLS must provide a transport
-layer for delivering messages asynchronously.
+No operation in MLS should require two distinct users to be online
+simultaneously. In particular, clients participating in conversations protected
+using MLS must be able to update shared keys, add or remove new members, and
+send messages and attachments without waiting for another user's reply.
 
-This transport layer must also support delivery ACKs and NACKs
-and a mechanism for retrying message delivery.
-
-### Asynchronous Key Update
-
-Clients participating in conversations protected using MLS must
-be able to update shared keys asynchronously.
+Messaging systems that implement MLS must provide a transport layer for
+delivering messages asynchronously. This transport layer must also support
+delivery ACKs and NACKs and a mechanism for retrying message delivery.
 
 ### Recovery After State Loss
 
@@ -301,24 +297,42 @@ must be able to reinitialize their state and continue participating
 in the conversation. This requires to keep track of the group key that
 must be used to decrypt the next message. Loss of the current group
 key may force the user to recompute it for the latest message and
-hence loose messages encrypted with keys in-between the old and
+hence lose messages encrypted with keys in-between the old and
 the new group keys.
 
-## Message Protection
+### Support for Multiple Devices
+
+It is typically expected for Members of the Group to own different devices.
+
+A new device can join the group and will be considered as a new client by
+the protocol. Hence this client will not gain access to the history even if
+it is owned by an owner who is already a Member of the Group.
+Restoring history is typically not allowed at the protocol level but can still
+be achieved at the application layer by an out-of-band process provided
+by the service provider.
+
+## Security Requirements
+
+[[TODO: should these be stated as assertions ("MLS guarantees that...") or
+goals ("MLS aims to guarantee that...")?]]
+
+### Message Secrecy and Authentication
 
 The trust establishment step of the MLS protocol is followed by a
 conversation protection step where encryption is used by clients to
 transmit authenticated messages to other clients through the DS.
 This ensures that the DS doesn't have access to this Group-private content.
-MLS provide security properties such repudiability and unlinkability
-additionnally to message secrecy, integrity and authentication
-(see below).
 
-### Message Secrecy
+MLS aims to provide Secrecy, Integrity and Authentication for all messages.
 
-Message Secrecy in the context of MLS means that only intended
-recipients, currently valid members of the group, should be able to
-read the message. A corollary to that statement is that AS
+Message Secrecy in the context of MLS means that only intended recipients
+(current group members), should be able to read any message sent to the group,
+even in the context of an active adversary as described in the threat model.
+
+Message Integrity and Authentication mean that an honest client should only
+accept a message if it was sent by a group member.
+
+A corollary to that statement is that AS
 and DS can't read the content of messages sent between Members as
 they are not Members of the Group. It is expected from MLS to
 optionnally provide additional protections regarding traffic analysis
@@ -329,6 +343,8 @@ typically padding messages in order to produce ciphertexts of standard
 length. While this protection is highly recommended it is not
 mandatory as it can be costly in terms of performance for clients
 and the MS.
+
+#### Forward and Post-Compromise Security
 
 MLS provides additional protection regarding secrecy of past messages
 and future messages. These cryptographic security properties are
@@ -341,15 +357,35 @@ of deleting appropriate keys as soon as they have been used with
 the expected message, otherwise the secrecy of the messages and the
 security for MLS is considerably weakened.
 
-### Message Authentication and Integrity
+PCS ensures that if a group member is compromised at some time t but
+subsequently performs an update at some time t', then all MLS guarantees should
+apply to messages sent after time t'. For example, if an adversary learns all
+secrets known to Alice at time t, including both Alice's secret keys and all
+shared group keys, but then Alice performs a key update at time t', then the
+adversary should be unable to violate any of the MLS security properties after
+time t'.
 
-Message Integrity and Authentication are properties enforced by MLS.
-When the protocol is under attack, it is typically expected by the threat
-model that messages will be altered, dropped or substituted by the
-adversary. MLS guarantees that under these circumstances an honest
-client will not accept one of these scenarios and will reject messages
-modified in transit or that have not by successfully authenticated as
-a message from the correct Member.
+#### Membership Changes
+
+MLS aims to provide agreement on group membership. That is, all group members
+should agree on the list of current group members, up to delayed messages.
+
+Some applications may wish to allow the AS to add or remove members from the
+group; others may wish to require authorisation from a current group
+member. Regardless, it should be impossible to add or remove a group member
+without informing all other members.
+
+Members who are removed from a group should enjoy no special privileges:
+compromise of a removed group member should not affect the security of messages
+sent after their removal.
+
+#### Protection Against Server Misbehavior
+
+#### Servers and Post-Compromise Secrecy
+
+#### Unauthorized Device Additions
+
+#### Repudiability and Unlinkability
 
 In messaging systems, authentication is a very important part of the
 design especially in strong adversarial environnements. This requires
@@ -363,8 +399,7 @@ set of specific messages in the conversation (Unlinkability).
 (Note that MLS is specifically careful about the case where a Member
 of the group is leaking the messages and keys in that scenario.)
 
-
-### Security of Attachments
+#### Security of Attachments
 
 The security properties expected for attachments in the MLS protocol are
 very similar to the ones expected from messages. The distinction between
@@ -375,56 +410,9 @@ high bandwith network connectivity, the lifetime of the cryptographic
 keys for attachments is usually higher than for messages, hence slightly
 weakening the PCS guarantees for attachments.
 
-## Support for Group Messaging
-
-Messaging systems that implement MLS must provide support for
-conversations involving 2 or more participants. The aim in terms of group
-size for MLS is situated around 50K clients. This typically include
-many Members using multiple devices. The main advantage of MLS in the
-group messaging context is the fact that it uses a shared group key to
-encrypt messages, hence avoiding the requirement of establishing one to one
-end-to-end connections with members of the group.
-
-### Secrecy After Member Exit
-
-Message secrecy properties must be preserved after any participant
-exits the conversation. In order to ensure this, the MLS protocol ensures
-that a new group key is derived from secrets only known by the legitimate
-members of the new group, effectively making it impossible to the member
-that exited the group to decrypt new messages.
-
-## Support for Multiple Devices
-
-It is typically expected from Members of the Group to own different devices.
-
-### Adding New Devices
-
-A new device can join the group and will be considered as a new client by
-the protocol. Hence this client will not gain access to the history even if
-it is owned by an owner who is already a Member of the Group.
-Restoring history is typically not allowed at the protocol level but can still
-be achieved at the application layer by an out-of-band process provided
-by the service provider.
-
-## System Resilience
-
-### Forward Secrecy
-
-###  Post-Compromise Secrecy
-
-### Offline/old Devices
-
-## Protection Against Server Misbehavior
-
-### Deterministic Group Membership
-
-### Servers and Post-Compromise Secrecy
-
-### Unauthorized Device Additions
-
-
 # Security Considerations
 
-TODO
+Security considerations are discussed throughout this document but in
+particular in the Security Requirements section.
 
 --- back
