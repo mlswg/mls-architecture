@@ -33,6 +33,12 @@ author:
     organization: Twitter
     email: singuva@twitter.com
 
+ -
+    ins: A. Kwon
+    name: Albert Kwon
+    organization: MIT
+    email: kwonal@mit.edu
+
 normative:
   RFC2119:
 
@@ -260,8 +266,16 @@ document:
    knowledge (Untrusted and Trusted DS).
 
 3. Authentication service (AS) compromise: a compromised AS could
-   provide incorrect or adversarial identities to clients.
-   [TODO: Expand on compromised authentication service]
+   provide incorrect or adversarial identities to clients. As a
+   result, a malicious AS could, for example, insert an adversarial
+   user into a group and learn the keys used to encrypt the
+   messages. Then, if the adversary could acquire the messages sent by
+   members of the group, it could eavesdrop, performing
+   man-in-the-middle. If there are no mechanisms to verify the
+   authenticity of the provided keys (e.g., via out-of-band
+   communication between group members or keeping the AS service in
+   check using techniques like key transparency), then MLS will only
+   provide limited security against a compromised AS.
 
 
 # System Requirements
