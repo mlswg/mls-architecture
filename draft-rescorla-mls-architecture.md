@@ -399,6 +399,9 @@ shared group keys, but then Alice performs a key update at time t', then the
 adversary should be unable to violate any of the MLS security properties after
 time t'.
 
+Both of these properties must be satisfied even against compromised
+DS and AS.
+
 #### Membership Changes
 
 MLS aims to provide agreement on group membership. That is, all group members
@@ -413,11 +416,25 @@ Members who are removed from a group should enjoy no special privileges:
 compromise of a removed group member should not affect the security of messages
 sent after their removal.
 
-#### Protection Against Server Misbehavior
+#### Device Additions and Removals
 
-#### Servers and Post-Compromise Secrecy
+Once a member is part of a group, the set of devices controlled by the
+member should only be altered by an authorized member of the group.
+This authorization could depend on the application: some applications
+might want to allow certain other members of the group to add or
+remove devices on behalf of another member, while other applications
+might want a more strict policy and allow only the owner of the
+devices to add or remove them.
 
-#### Unauthorized Device Additions
+No matter the case, anyone outside of the group must not be able to
+add devices under a member. For example, if an outside adversary could
+add a device to a member, then it could eavesdrop on the communication
+(at least until the member who is being spoofed audits its list of
+devices and reports this attack). [TODO: what about removal?]
+
+[TODO: do we want to hide the number of devices per user in MLS?  it's
+listed as P2 in the spreadsheet, but is somewhat related to this
+property and membership changes.]
 
 #### Repudiability and Unlinkability
 
