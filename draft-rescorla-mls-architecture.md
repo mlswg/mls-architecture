@@ -398,7 +398,7 @@ time t'.
 Both of these properties must be satisfied even against compromised
 DS and AS.
 
-#### Membership Changes
+#### Membership Changes [Benjamin]
 
 MLS aims to provide agreement on group membership. That is, all group members
 should agree on the list of current group members, up to delayed messages.
@@ -412,7 +412,7 @@ Members who are removed from a group should enjoy no special privileges:
 compromise of a removed group member should not affect the security of messages
 sent after their removal.
 
-#### Device Additions and Removals
+#### Device Additions and Removals [Benjamin]
 
 Once a member is part of a group, the set of devices controlled by the
 member should only be altered by an authorized member of the group.
