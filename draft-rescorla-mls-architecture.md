@@ -1,3 +1,5 @@
+LOCKING THE ENTIRE DOCUMENT FOR A FEW HOURS, PLEASE DO NOT EDIT ;)
+
 ---
 title: Messaging Layer Security Architecture
 abbrev: MLS Architecture
