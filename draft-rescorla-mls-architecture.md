@@ -345,6 +345,18 @@ Restoring history is typically not allowed at the protocol level but can still
 be achieved at the application layer by an out-of-band process provided
 by the service provider.
 
+### Extensibility / Pluggability
+
+Messages that don't affect the group state can carry arbitrary paylod with the purpose of sharing that payload between group members. No assumptions are made about the format of the payload. 
+
+### Privacy
+
+The protocol should be designed in a way that limits the server-side (DS) metadata footprint. The DS should only persist data required for the delivery of messages and avoid Personally Identifiable Information (PII) or other sensitive metadata wherever possible.
+
+### Federation
+
+The protocol aims to be compatible with federated environments. While the protocol might not contain all necessary mechanisms required for federation, it should assume that more than one AS/DS can extist.
+
 ### Compatibility with future versions of MLS
 
 One of the main requirements of the protocol is to make sure that if multiple
