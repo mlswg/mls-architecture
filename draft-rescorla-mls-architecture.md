@@ -184,13 +184,6 @@ Group Key established throughout the group key establishment phase of the protoc
 MLS has been designed to provide similar security guarantees to all Clients,
 for all group sizes, even when it reduces to only two Clients.
 
-[[BB.] Relocate this !]
-Note that while MLS provides some level of security resilience
-against compromised Clients, the maximum security level requires
-the endpoints to connect to the messaging service on a regular basis
-and to use compliant implementations in order to realize security
-operations such as deleting intermediate cryptographic keys.
-
 ## Delivery Service
 
 The Delivery Service (DS) is expected to play multiple roles in the
@@ -206,19 +199,25 @@ the functionnal and security guarantees provided by MLS may differ.
 
 In the MLS group communication establishment process, the first step
 exercised by the DS is to store the initial cryptographic key material
-provided by every Member. This key material represents the initial public
-identity of the Member and will subsequently be used to establish
-the set of keys that will be used by the Members to communicate with
-other members of the group.
+provided by every Member. This key material represents the initial contribution
+from each member that will be used in the establishment of the shared group
+key. Hence this initial keying material MUST be authenticated.
+
+[[BEN] If we keep pushing on having ephemeral signing keys we might
+want to store the initial ephemeral signing public key as well as the
+initial ephemeral encryption public share. To me it makes more sense to
+store it on the DS, so that the AS remains as isolated as possible, which
+is probably easier for subsequent security analysis.
+]
 
 In an Untrusted setting, it is assumed by the MLS threat model that
 the identity provided by the DS to an honest Member of the Group can
-be incorrect. Hence, MLS offers the clients a way of multilaterally
-verify the relationship between the other members of the group expected
+be incorrect. Hence, MLS offers the clients a way of verifiying
+the relationship between the other members of the group expected
 identities and the keys provided by the MS through a public Key
 Transparency (KT) log. While this is useful to circumvent trust issues
 in the case of a potentially corrupted DS, this check can be
-computationnaly costly for the clients.
+computationnaly costly and privacy leaking for the clients.
 
 In a Trusted setting, the DS is expected to always provide the correct
 and most up-to-date information to a Member requiring another Member's
@@ -275,12 +274,23 @@ post-compromise security.
 
 ## Authentication Service
 
-The identity of the Members of a Group in MLS is verified via an
-Authentication Service which might be completely independent from the
-Delivery Service provider. This "long term" identity can be used to
-derive multiple ephemeral authentication keys for signing MLS messages
-on a Client, but may derive more keys to be able to use different
-ephemeral keys linked to the main identity key across multiple devices.
+New Members to the Messaging Service will always need to provide some initial
+keying material for other users to potentially use when creating a new Group.
+To prevent an attacker to impersonate users, the Authentication Service (AS) will
+provide strong authentication mechanism for the Client to use to authenticate
+this encryption prekey.
+
+While MLS doesn't specify the exact mechanism that allows a Clients to obtain
+authentication keys, a suggested design is for a Member to generate an ephemeral
+signature keypair for each Client and ask the AS to sign the public keys.
+This has the obvious advantage, in the case of a malicious AS, that the attacker
+cannot forge an inital encryption prekey on the behalf of the user.
+
+In all cases, other Members might want additionnal confidence on the identity associated
+with a Client's encryption prekey. In that scenario, it is suggested that the AS
+providing long-term identity keys or signing ephemeral signature public keys
+publishes the identity of the Member and the public signing key to a Key Transparency
+(KT) log for all to see.
 
 # Threat Model
 
@@ -329,6 +339,12 @@ document:
    check using techniques like key transparency), then MLS will only
    provide limited security against a compromised AS.
 
+[[BB.] Relocate this !]
+Note that while MLS provides some level of security resilience
+against compromised Clients, the maximum security level requires
+the endpoints to connect to the messaging service on a regular basis
+and to use compliant implementations in order to realize security
+operations such as deleting intermediate cryptographic keys.
 
 # System Requirements
 
@@ -379,22 +395,22 @@ by the service provider.
 
 ### Extensibility / Pluggability
 
-Messages that don't affect the group state can carry arbitrary paylod with
+Messages that don't affect the group state can carry arbitrary payload with
 the purpose of sharing that payload between group members. No assumptions
 are made about the format of the payload.
 
 ### Privacy
 
-The protocol should be designed in a way that limits the server-side (DS)
-metadata footprint. The DS should only persist data required for the delivery
+The protocol is be designed in a way that limits the server-side (DS)
+metadata footprint. The DS must only persist data required for the delivery
 of messages and avoid Personally Identifiable Information (PII) or other
 sensitive metadata wherever possible.
 
 ### Federation
 
 The protocol aims to be compatible with federated environments. While the
-protocol might not contain all necessary mechanisms required for federation,
-it should assume that more than one AS/DS can extist.
+protocol does not specify all necessary mechanisms required for federation,
+it allows for more than one AS/DS to exist.
 
 ### Compatibility with future versions of MLS
 
@@ -420,6 +436,9 @@ In the case where clients need to connect to an AS or a DS to obtain specific
 informations that are not availaible. Clients MUST use the Transport Layer
 Security (TLS) protocol version 1.3 or higher. Clients MUST NOT use any legacy
 versions of TLS.
+
+[[BB.] I am assuming TLS here but maybe something else can be done]
+
 
 ### Message Secrecy and Authentication
 
