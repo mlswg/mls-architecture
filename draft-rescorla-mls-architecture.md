@@ -38,6 +38,12 @@ author:
     name: Albert Kwon
     organization: MIT
     email: kwonal@mit.edu
+    
+-
+    ins: R. Robert
+    name: Raphael Robert
+    organization: Wire
+    email: raphael@wire.com
 
 normative:
   RFC2119:
@@ -118,6 +124,24 @@ A typical scenario might look something like this:
 1. Bob and/or Charlie respond to Alice's message. Their messages
    might include new keys which allow the joint keys to be updated,
    thus providing post-compromise security.
+
+### User stories
+
+Roles: Users in groups have equal rights for managing groups and sending messages, unless specified otherwise outside the protocol.
+
+ - I want to create a group by inviting other members
+
+ - I want to add one or more members to an existing group
+
+ - I want to remove one or more members from an existing group
+
+ - I want to join an existing group
+
+ - I want to leave a group
+
+ - I want to send a message to everyone in the group
+
+ - I want to receive a message from someone in the group 
 
 ## Clients
 
