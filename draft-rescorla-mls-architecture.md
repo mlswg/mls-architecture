@@ -32,14 +32,12 @@ author:
     name: Srinivas Inguva
     organization: Twitter
     email: singuva@twitter.com
-
  -
     ins: A. Kwon
     name: Albert Kwon
     organization: MIT
     email: kwonal@mit.edu
-    
--
+ -
     ins: R. Robert
     name: Raphael Robert
     organization: Wire
@@ -51,9 +49,10 @@ normative:
 --- abstract
 
 This document specifies version 1.0 of the Messaging Layer Security (MLS) protocol.
-MLS allows group messaging for a large number of clients over the Internet with
-the help of services providing authentication of group members and delivery of messages
-and in a way that is designed to prevent eavesdropping, tampering, and message forgery.
+MLS allows group messaging for a large number of clients over a network with
+the help of a delivery service for messages, and potentially an authentication service
+to provide long term identity keys, in a way that is designed to prevent eavesdropping,
+tampering, and message forgery.
 
 --- middle
 
@@ -81,9 +80,21 @@ not at the authentication level).
 
 # General Setting
 
-[TODO: Need some ASCII art]
-
-A model system is shown in [TODO: Figure].
+      ----------------      --------------
+     | Authentication |    | Delivery     |
+     | Service (AS)   |    | Service (DS) |
+      ----------------      --------------
+                         /        |        \             Group
+     *********************************************************
+     *                 /          |          \               *
+     *                /           |           \              *
+     *      ----------       ----------       ----------     *
+     *     | Client 0 |     | Client 1 |     | Client N |    *
+     *      ----------       ----------       ----------     *
+     *      ............................      ...........    *
+     *      Member 0                          Member 1       *
+     *                                                       *
+     *********************************************************
 
 The Messaging Service (MS) presents as two abstract services:
 
@@ -110,24 +121,25 @@ A typical scenario might look something like this:
 1. Alice, Bob, and Charlie create accounts with the messaging
    service and obtain credentials from the AS.
 
-1. Alice, Bob, and Charlie authenticate to the DS and store
+2. Alice, Bob, and Charlie authenticate to the DS and store
    some keying material which can be used to encrypt to them
    for the first time.
 
-1. When Alice wants to send a message to Bob and Charlie, she
+3. When Alice wants to send a message to Bob and Charlie, she
    contacts the DS and looks up their keying material. She
    uses those keys to establish a set of keys which she can
    use to send to Bob and Charlie. She then sends the
    encrypted message(s) to the DS, which forwards them to
    the ultimate recipients.
 
-1. Bob and/or Charlie respond to Alice's message. Their messages
+4. Bob and/or Charlie respond to Alice's message. Their messages
    might include new keys which allow the joint keys to be updated,
    thus providing post-compromise security.
 
 ### User stories
 
-Roles: Users in groups have equal rights for managing groups and sending messages, unless specified otherwise outside the protocol.
+Roles: Users in groups have equal rights for managing groups and sending
+       messages, unless specified otherwise outside the protocol.
 
  - I want to create a group by inviting other members
 
@@ -141,7 +153,7 @@ Roles: Users in groups have equal rights for managing groups and sending message
 
  - I want to send a message to everyone in the group
 
- - I want to receive a message from someone in the group 
+ - I want to receive a message from someone in the group
 
 ## Clients
 
@@ -347,15 +359,22 @@ by the service provider.
 
 ### Extensibility / Pluggability
 
-Messages that don't affect the group state can carry arbitrary paylod with the purpose of sharing that payload between group members. No assumptions are made about the format of the payload. 
+Messages that don't affect the group state can carry arbitrary paylod with
+the purpose of sharing that payload between group members. No assumptions
+are made about the format of the payload.
 
 ### Privacy
 
-The protocol should be designed in a way that limits the server-side (DS) metadata footprint. The DS should only persist data required for the delivery of messages and avoid Personally Identifiable Information (PII) or other sensitive metadata wherever possible.
+The protocol should be designed in a way that limits the server-side (DS)
+metadata footprint. The DS should only persist data required for the delivery
+of messages and avoid Personally Identifiable Information (PII) or other
+sensitive metadata wherever possible.
 
 ### Federation
 
-The protocol aims to be compatible with federated environments. While the protocol might not contain all necessary mechanisms required for federation, it should assume that more than one AS/DS can extist.
+The protocol aims to be compatible with federated environments. While the
+protocol might not contain all necessary mechanisms required for federation,
+it should assume that more than one AS/DS can extist.
 
 ### Compatibility with future versions of MLS
 
