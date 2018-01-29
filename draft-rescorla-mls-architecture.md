@@ -492,53 +492,32 @@ time t'.
 Both of these properties must be satisfied even against compromised
 DS and AS.
 
-#### Membership Changes [Benjamin]
+#### Membership Changes
 
-MLS aims to provide agreement on group membership. That is, all group members
-should agree on the list of current group members, up to delayed messages.
+MLS aims to provide agreement on group membership. That is, all
+group Members have agreed on the list of current group members.
 
-Some applications may wish to allow the AS to add or remove members from the
-group; others may wish to require authorisation from a current group
-member. Regardless, it should be impossible to add or remove a group member
+Some applications may wish to enforce ACLs to limit addition or removal
+of group members, to privileged users. Others may wish to require
+authorisation from the current group members or a subset of it.
+Regardless, MLS does not allow addition or removal of group members
 without informing all other members.
 
-Members who are removed from a group should enjoy no special privileges:
-compromise of a removed group member should not affect the security of messages
-sent after their removal.
-
-#### Device Additions and Removals [Benjamin]
-
-Once a member is part of a group, the set of devices controlled by the
+Once a Member is part of a group, the set of devices controlled by the
 member should only be altered by an authorized member of the group.
 This authorization could depend on the application: some applications
 might want to allow certain other members of the group to add or
 remove devices on behalf of another member, while other applications
 might want a more strict policy and allow only the owner of the
-devices to add or remove them.
+devices to add or remove them at the potential cost of weaker PCS guarantees.
 
-No matter the case, anyone outside of the group must not be able to
-add devices under a member. For example, if an outside adversary could
-add a device to a member, then it could eavesdrop on the communication
-(at least until the member who is being spoofed audits its list of
-devices and reports this attack). [TODO: what about removal?]
+Members who are removed from a group do not enjoy special privileges:
+compromise of a removed group member will not affect the security
+of messages sent after their removal.
 
 [TODO: do we want to hide the number of devices per user in MLS?  it's
 listed as P2 in the spreadsheet, but is somewhat related to this
 property and membership changes.]
-
-#### Repudiability and Unlinkability
-
-In messaging systems, authentication is a very important part of the
-design especially in strong adversarial environnements. This requires
-MLS to provide message repudiability and unlinkability properties.
-These guarantee that only Members of the group are able to verify
-that a message has been sent by a specific Member but will not allow
-an external entity having access to all history and keys to link a
-message to a specific client, or by extension Member, (Repudiability)
-and doesn't allow an external entity to link a specific Member to a
-set of specific messages in the conversation (Unlinkability).
-(Note that MLS is specifically careful about the case where a Member
-of the group is leaking the messages and keys in that scenario.)
 
 #### Security of Attachments
 
