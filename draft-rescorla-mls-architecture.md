@@ -98,18 +98,20 @@ not at the authentication level).
      *                                                       *
      *********************************************************
 
-The Messaging Service (MS) presents as two abstract services:
+The Messaging Service (MS) presents as two abstract services that allow
+Group Members to send and receive messages securely:
 
 - An Authentication Service (AS) which is responsible for maintaining
-  user identities, issuing credentials which allow them to
+  user long term identities, issuing credentials which allow them to
   authenticate to each other, and potentially distributing
-  user keying material.
+  user signing keying material.
 
-- A Delivery Service (DS) which is responsible for delivering messages
-  between users. In the case of group messaging, the delivery service
-  may also be responsible for acting as an "exploder"
-  where the sender sends a single message to a group and
-  the switch then forwards it to each recipient.
+- A Delivery Service (DS) which is responsible for receiving and
+  redistributing messages between group members.
+  In the case of group messaging, the delivery service may also
+  be responsible for acting as an "exploder" where the sender sends
+  a single message to a group which is then forwarded to each
+  recipient in the group.
 
 In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
@@ -120,28 +122,32 @@ server.
 
 A typical scenario might look something like this:
 
-1. Alice, Bob, and Charlie create accounts with the messaging
+1. Alice, Bob, and Charlie create accounts with a messaging
    service and obtain credentials from the AS.
 
 2. Alice, Bob, and Charlie authenticate to the DS and store
-   some keying material which can be used to encrypt to them
-   for the first time.
+   some initial keying material which can be used to encrypt
+   to them for the first time.
 
 3. When Alice wants to send a message to Bob and Charlie, she
-   contacts the DS and looks up their keying material. She
-   uses those keys to establish a set of keys which she can
-   use to send to Bob and Charlie. She then sends the
+   contacts the DS and looks up their initial keying material.
+   She uses those keys to establish a new set of keys which she
+   can use to send to Bob and Charlie. She then sends the
    encrypted message(s) to the DS, which forwards them to
    the ultimate recipients.
 
 4. Bob and/or Charlie respond to Alice's message. Their messages
-   might include new keys which allow the joint keys to be updated,
-   thus providing post-compromise security.
+   might trigger a new key derivation step which allows the joint
+   keys to be updated, thus providing post-compromise security.
+
+In this scenario, Alice, Bob and Charlie are called Members of a Group.
+It is typically expected that they own multiple devices called Clients.
 
 ### User stories
 
-Roles: Users in groups have equal rights for managing groups and sending
-       messages, unless specified otherwise outside the protocol.
+Roles: Clients in groups (and by extension Members) have equal rights
+       for managing groups and sending messages, unless specified
+       otherwise outside the protocol, typically at the application layer.
 
  - I want to create a group by inviting other members
 
@@ -157,21 +163,29 @@ Roles: Users in groups have equal rights for managing groups and sending
 
  - I want to receive a message from someone in the group
 
-## Clients
+## Group, Members and Clients
 
-Endpoints that are not an AS nor a DS are called Clients. These
+In MLS a Group is defined as a set of Members (Users) who possibly
+use multiple endpoint devices to interact with the Messaging Service.
+Only endpoints that are not an AS nor a DS are called Clients. These
 clients will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS.
 
-Each client owns a set of keys that uniquely define the identity of
-its endpoints.
-A single end-user may operate multiple devices simultaneously
+Each Member owns a long term identity key pair that uniquely defines
+its identity to other Members of the Group.
+As single end-user may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
-one phone with another).
+one phone with another), the formal definition of a Group in MLS
+is the set of Clients that has knowledge of the shared (Encryption)
+Group Key established throughout the key establishment phase of the protocol.
 
 MLS has been designed to provide similar security guarantees to all
-clients. Note that while MLS provide some level of security resilience
-against of a compromised clients, the maximum security level requires
+Clients, even in cases where the Group reduces to only two users.
+
+
+[[BB.] Relocate this !]
+Note that while MLS provides some level of security resilience
+against compromised Clients, the maximum security level requires
 the endpoints to connect to the messaging service on a regular basis
 and to use compliant implementations in order to realize security
 operations such as deleting intermediate cryptographic keys.
@@ -179,10 +193,11 @@ operations such as deleting intermediate cryptographic keys.
 ## Delivery Service
 
 The Delivery Service (DS) is expected to play multiple roles in the
-MLS architecture.
+Messaging Service architecture.
 
-Multiple levels of security and trust for the DS are considered by MLS
-according to each tasks performed by the DS.
+Depending on the level of trust given by the Group to the Delivery Service,
+the functionnal and security guarantees provided by MLS may differ.
+
 
 ### Delivery of the initial keying material
 
