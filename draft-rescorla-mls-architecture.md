@@ -99,7 +99,7 @@ Members to prepare before sending and receiving messages securely :
   be responsible for acting as an "exploder" where the sender sends
   a single message to a group which is then forwarded to each
   recipient in the group. The DS is also responsible to store and
-  deliver initial keying material required to proceed with the group
+  deliver initial public keying material required to proceed with the group
   secret key establishment process.
 
       ----------------      --------------
@@ -173,7 +173,7 @@ Only endpoints that are not an AS nor a DS are called Clients. These
 clients will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS.
 
-Each Member owns a long term identity key pair that uniquely defines
+Each member device owns a long term identity key pair that uniquely defines
 its identity to other Members of the Group.
 As single end-user may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
@@ -218,6 +218,8 @@ identities and the keys provided by the MS through a public Key
 Transparency (KT) log. While this is useful to circumvent trust issues
 in the case of a potentially corrupted DS, this check can be
 computationnaly costly and privacy leaking for the clients.
+[EO It is not clear to me how KT could cause privacy issues? each coporate will be running their own KT server,
+and all KT servers will only gossip their signed root head]
 
 In a Trusted setting, the DS is expected to always provide the correct
 and most up-to-date information to a Member requiring another Member's
@@ -284,7 +286,7 @@ While MLS doesn't specify the exact mechanism that allows a Clients to obtain
 authentication keys, a suggested design is for a Member to generate an ephemeral
 signature keypair for each Client and ask the AS to sign the public keys.
 This has the obvious advantage, in the case of a malicious AS, that the attacker
-cannot forge an inital encryption prekey on the behalf of the user.
+cannot forge an inital encryption prekey on the behalf of the user. 
 
 In all cases, other Members might want additionnal confidence on the identity associated
 with a Client's encryption prekey. In that scenario, it is suggested that the AS
@@ -327,9 +329,9 @@ document:
    up to date anymore when multiple DS are involved (Trusted DS).
    Reliability of in-order delivery or message delivery all-together
    might be compromised for multiple reasons such as networking failure,
-   active network attacks... Additionally, there is a scenario where a
+   active network attacks, replay attacks... Additionally, there is a scenario where a
    compromised DS could potentially leak group membership if it has this
-   knowledge (Untrusted and Trusted DS).
+   knowledge (Untrusted and Trusted DS). 
 
 3. Authentication service (AS) compromise: a compromised AS could
    provide incorrect or adversarial identities to clients. As a
