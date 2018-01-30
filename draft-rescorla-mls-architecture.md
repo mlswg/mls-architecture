@@ -1,4 +1,4 @@
-﻿﻿﻿﻿---
+---
 title: Messaging Layer Security Architecture
 abbrev: MLS Architecture
 docname: draft-rescorla-mls-architecture-latest
@@ -115,6 +115,7 @@ Members to prepare for sending and receiving messages securely :
      *      Member 0                          Member 1       *
      *                                                       *
      *********************************************************
+
 ```
 
 In many systems, the AS and the DS are actually operated by the
