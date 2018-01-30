@@ -538,11 +538,11 @@ property and membership changes.]
 property we already have but hiding from the AS is a different story.
 If we go for the ephemeral signature keys, I think we may be able to
 hide the number of clients of a user to honest members of the Group.
-The AS provides or signs initial signature public keys from Clients
+The AS provides or signs initial signature public keys for Clients
 so it knows the number of devices for a user. We could do something
-more clever by having a long term identity per user, and derive new
-ephemeral signature public keys signed by the long term one, but it
-would be very annoying to transfer out of band to new devices. So I
+more clever by having a long term identity per user instead, and derive new
+ephemeral signature public keys signed by the long term one for each client,
+but it would be very annoying to transfer out of band to new devices. So I
 think the AS knowing is fine.]
 
 #### Security of Attachments
