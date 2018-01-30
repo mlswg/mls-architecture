@@ -99,7 +99,7 @@ Members to prepare for sending and receiving messages securely :
   delivering initial public key material required in order to proceed
   with the group secret key establishment process.
   
-  ```
+  ~~~
       ----------------      --------------
      | Authentication |    | Delivery     |
      | Service (AS)   |    | Service (DS) |
@@ -116,7 +116,7 @@ Members to prepare for sending and receiving messages securely :
      *                                                       *
      *********************************************************
 
-```
+~~~
 
 In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
