@@ -1,4 +1,4 @@
----
+﻿﻿﻿﻿---
 title: Messaging Layer Security Architecture
 abbrev: MLS Architecture
 docname: draft-rescorla-mls-architecture-latest
@@ -49,21 +49,18 @@ normative:
 --- abstract
 
 This document specifies version 1.0 of the Messaging Layer Security (MLS) protocol.
-MLS allows group messaging for a large number of clients over a network with
-the help of a delivery service for messages, and potentially an authentication service
-to provide long term identity keys, in a way that is designed to prevent eavesdropping,
-tampering, and message forgery.
+MLS allows group messaging for a large number of networked clients by providing a delivery service for messages, and potentially an authentication service, in a way that is designed to prevent eavesdropping,
+tampering, and message forgery. 
 
 --- middle
 
 # Introduction
 
 End-to-end security is a requirement for instant messaging systems
-and is commonly deployed in many such systems designed over the past
-few years. In this context, what end-to-end means is that the
+and is commonly deployed in many such systems. In this context, "end-to-end" captures the notion that 
 users of the system enjoy some level of security -- with the precise
 level depending on the system design -- even when the messaging
-service they are using misbehaves.
+service they are using performs unsatisfactorily.
 
 Messaging Layer Security (MLS) specifies an architecture (this document)
 and an abstract protocol [TODO:XREF] for providing end-to-end security
@@ -76,31 +73,31 @@ TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and JSON {{?RFC7159}}.
 Implementations which adopt compatible encodings should be able to
 have some degree of interoperability at the message level (though perhaps
 not at the authentication level).
-
+[[TvdM: What precisely do we mean by authentication level here? Also, it's not clear, upon initial reading of this section, what the purpose of this document is. Perhaps we should be more explicit in explain why it's necessary?]]
 
 # General Setting
 
-A Group using a Messaging Service (MS) is a set of participants called Members
-where each Member is typically expected to own multiple devices called Clients.
-In order to communicate securely, Group Members first use services at their
-disposal to obtain necessary secrets and credentials required for security.
+A Group using a Messaging Service (MS) comprises a set of participants called Members
+where each Member is typically expected to own multiple devices, called Clients.
+In order to communicate securely, Group Members initially use services at their
+disposal to obtain the necessary secrets and credentials required for security.
 
 The Messaging Service (MS) presents as two abstract services that allow
-Members to prepare before sending and receiving messages securely :
+Members to prepare for sending and receiving messages securely :
 
 - An Authentication Service (AS) which is responsible for maintaining
   user long term identities, issuing credentials which allow them to
   authenticate to each other, and potentially distributing
-  user signing keying material.
+  user signing keys.
 
 - A Delivery Service (DS) which is responsible for receiving and
   redistributing messages between group members.
   In the case of group messaging, the delivery service may also
   be responsible for acting as an "exploder" where the sender sends
   a single message to a group which is then forwarded to each
-  recipient in the group. The DS is also responsible to store and
-  deliver initial public keying material required to proceed with the group
-  secret key establishment process.
+  recipient in the group. The DS is also responsible for storing and
+  delivering initial public key material required in order to proceed with the group
+  secret key establishment process. [[ TvdM: "exploder" may be strange term to use here, "message amplifier" maybe?]]
 
       ----------------      --------------
      | Authentication |    | Delivery     |
@@ -121,55 +118,53 @@ Members to prepare before sending and receiving messages securely :
 In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
 are logically distinct and, in other systems, may be operated
-by different entities so we show them as separate here. Other
+by different entities, hence we show them as being separate here. Other
 partitions are also possible, such as having a separate directory
 server.
 
-A typical scenario might look something like this:
+A typical scenario might look like this:
 
-1. Alice, Bob, and Charlie create accounts with a messaging
+1. Alice, Bob and Charlie create accounts with a messaging
    service and obtain credentials from the AS.
 
-2. Alice, Bob, and Charlie authenticate to the DS and store
-   some initial keying material which can be used to encrypt
+2. Alice, Bob and Charlie authenticate to the DS and store
+   some initial keying material which can be used to send encrypted messages 
    to them for the first time.
 
 3. When Alice wants to send a message to Bob and Charlie, she
    contacts the DS and looks up their initial keying material.
-   She uses those keys to establish a new set of keys which she
-   can use to send to Bob and Charlie. She then sends the
+   She uses these keys to establish a new set of keys which she
+   can use to send encrypted messages to Bob and Charlie. She then sends the
    encrypted message(s) to the DS, which forwards them to
-   the ultimate recipients.
+   the recipients.
 
 4. Bob and/or Charlie respond to Alice's message. Their messages
    might trigger a new key derivation step which allows the shared group
    key to be updated, thus providing post-compromise security.
 
-### User stories
-
-Roles: Clients in groups (and by extension Members) have equal rights
+Clients in groups (and by extension Members) have equal rights
        for managing groups and sending messages, unless specified
-       otherwise outside the protocol, typically at the application layer.
+       otherwise outside of the messaging protocol, typically at the application layer. Clients may wish to do the following: 
 
- - I want to create a group by inviting other members
+ -  create a group by inviting other members
 
- - I want to add one or more members to an existing group
+ -  add one or more members to an existing group
 
- - I want to remove one or more members from an existing group
+ -  remove one or more members from an existing group
 
- - I want to join an existing group
+ -  join an existing group
 
- - I want to leave a group
+ -  leave a group
 
- - I want to send a message to everyone in the group
+ -  send a message to everyone in the group
 
- - I want to receive a message from someone in the group
+ -  receive a message from someone in the group
 
 ## Group, Members and Clients
 
-In MLS a Group is defined as a set of Members  who possibly use multiple
+In MLS a Group is defined as a set of Members who possibly use multiple
 endpoint devices to interact with the Messaging Service.
-Only endpoints that are not an AS nor a DS are called Clients. These
+Only endpoints that are not an AS or a DS are called Clients. These
 clients will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS.
 
@@ -179,7 +174,7 @@ As single end-user may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
 one phone with another), hence the formal definition of a Group in MLS
 is the set of Clients that has legitimate knowledge of the shared (Encryption)
-Group Key established throughout the group key establishment phase of the protocol.
+Group Key established in the group key establishment phase of the protocol.
 
 MLS has been designed to provide similar security guarantees to all Clients,
 for all group sizes, even when it reduces to only two Clients.
@@ -538,3 +533,8 @@ Security considerations are discussed throughout this document but in
 particular in the Security Requirements section.
 
 --- back
+
+
+
+
+
