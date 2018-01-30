@@ -264,10 +264,16 @@ group in different ways depending on the amount of trust given to the DS.
 
 In the scenario where the DS is Trusted, the MLS design ensures that
 the protocol provides security against permanently offline members or
-devices by signaling to the Members of the Group that one endpoint has
-been kicked out of the delivery. This is an absolute requirement to
-preserve security properties such as forward secrecy of messages or
-post-compromise security.
+devices by signaling to the other Clients that one endpoint has
+been kicked out of the delivery and MUST be removed from the Group.
+This is an absolute requirement to preserve security properties such 
+as forward secrecy of messages or post-compromise security.
+
+The policy regarding the time ellapsed before an offline member must
+be removed from the group is not specified by this document as it may
+vary depending on the security expectations from the Group. Hence it is
+left to the application layer to agree upon and signal this value to the
+Delivery Service (DS).
 
 ## Authentication Service
 
@@ -277,11 +283,13 @@ To prevent an attacker to impersonate users, the Authentication Service (AS) wil
 provide strong authentication mechanism for the Client to use to authenticate
 this encryption prekey.
 
-While MLS doesn't specify the exact mechanism that allows a Clients to obtain
-authentication keys, a suggested design is for a Member to generate an ephemeral
+This document does not specify the exact mechanism that allows a Client to obtain
+signature keys, the RECOMMANDED design is for a Member to generate an ephemeral
 signature keypair for each Client and ask the AS to sign the public keys.
-This has the obvious advantage, in the case of a malicious AS, that the attacker
-cannot forge an inital encryption prekey on the behalf of the user. 
+This has the obvious advantage that, in the case of a malicious AS, the attacker
+cannot forge an inital encryption public key share on the behalf of the user.
+The drawback of that technique is that the AS knows the number of initial public
+keys it signed for a specific Member.
 
 In all cases, other Members might want additionnal confidence on the identity associated
 with a Client's encryption prekey. In that scenario, it is suggested that the AS
@@ -383,12 +391,12 @@ the new group keys.
 
 It is typically expected for Members of the Group to own different devices.
 
-A new device can join the group and will be considered as a new client by
-the protocol. Hence this client will not gain access to the history even if
-it is owned by an owner who is already a Member of the Group.
+A new device can join the group and will be considered as a new Client by
+the protocol. Hence this Client will not gain access to the history even if
+it is owned by someone who is already a Member of the Group.
 Restoring history is typically not allowed at the protocol level but can still
 be achieved at the application layer by an out-of-band process provided
-by the service provider.
+by the owner of the Authentication Service.
 
 ### Extensibility / Pluggability
 
@@ -398,15 +406,18 @@ are made about the format of the payload.
 
 ### Privacy
 
-The protocol is be designed in a way that limits the server-side (DS)
+The protocol is designed in a way that limits the server-side (AS and DS)
 metadata footprint. The DS must only persist data required for the delivery
 of messages and avoid Personally Identifiable Information (PII) or other
-sensitive metadata wherever possible.
+sensitive metadata wherever possible. A Messaging Service provider that has
+control over both the AS and the DS, will not be able to correllate encrypted
+messages forwarded by the DS, with the initial public keypairs signed by the AS
+when the Clients use ephemeral signature keys.
 
 ### Federation
 
-The protocol aims to be compatible with federated environments. While the
-protocol does not specify all necessary mechanisms required for federation,
+The protocol aims to be compatible with federated environments. While this
+document does not specify all necessary mechanisms required for federation,
 it allows for more than one AS/DS to exist.
 
 ### Compatibility with future versions of MLS
