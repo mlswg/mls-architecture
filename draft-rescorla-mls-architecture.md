@@ -531,9 +531,19 @@ Members who are removed from a group do not enjoy special privileges:
 compromise of a removed group member will not affect the security
 of messages sent after their removal.
 
-[TODO: do we want to hide the number of devices per user in MLS?  it's
+[AK. do we want to hide the number of devices per user in MLS?  it's
 listed as P2 in the spreadsheet, but is somewhat related to this
 property and membership changes.]
+[BB. I think hiding the number of Clients of a user from the DS is a
+property we already have but hiding from the AS is a different story.
+If we go for the ephemeral signature keys, I think we may be able to
+hide the number of clients of a user to honest members of the Group.
+The AS provides or signs initial signature public keys from Clients
+so it knows the number of devices for a user. We could do something
+more clever by having a long term identity per user, and derive new
+ephemeral signature public keys signed by the long term one, but it
+would be very annoying to transfer out of band to new devices. So I
+think the AS knowing is fine.]
 
 #### Security of Attachments
 
