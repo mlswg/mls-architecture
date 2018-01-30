@@ -99,7 +99,6 @@ Members to prepare for sending and receiving messages securely :
   delivering initial public key material required in order to proceed
   with the group secret key establishment process.
   
-  ~~~
       ----------------      --------------
      | Authentication |    | Delivery     |
      | Service (AS)   |    | Service (DS) |
@@ -115,8 +114,6 @@ Members to prepare for sending and receiving messages securely :
      *      Member 0                          Member 1       *
      *                                                       *
      *********************************************************
-
-~~~
 
 In many systems, the AS and the DS are actually operated by the
 same entity and may even be the same server. However, they
@@ -145,9 +142,11 @@ A typical scenario might look like this:
    might trigger a new key derivation step which allows the shared group
    key to be updated, thus providing post-compromise security.
 
-Clients in groups (and by extension Members) have equal rights
-       for managing groups and sending messages, unless specified
-       otherwise outside of the messaging protocol, typically at the application layer. Clients may wish to do the following: 
+Clients in groups (and by extension Members) have equal rights for
+managing groups and sending messages, unless specified otherwise outside
+of the messaging protocol, typically at the application layer. 
+
+Clients may wish to do the following: 
 
  -  create a group by inviting other members
 
@@ -216,8 +215,14 @@ identities and the keys provided by the MS through a public Key
 Transparency (KT) log. While this is useful to circumvent trust issues
 in the case of a potentially corrupted DS, this check can be
 computationnaly costly and privacy leaking for the clients.
-[EO It is not clear to me how KT could cause privacy issues? each coporate will be running their own KT server,
+
+[EO. It is not clear to me how KT could cause privacy issues? 
+each coporate will be running their own KT server,
 and all KT servers will only gossip their signed root head]
+[BB. My (maybe ill-placed) concern is in the case where the tree is very large.
+In that scenario downloading only part of the KT tree will leak a
+that you are interested in verifying some identity in a specific subset of users,
+It is similar to the problem we have for CT. I am not sure...]
 
 In a Trusted setting, the DS is expected to always provide the correct
 and most up-to-date information to a Member requiring another Member's
