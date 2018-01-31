@@ -148,19 +148,19 @@ of the messaging protocol, typically at the application layer.
 
 Clients may wish to do the following: 
 
- -  create a group by inviting other members
+ -  create a group by inviting other members;
 
- -  add one or more members to an existing group
+ -  add one or more members to an existing group;
 
- -  remove one or more members from an existing group
+ -  remove one or more members from an existing group;
 
- -  join an existing group
+ -  join an existing group;
 
- -  leave a group
+ -  leave a group;
 
- -  send a message to everyone in the group
+ -  send a message to everyone in the group;
 
- -  receive a message from someone in the group
+ -  receive a message from someone in the group.
 
 ## Group, Members and Clients
 
@@ -555,11 +555,6 @@ may be different. For many reasons, the usual one being the lack of
 high bandwith network connectivity, the lifetime of the cryptographic
 keys for attachments is usually higher than for messages, hence slightly
 weakening the PCS guarantees for attachments.
-
-# Security Considerations
-
-Security considerations are discussed throughout this document but in
-particular in the Security Requirements section.
 
 --- back
 
