@@ -190,7 +190,7 @@ Before dispatching the encrypted messages, the DS is first used during
 the group shared key establishment phase to provide initial keying material
 to a standalone Member trying to establish a new Group.
 Depending on the level of trust given by the Group to the Delivery Service,
-the functionnal and security guarantees provided by MLS may differ.
+the functional and security guarantees provided by MLS may differ.
 
 ### Delivery of the initial keying material
 
@@ -223,6 +223,18 @@ and all KT servers will only gossip their signed root head]
 In that scenario downloading only part of the KT tree will leak a
 that you are interested in verifying some identity in a specific subset of users,
 It is similar to the problem we have for CT. I am not sure...]
+
+[JM when we chatted in London, I got the impression that we weren't going to
+include KT as a core part of the spec? This was so that we don't restrict MLS
+itself to being correctly implemented in situations where KT is applicable.
+Regarding the privacy concerns, last time I chatted with Gary about how KT
+works, I believe that for some situations there was a slight privacy leak - at
+least to monitors - in the device list changes for any given user. This is
+becasue the monitors had a view over the entire tree (as user histories are
+stored in the bottom-level Merkle tree); and so if they collude with somebody
+who was at one point authorised to view a given user's position in the tree but
+no longer is, they can continue to track this user's device list changes. It's
+not the biggest leak, but could be a bit of a leak in some situations.]
 
 In a Trusted setting, the DS is expected to always provide the correct
 and most up-to-date information to a Member requiring another Member's
@@ -453,6 +465,9 @@ Security (TLS) protocol version 1.3 or higher. Clients MUST NOT use any legacy
 versions of TLS.
 
 [[BB.] I am assuming TLS here but maybe something else can be done]
+[[JM.] MUST seems strong here. WA uses NoisePipes; and I could imagine somebody
+may use QUIC or something instead at some point. Perhaps Tor as a transport
+could also work. Would none of the above suffice?]
 
 
 ### Message Secrecy and Authentication
