@@ -419,8 +419,7 @@ metadata footprint. The DS must only persist data required for the delivery
 of messages and avoid Personally Identifiable Information (PII) or other
 sensitive metadata wherever possible. A Messaging Service provider that has
 control over both the AS and the DS, will not be able to correllate encrypted
-messages forwarded by the DS, with the initial public keypairs signed by the AS
-when the Clients use ephemeral signature keys.
+messages forwarded by the DS, with the initial public keypairs signed by the AS.
 
 ### Federation
 
