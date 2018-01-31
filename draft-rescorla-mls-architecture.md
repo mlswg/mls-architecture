@@ -412,7 +412,7 @@ compromise. Specifically:
 * Forward security and Post-compromise security {{fs-and-pcs}}.
 * Clients should not be able to send messages to groups
   which appear to be from other Clients {{message-secrecy-authentication}}
-
+* Clients should not be able to perform trivial denials of service {{denial-of-service}}
 
 # System Requirements
 
@@ -588,10 +588,10 @@ high bandwith network connectivity, the lifetime of the cryptographic
 keys for attachments is usually higher than for messages, hence slightly
 weakening the PCS guarantees for attachments.
 
---- back
+#### Denial of Service {#denial-of-service}
 
+In general we do not consider denial of service to be the responsibility of the protocol. However,
+it should not be possible for anyone to perform a trivial denial of service from which it is hard to
+recover.
 
-
-
-
-
+---- back
