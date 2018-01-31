@@ -369,8 +369,8 @@ to provide a client with some kind of information.
 MLS is intended to provide strong guarantees in the face of compromise
 of the DS. Even a totally compromised DS should not be able to read
 messages or inject messages that will be acceptable to legitimate
-Clients. It should also not be able to undetectable remove or reorder
-messages.
+Clients. It should also not be able to undetectable remove, reorder
+or replay messages.
 
 However, a DS can mount a variety of DoS attacks on the system,
 including total DoS attacks (where it simply refuses to forward any
