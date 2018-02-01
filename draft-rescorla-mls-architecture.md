@@ -153,7 +153,7 @@ A typical group messaging scenario might look like this:
 
 Clients may wish to do the following:
 
- -  create a group by inviting other members;
+ -  create a group by inviting a set of other members;
 
  -  add one or more members to an existing group;
 
@@ -170,8 +170,8 @@ Clients may wish to do the following:
 At the cryptographic level, Clients in groups (and by extension Members)
 are peers. For instance, any Client should be able to add a member
 to a group. This is in contrast so some designs in which there
-is a single group controller who can modify the group. This is
-still compatible with having group administration restricted to
+is a single group controller who can modify the group. MLS is
+compatible with having group administration restricted to
 certain users, but we assume that those restrictions are enforced
 by authentication and access control. Thus, for instance, while
 it might be technically possible for any member to send a message
@@ -194,18 +194,18 @@ Each member device owns a long term identity key pair that uniquely defines
 its identity to other Members of the Group.
 As single end-user may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
-one phone with another), hence the formal definition of a Group in MLS
+one phone with another), the formal definition of a Group in MLS
 is the set of Clients that has legitimate knowledge of the shared (Encryption)
 Group Key established in the group key establishment phase of the protocol.
 
-In some messaging systems, Clients belonging to the same member must
-all share the same identity key pair, but MLS does not assume this
-(this is the more general case and allows for important use cases,
-such as a Member adding a new Client when all their existing clients
-are offline). For systems that allow multiple identity key pairs per
-Member, some mechanism is required to detect the addition of new,
-bogus Clients.  Key Transparency [TODO:REF] is one such potential
-mechanism, but others are also possible.
+In some messaging systems, Clients belonging to the same Member must
+all share the same identity key pair, but MLS does not assume this.
+The MLS architecture considers the more general case and allows for
+important use cases, such as a Member adding a new Client when all their
+existing clients are offline. For systems that allow multiple identity
+key pairs per Member, some mechanism is required to detect the addition
+of new, bogus Clients.  Key Transparency [TODO:REF] is one such
+potential mechanism, but others are also possible.
 
 MLS has been designed to provide similar security guarantees to all Clients,
 for all group sizes, even when it reduces to only two Clients.
@@ -230,7 +230,7 @@ any user of the system. This risk can be mitigated by publishing
 the binding between identities and keys in a public log such
 as Key Transparency (KT) [REF]. It is possible to build a functional
 MLS system without any kind of public key logging, but such a system will
-necessarily be somewhat vulnerable to attack by the AS.
+necessarily be somewhat vulnerable to attack by a malicious or untrusted AS.
 
 
 ## Delivery Service
@@ -259,7 +259,7 @@ key. Hence this initial keying material MUST be authenticated using
 the Client's identity key. Thus, the Client stores:
 
 * A credential from the Authentication service attesting to the
-  the binding between the Member and the Client's identity key.
+  binding between the Member and the Client's identity key.
 * The member's initial keying material signed with the Client's
   identity key.
 
@@ -279,7 +279,7 @@ messages.
 
 ### Delivery of messages and attachments {#delivery-guarantees}
 
-The DS's major responsibility is to ensure delivery of messages.
+The DS's main responsibility is to ensure delivery of messages.
 Specifically, we assume that DSs provide:
 
 * Reliable delivery -- when a message is provided to the DS,
@@ -323,13 +323,14 @@ A particularly important security constraint in that an adversary
 must not be able to gain access to information about the identity of
 group members and the number of clients.
 
-To prevent that from happening, the MLS threat model considers the case
-of a corrupted or untrusted DS that would leak all information at its
-disposal. Hence, in this Untrusted DS scenario, MLS will enforce that
-the DS MUST NOT be aware these informations. While not providing the
-DS with this information might be enough in certain scenarios, the
-strong threat model of MLS in this scenario provides counter measures
-against potential traffic analysis that could be done at the DS level.
+To prevent that from happening, the MLS threat model {{threat-model}}
+considers the case of a corrupted or untrusted DS that would leak all
+information at its disposal. Hence, in this Untrusted DS scenario, MLS
+will enforce that the DS MUST NOT be aware these informations. While not
+providing the DS with this information might be enough in certain
+scenarios, the strong threat model of MLS in this scenario provides
+counter measures against potential traffic analysis that could be done
+at the DS level.
 
 ### Membership and offline members
 
@@ -346,14 +347,14 @@ been kicked out of the delivery and MUST be removed from the Group.
 This is an absolute requirement to preserve security properties such
 as forward secrecy of messages or post-compromise security.
 
-The policy regarding the time ellapsed before an offline member must
+The policy regarding the time elapsed before an offline member must
 be removed from the group is not specified by this document as it may
 vary depending on the security expectations from the Group. Hence it is
 left to the application layer to agree upon and signal this value to the
 Delivery Service (DS).
 
 
-# Threat Model
+# Threat Model {#threat-model}
 
 In order to mitigate several categories of attacks across parts of
 the MLS architecture, we assume the attacker to be an active network
@@ -369,7 +370,7 @@ to provide a client with some kind of information.
 MLS is intended to provide strong guarantees in the face of compromise
 of the DS. Even a totally compromised DS should not be able to read
 messages or inject messages that will be acceptable to legitimate
-Clients. It should also not be able to undetectable remove, reorder
+Clients. It should also not be able to undetectably remove, reorder
 or replay messages.
 
 However, a DS can mount a variety of DoS attacks on the system,
@@ -381,7 +382,7 @@ by clients. Ultimately, failure of the DS to provide reasonable
 service must be dealt with as a customer service matter, not via
 technology.
 
-Because the DS is responsible for providing initial keying
+Because the DS is responsible for providing the initial keying
 material to Clients, it can provide stale keys. This doesn't
 inherently lead to compromise of the message stream, but does
 allow it to attack forward security to a limited extent.
@@ -390,10 +391,10 @@ This threat can be mitigated by having initial keys expire.
 
 ### Authentication Service Compromise
 
-A compromised AS is a more serious matter, as the AS can provide
+A compromised AS is a serious matter, as the AS can provide
 incorrect or adversarial identities to clients.  As noted in
 {{authentication-service}}, mitigating this form of attack requires
-some sort of transparency/logging mechanism.  Absent such a mechanism,
+some sort of transparency/logging mechanism.  Without such a mechanism,
 MLS will only provide limited security against a compromised AS.
 
 
@@ -469,7 +470,7 @@ The protocol is designed in a way that limits the server-side (AS and DS)
 metadata footprint. The DS must only persist data required for the delivery
 of messages and avoid Personally Identifiable Information (PII) or other
 sensitive metadata wherever possible. A Messaging Service provider that has
-control over both the AS and the DS, will not be able to correllate encrypted
+control over both the AS and the DS, will not be able to correlate encrypted
 messages forwarded by the DS, with the initial public keypairs signed by the AS.
 
 
@@ -557,7 +558,7 @@ DS and AS.
 #### Membership Changes
 
 MLS aims to provide agreement on group membership. That is, all
-group Members have agreed on the list of current group members.
+group members have agreed on the list of current group members.
 
 Some applications may wish to enforce ACLs to limit addition or removal
 of group members, to privileged users. Others may wish to require
@@ -565,7 +566,7 @@ authorisation from the current group members or a subset of it.
 Regardless, MLS does not allow addition or removal of group members
 without informing all other members.
 
-Once a Member is part of a group, the set of devices controlled by the
+Once a Member is part of a Group, the set of devices controlled by the
 member should only be altered by an authorized member of the group.
 This authorization could depend on the application: some applications
 might want to allow certain other members of the group to add or
@@ -582,9 +583,9 @@ of messages sent after their removal.
 The security properties expected for attachments in the MLS protocol are
 very similar to the ones expected from messages. The distinction between
 messages and attachments stems from the fact that the typical average time
-between the download of a message and the one from the attachements
+between the download of a message and the one from the attachments
 may be different. For many reasons, the usual one being the lack of
-high bandwith network connectivity, the lifetime of the cryptographic
+high bandwidth network connectivity, the lifetime of the cryptographic
 keys for attachments is usually higher than for messages, hence slightly
 weakening the PCS guarantees for attachments.
 
