@@ -540,6 +540,8 @@ length. While this protection is highly recommended it is not
 mandatory as it can be costly in terms of performance for clients
 and the MS.
 
+Message content can be deniable if the signature keys are exchanged over a deniable channel prior to signing messages.
+
 #### Forward and Post-Compromise Security {#fs-and-pcs}
 
 MLS provides additional protection regarding secrecy of past messages
