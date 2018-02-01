@@ -331,28 +331,29 @@ information at its disposal. Hence, in this Untrusted DS scenario, MLS
 will enforce that the DS MUST NOT be aware these informations. While not
 providing the DS with this information might be enough in certain
 scenarios, the strong threat model of MLS in this scenario provides
-counter measures against potential traffic analysis that could be done
+counter measures against potential traffic analysis that could be performed
 at the DS level.
 
 ### Membership and offline members
 
 [[TODO(ekr@rtfm.com): Rewrite this a bit to be clearer]]
 
-Clients that have been offline for a long time or not performing
-mandatory security operations will affect the security of the
+Clients that have been offline for a long time, and that have not been performing
+mandatory security operations, will affect the security of the
 group in different ways depending on the amount of trust given to the DS.
 
 In the scenario where the DS is Trusted, the MLS design ensures that
 the protocol provides security against permanently offline members or
 devices by signaling to the other Clients that one endpoint has
 been kicked out of the delivery and MUST be removed from the Group.
-This is an absolute requirement to preserve security properties such
-as forward secrecy of messages or post-compromise security.
+This requirement is absolutely necessary to preserve security properties such
+as forward secrecy of messages or post-compromise security. [[TvdM: What's the
+difference between kicked out of delivery and being kicked out of the group?]]
 
 The policy regarding the time elapsed before an offline member must
 be removed from the group is not specified by this document as it may
 vary depending on the security expectations from the Group. Hence it is
-left to the application layer to agree upon and signal this value to the
+left to the application layer to agree upon, and signal, this value to the
 Delivery Service (DS).
 
 # Threat Model {#threat-model}
@@ -360,7 +361,7 @@ Delivery Service (DS).
 In order to mitigate several categories of attacks across parts of
 the MLS architecture, we assume the attacker to be an active network
 attacker. This means an adversary which has complete control over the
-network used to communicate between the parties [RFC3552].
+network [RFC3552].
 This assumption remains valid for communications across multiple
 authentication or delivery servers if these have to collaborate
 to provide a client with some kind of information.
@@ -424,9 +425,9 @@ adversarial interaction and (where possible) Denial of Service (DoS) attacks.
 
 ## Functional Requirements
 
-MLS is designed as a large scale group messaging protocol and hence requires to
+MLS is designed as a large scale group messaging protocol and hence aims to
 provide performance and safety to its users.  Messaging systems that implement
-MLS must provide support for conversations involving 2 or more participants,
+MLS must provide support for conversations involving two or more participants,
 and aim to scale to approximately 50,000 clients, typically including many
 Members using multiple devices.
 
@@ -452,7 +453,7 @@ should not result in permanent exclusion from the group.
 It is typically expected for Members of the Group to own different devices.
 
 A new device can join the group and will be considered as a new Client by
-the protocol. Hence this Client will not gain access to the history even if
+the protocol. This Client will not gain access to the history even if
 it is owned by someone who is already a Member of the Group.
 Restoring history is typically not allowed at the protocol level but applications
 may elect to provide such a mechanism outside of MLS.
@@ -460,7 +461,7 @@ may elect to provide such a mechanism outside of MLS.
 
 ### Extensibility / Pluggability
 
-Messages that don't affect the group state can carry arbitrary payload with
+Messages that don't affect the group state can carry an arbitrary payload with
 the purpose of sharing that payload between group members. No assumptions
 are made about the format of the payload.
 
@@ -487,7 +488,7 @@ unambiguous version negotiation mechanism. This mechanism must prevent
 version downgrade attacks where an attacker would actively rewrite handshake
 messages with a lower protocol version than the ones originally offered by
 the endpoints. When multiple versions of MLS are available, the negotiation
-protocol must guarantees that the version agreed upon will be the highest version
+protocol must guarantee that the version agreed upon will be the highest version
 supported in common by the group.
 
 ## Security Requirements
@@ -506,6 +507,8 @@ The trust establishment step of the MLS protocol is followed by a
 conversation protection step where encryption is used by clients to
 transmit authenticated messages to other clients through the DS.
 This ensures that the DS doesn't have access to this Group-private content.
+[[TvdM: Use of "Group-private" seems odd here. Change to "the Group's private
+content", maybe? ]]
 
 MLS aims to provide Secrecy, Integrity and Authentication for all messages.
 
@@ -518,14 +521,13 @@ accept a message if it was sent by a group member and that one Client
 must not be able to send a message which other Clients accept
 as being from another Client.
 
-A corollary to that statement is that AS
-and DS can't read the content of messages sent between Members as
-they are not Members of the Group. It is expected from MLS to
-optionally provide additional protections regarding traffic analysis
-techniques to reduce the ability of adversaries or a compromised
-member of the messaging system to deduce the content of the messages
-depending on (for example) their size. One of these protection is
-typically padding messages in order to produce ciphertexts of standard
+A corollary to this statement is that the AS
+and the DS can't read the content of messages sent between Members as
+they are not Members of the Group. MLS is expected to
+optionally provide additional protections regarding traffic analysis so as to reduce the ability of adversaries, or a compromised
+member of the messaging system, to deduce the content of the messages
+depending on (for example) their size. One of these protections includes
+padding messages in order to produce ciphertexts of standard
 length. While this protection is highly recommended it is not
 mandatory as it can be costly in terms of performance for clients
 and the MS.
@@ -552,21 +554,21 @@ PCS ensures that if a group member is compromised at some time t but
 subsequently performs an update at some time t', then all MLS guarantees should
 apply to messages sent after time t'. For example, if an adversary learns all
 secrets known to Alice at time t, including both Alice's secret keys and all
-shared group keys, but then Alice performs a key update at time t', then the
+shared group keys, but Alice performs a key update at time t', then the
 adversary should be unable to violate any of the MLS security properties after
 time t'.
 
 Both of these properties must be satisfied even against compromised
-DS and AS.
+DSs and ASs.
 
 #### Membership Changes
 
-MLS aims to provide agreement on group membership. That is, all
+MLS aims to provide agreement on group membership, meaning that all
 group members have agreed on the list of current group members.
 
 Some applications may wish to enforce ACLs to limit addition or removal
 of group members, to privileged users. Others may wish to require
-authorisation from the current group members or a subset of it.
+authorisation from the current group members or a subset thereof.
 Regardless, MLS does not allow addition or removal of group members
 without informing all other members.
 
@@ -588,16 +590,16 @@ The security properties expected for attachments in the MLS protocol are
 very similar to the ones expected from messages. The distinction between
 messages and attachments stems from the fact that the typical average time
 between the download of a message and the one from the attachments
-may be different. For many reasons, the usual one being the lack of
-high bandwidth network connectivity, the lifetime of the cryptographic
+may be different. For many reasons (a typical reason being the lack of
+high bandwidth network connectivity), the lifetime of the cryptographic
 keys for attachments is usually higher than for messages, hence slightly
 weakening the PCS guarantees for attachments.
 
 #### Denial of Service {#denial-of-service}
 
-In general we do not consider denial of service to be the responsibility
+In general we do not consider Denial of Service (DoS) resistance to be the responsibility
 of the protocol. However, it should not be possible for anyone to perform a
-trivial denial of service from which it is hard to recover.
+trivial Denial of Service (DoS) attack from which it is hard to recover.
 
 
 # Contributors
@@ -612,7 +614,7 @@ trivial denial of service from which it is hard to recover.
 
 * Thyla van der Merwe \\
   Royal Holloway, University of London \\
-  tjvdmerwe@gmail.com
+  thyla.van.der@merwe.tech
 
 * Jon Millican \\
   Facebook \\
