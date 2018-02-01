@@ -275,10 +275,10 @@ by each Member.
 ### Key Retrieval
 
 When a Client wishes to establish a group and send an initial message
-to that group, it contacts the DS and retrieves the initial key 
+to that group, it contacts the DS and retrieves the initial key
 material for each other Member, verifies it using the identity key,
 and then is able to form a joint key with each other Client, and
-from those forms the group key, which it can use for the encryption of 
+from those forms the group key, which it can use for the encryption of
 messages.
 
 
