@@ -198,14 +198,14 @@ one phone with another), the formal definition of a Group in MLS
 is the set of Clients that has legitimate knowledge of the shared (Encryption)
 Group Key established in the group key establishment phase of the protocol.
 
-In some messaging systems, Clients belonging to the same member must
-all share the same identity key pair, but MLS does not assume this
-(this is the more general case and allows for important use cases,
-such as a Member adding a new Client when all their existing clients
-are offline). For systems that allow multiple identity key pairs per
-Member, some mechanism is required to detect the addition of new,
-bogus Clients.  Key Transparency [TODO:REF] is one such potential
-mechanism, but others are also possible.
+In some messaging systems, Clients belonging to the same Member must
+all share the same identity key pair, but MLS does not assume this.
+The MLS architecture considers the more general case and allows for
+important use cases, such as a Member adding a new Client when all their
+existing clients are offline. For systems that allow multiple identity
+key pairs per Member, some mechanism is required to detect the addition
+of new, bogus Clients.  Key Transparency [TODO:REF] is one such
+potential mechanism, but others are also possible.
 
 MLS has been designed to provide similar security guarantees to all Clients,
 for all group sizes, even when it reduces to only two Clients.
@@ -323,13 +323,14 @@ A particularly important security constraint in that an adversary
 must not be able to gain access to information about the identity of
 group members and the number of clients.
 
-To prevent that from happening, the MLS threat model considers the case
-of a corrupted or untrusted DS that would leak all information at its
-disposal. Hence, in this Untrusted DS scenario, MLS will enforce that
-the DS MUST NOT be aware these informations. While not providing the
-DS with this information might be enough in certain scenarios, the
-strong threat model of MLS in this scenario provides counter measures
-against potential traffic analysis that could be done at the DS level.
+To prevent that from happening, the MLS threat model {{threat-model}}
+considers the case of a corrupted or untrusted DS that would leak all
+information at its disposal. Hence, in this Untrusted DS scenario, MLS
+will enforce that the DS MUST NOT be aware these informations. While not
+providing the DS with this information might be enough in certain
+scenarios, the strong threat model of MLS in this scenario provides
+counter measures against potential traffic analysis that could be done
+at the DS level.
 
 ### Membership and offline members
 
@@ -353,7 +354,7 @@ left to the application layer to agree upon and signal this value to the
 Delivery Service (DS).
 
 
-# Threat Model
+# Threat Model {#threat-model}
 
 In order to mitigate several categories of attacks across parts of
 the MLS architecture, we assume the attacker to be an active network
