@@ -75,7 +75,7 @@ have some degree of interoperability at the message level, though
 they may have incompatible identity/authentication infrastructures.
 
 This document is intended to describe the overall messaging
-system architecture which the MLS protocol fits into and the
+system architecture which the MLS protocol fits into, and the
 requirements which it is intended to fulfill.
 
 
@@ -92,7 +92,7 @@ Members to prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) which is responsible for maintaining
   user long term identities, issuing credentials which allow them to
-  authenticate to each other, and potentially allowing users to
+  authenticate each other, and potentially allowing users to
   discover each others long-term identity keys.
 
 - A Delivery Service (DS) which is responsible for receiving and
@@ -130,7 +130,7 @@ server.
 [[TODO: Should we actually break this into three services, with the
 directory being a separate service.]]
 
-A typical scenario might look like this:
+A typical group messaging scenario might look like this:
 
 1. Alice, Bob and Charlie create accounts with a messaging
    service and obtain credentials from the AS.
@@ -176,8 +176,8 @@ certain users, but we assume that those restrictions are enforced
 by authentication and access control. Thus, for instance, while
 it might be technically possible for any member to send a message
 adding a new member to a group, the group might have the policy
-that only certain members were allowed to make changes and thus
-other members would just ignore such a message from an unauthorized
+that only certain members are allowed to make changes and thus
+other members just ignore such a message from an unauthorized
 user.
 
 
@@ -205,7 +205,7 @@ such as a Member adding a new Client when all their existing clients
 are offline). For systems that allow multiple identity key pairs per
 Member, some mechanism is required to detect the addition of new,
 bogus Clients.  Key Transparency [TODO:REF] is one such potential
-mechanisms, but others are also possible.
+mechanism, but others are also possible.
 
 MLS has been designed to provide similar security guarantees to all Clients,
 for all group sizes, even when it reduces to only two Clients.
@@ -224,7 +224,7 @@ of ways, but the two most natural ones are:
   (presumably this connection is secured via some form of transport
   security such as TLS).
 
-By definition, the AS is invested in a large amount of trust.
+By definition, the AS is invested with a large amount of trust.
 A malicious AS can impersonate -- or allow an attacker to impersonate --
 any user of the system. This risk can be mitigated by publishing
 the binding between identities and keys in a public log such
@@ -238,13 +238,13 @@ necessarily be somewhat vulnerable to attack by the AS.
 The Delivery Service (DS) is expected to play multiple roles in the
 Messaging Service architecture:
 
-* Act as a directory service providing the keying material
+* To act as a directory service providing the keying material
   (authentication keys and initial keying material) to sending
   Clients. This allows a Client to establish a shared key
   and send encrypted messages to other Clients even if the
   other Client is offline.
 
-* Route messages between Clients.
+* To route messages between Clients.
 
 
 Depending on the level of trust given by the Group to the Delivery Service,
@@ -253,7 +253,7 @@ the functional and security guarantees provided by MLS may differ.
 ### Key Storage
 
 Upon joining the system, each Client stores its initial cryptographic
-keying material with the DS. This key material represents the initial contribution
+key material with the DS. This key material represents the initial contribution
 from each member that will be used in the establishment of the shared group
 key. Hence this initial keying material MUST be authenticated using
 the Client's identity key. Thus, the Client stores:
@@ -270,10 +270,10 @@ by each Member.
 ### Key Retrieval
 
 When a Client wishes to establish a group and send an initial message
-to that group, it contacts the DS and retrieves the initial keying
+to that group, it contacts the DS and retrieves the initial key 
 material for each other Member, verifies it using the identity key,
-and then is able to form a joint key with each other Client and
-from those forms the group key, which it can use to encrypt
+and then is able to form a joint key with each other Client, and
+from those forms the group key, which it can use for the encryption of 
 messages.
 
 
@@ -288,9 +288,9 @@ Specifically, we assume that DSs provide:
 * In-order delivery -- messages are delivered to the group
   in the order they are received from a given Client
   and in approximately the order which they are sent
-  by Clients. This latter an approximate guarantee because
+  by Clients. The latter is an approximate guarantee because
   multiple Clients may send messages at the same time
-  and so the DS needs some latitude to reorder between Clients.
+  and so the DS needs some latitude in reordering between Clients.
 
 * Consistent ordering -- the DS must ensure that all Clients
   have the same view of message ordering.
@@ -301,16 +301,16 @@ of sequence information and allowing clients to reorder on
 receipt.
 
 The MLS protocol itself should be able to verify these properties.
-E.g., if the DS reorders messages from a Client or provides
+For instance, if the DS reorders messages from a Client or provides
 different Clients with inconsistent orderings, then Clients
-should be able to detect this misbehavior. However, MLS need
+should be able to detect this misconduct. However, MLS need
 not provide mechanisms to recover from a misbehaving DS.
 
 Note that some forms of DS misbehavior are still possible and
-difficult to detect. For instance a DS can simply refuse
+difficult to detect. For instance, a DS can simply refuse
 to relay messages to and from a given Client. Without some
 sort of side information, other Clients cannot generally
-distinguishable this form of Denial of Service attack
+distinguish this form of Denial of Service (DoS) attack
 from the Client being actually offline.
 
 ### Membership knowledge
