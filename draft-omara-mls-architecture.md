@@ -13,20 +13,20 @@ pi: [toc, sortrefs, symrefs]
 
 author:
  -
-    ins: E. Rescorla
-    name: Eric Rescorla
-    organization: Mozilla
-    email: ekr@rtfm.com
+    ins: E. Omara
+    name: Emad Omara
+    organization: Google
+    email: emadomara@google.com
  -
     ins: B. Beurdouche
     name: Benjamin Beurdouche
     organization: INRIA
     email: benjamin.beurdouche@inria.fr
  -
-    ins: E. Omara
-    name: Emad Omara
-    organization: Google
-    email: emadomara@google.com
+    ins: E. Rescorla
+    name: Eric Rescorla
+    organization: Mozilla
+    email: ekr@rtfm.com
  -
     ins: S. Inguva
     name: Srinivas Inguva
