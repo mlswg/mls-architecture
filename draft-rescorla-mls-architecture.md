@@ -606,4 +606,18 @@ In general we do not consider denial of service to be the responsibility of the 
 it should not be possible for anyone to perform a trivial denial of service from which it is hard to
 recover.
 
----- back
+
+# Contributors
+
+* Katriel Cohn-Gordon \\
+  University of Oxford \\
+  me@katriel.co.uk
+
+* Cas Cremers \\
+  University of Oxford \\
+  cas.cremers@cs.ox.ac.uk
+
+* Thyla van der Merwe \\
+  Royal Holloway, University of London \\
+  tjvdmerwe@gmail.com
+
