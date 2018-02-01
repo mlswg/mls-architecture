@@ -149,7 +149,7 @@ A typical group messaging scenario might look like this:
 
 4. Bob and/or Charlie respond to Alice's message. Their messages
    might trigger a new key derivation step which allows the shared group
-   key to be updated, thus providing post-compromise security.
+   key to be updated to provide post-compromise security {{fs-and-pcs}}.
 
 Clients may wish to do the following:
 
@@ -537,7 +537,8 @@ and future messages. These cryptographic security properties are
 Perfect Forward Secrecy (PFS) and Post-Compromise Security (PCS).
 PFS ensures that access to all encrypted traffic history combined
 with an access to all current keying material on clients will not
-defeat the secrecy properties of messages older than the oldest key.
+defeat the secrecy properties of messages older than the oldest key on
+the client.
 Note that this means that clients have the extremely important role
 of deleting appropriate keys as soon as they have been used with
 the expected message, otherwise the secrecy of the messages and the
