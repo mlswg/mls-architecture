@@ -49,16 +49,17 @@ normative:
 --- abstract
 
 This document specifies version 1.0 of the Messaging Layer Security (MLS) protocol.
-MLS allows group messaging for a large number of networked clients by providing a delivery service for messages, and potentially an authentication service, in a way that is designed to prevent eavesdropping,
-tampering, and message forgery.
+MLS allows group messaging for a large number of networked clients by providing a
+delivery service for messages, and potentially an authentication service, in a way
+that is designed to prevent eavesdropping, tampering, and message forgery.
 
 --- middle
 
 # Introduction
 
 End-to-end security is a requirement for instant messaging systems
-and is commonly deployed in many such systems. In this context, "end-to-end" captures the notion that
-users of the system enjoy some level of security -- with the precise
+and is commonly deployed in many such systems. In this context, "end-to-end" captures
+the notion that users of the system enjoy some level of security -- with the precise
 level depending on the system design -- even when the messaging
 service they are using performs unsatisfactorily.
 
@@ -77,7 +78,6 @@ they may have incompatible identity/authentication infrastructures.
 This document is intended to describe the overall messaging
 system architecture which the MLS protocol fits into, and the
 requirements which it is intended to fulfill.
-
 
 # General Setting
 
@@ -180,8 +180,6 @@ that only certain members are allowed to make changes and thus
 other members just ignore such a message from an unauthorized
 user.
 
-
-
 ## Group, Members and Clients
 
 In MLS a Group is defined as a set of Members who possibly use multiple
@@ -237,7 +235,6 @@ as Key Transparency (KT) [REF]. It is possible to build a functional
 MLS system without any kind of public key logging, but such a system will
 necessarily be somewhat vulnerable to attack by a malicious or untrusted AS.
 
-
 ## Delivery Service
 
 The Delivery Service (DS) is expected to play multiple roles in the
@@ -265,6 +262,7 @@ the Client's identity key. Thus, the Client stores:
 
 * A credential from the Authentication service attesting to the
   binding between the Member and the Client's identity key.
+
 * The member's initial keying material signed with the Client's
   identity key.
 
@@ -280,7 +278,6 @@ material for each other Member, verifies it using the identity key,
 and then is able to form a joint key with each other Client, and
 from those forms the group key, which it can use for the encryption of
 messages.
-
 
 ### Delivery of messages and attachments {#delivery-guarantees}
 
@@ -358,7 +355,6 @@ vary depending on the security expectations from the Group. Hence it is
 left to the application layer to agree upon and signal this value to the
 Delivery Service (DS).
 
-
 # Threat Model {#threat-model}
 
 In order to mitigate several categories of attacks across parts of
@@ -368,7 +364,6 @@ network used to communicate between the parties [RFC3552].
 This assumption remains valid for communications across multiple
 authentication or delivery servers if these have to collaborate
 to provide a client with some kind of information.
-
 
 ### Delivery Service Compromise
 
@@ -393,7 +388,6 @@ inherently lead to compromise of the message stream, but does
 allow it to attack forward security to a limited extent.
 This threat can be mitigated by having initial keys expire.
 
-
 ### Authentication Service Compromise
 
 A compromised AS is a serious matter, as the AS can provide
@@ -401,8 +395,6 @@ incorrect or adversarial identities to clients.  As noted in
 {{authentication-service}}, mitigating this form of attack requires
 some sort of transparency/logging mechanism.  Without such a mechanism,
 MLS will only provide limited security against a compromised AS.
-
-
 
 ### Client Service Compromise
 
@@ -455,7 +447,6 @@ must be able to reinitialize their state and continue participating
 in the conversation. This may entail some level of message loss, but
 should not result in permanent exclusion from the group.
 
-
 ### Support for Multiple Devices
 
 It is typically expected for Members of the Group to own different devices.
@@ -480,8 +471,7 @@ metadata footprint. The DS must only persist data required for the delivery
 of messages and avoid Personally Identifiable Information (PII) or other
 sensitive metadata wherever possible. A Messaging Service provider that has
 control over both the AS and the DS, will not be able to correlate encrypted
-messages forwarded by the DS, with the initial public keypairs signed by the AS.
-
+messages forwarded by the DS, with the initial public keys signed by the AS.
 
 ### Federation
 
@@ -540,7 +530,8 @@ length. While this protection is highly recommended it is not
 mandatory as it can be costly in terms of performance for clients
 and the MS.
 
-Message content can be deniable if the signature keys are exchanged over a deniable channel prior to signing messages.
+Message content can be deniable if the signature keys are exchanged over
+a deniable channel prior to signing messages.
 
 #### Forward and Post-Compromise Security {#fs-and-pcs}
 
@@ -604,9 +595,9 @@ weakening the PCS guarantees for attachments.
 
 #### Denial of Service {#denial-of-service}
 
-In general we do not consider denial of service to be the responsibility of the protocol. However,
-it should not be possible for anyone to perform a trivial denial of service from which it is hard to
-recover.
+In general we do not consider denial of service to be the responsibility
+of the protocol. However, it should not be possible for anyone to perform a
+trivial denial of service from which it is hard to recover.
 
 
 # Contributors
