@@ -192,7 +192,10 @@ web clients or other devices running MLS.
 
 Each member device owns a long term identity key pair that uniquely defines
 its identity to other Members of the Group.
-As single end-user may operate multiple devices simultaneously
+[[TODO: Probably we can rewrite all occurrences
+of "member device" to "Client", or leave all-but-one to indicate the
+relation.]]
+Because a single Member may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
 one phone with another), the formal definition of a Group in MLS
 is the set of Clients that has legitimate knowledge of the shared (Encryption)
@@ -216,6 +219,8 @@ The basic function of the Authentication Service is to provide a
 trusted mapping from user identities (usernames, phone numbers, etc.)
 to identity keys. An identity service can be implemented in a variety
 of ways, but the two most natural ones are:
+[[TODO: must clarify how user "identity" relates to
+"Member" and "Client".]]
 
 * A certificate authority which signs some sort of portable credential
   binding an identity to a key.
@@ -402,18 +407,21 @@ MLS will only provide limited security against a compromised AS.
 ### Client Service Compromise
 
 In general, MLS only provides limited protection against compromised
-Clients. If the Client is compromised, then the attacker will
+Clients. When the Client is compromised, then the attacker will
 obviously be able to decrypt any messages for groups in which the
-Client is a member. It will also be able to send messages impersonating
-the Client.
+Client is a member. It will also be able to send messages
+impersonating the compromised Client.
+[[TODO: The above would be clearer with a
+restriction along the lines of "until the honest Client performs another
+exchange" or something similar.]]
 
-MLS does attempt to provide some security in the face of client
+MLS attempts to provide some security in the face of client
 compromise. Specifically:
 
-* Forward security and Post-compromise security {{fs-and-pcs}}.
-* Clients should not be able to send messages to groups
-  which appear to be from other Clients {{message-secrecy-authentication}}
-* Clients should not be able to perform trivial denials of service {{denial-of-service}}
+* MLS provides Forward security and Post-compromise security {{fs-and-pcs}}.
+* Clients should not be able to send messages to groups.
+  which appear to be from other Clients {{message-secrecy-authentication}}.
+* Clients should not be able to perform trivial denial of service attacks {{denial-of-service}}.
 
 # System Requirements
 
@@ -457,6 +465,7 @@ the protocol. Hence this Client will not gain access to the history even if
 it is owned by someone who is already a Member of the Group.
 Restoring history is typically not allowed at the protocol level but applications
 may elect to provide such a mechanism outside of MLS.
+[[TODO: Perhaps relate the above to identity?]]
 
 ### Extensibility / Pluggability
 
@@ -536,6 +545,7 @@ and the MS.
 MLS provides additional protection regarding secrecy of past messages
 and future messages. These cryptographic security properties are
 Perfect Forward Secrecy (PFS) and Post-Compromise Security (PCS).
+
 PFS ensures that access to all encrypted traffic history combined
 with an access to all current keying material on clients will not
 defeat the secrecy properties of messages older than the oldest key of
