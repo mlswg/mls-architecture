@@ -537,7 +537,7 @@ and future messages. These cryptographic security properties are
 Perfect Forward Secrecy (PFS) and Post-Compromise Security (PCS).
 PFS ensures that access to all encrypted traffic history combined
 with an access to all current keying material on clients will not
-defeat the secrecy properties of messages older than the oldest key on
+defeat the secrecy properties of messages older than the oldest key of
 the client.
 Note that this means that clients have the extremely important role
 of deleting appropriate keys as soon as they have been used with
