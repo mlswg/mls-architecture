@@ -2,9 +2,9 @@
 
 This is the working area for the individual Internet-Draft, "".
 
-* [Editor's Copy](https://ekr.github.io/mls-architecture/#go.draft-rescorla-mls-architecture.html)
-* [Working Group Draft](https://tools.ietf.org/html/draft-rescorla-mls-architecture)
-* [Compare Editor's Copy to Working Group Draft](https://ekr.github.io/mls-architecture/#go.draft-rescorla-mls-architecture.diff)
+* [Editor's Copy](https://ekr.github.io/mls-architecture/#go.draft-omara-mls-architecture.html)
+* [Working Group Draft](https://tools.ietf.org/html/draft-omara-mls-architecture)
+* [Compare Editor's Copy to Working Group Draft](https://ekr.github.io/mls-architecture/#go.draft-omara-mls-architecture.diff)
 
 ## Building the Draft
 
