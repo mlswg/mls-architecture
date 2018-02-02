@@ -38,10 +38,10 @@ author:
     organization: MIT
     email: kwonal@mit.edu
  -
-    ins: R. Robert
-    name: Raphael Robert
+    ins: A. Duric
+    name: Alan Duric
     organization: Wire
-    email: raphael@wire.com
+    email: alan@wire.com
 
 informative:
   RFC2119:
@@ -78,7 +78,7 @@ informative:
   KeyTransparency:
        target: https://KeyTransparency.org
        title: Key Transparency
-       author: 
+       author:
        -
           ins: Google
 
@@ -439,7 +439,7 @@ a group which appears to be from another Client with a different
 identity. Note that if Clients from the same Member share keying material,
 then one will be able to impersonate another.
 
-Finally, Clients should not be able to perform trivial denial of
+Finally, Clients should not be able to perform denial of
 service attacks {{denial-of-service}}.
 
 # System Requirements
@@ -648,10 +648,6 @@ proof is not possible.
   University of Oxford \\
   cas.cremers@cs.ox.ac.uk
 
-* Alan Duric \\
-  Wire \\
-  alan@wire.com
-
 * Thyla van der Merwe \\
   Royal Holloway, University of London \\
   thyla.van.der@merwe.tech
@@ -659,3 +655,9 @@ proof is not possible.
 * Jon Millican \\
   Facebook \\
   jmillican@fb.com
+
+* Raphael Roberts \\
+  Wire \\
+  raphael@wire.com
+
+
