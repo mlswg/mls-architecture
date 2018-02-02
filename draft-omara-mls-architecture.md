@@ -357,24 +357,17 @@ list is stored on some server associated with the MS.
 
 ### Membership and offline members
 
-[[TODO(ekr@rtfm.com): Rewrite this a bit to be clearer]]
+Because FS and PCS rely on the deletion and replacement of
+keying material, any Client which is persistently offline
+may still be holding old keying material and thus be a threat
+to both FS and PCS if it is later compromised.
+MLS doesn't inherently defend against this problem, but
+MLS-using systems should develop some mechanism for doing
+so. Typically this will consist of evicting Clients which
+are idle for too long, thus containing the threat of
+compromise. The precise details of such mechanisms are
+a matter of local policy.
 
-Clients that have been offline for a long time, and that have not been performing
-mandatory security operations, will affect the security of the
-group in different ways depending on the amount of trust given to the DS.
-
-In the scenario where the DS is Trusted, the MLS design ensures that
-the protocol provides security against permanently offline members or
-devices by signaling to the other Clients that one endpoint has
-been kicked out of the delivery and MUST be removed from the Group.
-This requirement is absolutely necessary to preserve security properties such
-as forward secrecy of messages or post-compromise security.
-
-The policy regarding the time elapsed before an offline member must
-be removed from the group is not specified by this document as it may
-vary depending on the security expectations from the Group. Hence it is
-left to the application layer to agree upon, and signal, this value to the
-Delivery Service (DS).
 
 # Threat Model {#threat-model}
 
@@ -557,9 +550,9 @@ a deniable channel prior to signing messages.
 
 MLS provides additional protection regarding secrecy of past messages
 and future messages. These cryptographic security properties are
-Perfect Forward Secrecy (PFS) and Post-Compromise Security (PCS).
+Forward Secrecy (FS) and Post-Compromise Security (PCS).
 
-PFS ensures that access to all encrypted traffic history combined
+FS ensures that access to all encrypted traffic history combined
 with an access to all current keying material on clients will not
 defeat the secrecy properties of messages older than the oldest key of
 the client.
