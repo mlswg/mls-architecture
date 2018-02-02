@@ -43,15 +43,47 @@ author:
     organization: Wire
     email: raphael@wire.com
 
-normative:
+informative:
   RFC2119:
+
+  MLSPROTO:
+       title: "Messaging Layer Security Protocol"
+       date: 2018
+       author:
+         -  ins: R. Barnes
+            name: Richard Barnes
+            organization: Cisco
+            email: rlb@ipv.sx
+         -
+            ins: J. Millican
+            name: Jon Millican
+            organization: Facebook
+            email: jmillican@fb.com
+         -
+            ins: E. Omara
+            name: Emad Omara
+            organization: Google
+            email: emadomara@google.com
+         -
+            ins: K. Cohn-Gordon
+            name: Katriel Cohn-Gordon
+            organization: University of Oxford
+            email: me@katriel.co.uk
+         -
+            ins: R. Robert
+            name: Raphael Robert
+            organization: Wire
+            email: raphael@wire.com
+
 
 --- abstract
 
-This document specifies version 1.0 of the Messaging Layer Security (MLS) protocol.
-MLS allows group messaging for a large number of networked clients by providing a
-delivery service for messages, and potentially an authentication service, in a way
-that is designed to prevent eavesdropping, tampering, and message forgery.
+This document describes the architecture and requirements for the
+Messaging Layer Security (MLS) protocol.  MLS provides a security
+layer for group messaging applications with anywhere from two to a
+large number of clients. It is eavesdropping, tampering, and message
+forgery.
+
 
 --- middle
 
@@ -64,10 +96,10 @@ level depending on the system design -- even when the messaging
 service they are using performs unsatisfactorily.
 
 Messaging Layer Security (MLS) specifies an architecture (this document)
-and an abstract protocol [TODO:XREF] for providing end-to-end security
+and an abstract protocol {{MLSPROTO}} for providing end-to-end security
 in this setting. MLS is not intended as a full instant messaging
 protocol but rather is intended to be embedded in a concrete protocol
-such as XMPP [TODO:REF]. In addition, it does not specify a complete
+such as XMPP {{?RFC3920}}. In addition, it does not specify a complete
 wire encoding, but rather a set of abstract data structures which
 can then be mapped onto a variety of concrete encodings, such as
 TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and JSON {{?RFC7159}}.
@@ -83,7 +115,9 @@ requirements which it is intended to fulfill.
 
 A Group using a Messaging Service (MS) comprises a set of participants
 called Members where each Member is typically expected to own multiple
-devices, called Clients.  In order to communicate securely, Group
+devices, called Clients.  A group may be as small as two members
+(the simple case of person to person messaging) or as large as
+thousands. In order to communicate securely, Group
 Members initially use services at their disposal to obtain the
 necessary secrets and credentials required for security.
 
@@ -129,9 +163,6 @@ are logically distinct and, in other systems, may be operated
 by different entities, hence we show them as being separate here. Other
 partitions are also possible, such as having a separate directory
 server.
-
-[[TODO: Should we actually break this into three services, with the
-directory being a separate service.]]
 
 A typical group messaging scenario might look like this:
 
@@ -180,7 +211,7 @@ by authentication and access control. Thus, for instance, while
 it might be technically possible for any member to send a message
 adding a new member to a group, the group might have the policy
 that only certain members are allowed to make changes and thus
-other members just ignore such a message from an unauthorized
+other members can ignore or reject such a message from an unauthorized
 user.
 
 ## Group, Members and Clients
