@@ -658,7 +658,7 @@ service attacks {{denial-of-service}}.
   Facebook \\
   jmillican@fb.com
 
-* Raphael Roberts \\
+* Raphael Robert \\
   Wire \\
   raphael@wire.com
 
