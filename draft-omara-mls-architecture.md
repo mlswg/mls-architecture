@@ -46,6 +46,13 @@ author:
 normative:
   RFC2119:
 
+informative: 
+  KeyTransparency:
+    target: https://KeyTransparency.org
+    author: 
+      org: Google
+
+
 --- abstract
 
 This document specifies version 1.0 of the Messaging Layer Security (MLS) protocol.
