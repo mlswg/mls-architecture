@@ -141,7 +141,7 @@ Members to prepare for sending and receiving messages securely:
   In the case of group messaging, the delivery service may also
   be responsible for acting as a "broadcaster" where the sender sends
   a single message to a group which is then forwarded to each
-  recipient in the group. The DS is also responsible for storing and
+  recipient in the group by the DS. The DS is also responsible for storing and
   delivering initial public key material required in order to proceed
   with the group secret key establishment process.
 
@@ -274,13 +274,13 @@ The Delivery Service (DS) is expected to play multiple roles in the
 Messaging Service architecture:
 
 * To act as a directory service providing the keying material
-  (authentication keys and initial keying material) to sending
-  Clients. This allows a Client to establish a shared key
+  (authentication keys and initial keying material) for Clients to use.
+  This allows a Client to establish a shared key
   and send encrypted messages to other Clients even if the
   other Client is offline.
 
-* To route messages between Clients, including acting as a message
-  expander, taking in one message and forwarding it to multiple Clients
+* To route messages between Clients and to act as a message
+  broadcaster, taking in one message and forwarding it to multiple Clients
   (also known as "server side fanout")
 
 
@@ -324,7 +324,7 @@ Specifically, we assume that DSs provide:
 
 * In-order delivery: messages are delivered to the group
   in the order they are received from a given Client
-  and in approximately the order which they are sent
+  and in approximately the order in which they are sent
   by Clients. The latter is an approximate guarantee because
   multiple Clients may send messages at the same time
   and so the DS needs some latitude in reordering between Clients.
@@ -364,12 +364,13 @@ list is stored on some server associated with the MS.
 
 ### Membership and offline members
 
-Because FS and PCS rely on the deletion and replacement of
-keying material, any Client which is persistently offline
+Because Forward Secrecy (FS) and Post-Compromise Security (PCS)
+rely on the deletion and replacement of keying material,
+any Client which is persistently offline
 may still be holding old keying material and thus be a threat
 to both FS and PCS if it is later compromised.
 MLS doesn't inherently defend against this problem, but
-MLS-using systems should develop some mechanism for doing
+MLS-using systems should enforce some mechanism for doing
 so. Typically this will consist of evicting Clients which
 are idle for too long, thus containing the threat of
 compromise. The precise details of such mechanisms are
