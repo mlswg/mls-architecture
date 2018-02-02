@@ -417,25 +417,20 @@ In general, MLS only provides limited protection against compromised
 Clients. When the Client is compromised, then the attacker will
 obviously be able to decrypt any messages for groups in which the
 Client is a member. It will also be able to send messages
-impersonating the compromised Client.
-[[TODO: The above would be clearer with a
-restriction along the lines of "until the honest Client performs another
-exchange" or something similar.]]
-
+impersonating the compromised Client until the Client updates its
+keying material (see {{fs-and-pcs}}).
 MLS attempts to provide some security in the face of client
-compromise. Specifically:
+compromise.
 
-* MLS provides Forward security and Post-compromise security {{fs-and-pcs}}.
-* Clients should not be able to send messages to groups.
-  which appear to be from other Clients {{message-secrecy-authentication}}.
-* Clients should not be able to perform trivial denial of service attacks {{denial-of-service}}.
+In addition, a Client should not be able to send a message to
+a group which appears to be from another Client with a different
+identity. Note that if Clients from the same Member share keying material,
+then one will be able to impersonate another.
+
+Finally, Clients should not be able to perform trivial denial of
+service attacks {{denial-of-service}}.
 
 # System Requirements
-
-As the MLS protocol provides an important service to users, its functional
-safety and security are very important parts of the protocol
-design. Specifically, MLS is designed to be as resilient as possible against
-adversarial interaction and (where possible) Denial of Service (DoS) attacks.
 
 ## Functional Requirements
 
