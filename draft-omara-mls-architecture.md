@@ -371,15 +371,16 @@ a matter of local policy.
 
 # Threat Model {#threat-model}
 
-In order to mitigate several categories of attacks across parts of
-the MLS architecture, we assume the attacker to be an active network
-attacker. This means an adversary which has complete control over the
-network [RFC3552].
-This assumption remains valid for communications across multiple
-authentication or delivery servers if these have to collaborate
-to provide a client with some kind of information.
+MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
+that the attacker has complete control of the network. It is intended
+to provide the security services described in {{security-requirements}}
+in the face of such attackers and additionally in the face of compromise
+of the transport links between the various endpoints. In addition,
+these guarantees are intended to degrade gracefully in the presence
+of compromise of both Clients and elements of the messaging
+system, as described in the remainder of this section.
 
-### Delivery Service Compromise
+## Delivery Service Compromise
 
 MLS is intended to provide strong guarantees in the face of compromise
 of the DS. Even a totally compromised DS should not be able to read
@@ -402,7 +403,7 @@ inherently lead to compromise of the message stream, but does
 allow it to attack forward security to a limited extent.
 This threat can be mitigated by having initial keys expire.
 
-### Authentication Service Compromise
+## Authentication Service Compromise
 
 A compromised AS is a serious matter, as the AS can provide
 incorrect or adversarial identities to clients.  As noted in
@@ -410,7 +411,7 @@ incorrect or adversarial identities to clients.  As noted in
 some sort of transparency/logging mechanism.  Without such a mechanism,
 MLS will only provide limited security against a compromised AS.
 
-### Client Service Compromise
+## Client Service Compromise
 
 In general, MLS only provides limited protection against compromised
 Clients. When the Client is compromised, then the attacker will
