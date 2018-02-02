@@ -350,8 +350,7 @@ the protocol provides security against permanently offline members or
 devices by signaling to the other Clients that one endpoint has
 been kicked out of the delivery and MUST be removed from the Group.
 This requirement is absolutely necessary to preserve security properties such
-as forward secrecy of messages or post-compromise security. [[TvdM: What's the
-difference between kicked out of delivery and being kicked out of the group?]]
+as forward secrecy of messages or post-compromise security.
 
 The policy regarding the time elapsed before an offline member must
 be removed from the group is not specified by this document as it may
@@ -509,9 +508,7 @@ layer security mechanism such as TLS.
 The trust establishment step of the MLS protocol is followed by a
 conversation protection step where encryption is used by clients to
 transmit authenticated messages to other clients through the DS.
-This ensures that the DS doesn't have access to this Group-private content.
-[[TvdM: Use of "Group-private" seems odd here. Change to "the Group's private
-content", maybe? ]]
+This ensures that the DS doesn't have access to the Group's private content.
 
 MLS aims to provide Secrecy, Integrity and Authentication for all messages.
 
