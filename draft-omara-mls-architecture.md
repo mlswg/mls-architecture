@@ -1,7 +1,7 @@
 ---
 title: Messaging Layer Security Architecture
 abbrev: MLS Architecture
-docname: draft-rescorla-mls-architecture-latest
+docname: draft-omara-mls-architecture-latest
 category: info
 
 ipr: trust200902
@@ -74,6 +74,13 @@ informative:
             name: Raphael Robert
             organization: Wire
             email: raphael@wire.com
+
+  KeyTransparency:
+       target: https://KeyTransparency.org
+       title: Key Transparency
+       author: 
+       -
+          ins: Google
 
 
 --- abstract
@@ -257,7 +264,7 @@ By definition, the AS is invested with a large amount of trust.
 A malicious AS can impersonate -- or allow an attacker to impersonate --
 any user of the system. This risk can be mitigated by publishing
 the binding between identities and keys in a public log such
-as Key Transparency (KT) [REF]. It is possible to build a functional
+as Key Transparency (KT) {{KeyTransparency}}. It is possible to build a functional
 MLS system without any kind of public key logging, but such a system will
 necessarily be somewhat vulnerable to attack by a malicious or untrusted AS.
 
