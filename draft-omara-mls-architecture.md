@@ -273,7 +273,8 @@ Messaging Service architecture:
   other Client is offline.
 
 * To route messages between Clients, including acting as a message
-  expander, taking in one message and forwarding it to multiple Clients.
+  expander, taking in one message and forwarding it to multiple Clients
+  (also known as "server side fanout")
 
 
 Depending on the level of trust given by the Group to the Delivery Service,
@@ -344,22 +345,15 @@ from the Client being actually offline.
 
 ### Membership knowledge
 
-[[TODO(ekr@rtfm.com): This needs to be softened quite a bit. In general, the DS
-is going to have real-time information about who is in each
-group if you are doing server-side fanout.]]
+Group membership is itself sensitive information and MLS is designed
+so that neither the DS nor the AS need have static knowledge
+of which Clients are in which Group. However, they may learn
+this information through traffic analysis. For instance, in
+a server side fanout model, the DS learns that a given Client
+is sending the same message to a set of other Clients. In addition,
+there may be applications of MLS in which the Group membership
+list is stored on some server associated with the MS.
 
-A particularly important security constraint in that an adversary
-must not be able to gain access to information about the identity of
-group members and the number of clients.
-
-To prevent that from happening, the MLS threat model {{threat-model}}
-considers the case of a corrupted or untrusted DS that would leak all
-information at its disposal. Hence, in this Untrusted DS scenario, MLS
-will enforce that the DS MUST NOT be aware these informations. While not
-providing the DS with this information might be enough in certain
-scenarios, the strong threat model of MLS in this scenario provides
-counter measures against potential traffic analysis that could be performed
-at the DS level.
 
 ### Membership and offline members
 
