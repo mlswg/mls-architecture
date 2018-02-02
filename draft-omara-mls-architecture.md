@@ -373,12 +373,17 @@ a matter of local policy.
 
 MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
 that the attacker has complete control of the network. It is intended
-to provide the security services described in {{security-requirements}}
-in the face of such attackers and additionally in the face of compromise
-of the transport links between the various endpoints. In addition,
+to provide the security services described in in the face of such attackers.
+In addition,
 these guarantees are intended to degrade gracefully in the presence
-of compromise of both Clients and elements of the messaging
+of compromise of the transport security links as well as of
+both Clients and elements of the messaging
 system, as described in the remainder of this section.
+
+## Transport Security Links
+
+[TODO: Mostly DoS, message suppression, and leakage of group membership.]
+
 
 ## Delivery Service Compromise
 
@@ -411,7 +416,7 @@ incorrect or adversarial identities to clients.  As noted in
 some sort of transparency/logging mechanism.  Without such a mechanism,
 MLS will only provide limited security against a compromised AS.
 
-## Client Service Compromise
+## Client Compromise
 
 In general, MLS only provides limited protection against compromised
 Clients. When the Client is compromised, then the attacker will
@@ -466,7 +471,6 @@ the protocol. This Client will not gain access to the history even if
 it is owned by someone who is already a Member of the Group.
 Restoring history is typically not allowed at the protocol level but applications
 may elect to provide such a mechanism outside of MLS.
-[[TODO: Perhaps relate the above to identity?]]
 
 ### Extensibility / Pluggability
 
@@ -487,14 +491,15 @@ messages forwarded by the DS, with the initial public keys signed by the AS.
 
 The protocol aims to be compatible with federated environments. While this
 document does not specify all necessary mechanisms required for federation,
-it allows for more than one AS/DS to exist.
+multiple MLS implementations should be able to interoperate and to form
+federated systems.
+
 
 ### Compatibility with future versions of MLS
 
-One of the main requirements of the protocol is to make sure that if multiple
-versions of MLS coexist in the future, the protocol provides a strong and
-unambiguous version negotiation mechanism. This mechanism must prevent
-version downgrade attacks where an attacker would actively rewrite handshake
+It is important the multiple versions of MLS be able to coexist in the future.
+Thus, MLS must offer a version negotiation mechanism; this mechanism must prevent
+version downgrade attacks where an attacker would actively rewrite messages
 messages with a lower protocol version than the ones originally offered by
 the endpoints. When multiple versions of MLS are available, the negotiation
 protocol must guarantee that the version agreed upon will be the highest version
@@ -502,13 +507,17 @@ supported in common by the group.
 
 ## Security Requirements
 
+{::comment}
 [[TODO: should these be stated as assertions ("MLS guarantees that...") or
 goals ("MLS aims to guarantee that...")?]]
+{:/comment}
 
 ### Connections between Clients and Servers (one-to-one)
 
 We assume that all transport connections are secured via some transport
-layer security mechanism such as TLS.
+layer security mechanism such as TLS {{?I-D.ietf-tls-tls13}}. However,
+as noted above, the security of MLS should generally survive compromise
+of the transport layer.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
@@ -548,7 +557,7 @@ MLS provides additional protection regarding secrecy of past messages
 and future messages. These cryptographic security properties are
 Forward Secrecy (FS) and Post-Compromise Security (PCS).
 
-FS ensures that access to all encrypted traffic history combined
+FS means that access to all encrypted traffic history combined
 with an access to all current keying material on clients will not
 defeat the secrecy properties of messages older than the oldest key of
 the client.
@@ -557,7 +566,7 @@ of deleting appropriate keys as soon as they have been used with
 the expected message, otherwise the secrecy of the messages and the
 security for MLS is considerably weakened.
 
-PCS ensures that if a group member is compromised at some time t but
+PCS means that if a group member is compromised at some time t but
 subsequently performs an update at some time t', then all MLS guarantees should
 apply to messages sent after time t'. For example, if an adversary learns all
 secrets known to Alice at time t, including both Alice's secret keys and all
@@ -588,7 +597,7 @@ might want a more strict policy and allow only the owner of the
 devices to add or remove them at the potential cost of weaker PCS guarantees.
 
 Members who are removed from a group do not enjoy special privileges:
-compromise of a removed group member will not affect the security
+compromise of a removed group member shold not affect the security
 of messages sent after their removal.
 
 #### Security of Attachments
@@ -608,6 +617,19 @@ In general we do not consider Denial of Service (DoS) resistance to be the respo
 of the protocol. However, it should not be possible for anyone to perform a
 trivial Denial of Service (DoS) attack from which it is hard to recover.
 
+#### Deniability
+
+As described in {{client-compromise}}, MLS aims to provide data origin authentication
+within a group, such that one group member cannot send a message that appears
+to be from another group member. Additionally, it is a requirement of some
+services that a recipient be able to prove to the messaging service that a
+message was sent by a given Client, in order to report abuse. MLS should support
+both of these use cases. In some deployments, these services may be provided
+by mechanisms which allow the receiver to prove a message's origin
+to a third party (this if often called "non-repudiation"), but it
+should also be possible to operate MLS in a "deniable" mode where such
+proof is not possible.
+[[OPEN ISSUE: Exactly how to supply this is still a protocol question.]]
 
 # Contributors
 
@@ -618,6 +640,10 @@ trivial Denial of Service (DoS) attack from which it is hard to recover.
 * Cas Cremers \\
   University of Oxford \\
   cas.cremers@cs.ox.ac.uk
+
+* Alan Duric \\
+  Wire \\
+  alan@wire.com
 
 * Thyla van der Merwe \\
   Royal Holloway, University of London \\
