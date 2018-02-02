@@ -1,7 +1,7 @@
 ---
 title: Messaging Layer Security Architecture
 abbrev: MLS Architecture
-docname: draft-rescorla-mls-architecture-latest
+docname: draft-omara-mls-architecture-latest
 category: info
 
 ipr: trust200902
