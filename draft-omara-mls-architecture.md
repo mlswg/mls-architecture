@@ -376,71 +376,6 @@ compromise. The precise details of such mechanisms are
 a matter of local policy.
 
 
-# Threat Model {#threat-model}
-
-MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
-that the attacker has complete control of the network. It is intended
-to provide the security services described in in the face of such attackers.
-In addition,
-these guarantees are intended to degrade gracefully in the presence
-of compromise of the transport security links as well as of
-both Clients and elements of the messaging
-system, as described in the remainder of this section.
-
-## Transport Security Links
-
-[TODO: Mostly DoS, message suppression, and leakage of group membership.]
-
-
-## Delivery Service Compromise
-
-MLS is intended to provide strong guarantees in the face of compromise
-of the DS. Even a totally compromised DS should not be able to read
-messages or inject messages that will be acceptable to legitimate
-Clients. It should also not be able to undetectably remove, reorder
-or replay messages.
-
-However, a DS can mount a variety of DoS attacks on the system,
-including total DoS attacks (where it simply refuses to forward any
-messages) and partial DoS attacks (where it refuses to forward
-messages to and from specific Clients). As noted in
-{{delivery-guarantees}}, these attacks are only partially detectable
-by clients. Ultimately, failure of the DS to provide reasonable
-service must be dealt with as a customer service matter, not via
-technology.
-
-Because the DS is responsible for providing the initial keying
-material to Clients, it can provide stale keys. This doesn't
-inherently lead to compromise of the message stream, but does
-allow it to attack forward security to a limited extent.
-This threat can be mitigated by having initial keys expire.
-
-## Authentication Service Compromise
-
-A compromised AS is a serious matter, as the AS can provide
-incorrect or adversarial identities to clients.  As noted in
-{{authentication-service}}, mitigating this form of attack requires
-some sort of transparency/logging mechanism.  Without such a mechanism,
-MLS will only provide limited security against a compromised AS.
-
-## Client Compromise
-
-In general, MLS only provides limited protection against compromised
-Clients. When the Client is compromised, then the attacker will
-obviously be able to decrypt any messages for groups in which the
-Client is a member. It will also be able to send messages
-impersonating the compromised Client until the Client updates its
-keying material (see {{fs-and-pcs}}).
-MLS attempts to provide some security in the face of client
-compromise.
-
-In addition, a Client should not be able to send a message to
-a group which appears to be from another Client with a different
-identity. Note that if Clients from the same Member share keying material,
-then one will be able to impersonate another.
-
-Finally, Clients should not be able to perform denial of
-service attacks {{denial-of-service}}.
 
 # System Requirements
 
@@ -637,6 +572,73 @@ to a third party (this if often called "non-repudiation"), but it
 should also be possible to operate MLS in a "deniable" mode where such
 proof is not possible.
 [[OPEN ISSUE: Exactly how to supply this is still a protocol question.]]
+
+
+# Security Considerations
+
+MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
+that the attacker has complete control of the network. It is intended
+to provide the security services described in in the face of such attackers.
+In addition,
+these guarantees are intended to degrade gracefully in the presence
+of compromise of the transport security links as well as of
+both Clients and elements of the messaging
+system, as described in the remainder of this section.
+
+## Transport Security Links
+
+[TODO: Mostly DoS, message suppression, and leakage of group membership.]
+
+
+## Delivery Service Compromise
+
+MLS is intended to provide strong guarantees in the face of compromise
+of the DS. Even a totally compromised DS should not be able to read
+messages or inject messages that will be acceptable to legitimate
+Clients. It should also not be able to undetectably remove, reorder
+or replay messages.
+
+However, a DS can mount a variety of DoS attacks on the system,
+including total DoS attacks (where it simply refuses to forward any
+messages) and partial DoS attacks (where it refuses to forward
+messages to and from specific Clients). As noted in
+{{delivery-guarantees}}, these attacks are only partially detectable
+by clients. Ultimately, failure of the DS to provide reasonable
+service must be dealt with as a customer service matter, not via
+technology.
+
+Because the DS is responsible for providing the initial keying
+material to Clients, it can provide stale keys. This doesn't
+inherently lead to compromise of the message stream, but does
+allow it to attack forward security to a limited extent.
+This threat can be mitigated by having initial keys expire.
+
+## Authentication Service Compromise
+
+A compromised AS is a serious matter, as the AS can provide
+incorrect or adversarial identities to clients.  As noted in
+{{authentication-service}}, mitigating this form of attack requires
+some sort of transparency/logging mechanism.  Without such a mechanism,
+MLS will only provide limited security against a compromised AS.
+
+## Client Compromise
+
+In general, MLS only provides limited protection against compromised
+Clients. When the Client is compromised, then the attacker will
+obviously be able to decrypt any messages for groups in which the
+Client is a member. It will also be able to send messages
+impersonating the compromised Client until the Client updates its
+keying material (see {{fs-and-pcs}}).
+MLS attempts to provide some security in the face of client
+compromise.
+
+In addition, a Client should not be able to send a message to
+a group which appears to be from another Client with a different
+identity. Note that if Clients from the same Member share keying material,
+then one will be able to impersonate another.
+
+Finally, Clients should not be able to perform denial of
+service attacks {{denial-of-service}}.
 
 # Contributors
 
