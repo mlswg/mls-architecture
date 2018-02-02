@@ -526,7 +526,7 @@ group members have agreed on the list of current group members.
 
 Some applications may wish to enforce ACLs to limit addition or removal
 of group members, to privileged users. Others may wish to require
-authorisation from the current group members or a subset thereof.
+authorization from the current group members or a subset thereof.
 Regardless, MLS does not allow addition or removal of group members
 without informing all other members.
 
@@ -539,7 +539,7 @@ might want a more strict policy and allow only the owner of the
 devices to add or remove them at the potential cost of weaker PCS guarantees.
 
 Members who are removed from a group do not enjoy special privileges:
-compromise of a removed group member shold not affect the security
+compromise of a removed group member should not affect the security
 of messages sent after their removal.
 
 #### Security of Attachments
