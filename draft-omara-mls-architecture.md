@@ -217,16 +217,12 @@ user.
 ## Group, Members and Clients
 
 In MLS a Group is defined as a set of Members who possibly use multiple
-endpoint devices to interact with the Messaging Service.
-Only endpoints that are not an AS or a DS are called Clients. These
-clients will typically correspond to end-user devices such as phones,
+endpoint devices (Clients) to interact with the Messaging Service.
+These Clients will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS.
 
 Each member device owns a long term identity key pair that uniquely defines
 its identity to other Members of the Group.
-[[TODO: Probably we can rewrite all occurrences
-of "member device" to "Client", or leave all-but-one to indicate the
-relation.]]
 Because a single Member may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
 one phone with another), the formal definition of a Group in MLS
@@ -237,10 +233,7 @@ In some messaging systems, Clients belonging to the same Member must
 all share the same identity key pair, but MLS does not assume this.
 The MLS architecture considers the more general case and allows for
 important use cases, such as a Member adding a new Client when all their
-existing clients are offline. For systems that allow multiple identity
-key pairs per Member, some mechanism is required to detect the addition
-of new, bogus Clients.  Key Transparency [TODO:REF] is one such
-potential mechanism, but others are also possible.
+existing clients are offline.
 
 MLS has been designed to provide similar security guarantees to all Clients,
 for all group sizes, even when it reduces to only two Clients.
@@ -248,14 +241,13 @@ for all group sizes, even when it reduces to only two Clients.
 ## Authentication Service
 
 The basic function of the Authentication Service is to provide a
-trusted mapping from user identities (usernames, phone numbers, etc.)
-to identity keys. An identity service can be implemented in a variety
-of ways, but the two most natural ones are:
-[[TODO: must clarify how user "identity" relates to
-"Member" and "Client".]]
+trusted mapping from user identities (usernames, phone numbers, etc.),
+which exist 1:1 with Members, to identity keys, which may either
+be one per Client or may be shared amongst the Clients attached
+to a Member.
 
-* A certificate authority which signs some sort of portable credential
-  binding an identity to a key.
+* A certificate authority or similar service which signs some sort of
+  portable credential binding an identity to a key.
 
 * A directory server which provides the key for a given identity
   (presumably this connection is secured via some form of transport
@@ -280,7 +272,8 @@ Messaging Service architecture:
   and send encrypted messages to other Clients even if the
   other Client is offline.
 
-* To route messages between Clients.
+* To route messages between Clients, including acting as a message
+  expander, taking in one message and forwarding it to multiple Clients.
 
 
 Depending on the level of trust given by the Group to the Delivery Service,
@@ -291,7 +284,7 @@ the functional and security guarantees provided by MLS may differ.
 Upon joining the system, each Client stores its initial cryptographic
 key material with the DS. This key material represents the initial contribution
 from each member that will be used in the establishment of the shared group
-key. Hence this initial keying material MUST be authenticated using
+key. This initial keying material MUST be authenticated using
 the Client's identity key. Thus, the Client stores:
 
 * A credential from the Authentication service attesting to the
@@ -318,17 +311,17 @@ messages.
 The DS's main responsibility is to ensure delivery of messages.
 Specifically, we assume that DSs provide:
 
-* Reliable delivery -- when a message is provided to the DS,
+* Reliable delivery: when a message is provided to the DS,
   it is eventually delivered to all group members.
 
-* In-order delivery -- messages are delivered to the group
+* In-order delivery: messages are delivered to the group
   in the order they are received from a given Client
   and in approximately the order which they are sent
   by Clients. The latter is an approximate guarantee because
   multiple Clients may send messages at the same time
   and so the DS needs some latitude in reordering between Clients.
 
-* Consistent ordering -- the DS must ensure that all Clients
+* Consistent ordering: the DS must ensure that all Clients
   have the same view of message ordering.
 
 Note that the DS may provide ordering guarantees by ensuring
