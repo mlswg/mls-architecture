@@ -1,10 +1,10 @@
 # 
 
-This is the working area for the individual Internet-Draft, "".
+This is the working area for the IETF MLS Working Group Internet-Draft, "".
 
-* [Editor's Copy](https://ekr.github.io/mls-architecture/#go.draft-omara-mls-architecture.html)
-* [Working Group Draft](https://tools.ietf.org/html/draft-omara-mls-architecture)
-* [Compare Editor's Copy to Working Group Draft](https://ekr.github.io/mls-architecture/#go.draft-omara-mls-architecture.diff)
+* [Editor's Copy](https://mlswg.github.io/mls-architecture/#go.draft-ietf-mls-architecture.html)
+* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-mls-architecture)
+* [Compare Editor's Copy to Working Group Draft](https://mlswg.github.io/mls-architecture/#go.draft-ietf-mls-architecture.diff)
 
 ## Building the Draft
 
@@ -21,4 +21,4 @@ This requires that you have the necessary software installed.  See
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/ekr/mls-architecture/blob/master/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/mlswg/mls-architecture/blob/master/CONTRIBUTING.md).
