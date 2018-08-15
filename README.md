@@ -1,6 +1,6 @@
 # 
 
-This is the working area for the IETF MLS Working Group Internet-Draft, "".
+This is the working area for the IETF MLS Working Group Internet-Draft, "The Messaging Layer Security (MLS) Architecture".
 
 * [Editor's Copy](https://mlswg.github.io/mls-architecture/#go.draft-ietf-mls-architecture.html)
 * [Working Group Draft](https://tools.ietf.org/html/draft-ietf-mls-architecture)
