@@ -1,5 +1,5 @@
 ---
-title: Messaging Layer Security Architecture
+title: The Messaging Layer Security (MLS) Architecture
 abbrev: MLS Architecture
 docname: draft-ietf-mls-architecture-latest
 category: info
