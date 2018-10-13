@@ -291,7 +291,7 @@ Upon joining the system, each Client stores its initial cryptographic
 key material with the DS. This key material represents the initial contribution
 from each member that will be used in the establishment of the shared group
 key. This initial keying material is authenticated using
-the Client's identity key. Thus, then Client stores:
+the Client's identity key. Thus, the Client stores:
 
 * A credential from the Authentication service attesting to the
   binding between the Member and the Client's identity key.
