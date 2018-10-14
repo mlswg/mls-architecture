@@ -125,12 +125,15 @@ requirements which it is intended to fulfill.
 
 # General Setting
 
-A Group using a Messaging Service (MS) comprises a set of participants
-called Members where each Member is typically expected to own multiple
-devices, called Clients.  A group may be as small as two members
+A Group using a Messaging Service (MS) comprises a set of members
+called Participants where each member is typically expected to own
+multiple client devices. MLS does not specify how to federate multiple
+devices under a single Participant identity. Hence, this text will
+refer to a single device when referring to a Participant.
+A group may be as small as two Participants
 (the simple case of person to person messaging) or as large as
-thousands. In order to communicate securely, Group
-Members initially use services at their disposal to obtain the
+thousands. In order to communicate securely, Participants of a Group
+may initially use services at their disposal to obtain the
 necessary secrets and credentials required for security.
 
 The Messaging Service (MS) presents as two abstract services that allow
@@ -142,13 +145,13 @@ Members to prepare for sending and receiving messages securely:
   discover each others long-term identity keys.
 
 - A Delivery Service (DS) which is responsible for receiving and
-  redistributing messages between group members.
+  redistributing messages between group Participants.
   In the case of group messaging, the delivery service may also
   be responsible for acting as a "broadcaster" where the sender sends
   a single message to a group which is then forwarded to each
   recipient in the group by the DS. The DS is also responsible for storing and
   delivering initial public key material required in order to proceed
-  with the group secret key establishment process.
+  with the group key establishment process.
 
 ~~~~
       ----------------      --------------
@@ -159,11 +162,11 @@ Members to prepare for sending and receiving messages securely:
      *********************************************************
      *                 /          |          \               *
      *                /           |           \              *
-     *      ----------       ----------       ----------     *
-     *     | Client 0 |     | Client 1 |     | Client N |    *
-     *      ----------       ----------       ----------     *
-     *      ............................      ...........    *
-     *      Member 0                          Member 1       *
+     *  ---------------   ---------------   ---------------  *
+     * | Participant 0 | | Participant 1 | | Participant N | *
+     *  ---------------   ---------------   ---------------  *
+     *  ..................................  ................ *
+     *  User 0                              User 1           *
      *                                                       *
      *********************************************************
 
@@ -213,8 +216,8 @@ Clients may wish to do the following:
 
  -  receive a message from someone in the group.
 
-At the cryptographic level, Clients in groups (and by extension Members)
-are peers. For instance, any Client can add a member to a group. This
+At the cryptographic level, Participants in groups are equal peers.
+For instance, any Participant can add a member to a group. This
 is in contrast to some designs in which there is a single group
 controller who can modify the group. MLS is compatible with having
 group administration restricted to certain users, but we assume that
@@ -225,29 +228,29 @@ might have the policy that only certain members are allowed to make
 changes and thus other members can ignore or reject such a message
 from an unauthorized user.
 
-## Group, Members and Clients
+## Group and Participants
 
-In MLS a Group is defined as a set of Members who possibly use multiple
-endpoint devices (Clients) to interact with the Messaging Service.
-These Clients will typically correspond to end-user devices such as phones,
-web clients or other devices running MLS.
+In MLS a Group is defined as a set of Participants that interact
+with the Messaging Service.
+These Participants will typically correspond to end-user devices
+such as phones, web clients or other devices running MLS.
 
-Each member device owns a long term identity key pair that uniquely defines
-its identity to other Members of the Group.
-Because a single Member may operate multiple devices simultaneously
+Each Participant owns a long term identity key pair that uniquely defines
+its identity to other members of the Group.
+Because a single user may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
 one phone with another), the formal definition of a Group in MLS
-is the set of Clients that has legitimate knowledge of the shared (Encryption)
+is the set of Participants that has legitimate knowledge of the shared (Encryption)
 Group Key established in the group key establishment phase of the protocol.
 
-In some messaging systems, Clients belonging to the same Member must
+In some messaging systems, Participants belonging to the same user must
 all share the same identity key pair, but MLS does not assume this.
 The MLS architecture considers the more general case and allows for
-important use cases, such as a Member adding a new Client when all their
+important use cases, such as a user adding a new Participant when all their
 existing clients are offline.
 
-MLS has been designed to provide similar security guarantees to all Clients,
-for all group sizes, even when it reduces to only two Clients.
+MLS has been designed to provide similar security guarantees to all Participants,
+for all group sizes, even when it reduces to only two Participants.
 
 ## Authentication Service
 
