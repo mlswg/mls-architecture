@@ -44,8 +44,6 @@ author:
     email: alan@wire.com
 
 informative:
-  RFC2119:
-
   MLSPROTO:
        title: "Messaging Layer Security Protocol"
        date: 2018
@@ -299,7 +297,7 @@ the functional and security guarantees provided by MLS may differ.
 Upon joining the system, each Client stores its initial cryptographic
 key material with the DS. This key material represents the initial contribution
 from each member that will be used in the establishment of the shared group
-key. This initial keying material MUST be authenticated using
+key. This initial keying material is authenticated using
 the Client's identity key. Thus, the Client stores:
 
 * A credential from the Authentication service attesting to the
