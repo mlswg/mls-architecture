@@ -111,7 +111,7 @@ Messaging Layer Security (MLS) specifies an architecture (this document)
 and an abstract protocol {{MLSPROTO}} for providing end-to-end security
 in this setting. MLS is not intended as a full instant messaging
 protocol but rather is intended to be embedded in a concrete protocol
-such as XMPP {{?RFC3920}}. In addition, it does not specify a complete
+such as XMPP {{?RFC6120}}. In addition, it does not specify a complete
 wire encoding, but rather a set of abstract data structures which
 can then be mapped onto a variety of concrete encodings, such as
 TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and JSON {{?RFC7159}}.
@@ -563,7 +563,7 @@ In general we do not consider Denial of Service (DoS) resistance to be the respo
 of the protocol. However, it should not be possible for anyone to perform a
 trivial DoS attack from which it is hard to recover.
 
-#### Deniability
+#### Non-Repudiation and Deniability
 
 As described in {{client-compromise}}, MLS provides data origin authentication
 within a group, such that one group member cannot send a message that appears
