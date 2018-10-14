@@ -215,7 +215,7 @@ Clients may wish to do the following:
 
 At the cryptographic level, Clients in groups (and by extension Members)
 are peers. For instance, any Client can add a member to a group. This
-is in contrast so some designs in which there is a single group
+is in contrast to some designs in which there is a single group
 controller who can modify the group. MLS is compatible with having
 group administration restricted to certain users, but we assume that
 those restrictions are enforced by authentication and access control.
