@@ -257,7 +257,7 @@ which exist 1:1 with Members, to identity keys, which may either
 be one per Client or may be shared amongst the Clients attached
 to a Member.
 
-* A certificate authority or similar service which signs some sort of
+* A certification authority or similar service which signs some sort of
   portable credential binding an identity to a key.
 
 * A directory server which provides the key for a given identity
@@ -285,7 +285,7 @@ Messaging Service architecture:
 
 * To route messages between Clients and to act as a message
   broadcaster, taking in one message and forwarding it to multiple Clients
-  (also known as "server side fanout")
+  (also known as "server side fanout").
 
 
 Depending on the level of trust given by the Group to the Delivery Service,
@@ -378,7 +378,7 @@ MLS-using systems can enforce some mechanism for doing
 so. Typically this will consist of evicting Clients which
 are idle for too long, thus containing the threat of
 compromise. The precise details of such mechanisms are
-a matter of local policy.
+a matter of local policy and beyond the scope of this document.
 
 
 
@@ -443,7 +443,7 @@ multiple MLS implementations can interoperate and to form federated systems.
 
 ### Compatibility with future versions of MLS
 
-It is important the multiple versions of MLS be able to coexist in the future.
+It is important that multiple versions of MLS be able to coexist in the future.
 Thus, MLS offers a version negotiation mechanism; this mechanism prevents
 version downgrade attacks where an attacker would actively rewrite messages
 messages with a lower protocol version than the ones originally offered by
