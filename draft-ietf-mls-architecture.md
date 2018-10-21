@@ -205,6 +205,8 @@ Clients may wish to do the following:
 
  -  remove one or more members from an existing group;
 
+ - join an existing group;
+
  -  leave a group;
 
  -  send a message to everyone in the group;
@@ -427,8 +429,10 @@ are made about the format of the payload.
 
 The protocol is designed in a way that limits the server-side (AS and DS)
 metadata footprint. The DS only persists data required for the delivery
-of messages and avoids Personally Identifiable Information (PII) or other
-sensitive metadata wherever possible.
+of messages and avoid Personally Identifiable Information (PII) or other
+sensitive metadata wherever possible. A Messaging Service provider that has
+control over both the AS and the DS, will not be able to correlate encrypted
+messages forwarded by the DS, with the initial public keys signed by the AS.
 
 ### Federation
 
@@ -460,8 +464,8 @@ goals ("MLS aims to guarantee that...")?]]
 We assume that all transport connections are secured via some transport
 layer security mechanism such as TLS {{?I-D.ietf-tls-tls13}}. However,
 as noted above, the security of MLS will generally survive compromise
-of the transport layer. Note that this may not extend to connections with the
-AS, which will typically require authentication at a minimum.
+of the transport layer, so long as identities provided by the AS are
+authenticated at a minimum.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
@@ -558,9 +562,8 @@ weakening the PCS guarantees for attachments.
 #### Denial of Service {#denial-of-service}
 
 In general we do not consider Denial of Service (DoS) resistance to be the responsibility
-of the protocol. However, it should not be possible for anyone to perform a
-trivial DoS attack from which it is hard to recover. This excludes the DS, which
-is explicitly relied upon to not conduct or actively facilitate a DoS.
+of the protocol. However, it should not be possible for anyone aside from the DS to
+perform a trivial DoS attack from which it is hard to recover.
 
 #### Non-Repudiation and Deniability
 
