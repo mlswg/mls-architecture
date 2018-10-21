@@ -205,8 +205,6 @@ Clients may wish to do the following:
 
  -  remove one or more members from an existing group;
 
- -  join an existing group;
-
  -  leave a group;
 
  -  send a message to everyone in the group;
@@ -429,16 +427,15 @@ are made about the format of the payload.
 
 The protocol is designed in a way that limits the server-side (AS and DS)
 metadata footprint. The DS only persists data required for the delivery
-of messages and avoid Personally Identifiable Information (PII) or other
-sensitive metadata wherever possible. A Messaging Service provider that has
-control over both the AS and the DS, will not be able to correlate encrypted
-messages forwarded by the DS, with the initial public keys signed by the AS.
+of messages and avoids Personally Identifiable Information (PII) or other
+sensitive metadata wherever possible.
 
 ### Federation
 
 The protocol aims to be compatible with federated environments. While this
 document does not specify all necessary mechanisms required for federation,
-multiple MLS implementations can interoperate and to form federated systems.
+multiple MLS implementations can interoperate and to form federated systems if
+they use compatible wire encodings.
 
 
 ### Compatibility with future versions of MLS
@@ -463,7 +460,8 @@ goals ("MLS aims to guarantee that...")?]]
 We assume that all transport connections are secured via some transport
 layer security mechanism such as TLS {{?I-D.ietf-tls-tls13}}. However,
 as noted above, the security of MLS will generally survive compromise
-of the transport layer.
+of the transport layer. Note that this may not extend to connections with the
+AS, which will typically require authentication at a minimum.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
@@ -485,7 +483,7 @@ Client.
 
 A corollary to this statement is that the AS and the DS cannot read the
 content of messages sent between Members as they are not Members of the
-Group. MLS optionally provide additional protections regarding traffic
+Group. MLS optionally provides additional protections regarding traffic
 analysis so as to reduce the ability of adversaries, or a compromised
 member of the messaging system, to deduce the content of the messages
 depending on (for example) their size. One of these protections includes
@@ -561,7 +559,8 @@ weakening the PCS guarantees for attachments.
 
 In general we do not consider Denial of Service (DoS) resistance to be the responsibility
 of the protocol. However, it should not be possible for anyone to perform a
-trivial DoS attack from which it is hard to recover.
+trivial DoS attack from which it is hard to recover. This excludes the DS, which
+is explicitly relied upon to not conduct or actively facilitate a DoS.
 
 #### Non-Repudiation and Deniability
 
@@ -607,9 +606,9 @@ including total DoS attacks (where it simply refuses to forward any
 messages) and partial DoS attacks (where it refuses to forward
 messages to and from specific Clients). As noted in
 {{delivery-guarantees}}, these attacks are only partially detectable
-by clients. Ultimately, failure of the DS to provide reasonable
-service must be dealt with as a customer service matter, not via
-technology.
+by clients without an out-of-band channel. Ultimately, failure of
+the DS to provide reasonable service must be dealt with as a customer
+service matter, not via technology.
 
 Because the DS is responsible for providing the initial keying
 material to Clients, it can provide stale keys. This does not
