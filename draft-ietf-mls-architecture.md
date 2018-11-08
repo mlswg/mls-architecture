@@ -645,6 +645,10 @@ impersonate another.
 
 Finally, Clients should not be able to perform DoS attacks {{denial-of-service}}.
 
+# IANA Considerations
+
+This document makes no requests of IANA.
+
 # Contributors
 
 * Katriel Cohn-Gordon \\
