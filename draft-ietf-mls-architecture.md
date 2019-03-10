@@ -233,13 +233,15 @@ devices to interact with the Messaging Service.
 These members will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS, which are called clients.
 
-Each client owns a long term identity key pair that uniquely defines
-its identity to other clients or members a the Group.
+Each client owns at least one long term identity key pair that
+uniquely defines its identity to other clients or members a the Group.
 Because a single user may operate multiple devices simultaneously
 (e.g., a desktop and a phone) or sequentially (e.g., replacing
 one phone with another), the formal definition of a group in MLS
 is the set of clients that has knowledge of the shared group secret
 established in the group key establishment phase of the protocol.
+Multiple user devices can be grouped, appearing as one virtual
+client to the rest of the group.
 
 In some messaging systems, clients belonging to the same user must
 all share the same identity key pair, but MLS does not assume this.
