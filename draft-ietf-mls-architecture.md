@@ -310,6 +310,11 @@ As noted above, users may own multiple clients, each with their
 own keying material, and thus there may be multiple entries
 stored by each user.
 
+The Delivery Service is also responsible for allowing users to add,
+remove or update their initial keying material and to ensure
+that the identifier for these keys are unique accross all keys
+stored on the DS.
+
 ### Key Retrieval
 
 When a client wishes to establish a group and send an initial message
