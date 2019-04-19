@@ -453,8 +453,8 @@ they use compatible wire encodings.
 It is important that multiple versions of MLS be able to coexist in the future.
 Thus, MLS offers a version negotiation mechanism; this mechanism prevents
 version downgrade attacks where an attacker would actively rewrite messages
-messages with a lower protocol version than the ones originally offered by
-the endpoints. When multiple versions of MLS are available, the negotiation
+with a lower protocol version than the ones originally offered by the
+endpoints. When multiple versions of MLS are available, the negotiation
 protocol guarantees that the version agreed upon will be the highest version
 supported in common by the group.
 
