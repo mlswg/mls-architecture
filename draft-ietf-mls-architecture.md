@@ -418,11 +418,11 @@ does not result in permanent exclusion from the group.
 
 ### Support for Multiple Devices
 
-It is typically expected for users within Group to own different devices.
+It is typically expected for users within a Group to own different devices.
 
-A new device can be added to a group by sharing of an existing client secrets
+A new device can either be added to a group by sharing secrets of an existing client
 or be considered as a new client by the protocol. This client will not gain access
-to the history even if it is owned by someone who owns another member of the Group.
+to the history even if it is owned by some member of the group who owns another client.
 Restoring history is typically not allowed at the protocol level but applications
 can elect to provide such a mechanism outside of MLS.
 
