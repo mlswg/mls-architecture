@@ -418,9 +418,9 @@ does not result in permanent exclusion from the group.
 
 ### Support for Multiple Devices
 
-It is typically expected for users within Group to own different devices.
+It is typically expected for users within a Group to own different devices.
 
-A new device can be added to a group by sharing of an existing client secrets
+A new device can either be added to a group by sharing secrets of an existing client
 or be considered as a new client by the protocol. This client will not gain access
 to the history even if it is owned by someone who owns another member of the Group.
 Restoring history is typically not allowed at the protocol level but applications
@@ -591,7 +591,7 @@ proof is not possible.
 
 MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
 that the attacker has complete control of the network. It is intended
-to provide the security services described in in the face of such attackers.
+to provide the security services described in the face of such attackers.
 In addition,
 these guarantees are intended to degrade gracefully in the presence
 of compromise of the transport security links as well as of
