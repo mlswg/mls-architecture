@@ -591,7 +591,7 @@ proof is not possible.
 
 MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
 that the attacker has complete control of the network. It is intended
-to provide the security services described in in the face of such attackers.
+to provide the security services described in the face of such attackers.
 In addition,
 these guarantees are intended to degrade gracefully in the presence
 of compromise of the transport security links as well as of
