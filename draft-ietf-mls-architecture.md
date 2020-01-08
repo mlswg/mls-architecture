@@ -83,12 +83,11 @@ informative:
 
 --- abstract
 
-This document describes the architecture and requirements for the
-Messaging Layer Security (MLS) protocol.  MLS provides a security
-layer for group messaging applications with from two to a large number
-of clients. It is meant to protect against eavesdropping, tampering,
-and message forgery.
-
+This document describes the reference architecture, functional and
+security requirements for the Messaging Layer Security (MLS) protocol.
+MLS provides a security layer for group messaging applications with
+from two to a large number of clients. It is meant to protect against
+eavesdropping, tampering, and message forgery.
 
 --- middle
 
