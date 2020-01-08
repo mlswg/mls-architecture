@@ -164,7 +164,7 @@ clients to prepare for sending and receiving messages securely:
      *                 /          |          \               *
      *                /           |           \              *
      *      ----------       ----------       ----------     *
-     *     | Client 0 |     | Client 1 |     | Client N |    *
+     *     | Member 0 |     | Member 1 |     | Member N |    *
      *      ----------       ----------       ----------     *
      *     .............................     ............    *
      *     User 0                            User 1          *
