@@ -148,10 +148,10 @@ clients to prepare for sending and receiving messages securely:
 
 - A Delivery Service (DS) which is responsible for receiving and
   redistributing messages between group members.
-  In the case of group messaging, the delivery service may also
-  be responsible for acting as a "broadcaster" where the sender sends
-  a single message to a group which is then forwarded to each
-  recipient in the group by the DS. The DS is also responsible for storing and
+  In the case of group messaging, the delivery service may also be
+  responsible for acting as a "broadcaster" where the sender sends a
+  single message to a group which is then forwarded to each recipient
+  in the group by the DS. The DS is also responsible for storing and
   delivering initial public key material required by clients in order
   to proceed with the group secret key establishment process.
 
