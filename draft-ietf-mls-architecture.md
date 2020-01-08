@@ -105,27 +105,28 @@ be submitted as pull requests at https://github.com/mlswg/mls-architecture.
 Instructions are on that page as well.  Editorial changes can be managed in
 GitHub, but any substantive change should be discussed on the MLS mailing list.
 
-End-to-end security is a requirement for instant messaging systems
-and is commonly deployed in many such systems. In this context, "end-to-end" captures
-the notion that users of the system enjoy some level of security -- with the precise
-level depending on the system design -- even when the messaging
-service they are using performs unsatisfactorily.
+End-to-end security is a requirement for instant messaging systems and
+is commonly deployed in many such systems. In this context,
+"end-to-end" captures the notion that users of the system enjoy some
+level of security -- with the precise level depending on the system
+design -- even when the messaging service they are using performs
+unsatisfactorily.
 
-Messaging Layer Security (MLS) specifies an architecture (this document)
-and an abstract protocol {{MLSPROTO}} for providing end-to-end security
-in this setting. MLS is not intended as a full instant messaging
-protocol but rather is intended to be embedded in a concrete protocol
-such as XMPP {{?RFC6120}}. In addition, it does not specify a complete
-wire encoding, but rather a set of abstract data structures which
-can then be mapped onto a variety of concrete encodings, such as
-TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and JSON {{?RFC7159}}.
-Implementations which adopt compatible encodings will have some degree
-of interoperability at the message level, though they may have incompatible
-identity/authentication infrastructures.
+Messaging Layer Security (MLS) specifies an architecture (this
+document) and an abstract protocol {{MLSPROTO}} for providing
+end-to-end security in this setting. MLS is not intended as a full
+instant messaging protocol but rather is intended to be embedded in a
+concrete protocol such as XMPP {{?RFC6120}}. In addition, it does not
+specify a complete wire encoding, but rather a set of abstract data
+structures which can then be mapped onto a variety of concrete
+encodings, such as TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and
+JSON {{?RFC7159}}.  Implementations which adopt compatible encodings
+will have some degree of interoperability at the message level, though
+they may have incompatible identity/authentication infrastructures.
 
-This document is intended to describe the overall messaging
-system architecture which the MLS protocol fits into, and the
-requirements which it is intended to fulfill.
+This document is intended to describe the overall messaging system
+architecture which the MLS protocol fits into, and the requirements
+which it is intended to fulfill.
 
 # General Setting
 
