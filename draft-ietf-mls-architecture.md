@@ -53,6 +53,11 @@ informative:
             organization: Cisco
             email: rlb@ipv.sx
          -
+            ins: B. Beurdouche
+            name: Benjamin Beurdouche
+            organization: Inria
+            email: benjamin.beurdouche@inria.fr
+         -
             ins: J. Millican
             name: Jon Millican
             organization: Facebook
