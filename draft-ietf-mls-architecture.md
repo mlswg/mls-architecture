@@ -187,20 +187,21 @@ A typical group messaging scenario might look like this:
    service and obtain credentials from the AS.
 
 2. Alice, Bob and Charlie authenticate to the DS and store
-   some initial keying material which can be used to send encrypted messages
-   to them for the first time. This keying material is authenticated
-   with their long term credentials.
+   some initial keying material which can be used to send encrypted
+   messages to them for the first time. This keying material is
+   authenticated with their long term credentials.
 
 3. When Alice wants to send a message to Bob and Charlie, she
    contacts the DS and looks up their initial keying material.
-   She uses these keys to establish a new set of keys which she
-   can use to send encrypted messages to Bob and Charlie. She then sends the
-   encrypted message(s) to the DS, which forwards them to
-   the recipients.
+   She uses these keys to establish a new set of keys which she can
+   use to send encrypted messages to Bob and Charlie. She then sends
+   the encrypted message(s) to the DS, which forwards them to the
+   recipients.
 
 4. Bob and/or Charlie respond to Alice's message. Their messages
-   might trigger a new key derivation step which allows the shared group
-   key to be updated to provide post-compromise security {{fs-and-pcs}}.
+   might trigger a new key derivation step which allows the shared
+   group key to be updated to provide post-compromise security
+   {{fs-and-pcs}}.
 
 Clients may wish to do the following:
 
