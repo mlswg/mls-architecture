@@ -221,11 +221,11 @@ Clients may wish to do the following:
 
 At the cryptographic level, clients (and by extension members in
 groups) have equal permissions. For instance, any member can add
-another client to a group. This is in contrast to some designs in
-which there is a single group controller who can modify the group. MLS
-is compatible with having group administration restricted to certain
-users, but we assume that those restrictions are enforced by
-authentication and access control at the application layer.
+or remove another client in a group. This is in contrast to some
+designs in which there is a single group controller who can modify the
+group. MLS is compatible with having group administration restricted
+to certain users, but we assume that those restrictions are enforced
+by authentication and access control at the application layer.
 Thus, for instance, while it might be technically possible for any
 member to send a message adding a new client to a group, the group
 might have the policy that only certain members are allowed to make
