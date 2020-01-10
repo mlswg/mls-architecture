@@ -174,12 +174,11 @@ clients to prepare for sending and receiving messages securely:
 
 ~~~~
 
-In many systems, the AS and the DS are actually operated by the
-same entity and may even be the same server. However, they
-are logically distinct and, in other systems, may be operated
-by different entities, hence we show them as being separate here. Other
-partitions are also possible, such as having a separate directory
-server.
+In many systems, the AS and the DS are actually operated by the same
+entity and may even be the same server. However, they are logically
+distinct and, in other systems, may be operated by different entities,
+hence we show them as being separate here. Other partitions are also
+possible, such as having a separate directory server.
 
 A typical group messaging scenario might look like this:
 
@@ -236,9 +235,9 @@ from an unauthorized user.
 
 ## Group, Members and Clients
 
-Informally, a group is a set of users who possibly use multiple endpoint
-devices to interact with the Messaging Service.
-These members will typically correspond to end-user devices such as phones,
+Informally, a group is a set of users who possibly use multiple
+endpoint devices to interact with the Messaging Service.  These
+members will typically correspond to end-user devices such as phones,
 web clients or other devices running MLS, which are called clients.
 
 Each client owns at least one long term identity key pair that
@@ -264,8 +263,9 @@ clients, for all group sizes, even when it reduces to only two clients.
 
 The basic function of the Authentication Service (AS) is to provide a
 trusted mapping from user identities (usernames, phone numbers, etc.),
-to long-term identity keys, which may either be one per client or may be
-shared amongst the clients attached to a user. It typically acts as:
+to long-term identity keys, which may either be one per client or may
+be shared amongst the clients attached to a user. It typically acts
+as:
 
 The Authentication Service (AS) is expected to play multiple roles in the
 architecture:
@@ -277,13 +277,14 @@ architecture:
   (presumably this connection is secured via some form of transport
   security such as TLS).
 
-By definition, the AS is invested with a large amount of trust.
-A malicious AS can impersonate -- or allow an attacker to impersonate --
-any user of the system. This risk can be mitigated by publishing
-the binding between identities and keys in a public log such
-as Key Transparency (KT) {{KeyTransparency}}. It is possible to build a functional
-MLS system without any kind of public key logging, but such a system will
-necessarily be somewhat vulnerable to attack by a malicious or untrusted AS.
+By definition, the AS is invested with a large amount of trust.  A
+malicious AS can impersonate -- or allow an attacker to impersonate --
+any user of the system. This risk can be mitigated by publishing the
+binding between identities and keys in a public log such as Key
+Transparency (KT) {{KeyTransparency}}. It is possible to build a
+functional MLS system without any kind of public key logging, but such
+a system will necessarily be somewhat vulnerable to attack by a
+malicious or untrusted AS.
 
 ## Delivery Service
 
@@ -300,16 +301,17 @@ Messaging Service architecture:
   clients (also known as "server side fanout").
 
 
-Depending on the level of trust given by the group to the Delivery Service,
-the functional and security guarantees provided by MLS may differ.
+Depending on the level of trust given by the group to the Delivery
+Service, the functional and security guarantees provided by MLS may
+differ.
 
 ### Key Storage
 
 Upon joining the system, each client stores its initial cryptographic
-key material with the DS. This key material represents the initial contribution
-that will be used in the establishment of the shared group secret.
-This initial keying material is authenticated using the client's
-identity key. Thus, the client stores:
+key material with the DS. This key material represents the initial
+contribution that will be used in the establishment of the shared
+group secret.  This initial keying material is authenticated using the
+client's identity key. Thus, the client stores:
 
 * A credential from the Authentication service attesting to the
   binding between the user and the client's identity key.
@@ -388,35 +390,35 @@ list is stored on some server associated with the MS.
 
 ### Membership and offline members
 
-Because Forward Secrecy (FS) and Post-Compromise Security (PCS)
-rely on the deletion and replacement of keying material,
-any client which is persistently offline
-may still be holding old keying material and thus be a threat
-to both FS and PCS if it is later compromised.
-MLS does not inherently defend against this problem, but
-MLS-using systems can enforce some mechanism for doing
-so. Typically this will consist of evicting clients which
-are idle for too long, thus containing the threat of
-compromise. The precise details of such mechanisms are
-a matter of local policy and beyond the scope of this document.
+Because Forward Secrecy (FS) and Post-Compromise Security (PCS) rely
+on the deletion and replacement of keying material, any client which
+is persistently offline may still be holding old keying material and
+thus be a threat to both FS and PCS if it is later compromised.
+MLS does not inherently defend against this problem, but MLS-using
+systems can enforce some mechanism for doing so. Typically this will
+consist of evicting clients which are idle for too long, thus
+containing the threat of compromise. The precise details of such
+mechanisms are a matter of local policy and beyond the scope of this
+document.
 
 
 # System Requirements
 
 ## Functional Requirements
 
-MLS is designed as a large scale group messaging protocol and hence aims to
-provide performance and safety to its users.  Messaging systems that implement
-MLS provide support for conversations involving two or more members,
-and aim to scale to approximately 50,000 members, typically including many
-users using multiple devices.
+MLS is designed as a large scale group messaging protocol and hence
+aims to provide performance and safety to its users.  Messaging
+systems that implement MLS provide support for conversations involving
+two or more members, and aim to scale to approximately 50,000 members,
+typically including many users using multiple devices.
 
 ### Asynchronous Usage
 
-No operation in MLS requires two distinct users or clients to be online
-simultaneously. In particular, clients participating in conversations protected
-using MLS can update shared keys, add or remove new members, and
-send messages and attachments without waiting for another user's reply.
+No operation in MLS requires two distinct users or clients to be
+online simultaneously. In particular, clients participating in
+conversations protected using MLS can update shared keys, add or
+remove new members, and send messages and attachments without waiting
+for another user's reply.
 
 Messaging systems that implement MLS provide a transport layer for
 delivering messages asynchronously and reliably.
@@ -430,47 +432,49 @@ does not result in permanent exclusion from the group.
 
 ### Support for Multiple Devices
 
-It is typically expected for users within a Group to own different devices.
+It is typically expected for users within a Group to own different
+devices.
 
-A new device can either be added to a group by sharing secrets of an existing client
-or be considered as a new client by the protocol. This client will not gain access
-to the history even if it is owned by someone who owns another member of the Group.
-Restoring history is typically not allowed at the protocol level but applications
-can elect to provide such a mechanism outside of MLS.
-Such mechanisms, if used, may undermine the FS and PCS
-guarantees provided by MLS.
+A new device can either be added to a group by sharing secrets of an
+existing client or be considered as a new client by the protocol. This
+client will not gain access to the history even if it is owned by
+someone who owns another member of the Group.  Restoring history is
+typically not allowed at the protocol level but applications can elect
+to provide such a mechanism outside of MLS.  Such mechanisms, if used,
+may undermine the FS and PCS guarantees provided by MLS.
 
 ### Extensibility / Pluggability
 
-Messages that do not affect the group state can carry an arbitrary payload with
-the purpose of sharing that payload between group members. No assumptions
-are made about the format of the payload.
+Messages that do not affect the group state can carry an arbitrary
+payload with the purpose of sharing that payload between group
+members. No assumptions are made about the format of the payload.
 
 ### Privacy
 
-The protocol is designed in a way that limits the server-side (AS and DS)
-metadata footprint. The DS only persists data required for the delivery
-of messages and avoid Personally Identifiable Information (PII) or other
-sensitive metadata wherever possible. A Messaging Service provider that has
-control over both the AS and the DS, will not be able to correlate encrypted
-messages forwarded by the DS, with the initial public keys signed by the AS.
+The protocol is designed in a way that limits the server-side (AS and
+DS) metadata footprint. The DS only persists data required for the
+delivery of messages and avoid Personally Identifiable Information
+(PII) or other sensitive metadata wherever possible. A Messaging
+Service provider that has control over both the AS and the DS, will
+not be able to correlate encrypted messages forwarded by the DS, with
+the initial public keys signed by the AS.
 
 ### Federation
 
-The protocol aims to be compatible with federated environments. While this
-document does not specify all necessary mechanisms required for federation,
-multiple MLS implementations can interoperate to form federated systems if
-they use compatible wire encodings.
+The protocol aims to be compatible with federated environments. While
+this document does not specify all necessary mechanisms required for
+federation, multiple MLS implementations can interoperate to form
+federated systems if they use compatible wire encodings.
 
 ### Compatibility with future versions of MLS
 
-It is important that multiple versions of MLS be able to coexist in the future.
-Thus, MLS offers a version negotiation mechanism; this mechanism prevents
-version downgrade attacks where an attacker would actively rewrite messages with
-a lower protocol version than the ones originally offered by the endpoints. When
-multiple versions of MLS are available, the negotiation protocol guarantees that
-the version agreed upon will be the highest version supported in common by the
-group.
+It is important that multiple versions of MLS be able to coexist in
+the future.  Thus, MLS offers a version negotiation mechanism; this
+mechanism prevents version downgrade attacks where an attacker would
+actively rewrite messages with a lower protocol version than the ones
+originally offered by the endpoints. When multiple versions of MLS are
+available, the negotiation protocol guarantees that the version agreed
+upon will be the highest version supported in common by the group.
 
 ## Security Requirements
 
@@ -493,32 +497,35 @@ authenticated at a minimum.
 The trust establishment step of the MLS protocol is followed by a
 conversation protection step where encryption is used by clients to
 transmit authenticated messages to other clients through the DS.
-This ensures that the DS does not have access to the group's private content.
+This ensures that the DS does not have access to the group's private
+content.
 
-MLS aims to provide secrecy, integrity and authentication for all messages.
+MLS aims to provide secrecy, integrity and authentication for all
+messages.
 
-Message Secrecy in the context of MLS means that only intended recipients
-(current group members), can read any message sent to the group,
-even in the context of an active attacker as described in the threat model.
+Message Secrecy in the context of MLS means that only intended
+recipients (current group members), can read any message sent to the
+group, even in the context of an active attacker as described in the
+threat model.
 
-Message Integrity and Authentication mean that an honest Client can only
-accept a message if it was sent by a group member and that no Client
-can send a message which other Clients accept as being from another
-Client.
+Message Integrity and Authentication mean that an honest Client can
+only accept a message if it was sent by a group member and that no
+Client can send a message which other Clients accept as being from
+another Client.
 
-A corollary to this statement is that the AS and the DS cannot read the
-content of messages sent between Members as they are not Members of the
-Group. MLS optionally provides additional protections regarding traffic
-analysis so as to reduce the ability of attackers, or a compromised
-member of the messaging system, to deduce the content of the messages
-depending on (for example) their size. One of these protections includes
-padding messages in order to produce ciphertexts of standard
-length. While this protection is highly recommended it is not
-mandatory as it can be costly in terms of performance for clients
+A corollary to this statement is that the AS and the DS cannot read
+the content of messages sent between Members as they are not Members
+of the Group. MLS optionally provides additional protections regarding
+traffic analysis so as to reduce the ability of attackers, or a
+compromised member of the messaging system, to deduce the content of
+the messages depending on (for example) their size. One of these
+protections includes padding messages in order to produce ciphertexts
+of standard length. While this protection is highly recommended it is
+not mandatory as it can be costly in terms of performance for clients
 and the MS.
 
-Message content can be deniable if the signature keys are exchanged over
-a deniable channel prior to signing messages.
+Message content can be deniable if the signature keys are exchanged
+over a deniable channel prior to signing messages.
 
 #### Forward and Post-Compromise Security {#fs-and-pcs}
 
@@ -526,23 +533,24 @@ MLS provides additional protection regarding secrecy of past messages
 and future messages. These cryptographic security properties are
 Forward Secrecy (FS) and Post-Compromise Security (PCS).
 
-FS means that access to all encrypted traffic history combined
-with an access to all current keying material on clients will not
-defeat the secrecy properties of messages older than the oldest key of
-the compromised client.
-Note that this means that clients have the extremely important role
-of deleting appropriate keys as soon as they have been used with
-the expected message, otherwise the secrecy of the messages and the
+FS means that access to all encrypted traffic history combined with an
+access to all current keying material on clients will not defeat the
+secrecy properties of messages older than the oldest key of the
+compromised client.
+Note that this means that clients have the extremely important role of
+deleting appropriate keys as soon as they have been used with the
+expected message, otherwise the secrecy of the messages and the
 security for MLS is considerably weakened.
 
-PCS means that if a group member's state is compromised at some time t but the
-group member subsequently performs an update at some time t', then all MLS
-guarantees apply to messages sent by the member after time t', and by other
-members after they have processed the update. For example, if an attacker learns
-all secrets known to Alice at time t, including both Alice's long-term secret
-keys and all shared group keys, but Alice performs a key update at time t', then
-the attacker is unable to violate any of the MLS security properties after the
-updates have been processed.
+PCS means that if a group member's state is compromised at some time t
+but the group member subsequently performs an update at some time t',
+then all MLS guarantees apply to messages sent by the member after
+time t', and by other members after they have processed the
+update. For example, if an attacker learns all secrets known to Alice
+at time t, including both Alice's long-term secret keys and all shared
+group keys, but Alice performs a key update at time t', then the
+attacker is unable to violate any of the MLS security properties after
+the updates have been processed.
 
 Both of these properties are satisfied even against compromised
 DSs and ASs.
@@ -552,11 +560,11 @@ DSs and ASs.
 MLS aims to provide agreement on group membership, meaning that all
 group members have agreed on the list of current group members.
 
-Some applications may wish to enforce ACLs to limit addition or removal
-of group members, to privileged clients or users. Others may wish to require
-authorization from the current group members or a subset thereof.
-Regardless, MLS does not allow addition or removal of group members
-without informing all other members.
+Some applications may wish to enforce ACLs to limit addition or
+removal of group members, to privileged clients or users. Others may
+wish to require authorization from the current group members or a
+subset thereof.  Regardless, MLS does not allow addition or removal of
+group members without informing all other members.
 
 Once a client is part of a group, the set of devices controlled by the
 user can only be altered by an authorized member of the group.
@@ -564,7 +572,8 @@ This authorization could depend on the application: some applications
 might want to allow certain other members of the group to add or
 remove devices on behalf of another member, while other applications
 might want a more strict policy and allow only the owner of the
-devices to add or remove them at the potential cost of weaker PCS guarantees.
+devices to add or remove them at the potential cost of weaker PCS
+guarantees.
 
 Members who are removed from a group do not enjoy special privileges:
 compromise of a removed group member does not affect the security
@@ -574,52 +583,53 @@ if the group secrets have not been deleted properly.
 #### Parallel Groups
 
 Any user may have membership in several Groups simultaneously.
-The set of members of any group may or may not form a
-subset of the members of another group. MLS guarantees that the FS and PCS goals
-are maintained and not weakened by user membership in multiple groups.
+The set of members of any group may or may not form a subset of the
+members of another group. MLS guarantees that the FS and PCS goals are
+maintained and not weakened by user membership in multiple groups.
 
 #### Security of Attachments
 
-The security properties expected for attachments in the MLS protocol are
-very similar to the ones expected from messages. The distinction between
-messages and attachments stems from the fact that the typical average time
-between the download of a message and the one from the attachments
-may be different. For many reasons (a typical reason being the lack of
-high bandwidth network connectivity), the lifetime of the cryptographic
-keys for attachments is usually higher than for messages, hence slightly
-weakening the PCS guarantees for attachments.
+The security properties expected for attachments in the MLS protocol
+are very similar to the ones expected from messages. The distinction
+between messages and attachments stems from the fact that the typical
+average time between the download of a message and the one from the
+attachments may be different. For many reasons (a typical reason being
+the lack of high bandwidth network connectivity), the lifetime of the
+cryptographic keys for attachments is usually higher than for
+messages, hence slightly weakening the PCS guarantees for attachments.
 
 #### Denial of Service {#denial-of-service}
 
-In general we do not consider Denial of Service (DoS) resistance to be the
-responsibility of the protocol. However, it should not be possible for anyone
-aside from the DS to perform a trivial DoS attack from which it is hard to
-recover.
+In general we do not consider Denial of Service (DoS) resistance to be
+the responsibility of the protocol. However, it should not be possible
+for anyone aside from the DS to perform a trivial DoS attack from
+which it is hard to recover.
 
 #### Non-Repudiation vs Deniability
 
-As described in {{client-compromise}}, MLS provides strong authentication
-within a group, such that a group member cannot send a message that appears
-to be from another group member. Additionally, some services require that a
-recipient be able to prove to the messaging service that a message was
-sent by a given client, in order to report abuse. MLS supports
-both of these use cases. In some deployments, these services are provided
-by mechanisms which allow the receiver to prove a message's origin
-to a third party (this if often called "non-repudiation"), but it
-should also be possible to operate MLS in a "deniable" mode where such
-proof is not possible.
+As described in {{client-compromise}}, MLS provides strong
+authentication within a group, such that a group member cannot send a
+message that appears to be from another group member. Additionally,
+some services require that a recipient be able to prove to the
+messaging service that a message was sent by a given client, in order
+to report abuse. MLS supports both of these use cases. In some
+deployments, these services are provided by mechanisms which allow the
+receiver to prove a message's origin to a third party (this if often
+called "non-repudiation"), but it should also be possible to operate
+MLS in a "deniable" mode where such proof is not possible.
 [[OPEN ISSUE: Exactly how to supply this is still a protocol question.]]
 
 
 # Security Considerations
 
-MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes
-that the attacker has complete control of the network. It is intended
-to provide the security services described in the face of such attackers.
-In addition, these guarantees are intended to degrade gracefully in the
-presence of compromise of the transport security links as well as of
-both Clients and elements of the messaging system, as described in the
-remainder of this section.
+MLS adopts the Internet threat model {{?RFC3552}} and therefore
+assumes that the attacker has complete control of the network. It is
+intended to provide the security services described in the face of
+such attackers.
+In addition, these guarantees are intended to degrade gracefully in
+the presence of compromise of the transport security links as well as
+of both Clients and elements of the messaging system, as described in
+the remainder of this section.
 
 ## Transport Security Links
 
@@ -637,22 +647,22 @@ or replay messages.
 However, a DS can mount a variety of DoS attacks on the system,
 including total DoS attacks (where it simply refuses to forward any
 messages) and partial DoS attacks (where it refuses to forward
-messages to and from specific clients). As noted in
-{{delivery-guarantees}}, these attacks are only partially detectable
-by clients without an out-of-band channel. Ultimately, failure of
-the DS to provide reasonable service must be dealt with as a customer
-service matter, not via technology.
+messages to and from specific clients).
+As noted in {{delivery-guarantees}}, these attacks are only partially
+detectable by clients without an out-of-band channel. Ultimately,
+failure of the DS to provide reasonable service must be dealt with as
+a customer service matter, not via technology.
 
 Because the DS is responsible for providing the initial keying
 material to clients, it can provide stale keys. This does not
-inherently lead to compromise of the message stream, but does
-allow it to attack forward security to a limited extent.
-This threat can be mitigated by having initial keys expire.
+inherently lead to compromise of the message stream, but does allow it
+to attack forward security to a limited extent.  This threat can be
+mitigated by having initial keys expire.
 
 ## Authentication Service Compromise
 
-A compromised AS is a serious matter, as the AS can provide
-incorrect or attacker-provided identities to clients.  As noted in
+A compromised AS is a serious matter, as the AS can provide incorrect
+or attacker-provided identities to clients.  As noted in
 {{authentication-service}}, detecting this form of attack requires
 some sort of transparency/logging mechanism. Without such a mechanism,
 MLS cannot detect a compromised AS.
@@ -672,7 +682,8 @@ be from another client with a different identity. Note that if devices
 from the same user share keying material, then one will be able to
 impersonate another.
 
-Finally, clients should not be able to perform DoS attacks {{denial-of-service}}.
+Finally, clients should not be able to perform DoS attacks
+{{denial-of-service}}.
 
 # IANA Considerations
 
