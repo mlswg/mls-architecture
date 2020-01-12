@@ -439,15 +439,17 @@ encrypted at rest.
 ### Membership and offline members
 
 Because Forward Secrecy (FS) and Post-Compromise Security (PCS) rely
-on the deletion and replacement of keying material, any client which
-is persistently offline may still be holding old keying material and
-thus be a threat to both FS and PCS if it is later compromised.
-MLS does not inherently defend against this problem, but MLS-using
-systems can enforce some mechanism for doing so. Typically this will
-consist of evicting clients which are idle for too long, thus
-containing the threat of compromise. The precise details of such
-mechanisms are a matter of local policy and beyond the scope of this
-document.
+on the active deletion and replacement of keying material, any client
+which is persistently offline may still be holding old keying material
+and thus be a threat to both FS and PCS if it is later compromised.
+
+MLS cannot inherently defend against this problem, especially in the
+case where the Client hasn't processed messages but MLS-using
+systems can enforce some mechanism to try retaining these properties.
+Typically this will consist of evicting clients which are idle for too
+long, thus containing the threat of compromise. The precise details of
+such mechanisms are a matter of local policy and beyond the scope of
+this document.
 
 
 # System Requirements
@@ -457,26 +459,30 @@ document.
 MLS is designed as a large scale group messaging protocol and hence
 aims to provide performance and safety to its users.  Messaging
 systems that implement MLS provide support for conversations involving
-two or more members, and aim to scale to approximately 50,000 members,
+two or more members, and aim to scale to groups as large as 50,000 members,
 typically including many users using multiple devices.
 
 ### Asynchronous Usage
 
-No operation in MLS requires two distinct users or clients to be
-online simultaneously. In particular, clients participating in
+No operation in MLS requires two distinct clients or members to be
+online simultaneously. In particular, members participating in
 conversations protected using MLS can update shared keys, add or
 remove new members, and send messages and attachments without waiting
 for another user's reply.
 
-Messaging systems that implement MLS provide a transport layer for
-delivering messages asynchronously and reliably.
+Messaging systems that implement MLS have to provide a transport layer
+for delivering messages asynchronously and reliably.
 
 ### Recovery After State Loss
 
 Conversation participants whose local MLS state is lost or corrupted
 can reinitialize their state and continue participating in the
-conversation. This may entail some level of message loss, but
-does not result in permanent exclusion from the group.
+conversation.
+
+[[OPEN ISSUE: The previous statement seems too strong, establish
+what exact functional requirement we have regarding state recovery.
+Previously: "This may entail some level of message loss, but
+does not result in permanent exclusion from the group."]]
 
 ### Support for Multiple Devices
 
