@@ -489,13 +489,13 @@ does not result in permanent exclusion from the group."]]
 It is typically expected for users within a Group to own different
 devices.
 
-A new device can either be added to a group by sharing secrets of an
-existing client or be considered as a new client by the protocol. This
-client will not gain access to the history even if it is owned by
-someone who owns another member of the Group.  Restoring history is
-typically not allowed at the protocol level but applications can elect
-to provide such a mechanism outside of MLS.  Such mechanisms, if used,
-may undermine the FS and PCS guarantees provided by MLS.
+A new device can be added to a group and be considered as a new client
+by the protocol. This client will not gain access to the history even
+if it is owned by someone who owns another member of the Group.
+Restoring history is typically not allowed at the protocol level but
+applications can elect to provide such a mechanism outside of MLS.
+Such mechanisms, if used, may undermine the FS and PCS guarantees
+provided by MLS.
 
 ### Extensibility / Pluggability
 
@@ -513,12 +513,17 @@ Service provider that has control over both the AS and the DS, will
 not be able to correlate encrypted messages forwarded by the DS, with
 the initial public keys signed by the AS.
 
+[[OPEN ISSUE: These privacy statements seem very strong.
+BB. I would be willing to keep them as requirements since we have
+example solutions in the Server-Assist draft.]]
+
 ### Federation
 
 The protocol aims to be compatible with federated environments. While
 this document does not specify all necessary mechanisms required for
 federation, multiple MLS implementations can interoperate to form
-federated systems if they use compatible wire encodings.
+federated systems if they use compatible authentication mechanisms
+and infrastructure functionalities.
 
 ### Compatibility with future versions of MLS
 
@@ -529,6 +534,12 @@ actively rewrite messages with a lower protocol version than the ones
 originally offered by the endpoints. When multiple versions of MLS are
 available, the negotiation protocol guarantees that the version agreed
 upon will be the highest version supported in common by the group.
+
+In MLS 1.0, the creator of the group is responsible for selecting the
+best ciphersuite proposed across clients. Each client is able to
+verify availability of protocol version, ciphersuites and extensions
+at all times once he has at least received the first group operation
+message.
 
 ## Security Requirements
 
@@ -544,7 +555,9 @@ We assume that all transport connections are secured via some transport
 layer security mechanism such as TLS {{?I-D.ietf-tls-tls13}}. However,
 as noted above, the security of MLS will generally survive compromise
 of the transport layer, so long as identity keys provided by the AS are
-authenticated at a minimum.
+authenticated at a minimum. However, MLS ciphertext contain the Group
+Identifier, Epoch number and Content Type that may be use to improve
+attacks on the privacy of the group.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
