@@ -324,11 +324,22 @@ Messaging Service architecture:
   broadcaster, taking in one message and forwarding it to multiple
   clients (also known as "server side fanout").
 
+Because the MLS protocol provides a way for Clients to send and receive
+application messages asynchronously, it only provides causal
+ordering of application messages from senders while it has to enforce
+global ordering of group operations to provide Group Agreement.
 
 Depending on the level of trust given by the group to the Delivery
 Service, the functional and privacy guarantees provided by MLS may
 differ but the Authentication and Confidentiality guarantees remain
 the same.
+
+Unlike the Authentication Service which is trusted for authentication
+and secrecy, the Delivery Service is completely untrusted regarding
+this property. While privacy of group membership might be a problem
+in the case of a DS server fanout, the Delivery Service can be
+considered as an active adaptative network attacker from the point of
+view of the security analysis.
 
 ### Key Storage
 
@@ -355,22 +366,20 @@ stored on the DS.
 
 ### Key Retrieval
 
-When a client wishes to establish a group and send an initial message
-to that group, it contacts the DS and retrieves the initial key
-material for each other client, verifies it using the identity key,
-and from those forms the group secret, which it can use for the
-encryption of messages.
+When a client wishes to establish a group, it first contacts the DS to
+request a ClientInitKey for each other client, authenticate it using
+the signature keys, and then can use those to form the group.
 
 ### Delivery of messages and attachments {#delivery-guarantees}
 
-The DS's main responsibility is to ensure delivery of messages.
-Specifically, we assume that DSs provide:
+The main responsibility of the Delivery Service is to ensure delivery
+of messages. Specifically, we assume that DSs provide:
 
 * Reliable delivery: when a message is provided to the DS,
   it is eventually delivered to all clients.
 
 * In-order delivery: messages are delivered to the group
-  in the order they are received from a given client
+  in the order they are received by the Delivery Service
   and in approximately the order in which they are sent
   by clients. The latter is an approximate guarantee because
   multiple clients may send messages at the same time
@@ -380,14 +389,20 @@ Specifically, we assume that DSs provide:
 * Consistent ordering: the DS must ensure that all clients
   have the same view of message ordering for cryptographically
   relevant operations. This means that the DS MUST enforce
-  global consistency of the ordering of these messages while
-  MLS provides causal consistency of the application messages
-  for each sender.
+  global consistency of the ordering of group operation messages.
 
-Note that the DS may provide ordering guarantees by ensuring
-in-order delivery or by providing messages with some kind
-of sequence information and allowing clients to reorder on
-receipt.
+Note that the protocol provides three important information
+within an MLSCiphertext message in order to provide ordering:
+
+* The Group Identifier (GID) to allow to distinguish the group for
+  which the message has been sent;
+
+* The Epoch number, which represent the number of changes (version) of
+  the group associated with a specific GID, and allows for
+  lexicographical ordering of two messages from the same group;
+
+* The Content Type of the message, which allows the DS to determine
+  the ordering requirement on the message.
 
 The MLS protocol itself can verify these properties. For instance, if
 the DS reorders messages from a Client or provides different Clients
