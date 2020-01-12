@@ -326,22 +326,23 @@ Messaging Service architecture:
 
 
 Depending on the level of trust given by the group to the Delivery
-Service, the functional and security guarantees provided by MLS may
-differ.
+Service, the functional and privacy guarantees provided by MLS may
+differ but the Authentication and Confidentiality guarantees remain
+the same.
 
 ### Key Storage
 
 Upon joining the system, each client stores its initial cryptographic
-key material with the DS. This key material represents the initial
-contribution that will be used in the establishment of the shared
-group secret.  This initial keying material is authenticated using the
-client's identity key. Thus, the client stores:
+key material with the Delivery Service. This key material, called
+ClientInitKey, advertizes the functional abilities of the Client such as
+supported protocol versions and extensions and the following
+cryptographic information:
 
-* A credential from the Authentication service attesting to the
-  binding between the user and the client's identity key.
+* A credential from the Authentication Service attesting to the
+  binding between the identity and the client's signature key.
 
-* The client's initial keying material signed with the client's
-  identity key.
+* The client's asymmetric encryption key material signed with the
+  signature key associated with the credential.
 
 As noted above, users may own multiple clients, each with their
 own keying material, and thus there may be multiple entries
