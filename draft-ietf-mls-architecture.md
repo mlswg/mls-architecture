@@ -280,6 +280,23 @@ architecture:
   (presumably this connection is secured via some form of transport
   security such as TLS).
 
+The MLS protocol assumes a signature keypair for authentication of
+messages. It is important to note that this signature keypair might be
+the identity keypair directly, or a different signature keypair for
+which the the public key has been for example signed by the identity
+private key. This flexibility allows for multiple infrastructure
+considerations and has the benefit of providing ways to use
+different signature keys across different groups by using hierarchical
+authentication keys. This flexibility also comes at the price of a
+security tradeoff, described in the security considerations, between
+potential unlinkability of the signature keys across groups and the
+amount of time required to reinstate authentication and secrecy of
+messages after the compromise of a device.
+
+Ultimately, the only requirement is for the applications to be able to
+check the credential containing the protocol signing key and the
+identity against the Authentication Service at any time.
+
 By definition, the Authentication Service is invested with a large
 amount of trust.  A malicious AS can impersonate -- or allow an
 attacker to impersonate -- any user of the system. As a corrolary, by
