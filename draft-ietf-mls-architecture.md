@@ -274,7 +274,7 @@ The Authentication Service (AS) is expected to play multiple roles in the
 architecture:
 
 * A certification authority or similar service which signs some sort of
-  portable credential binding an identity to an identity key.
+  portable credential binding an identity to a signature key.
 
 * A directory server which provides the key for a given identity
   (presumably this connection is secured via some form of transport
