@@ -230,8 +230,8 @@ designs in which there is a single group controller who can modify the
 group. MLS is compatible with having group administration restricted
 to certain users, but we assume that those restrictions are enforced
 by authentication and access control at the application layer.
-Thus, for instance, while it might be technically possible for any
-member to send a message adding a new client to a group, the group
+Thus, for instance, while it might be cryptographically possible for
+any member to send a message adding a new client to a group, the group
 might have the policy that only certain members are allowed to make
 changes and thus other members can ignore or reject such a message
 from an unauthorized user.
