@@ -267,28 +267,31 @@ cannot assume she is a member of the group.
 
 The basic function of the Authentication Service (AS) is to provide a
 trusted mapping from user identities (usernames, phone numbers, etc.),
-to long-term identity keys, which may either be one per client or may
-be shared amongst the clients attached to a user. It typically acts
-as:
+to long-term identity keys, which may either be one per Client or may
+be shared amongst the clients attached to a user.
 
 The Authentication Service (AS) is expected to play multiple roles in the
 architecture:
 
 * A certification authority or similar service which signs some sort of
-  portable credential binding an identity to a key.
+  portable credential binding an identity to an identity key.
 
 * A directory server which provides the key for a given identity
   (presumably this connection is secured via some form of transport
   security such as TLS).
 
-By definition, the AS is invested with a large amount of trust.  A
-malicious AS can impersonate -- or allow an attacker to impersonate --
-any user of the system. This risk can be mitigated by publishing the
-binding between identities and keys in a public log such as Key
-Transparency (KT) {{KeyTransparency}}. It is possible to build a
-functional MLS system without any kind of public key logging, but such
-a system will necessarily be somewhat vulnerable to attack by a
-malicious or untrusted AS.
+By definition, the Authentication Service is invested with a large
+amount of trust.  A malicious AS can impersonate -- or allow an
+attacker to impersonate -- any user of the system. As a corrolary, by
+impersonating identities authorized to be members of a group, an AS
+can break confidentiality.
+
+This risk can be mitigated by publishing the binding between
+identities and keys in a public log such as Key Transparency (KT)
+{{KeyTransparency}}. It is possible to build a functional MLS system
+without any kind of public key logging, but such a system will
+necessarily be somewhat vulnerable to attack by a malicious or
+untrusted AS.
 
 ## Delivery Service
 
