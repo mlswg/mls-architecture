@@ -407,9 +407,10 @@ within an MLSCiphertext message in order to provide ordering:
 The MLS protocol itself can verify these properties. For instance, if
 the DS reorders messages from a Client or provides different Clients
 with inconsistent orderings, then Clients can detect this
-misconduct. However, MLS need not provide mechanisms to recover from a
-misbehaving DS.
-[[OPEN ISSUE: Be more precison on the detection guarantees.]]
+misconduct. However, the protocol relies on the ordering, and on the
+fact that only one honest group operation message is faned-out to
+clients per Epoch, to provide Clients with a consistent view of the
+evolving Group State.
 
 Note that some forms of DS misbehavior are still possible and
 difficult to detect. For instance, a DS can simply refuse
@@ -420,13 +421,20 @@ distinguish this form of Denial of Service (DoS) attack.
 ### Membership knowledge
 
 Group membership is itself sensitive information and MLS is designed
-so that neither the DS nor the AS need have static knowledge
-of which clients are in which group. However, they may learn
-this information through traffic analysis. For instance, in
-a server side fanout model, the DS learns that a given client
-is sending the same message to a set of other clients. In addition,
-there may be applications of MLS in which the group membership
-list is stored on some server associated with the MS.
+so drastically limit the amount of persisted metadata. However, large
+groups often require an infrastructure which provides server fanout.
+In the case of client fanout, the destinations of a message is known by
+all clients, hence the server usually does not need this information.
+However, they may learn this information through traffic analysis.
+Unfortunately, in a server side fanout model, the DS can learn that a given
+client is sending the same message to a set of other clients. In
+addition, there may be applications of MLS in which the group
+membership list is stored on some server associated with the MS.
+
+While this knowledge is not a break of authentication or
+confidentiality, it is a serious issue for privacy. In the case where
+metadata has to be persisted for functionality, it SHOULD be stored
+encrypted at rest.
 
 ### Membership and offline members
 
