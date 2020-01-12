@@ -123,20 +123,25 @@ encodings, such as TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and
 JSON {{?RFC7159}}.  Implementations which adopt compatible encodings
 will have some degree of interoperability at the message level, though
 they may have incompatible identity/authentication infrastructures.
+The MLS protocol has been designed to provide the same security
+guarantees to all users, for all group sizes, even when it reduces to
+only two users.
 
 This document is intended to describe the overall messaging system
-architecture which the MLS protocol fits into, and the requirements
-which it is intended to fulfill.
+architecture which the MLS protocol fits into, including the
+operational requirements needed to achieve a functional system, and to
+describe the security goals it is intended to fulfill.
 
 # General Setting
 
-A Group using a Messaging Service (MS) comprises a set of participants
-called Members where each member is typically expected to own multiple
-devices, called Clients.  A group may be as small as two members
-(the simple case of person to person messaging) or as large as
-thousands. In order to communicate securely, clients initially
-use services at their disposal to obtain the necessary secrets
-and credentials required for security.
+Informally, a group is a set of users who possibly use multiple
+endpoint devices to interact with the Messaging Service (MS).
+A group may be as small as two members (the simple case of person to
+person messaging) or as large as thousands.
+
+In order to communicate securely, users initially interact with
+services at their disposal to establish the necessary values and
+credentials required for encryption and authentication.
 
 The Messaging Service (MS) presents as two abstract services that allow
 clients to prepare for sending and receiving messages securely:
@@ -235,29 +240,30 @@ from an unauthorized user.
 
 ## Group, Members and Clients
 
-Informally, a group is a set of users who possibly use multiple
-endpoint devices to interact with the Messaging Service.  These
-members will typically correspond to end-user devices such as phones,
-web clients or other devices running MLS, which are called clients.
+While informally, a group can be considered to be a set of users
+possibly using multiple endpoint devices to interact with the
+Messaging Service, this definition is too simplistic.
 
-Each client owns at least one long term identity key pair that
-uniquely defines its identity to other clients or members a the Group.
-Because a single user may operate multiple devices simultaneously
-(e.g., a desktop and a phone) or sequentially (e.g., replacing
-one phone with another), the formal definition of a group in MLS
-is the set of clients that has knowledge of the shared group secret
-established in the group key establishment phase of the protocol.
-Multiple user devices can be grouped, appearing as one virtual
-client to the rest of the group.
-
+Formally, a Client is a set of cryptographic objects composed by
+public values such as a name (an identity), a public encryption key
+and a public signature key. Ownership of a Client by a user is
+determined by the the fact that the user has knowledge of the
+associated secret values. When a Client is part of a Group, it is
+called a Member and its signature key pair uniquely defines its
+identity to other clients or members a the Group.
 In some messaging systems, clients belonging to the same user must
 all share the same identity key pair, but MLS does not assume this.
-The MLS architecture considers the more general case and allows for
-important use cases, such as a member adding a new client when all
-their existing clients are offline.
 
-MLS has been designed to provide similar security guarantees to all
-clients, for all group sizes, even when it reduces to only two clients.
+Users will typically own multiple Clients, potentially one or more per
+end-user devices (phones, web clients or other devices...) and may
+choose to authenticate using the same signature key across devices,
+using one signature key per device or even one signature key per group.
+
+The formal definition of a Group in MLS is the set of clients that
+have knowledge of the shared group secret established in the group key
+establishment phase of the protocol and have contributed to it.
+Until a Member has contributed to the group secret, other members
+cannot assume she is a member of the group.
 
 ## Authentication Service
 
