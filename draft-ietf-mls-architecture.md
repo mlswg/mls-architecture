@@ -90,9 +90,9 @@ informative:
 
 This document describes the reference architecture, functional and
 security requirements for the Messaging Layer Security (MLS) protocol.
-MLS provides a security layer for group messaging applications with
-from two to a large number of clients. It is meant to protect against
-eavesdropping, tampering, and message forgery.
+MLS provides a security layer for group messaging applications, where
+the number of clients ranges from two to many. It is meant to protect
+against eavesdropping, tampering, and message forgery.
 
 --- middle
 
@@ -143,13 +143,13 @@ In order to communicate securely, users initially interact with
 services at their disposal to establish the necessary values and
 credentials required for encryption and authentication.
 
-The Messaging Service (MS) presents as two abstract services that allow
+The Messaging Service (MS) presents two abstract services that allow
 clients to prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) which is responsible for maintaining
   user long term identities, issuing credentials which allow them to
   authenticate each other, and potentially allowing users to
-  discover each others long-term identity keys.
+  discover each other's long-term identity keys.
 
 - A Delivery Service (DS) which is responsible for receiving and
   redistributing messages between group members.
@@ -507,7 +507,7 @@ members. No assumptions are made about the format of the payload.
 
 The protocol is designed in a way that limits the server-side (AS and
 DS) metadata footprint. The DS only persists data required for the
-delivery of messages and avoid Personally Identifiable Information
+delivery of messages and avoids Personally Identifiable Information
 (PII) or other sensitive metadata wherever possible. A Messaging
 Service provider that has control over both the AS and the DS, will
 not be able to correlate encrypted messages forwarded by the DS, with
