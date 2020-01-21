@@ -143,13 +143,13 @@ In order to communicate securely, users initially interact with
 services at their disposal to establish the necessary values and
 credentials required for encryption and authentication.
 
-The Messaging Service (MS) presents as two abstract services that allow
+The Messaging Service (MS) presents two abstract services that allow
 clients to prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) which is responsible for maintaining
   user long term identities, issuing credentials which allow them to
   authenticate each other, and potentially allowing users to
-  discover each others long-term identity keys.
+  discover each other's long-term identity keys.
 
 - A Delivery Service (DS) which is responsible for receiving and
   redistributing messages between group members.
