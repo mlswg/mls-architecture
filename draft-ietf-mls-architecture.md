@@ -507,7 +507,7 @@ members. No assumptions are made about the format of the payload.
 
 The protocol is designed in a way that limits the server-side (AS and
 DS) metadata footprint. The DS only persists data required for the
-delivery of messages and avoid Personally Identifiable Information
+delivery of messages and avoids Personally Identifiable Information
 (PII) or other sensitive metadata wherever possible. A Messaging
 Service provider that has control over both the AS and the DS, will
 not be able to correlate encrypted messages forwarded by the DS, with
