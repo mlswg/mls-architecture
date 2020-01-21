@@ -90,9 +90,9 @@ informative:
 
 This document describes the reference architecture, functional and
 security requirements for the Messaging Layer Security (MLS) protocol.
-MLS provides a security layer for group messaging applications with
-from two to a large number of clients. It is meant to protect against
-eavesdropping, tampering, and message forgery.
+MLS provides a security layer for group messaging applications, where
+the number of clients ranges from two to many. It is meant to protect
+against eavesdropping, tampering, and message forgery.
 
 --- middle
 
