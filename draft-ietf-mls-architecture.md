@@ -81,6 +81,7 @@ informative:
   KeyTransparency:
        target: https://KeyTransparency.org
        title: Key Transparency
+       date: 2017
        author:
        -
           ins: Google
