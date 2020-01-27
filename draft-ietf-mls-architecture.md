@@ -81,6 +81,7 @@ informative:
   KeyTransparency:
        target: https://KeyTransparency.org
        title: Key Transparency
+       date: 2017
        author:
        -
           ins: Google
@@ -119,7 +120,7 @@ instant messaging protocol but rather is intended to be embedded in a
 concrete protocol such as XMPP {{?RFC6120}}. In addition, it does not
 specify a complete wire encoding, but rather a set of abstract data
 structures which can then be mapped onto a variety of concrete
-encodings, such as TLS {{?I-D.ietf-tls-tls13}}, CBOR {{?RFC7049}}, and
+encodings, such as TLS {{?RFC8446}}, CBOR {{?RFC7049}}, and
 JSON {{?RFC7159}}.  Implementations which adopt compatible encodings
 will have some degree of interoperability at the message level, though
 they may have incompatible identity/authentication infrastructures.
@@ -552,7 +553,7 @@ goals ("MLS aims to guarantee that...")?]]
 ### Connections between Clients and Servers (one-to-one)
 
 We assume that all transport connections are secured via some transport
-layer security mechanism such as TLS {{?I-D.ietf-tls-tls13}}. However,
+layer security mechanism such as TLS {{?RFC8446}}. However,
 as noted above, the security of MLS will generally survive compromise
 of the transport layer, so long as identity keys provided by the AS are
 authenticated at a minimum. However, MLS ciphertext contain the Group
