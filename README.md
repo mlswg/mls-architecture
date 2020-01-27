@@ -10,13 +10,7 @@ This is the working area for the IETF MLS Working Group Internet-Draft, "The Mes
 ## Status
 
 This document is often updated after the protocol document for editorial reasons,
-it is suggested to read the terminology in the Protocol document instead to get
-the most up-to-date version.
-
-BB. 2019/12/28
-The document is awaiting a significant update, this will hopefully happen before
-the IETF Interim January 11th, 2020.
-
+it is suggested to read the protocol document as well.
 
 ## Building the Draft
 
