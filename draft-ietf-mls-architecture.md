@@ -430,7 +430,7 @@ However, they may learn this information through traffic analysis.
 Unfortunately, in a server side fanout model, the DS can learn that a given
 client is sending the same message to a set of other clients. In
 addition, there may be applications of MLS in which the group
-membership list is stored on some server associated with the MS.
+membership list is stored on some server associated with the DS.
 
 While this knowledge is not a break of authentication or
 confidentiality, it is a serious issue for privacy. In the case where
