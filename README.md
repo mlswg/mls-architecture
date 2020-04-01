@@ -4,7 +4,7 @@ This is the working area for the IETF MLS Working Group Internet-Draft, "The Mes
 
 * [Editor's Copy](https://github.com/mlswg/mls-architecture/blob/master/draft-ietf-mls-architecture.md)
 * [Working Group Draft](https://tools.ietf.org/html/draft-ietf-mls-architecture)
-* [Compare Editor's Copy to Working Group Draft](https://github.com/mlswg/mls-architecture/compare/draft-ietf-mls-architecture-00...master)
+* [Compare Editor's Copy to Working Group Draft](https://github.com/mlswg/mls-architecture/compare/draft-ietf-mls-architecture-04...master)
 
 
 ## Status
