@@ -110,7 +110,7 @@ End-to-end security is a requirement for instant messaging systems and
 is commonly deployed in many such systems. In this context,
 "end-to-end" captures the notion that users of the system enjoy some
 level of security -- with the precise level depending on the system
-design -- even when the messaging service they are using performs
+design -- even when the service provider they are using performs
 unsatisfactorily.
 
 Messaging Layer Security (MLS) specifies an architecture (this
@@ -136,7 +136,7 @@ describe the security goals it is intended to fulfill.
 # General Setting
 
 Informally, a group is a set of users who possibly use multiple
-endpoint devices to interact with the Messaging Service (MS).
+endpoint devices to interact with the Service Provider (SP).
 A group may be as small as two members (the simple case of person to
 person messaging) or as large as thousands.
 
@@ -144,7 +144,7 @@ In order to communicate securely, users initially interact with
 services at their disposal to establish the necessary values and
 credentials required for encryption and authentication.
 
-The Messaging Service (MS) presents two abstract services that allow
+The Service Provider presents two abstract services that allow
 clients to prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) which is responsible for maintaining
@@ -186,8 +186,8 @@ possible, such as having a separate directory server.
 
 A typical group messaging scenario might look like this:
 
-1. Alice, Bob and Charlie create accounts with a messaging
-   service and obtain credentials from the AS.
+1. Alice, Bob and Charlie create accounts with a service
+   provider and obtain credentials from the AS.
 
 2. Alice, Bob and Charlie authenticate to the DS and store
    some initial keying material which can be used to send encrypted
@@ -241,7 +241,7 @@ from an unauthorized user.
 
 While informally, a group can be considered to be a set of users
 possibly using multiple endpoint devices to interact with the
-Messaging Service, this definition is too simplistic.
+Service Provider, this definition is too simplistic.
 
 Formally, a Client is a set of cryptographic objects composed by
 public values such as a name (an identity), a public encryption key
@@ -314,7 +314,7 @@ untrusted AS.
 ## Delivery Service
 
 The Delivery Service (DS) is expected to play multiple roles in the
-Messaging Service architecture:
+Service Provider architecture:
 
 * To act as a directory service providing the initial keying material
   for clients to use.
@@ -509,10 +509,10 @@ members. No assumptions are made about the format of the payload.
 The protocol is designed in a way that limits the server-side (AS and
 DS) metadata footprint. The DS only persists data required for the
 delivery of messages and avoids Personally Identifiable Information
-(PII) or other sensitive metadata wherever possible. A Messaging
-Service provider that has control over both the AS and the DS, will
-not be able to correlate encrypted messages forwarded by the DS, with
-the initial public keys signed by the AS.
+(PII) or other sensitive metadata wherever possible. A Service Provider
+that has control over both the AS and the DS, will not be able to correlate
+encrypted messages forwarded by the DS, with the initial public keys signed
+by the AS.
 
 [[OPEN ISSUE: These privacy statements seem very strong.
 BB. I would be willing to keep them as requirements since we have
@@ -590,7 +590,7 @@ the messages depending on (for example) their size. One of these
 protections includes padding messages in order to produce ciphertexts
 of standard length. While this protection is highly recommended it is
 not mandatory as it can be costly in terms of performance for clients
-and the MS.
+and the SP.
 
 Message content can be deniable if the signature keys are exchanged
 over a deniable channel prior to signing messages.
@@ -679,7 +679,7 @@ As described in {{client-compromise}}, MLS provides strong
 authentication within a group, such that a group member cannot send a
 message that appears to be from another group member. Additionally,
 some services require that a recipient be able to prove to the
-messaging service that a message was sent by a given client, in order
+service provider that a message was sent by a given client, in order
 to report abuse. MLS supports both of these use cases. In some
 deployments, these services are provided by mechanisms which allow the
 receiver to prove a message's origin to a third party (this if often
