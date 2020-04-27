@@ -422,7 +422,7 @@ distinguish this form of Denial of Service (DoS) attack.
 ### Membership knowledge
 
 Group membership is itself sensitive information and MLS is designed
-so drastically limit the amount of persisted metadata. However, large
+to drastically limit the amount of persisted metadata. However, large
 groups often require an infrastructure which provides server fanout.
 In the case of client fanout, the destinations of a message is known by
 all clients, hence the server usually does not need this information.
