@@ -246,7 +246,7 @@ Service Provider, this definition is too simplistic.
 Formally, a Client is a set of cryptographic objects composed by
 public values such as a name (an identity), a public encryption key
 and a public signature key. Ownership of a Client by a user is
-determined by the the fact that the user has knowledge of the
+determined by the fact that the user has knowledge of the
 associated secret values. When a Client is part of a Group, it is
 called a Member and its signature key pair uniquely defines its
 identity to other clients or members a the Group.
@@ -284,7 +284,7 @@ architecture:
 The MLS protocol assumes a signature keypair for authentication of
 messages. It is important to note that this signature keypair might be
 the identity keypair directly, or a different signature keypair for
-which the the public key has been for example signed by the identity
+which the public key has been for example signed by the identity
 private key. This flexibility allows for multiple infrastructure
 considerations and has the benefit of providing ways to use
 different signature keys across different groups by using hierarchical
@@ -300,7 +300,7 @@ identity against the Authentication Service at any time.
 
 By definition, the Authentication Service is invested with a large
 amount of trust.  A malicious AS can impersonate -- or allow an
-attacker to impersonate -- any user of the system. As a corrolary, by
+attacker to impersonate -- any user of the system. As a corollary, by
 impersonating identities authorized to be members of a group, an AS
 can break confidentiality.
 
@@ -346,7 +346,7 @@ view of the security analysis.
 
 Upon joining the system, each client stores its initial cryptographic
 key material with the Delivery Service. This key material, called
-ClientInitKey, advertizes the functional abilities of the Client such as
+KeyPackage, advertises the functional abilities of the Client such as
 supported protocol versions and extensions and the following
 cryptographic information:
 
@@ -362,13 +362,13 @@ stored by each user.
 
 The Delivery Service is also responsible for allowing users to add,
 remove or update their initial keying material and to ensure
-that the identifier for these keys are unique accross all keys
+that the identifier for these keys are unique across all keys
 stored on the DS.
 
 ### Key Retrieval
 
 When a client wishes to establish a group, it first contacts the DS to
-request a ClientInitKey for each other client, authenticate it using
+request a KeyPackage for each other client, authenticate it using
 the signature keys, and then can use those to form the group.
 
 ### Delivery of messages and attachments {#delivery-guarantees}
@@ -556,8 +556,8 @@ We assume that all transport connections are secured via some transport
 layer security mechanism such as TLS {{?RFC8446}}. However,
 as noted above, the security of MLS will generally survive compromise
 of the transport layer, so long as identity keys provided by the AS are
-authenticated at a minimum. However, MLS ciphertext contain the Group
-Identifier, Epoch number and Content Type that may be use to improve
+authenticated at a minimum. However, MLS ciphertext contains the Group
+Identifier, Epoch number and Content Type that may be used to improve
 attacks on the privacy of the group.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
