@@ -557,8 +557,8 @@ layer security mechanism such as TLS {{?RFC8446}}. However,
 as noted above, the security of MLS will generally survive compromise
 of the transport layer, so long as identity keys provided by the AS are
 authenticated at a minimum. However, MLS ciphertext contain the Group
-Identifier, Epoch number and Content Type that may be use to improve
-attacks on the privacy of the group.
+Identifier, Epoch number and Content Type, and some handshake messages are
+sent as MLS plaintext. These may affect the privacy of the group.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
