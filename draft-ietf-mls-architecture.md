@@ -506,13 +506,17 @@ members. No assumptions are made about the format of the payload.
 
 ### Privacy
 
-The protocol is designed in a way that limits the server-side (AS and
-DS) metadata footprint. The DS only persists data required for the
-delivery of messages and avoids Personally Identifiable Information
-(PII) or other sensitive metadata wherever possible. A Service Provider
-that has control over both the AS and the DS, will not be able to correlate
-encrypted messages forwarded by the DS, with the initial public keys signed
-by the AS.
+The protocol is designed in a way that limits the server-side (AS and DS)
+metadata footprint. It encrypts sender information and allows
+for the padding of messages to limit traffic analysis. The DS only persists
+data required for the delivery of messages and avoids
+Personally Identifiable Information (PII) or other sensitive metadata wherever
+possible. A Service Provider that has control over both the AS and the DS, will
+not be able to correlate encrypted messages forwarded by the DS, with the
+initial public keys signed by the AS.
+
+However, traffic analysis and correlation may reveal metadata such as who the
+group participants are, where they are located, and when messages were sent.
 
 [[OPEN ISSUE: These privacy statements seem very strong.
 BB. I would be willing to keep them as requirements since we have
