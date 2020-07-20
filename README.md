@@ -2,9 +2,9 @@
 
 This is the working area for the IETF [MLS Working Group](https://datatracker.ietf.org/wg/mls/documents/) Internet-Draft, "The Messaging Layer Security (MLS) Architecture".
 
-* [Editor's Copy](https://Bren2010.github.io/mls-architecture/#go.draft-ietf-mls-architecture.html)
+* [Editor's Copy](https://mlswg.github.io/mls-architecture/#go.draft-ietf-mls-architecture.html)
 * [Working Group Draft](https://tools.ietf.org/html/draft-ietf-mls-architecture)
-* [Compare Editor's Copy to Working Group Draft](https://Bren2010.github.io/mls-architecture/#go.draft-ietf-mls-architecture.diff)
+* [Compare Editor's Copy to Working Group Draft](https://mlswg.github.io/mls-architecture/#go.draft-ietf-mls-architecture.diff)
 
 ## Building the Draft
 
@@ -21,4 +21,4 @@ This requires that you have the necessary software installed.  See
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/Bren2010/mls-architecture/blob/update-build/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/mlswg/mls-architecture/blob/master/CONTRIBUTING.md).
