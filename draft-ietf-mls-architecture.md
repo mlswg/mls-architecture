@@ -116,8 +116,8 @@ unsatisfactorily.
 Messaging Layer Security (MLS) specifies an architecture (this
 document) and an abstract protocol {{MLSPROTO}} for providing
 end-to-end security in this setting. MLS is not intended as a full
-instant messaging protocol but rather is intended to be embedded in a
-concrete protocol such as XMPP {{?RFC6120}}. In addition, it does not
+instant messaging protocol but rather is intended to be embedded in
+concrete protocols, such as XMPP {{?RFC6120}}. In addition, it does not
 specify a complete wire encoding, but rather a set of abstract data
 structures which can then be mapped onto a variety of concrete
 encodings, such as TLS {{?RFC8446}}, CBOR {{?RFC7049}}, and
@@ -181,8 +181,8 @@ clients to prepare for sending and receiving messages securely:
 In many systems, the AS and the DS are actually operated by the same
 entity and may even be the same server. However, they are logically
 distinct and, in other systems, may be operated by different entities,
-hence we show them as being separate here. Other partitions are also
-possible, such as having a separate directory server.
+hence we show them as being separate entities here. Other partitions
+are also possible, such as having a separate directory server.
 
 A typical group messaging scenario might look like this:
 
@@ -201,7 +201,7 @@ A typical group messaging scenario might look like this:
    the encrypted message(s) to the DS, which forwards them to the
    recipients.
 
-4. Bob and/or Charlie respond to Alice's message. In addtion, they
+4. Bob and/or Charlie respond to Alice's message. In addition, they
    might choose to update their key material which provides
    post-compromise security {{fs-and-pcs}}. As a consequence of that
    change, the group secrets are updated
@@ -251,7 +251,7 @@ and a public signature key. Ownership of a Client by a user is
 determined by the fact that the user has knowledge of the
 associated secret values. When a Client is part of a Group, it is
 called a Member and its signature key pair uniquely defines its
-identity to other clients or members a the Group.
+identity to other clients or members in the Group.
 In some messaging systems, clients belonging to the same user must
 all share the same identity key pair, but MLS does not assume this.
 
@@ -264,7 +264,7 @@ The formal definition of a Group in MLS is the set of clients that
 have knowledge of the shared group secret established in the group key
 establishment phase of the protocol and have contributed to it.
 Until a Member has contributed to the group secret, other members
-cannot assume she is a member of the group.
+cannot assume they are a member of the group.
 
 ## Authentication Service
 
@@ -285,8 +285,8 @@ architecture:
 
 The MLS protocol assumes a signature keypair for authentication of
 messages. It is important to note that this signature keypair might be
-the identity keypair directly, or a different signature keypair for
-which the public key has been for example signed by the identity
+the identity keypair itself, or a different signature keypair for
+which the public key has been, for example, signed by the identity
 private key. This flexibility allows for multiple infrastructure
 considerations and has the benefit of providing ways to use
 different signature keys across different groups by using hierarchical
