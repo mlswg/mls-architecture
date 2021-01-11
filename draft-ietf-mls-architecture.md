@@ -20,7 +20,7 @@ author:
  -
     ins: B. Beurdouche
     name: Benjamin Beurdouche
-    organization: INRIA
+    organization: Inria & Mozilla
     email: benjamin.beurdouche@inria.fr
  -
     ins: E. Rescorla
@@ -103,8 +103,9 @@ RFC EDITOR: PLEASE REMOVE THE FOLLOWING PARAGRAPH
 
 The source for this draft is maintained in GitHub.  Suggested changes should
 be submitted as pull requests at https://github.com/mlswg/mls-architecture.
-Instructions are on that page as well.  Editorial changes can be managed in
-GitHub, but any substantive change should be discussed on the MLS mailing list.
+Instructions are on that page as well.  Editorial changes can be
+managed in GitHub, but any substantive change should be discussed on
+the MLS mailing list.
 
 End-to-end security is a requirement for instant messaging systems and
 is commonly deployed in many such systems. In this context,
@@ -128,10 +129,31 @@ The MLS protocol has been designed to provide the same security
 guarantees to all users, for all group sizes, even when it reduces to
 only two users.
 
-This document is intended to describe the overall messaging system
-architecture which the MLS protocol fits into, including the
-operational requirements needed to achieve a functional system, and to
-describe the security goals it is intended to fulfill.
+## About this document and the protocol document
+
+The MLS protocol {{MLSPROTO}} document has the role of defining
+a Group Key Agreement, all the necessary cryptographic operations, and
+serialization/deserialization functions necessary to create a scalable
+and secure messaging system.
+
+This document, on the other hand is intended to describe a general
+secure group messaging infrastructure and its security goals.
+It provides guidance on building a group messaging system and
+discusses security tradeoffs offered by multiple security mechanism
+that are part of the MLS protocol (ie. frequency of public encryption
+key rotation).
+
+The document also extends the guidance to parts of the infrastructure
+that are not standardized by the MLS Protocol document and left to the
+application or the infrastructure architects to design.
+
+While most of the recommandations of this document are not mandatory
+to follow in order to interoperate at the protocol level, they vastly
+influence the overall security guarantees that are achieved by the
+overall messaging system. This is especially true in case of active
+adversaries that are able to compromise clients, the delivery service
+or the authentication service.
+
 
 # General Setting
 
