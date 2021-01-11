@@ -718,6 +718,7 @@ MLS adopts the Internet threat model {{?RFC3552}} and therefore
 assumes that the attacker has complete control of the network. It is
 intended to provide the security services described in the face of
 such attackers.
+
 In addition, these guarantees are intended to degrade gracefully in
 the presence of compromise of the transport security links as well as
 of both Clients and elements of the messaging system, as described in
@@ -726,7 +727,6 @@ the remainder of this section.
 ## Transport Security Links
 
 [TODO: Mostly DoS, message suppression, and leakage of group membership.]
-
 
 ## Delivery Service Compromise
 
@@ -753,11 +753,88 @@ mitigated by having initial keys expire.
 
 ## Authentication Service Compromise
 
-A compromised AS is a serious matter, as the AS can provide incorrect
-or attacker-provided identities to clients.  As noted in
-{{authentication-service}}, detecting this form of attack requires
-some sort of transparency/logging mechanism. Without such a mechanism,
-MLS cannot detect a compromised AS.
+The Authentication Service design is left to the infrastructure
+designers. In most designs, a compromised AS is a serious matter, as
+the AS can serve incorrect or attacker-provided identities to clients.
+
+-- The attacker can link an identity to a credential
+
+-- The attacker can generate new credentials
+
+-- The attacker can sign new credentials
+
+-- The attacker can publish or distribute credentials
+
+> **RECOMMENDATION:**
+> Make clients submit signature public keys to the AS, this is usually
+> better than the AS generating public key pairs because the AS
+> cannot sign on behalf of the client. This is a benefit of a Public
+> Key Infrastructure in the style of the Internet PKI.
+
+> **RECOMMENDATION:**
+> Using HSMs to store the root signature keys to limit the ability of
+> an adversary with no physical access to extract the top-level
+> signature key.
+
+### Ghost users and impersonations
+
+One thing for which the MLS Protocol is designed for is to make sure
+that all clients know who is in the group at all times. This means
+that - if all Members of the group and the Authentication Service are
+honest - no other parties than the members of the current group can
+read and write messages protected by the protocol for that Group.
+
+Beware though, the link between the cryptographic identity of the
+Client and the real identity of the User is important.
+With some Authentication Service designs, a private or centralized
+authority can be trusted to generate or validate signature keypairs
+used in the MLS protocol. This is typically the case in some of the
+biggest messaging infrastructures.
+
+While this service is often very well protected from external
+attackers, it might be the case that this service is compromised.
+In such infrastructure, the AS could generate or validate a signature
+keypair for an identity which is not the expected one. Because a user
+can have many MLS clients running the MLS protocol, it possibly has
+many signature keypairs for multiple devices.
+
+In the case where an adversarial keypair is generated for a specific
+identity, an infrastructure without any transparency mechanism or
+out-of-band authentication mechanism could inject a malicious client
+into a group by impersonating a user. This is especially the case in
+large groups where the UI might not reflect all the changes back the
+the users.
+
+> **RECOMMENDATION:**
+> Make sure that MLS clients reflect all the membership changes to the
+> users as they happen. If a choice has to be made because the number
+> of notifications is too high, a public log should be maintained in
+> the state of the device so that user can examine it.
+
+While the ways to handle MLS credentials are not defined by the
+protocol or the architecture documents, the MLS protocol has been
+designed with a mechanism that can be used to provide out-of-band
+authentication to users. The "authentication_secret" generated for
+each user at each epoch of the group is a one-time, per client,
+authentication secret which can be exchanged between users to prove
+their identity to each other. This can be done for instance using a QR
+code that can be scanned by the other parties.
+
+Another way to improve the security for the users is to provide a
+transparency mechanism which allows each user to check if credentials
+used in groups have been published in the transparency log. Another
+benefit of this mechanism is for revokation. The users of a group
+could check for revoked keys (in case of compromise detection) using a
+mechanism such as CRLite or some more advanced privacy preserving
+technology.
+
+> **RECOMMENDATION:**
+> Provide a Key Transparency and Out-of-Band authentication mechanisms
+> to limit the impact of an Authentication Service compromise.
+
+
+[TODO: Privacy / Loss of unlinkability]
+
 
 ## Client Compromise
 
