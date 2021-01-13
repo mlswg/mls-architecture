@@ -525,6 +525,17 @@ use it for tracking.
 > Prefer using encrypted group operation messages to avoid privacy
 > issues related to non-encrypted signatures.
 
+Note that in the default case of encrypted handshake messages, the
+application level must make sure that the access control policies are
+consistent accross all clients to make sure that they remain in sync.
+If two different policies were applied, the clients might not accept
+or reject a group operation and end-up in different cryptographic
+states, breaking their ability to communicate.
+
+> **RECOMMENDATION:**
+> Avoid using inconsistent access control policies in the case of
+> encrypted group operations.
+
 ### Recovery After State Loss
 
 Conversation participants whose local MLS state is lost or corrupted
