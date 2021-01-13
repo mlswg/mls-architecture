@@ -750,7 +750,7 @@ MLS in a "deniable" mode where such proof is not possible.
 [[OPEN ISSUE: Exactly how to supply this is still a protocol question.]]
 
 
-# Security Considerations
+# Security and Privacy Considerations
 
 MLS adopts the Internet threat model {{?RFC3552}} and therefore
 assumes that the attacker has complete control of the network. It is
