@@ -566,20 +566,6 @@ Messages that do not affect the group state can carry an arbitrary
 payload with the purpose of sharing that payload between group
 members. No assumptions are made about the format of the payload.
 
-### Privacy
-
-The protocol is designed in a way that limits the server-side (AS and
-DS) metadata footprint. The DS only persists data required for the
-delivery of messages and avoids Personally Identifiable Information
-(PII) or other sensitive metadata wherever possible. A Service Provider
-that has control over both the AS and the DS, will not be able to correlate
-encrypted messages forwarded by the DS, with the initial public keys signed
-by the AS.
-
-[[OPEN ISSUE: These privacy statements seem very strong.
-BB. I would be willing to keep them as requirements since we have
-example solutions in the Server-Assist draft.]]
-
 ### Federation
 
 The protocol aims to be compatible with federated environments. While
@@ -604,13 +590,27 @@ verify availability of protocol version, ciphersuites and extensions
 at all times once he has at least received the first group operation
 message.
 
-## Security Requirements
+## Security and Privacy Requirements
 
 {::comment}
 [[TODO: should these be stated as assertions ("MLS guarantees that...") or
 goals ("MLS aims to guarantee that...")?]]
 {:/comment}
 
+
+### Privacy
+
+The protocol is designed in a way that limits the server-side (AS and
+DS) metadata footprint. The DS only persists data required for the
+delivery of messages and avoids Personally Identifiable Information
+(PII) or other sensitive metadata wherever possible. A Service Provider
+that has control over both the AS and the DS, will not be able to correlate
+encrypted messages forwarded by the DS, with the initial public keys signed
+by the AS.
+
+[[OPEN ISSUE: These privacy statements seem very strong.
+BB. I would be willing to keep them as requirements since we have
+example solutions in the Server-Assist draft.]]
 
 ### Connections between Clients and Servers (one-to-one)
 
