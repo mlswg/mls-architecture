@@ -498,6 +498,33 @@ for another user's reply.
 Messaging systems that implement MLS have to provide a transport layer
 for delivering messages asynchronously and reliably.
 
+### Access Control
+
+The MLS protocol allows each member of the messaging group to perform
+operations equally. This is because all clients within a group
+(members) have access to the shared cryptographic material. However
+every service/infrastructure have control over policies applied to
+their own clients. Applications managing MLS clients can be configured
+to allow for specific Group operations. An application can, for
+example, decide to provide specific permissions to a group
+administrator that will be the one to perform add and remove
+operations, but the flexibility is immense here. On the other hand, in
+many settings such as open discussion forums, joining can be allowed
+for anyone.
+
+The MLS protocol can in certain modes can exchange unencrypted group
+operation messages. This flexibility is to allow services to perform
+access control tasks on behalf of the group.
+
+While the Application messages will always be encrypted, having the
+handshake messages in plaintext has inconvenients in terms of privacy
+as someone could collect the signatures on the handshake messages and
+use it for tracking.
+
+> **RECOMMENDATION:**
+> Prefer using encrypted group operation messages to avoid privacy
+> issues related to non-encrypted signatures.
+
 ### Recovery After State Loss
 
 Conversation participants whose local MLS state is lost or corrupted
