@@ -757,12 +757,36 @@ assumes that the attacker has complete control of the network. It is
 intended to provide the security services described in the face of
 such attackers.
 
+-- The attacker can monitor the entire network
+
+-- The attacker can read unprotected messages
+
+-- The attacker can generate and inject any message in the unprotected
+   transport layer.
+
 In addition, these guarantees are intended to degrade gracefully in
 the presence of compromise of the transport security links as well as
 of both Clients and elements of the messaging system, as described in
 the remainder of this section.
 
+-- The attacker can read and write arbitrary messages inside the
+   secure transport channel.
+
+This departs from most threat models where we consider that the secure
+channel used for transport always provides secrecy. The reason for
+this consideration is that in the group setting active malicious
+insiders or adversarial services are be considered.
+
+Generally, MLS is designed under the assumption that the transport
+layer is present to protect metadata and privacy in general, while the
+MLS protocol is providing stronger guarantees such as confidentiality,
+integrity and authentication guarantees. Stronger properties such as
+deniability can also be achieved in specific architecture designs.
+
 ## Transport Security Links
+
+Any secure transport layers can be used to protect MLS messages such
+as QUIC, TLS, WireGuard or TOR.
 
 [TODO: Mostly DoS, message suppression, and leakage of group membership.]
 
