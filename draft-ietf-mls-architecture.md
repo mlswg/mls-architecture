@@ -765,11 +765,24 @@ the AS can serve incorrect or attacker-provided identities to clients.
 
 -- The attacker can publish or distribute credentials
 
+
+Infrastructures that provide cryptographic material or credentials in
+place of the MLS client (which is under the control of the user) have
+often the ability to use the associated secrets to perform operations
+on behalf of the user, which is unacceptable in many situations. Other
+mechanisms can be used to prevent this issue, such as the service
+blessing cryptographic material used by an MLS client.
+
 > **RECOMMENDATION:**
 > Make clients submit signature public keys to the AS, this is usually
 > better than the AS generating public key pairs because the AS
 > cannot sign on behalf of the client. This is a benefit of a Public
 > Key Infrastructure in the style of the Internet PKI.
+
+An attacker that can generate or sign new credential may or may not
+have access to the underlying cryptographic material necessary to
+perform such operations. In that last case, it results in windows of
+time for which all emmited credentials might be compromised.
 
 > **RECOMMENDATION:**
 > Using HSMs to store the root signature keys to limit the ability of
@@ -832,9 +845,33 @@ technology.
 > Provide a Key Transparency and Out-of-Band authentication mechanisms
 > to limit the impact of an Authentication Service compromise.
 
+### Group Membership Privacy Loss
 
-[TODO: Privacy / Loss of unlinkability]
+Often, expectation from users is that the infrastructure will not
+retain the ability to constantly map the user identity to signature
+public keys of the MLS protocol. Some infrastructures will keep a
+mapping between signature public keys of clients and user
+identities. This can benefit an adversary that has compromised the AS
+(or required access according to regulation) the ability of monitoring
+unencrypted traffic and correllate the messages exchanged within the
+same group.
 
+> **RECOMMENDATION:**
+> Always use encrypted group operation messages to reduce issues
+> related to privacy.
+
+In certain cases, the adversary can access to specific bindings
+between public keys and identities. If the signature keys are reused
+accross groups, the adversary can get more information about the
+targetted user.
+
+> **RECOMMENDATION:**
+> Do not use the same signature keypair accross groups.
+
+> **RECOMMENDATION:**
+> Separate the service binding the identities and the public keys from
+> the service which generates or validates the credentials or
+> cryptographic material of the Clients.
 
 ## Client Compromise
 
