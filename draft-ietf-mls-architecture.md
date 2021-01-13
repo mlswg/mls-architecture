@@ -769,14 +769,6 @@ the presence of compromise of the transport security links as well as
 of both Clients and elements of the messaging system, as described in
 the remainder of this section.
 
--- The attacker can read and write arbitrary messages inside the
-   secure transport channel.
-
-This departs from most threat models where we consider that the secure
-channel used for transport always provides secrecy. The reason for
-this consideration is that in the group setting active malicious
-insiders or adversarial services are be considered.
-
 Generally, MLS is designed under the assumption that the transport
 layer is present to protect metadata and privacy in general, while the
 MLS protocol is providing stronger guarantees such as confidentiality,
@@ -785,10 +777,83 @@ deniability can also be achieved in specific architecture designs.
 
 ## Transport Security Links
 
-Any secure transport layers can be used to protect MLS messages such
-as QUIC, TLS, WireGuard or TOR.
+Any secure channel can be used as a transport layer to protect MLS
+messages such as QUIC, TLS, WireGuard or TOR. Though the MLS protocol
+is designed to consider the following threat-model:
 
-[TODO: Mostly DoS, message suppression, and leakage of group membership.]
+-- The attacker can read and write arbitrary messages inside the
+   secure transport channel.
+
+This departs from most threat models where we consider that the secure
+channel used for transport always provides secrecy. The reason for
+this consideration is that in the group setting active malicious
+insiders or adversarial services are be considered.
+
+### Metadata protection for unencrypted group operations
+
+The main use of the secure transport layer for MLS is to protect
+the already limited amount of metadata. Very little information is
+contained in the unencrypted header of the MLS Protocol message
+format.
+
+Contrary to popular messenging services, the full list of recipients
+cannot be sent to the server for dispatching messages because that
+list is potentially extremely large in MLS. So, the metadata typically
+consists of a pseudo-random Group Identifier (GID), an numerical
+index refering to the key needed to decrypt the ciphertext content and
+another numerical value to determine the epoch of the group (the
+number of group operations that have been performed).
+Unencrypted additional data, meant to be public to the services, can
+be present.
+
+Even though, these information are not secret payloads, in
+correllation with other data, a network observer might be able to
+extract information. Using a secure channel to transfer this
+information will prevent a network attacker to access this MLS
+protocol metadata if it cannot compromise the secure channel.
+
+More importantly, there is one specific case where having no secure
+channel to exchange the MLS messages can have a serious impact on
+privacy. In the case of unencrypted group operation messages,
+observing the signatures of the Group Operation messages may lead an
+adversary to extract information about the group memberships.
+
+> **RECOMMENDATION:**
+> Never use the unencrypted mode for group operations without using a
+> secure channel for the transport layer.
+
+### DoS protection
+
+An important role of the secure transport layer is to prevent Denial
+of Service (DoS) attacks.
+
+[TODO: Expand the DoS aspect.]
+
+### Message suppression and error correction
+
+The MLS protocol is particularily sensitive about Group Operation
+message loss and reordering. This is because in the default setting,
+MLS clients have to process those specific messages in order to have a
+synchronized group state, after what the MLS protocol efficiently
+generates keys for application messages.
+
+The Delivery Service can have the role of helping whith reliability,
+but is mainly useful for reliability in the asynchronous aspect of the
+communication between MLS clients.
+
+While it is difficult or impossible to prevent a network adversary to
+suppress payloads in transit, in certain infrastructures such as banks
+or governments settings, unidirectionnal transports can be used and be
+enforced via electronic or physical devices such as diodes. This can
+lead to payload corruption which does not affect the security or
+privacy properties of the MLS Protocol but does affect the reliability
+of the service. In that case specific measures can be taken to ensure
+the appropriate level of redundancy and quality of service for MLS.
+
+> **RECOMMENDATION:**
+> If unidirectionnal transport is used for the secure transport
+> channel, prefer using a protocol which provides Forward Error
+> Correction.
 
 ## Delivery Service Compromise
 
