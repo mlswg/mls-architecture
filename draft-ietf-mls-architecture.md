@@ -883,8 +883,35 @@ a customer service matter, not via technology.
 Because the DS is responsible for providing the initial keying
 material to clients, it can provide stale keys. This does not
 inherently lead to compromise of the message stream, but does allow it
-to attack forward security to a limited extent.  This threat can be
+to attack forward security to a limited extent. This threat can be
 mitigated by having initial keys expire.
+
+### Privacy of the network connections to the DS
+
+There are many scenarios leading to communication between the
+application on a device and the Delivery Service. In particular when:
+
+- The application fetches credentials at the Delivery Service prior to
+  creating a messaging group (one-to-one or more than two clients).
+
+- The application fetches service provider information or messages on
+  the Delivery Service.
+
+In all these cases, the application will often connect to the delivery
+service via a secure transport which leaks information about the
+origin of the request such as the IP address and depending on the
+protocol the MAC address of the device.
+
+Similar concern exist in the peer-to-peer use cases of MLS.
+
+> **RECOMMENDATION:**
+> In the case where the transport layer metadata must be protected,
+> using adequate protection such as TOR or a VPN can improve
+> metadata protection.
+
+More generally, using anonymous credential in an MLS based
+architecture might not be enough to provide strong privacy or
+anonymity properties.
 
 ### Privacy of delivery and push notifications
 
@@ -915,12 +942,13 @@ message retrival.
 > **RECOMMENDATION:**
 > If real time notification are not necessary and that specific steps
 > must be taken to improve privacy, one can delay notifications
-> randomly across recipient devices (mixnet...).
+> randomly across recipient devices using a mixnet or other
+> techniques.
 
 > **RECOMMENDATION:**
 > If stronger privacy guarantees are needed vis-a-vis of the push
-> notification provider, the client can always periodically connect to
-> the Delivery Service without the need of a dedicated push
+> notification provider, the client can choose to periodically connect
+> to the Delivery Service without the need of a dedicated push
 > notification infrastructure.
 
 ## Authentication Service Compromise
