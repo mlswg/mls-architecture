@@ -803,14 +803,22 @@ consists of a pseudo-random Group Identifier (GID), an numerical
 index refering to the key needed to decrypt the ciphertext content and
 another numerical value to determine the epoch of the group (the
 number of group operations that have been performed).
-Unencrypted additional data, meant to be public to the services, can
-be present.
 
-Even though, these information are not secret payloads, in
-correllation with other data, a network observer might be able to
-extract information. Using a secure channel to transfer this
-information will prevent a network attacker to access this MLS
-protocol metadata if it cannot compromise the secure channel.
+MLS protocol provides an authenticated "Authenticated Additional
+Data" field for application to make data available outside the
+MLSCiphertext.
+
+> **RECOMMENDATION:**
+> Use the "Authenticated Additional Data" field of the MLSCiphertext
+> message instead of using other unauthenticated means of sending
+> metadata throughout the infrastructure. If the data is private, the
+> infrastructure should use encrypted Application messages instead.
+
+Even though, some of these metadata information are not secret
+payloads, in correllation with other data, a network observer might be
+able to reconstruct sensitive information. Using a secure channel to
+transfer this information will prevent a network attacker to access
+this MLS protocol metadata if it cannot compromise the secure channel.
 
 More importantly, there is one specific case where having no secure
 channel to exchange the MLS messages can have a serious impact on
