@@ -886,33 +886,6 @@ inherently lead to compromise of the message stream, but does allow it
 to attack forward security to a limited extent. This threat can be
 mitigated by having initial keys expire.
 
-### Privacy of the network connections to the DS
-
-There are many scenarios leading to communication between the
-application on a device and the Delivery Service. In particular when:
-
-- The application fetches credentials at the Delivery Service prior to
-  creating a messaging group (one-to-one or more than two clients).
-
-- The application fetches service provider information or messages on
-  the Delivery Service.
-
-In all these cases, the application will often connect to the delivery
-service via a secure transport which leaks information about the
-origin of the request such as the IP address and depending on the
-protocol the MAC address of the device.
-
-Similar concern exist in the peer-to-peer use cases of MLS.
-
-> **RECOMMENDATION:**
-> In the case where the transport layer metadata must be protected,
-> using adequate protection such as TOR or a VPN can improve
-> metadata protection.
-
-More generally, using anonymous credential in an MLS based
-architecture might not be enough to provide strong privacy or
-anonymity properties.
-
 ### Privacy of delivery and push notifications
 
 An important mechanism that is often ignored from the privacy
@@ -1071,6 +1044,42 @@ targeted user.
 > Separate the service binding the identities and the public keys from
 > the service which generates or validates the credentials or
 > cryptographic material of the Clients.
+
+
+## Shared considerations regarding adversarial AS or DS services
+
+### Privacy of the network connections
+
+There are many scenarios leading to communication between the
+application on a device and the Delivery Service or the Authentication
+Service. In particular when:
+
+- The application connects to the Authentication Service to generate
+  or validate a new credential before distributing it.
+
+- The application fetches credentials at the Delivery Service prior to
+  creating a messaging group (one-to-one or more than two clients).
+
+- The application fetches service provider information or messages on
+  the Delivery Service.
+
+- The application sends service provider information or messages to
+  the Delivery Service.
+
+In all these cases, the application will often connect to the device
+via a secure transport which leaks information about the origin of the
+request such as the IP address and depending on the protocol the MAC
+address of the device.
+
+Similar concern exist in the peer-to-peer use cases of MLS.
+
+> **RECOMMENDATION:**
+> In the case where privacy or anonymity is important, using adequate
+> protection such as TOR or a VPN can improve metadata protection.
+
+More generally, using anonymous credential in an MLS based
+architecture might not be enough to provide strong privacy or
+anonymity properties.
 
 ## Client Compromise
 
