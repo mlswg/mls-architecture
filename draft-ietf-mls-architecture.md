@@ -794,7 +794,7 @@ insiders or adversarial services are be considered.
 The main use of the secure transport layer for MLS is to protect
 the already limited amount of metadata. Very little information is
 contained in the unencrypted header of the MLS Protocol message
-format for group operation messages, as application messages are
+format for group operation messages, and application messages are
 always encrypted in MLS.
 
 Contrary to popular messaging services, the full list of recipients
