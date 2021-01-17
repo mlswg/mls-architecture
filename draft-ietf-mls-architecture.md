@@ -961,7 +961,7 @@ time for which all emitted credentials might be compromised.
 > an adversary with no physical access to extract the top-level
 > signature key.
 
-### Ghost users and impersonations
+### Authentication compromise: Ghost users and impersonations
 
 One thing for which the MLS Protocol is designed for is to make sure
 that all clients know who is in the group at all times. This means
@@ -1017,7 +1017,17 @@ technology.
 > Provide a Key Transparency and Out-of-Band authentication mechanisms
 > to limit the impact of an Authentication Service compromise.
 
-### Group Membership Privacy Loss
+We note, again, that as described prior to that section, the
+Authentication Service is facultative to design a working
+infrastructure and can be replaced by many mechanisms such as
+establishing prior one-to-one deniable channels, gossiping, or using
+TOFU for credentials used by the MLS Protocol.
+
+Another important consideration is the ease of redistributing new keys
+on client compromise, which helps recovering security faster in
+various cases.
+
+### Privacy of the Group Membership
 
 Often, expectation from users is that the infrastructure will not
 retain the ability to constantly map the user identity to signature
