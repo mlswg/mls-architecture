@@ -147,7 +147,7 @@ The document also extends the guidance to parts of the infrastructure
 that are not standardized by the MLS Protocol document and left to the
 application or the infrastructure architects to design.
 
-While most of the recommandations of this document are not mandatory
+While most of the recommendations of this document are not mandatory
 to follow in order to interoperate at the protocol level, they vastly
 influence the overall security guarantees that are achieved by the
 overall messaging system. This is especially true in case of active
@@ -517,7 +517,7 @@ operation messages. This flexibility is to allow services to perform
 access control tasks on behalf of the group.
 
 While the Application messages will always be encrypted, having the
-handshake messages in plaintext has inconvenients in terms of privacy
+handshake messages in plaintext has inconveniences in terms of privacy
 as someone could collect the signatures on the handshake messages and
 use it for tracking.
 
@@ -527,7 +527,7 @@ use it for tracking.
 
 Note that in the default case of encrypted handshake messages, the
 application level must make sure that the access control policies are
-consistent accross all clients to make sure that they remain in sync.
+consistent across all clients to make sure that they remain in sync.
 If two different policies were applied, the clients might not accept
 or reject a group operation and end-up in different cryptographic
 states, breaking their ability to communicate.
@@ -796,11 +796,11 @@ the already limited amount of metadata. Very little information is
 contained in the unencrypted header of the MLS Protocol message
 format.
 
-Contrary to popular messenging services, the full list of recipients
+Contrary to popular messaging services, the full list of recipients
 cannot be sent to the server for dispatching messages because that
 list is potentially extremely large in MLS. So, the metadata typically
 consists of a pseudo-random Group Identifier (GID), an numerical
-index refering to the key needed to decrypt the ciphertext content and
+index referring to the key needed to decrypt the ciphertext content and
 another numerical value to determine the epoch of the group (the
 number of group operations that have been performed).
 
@@ -815,7 +815,7 @@ MLSCiphertext.
 > infrastructure should use encrypted Application messages instead.
 
 Even though, some of these metadata information are not secret
-payloads, in correllation with other data, a network observer might be
+payloads, in correlation with other data, a network observer might be
 able to reconstruct sensitive information. Using a secure channel to
 transfer this information will prevent a network attacker to access
 this MLS protocol metadata if it cannot compromise the secure channel.
@@ -839,19 +839,19 @@ of Service (DoS) attacks.
 
 ### Message suppression and error correction
 
-The MLS protocol is particularily sensitive about Group Operation
+The MLS protocol is particularly sensitive about Group Operation
 message loss and reordering. This is because in the default setting,
 MLS clients have to process those specific messages in order to have a
 synchronized group state, after what the MLS protocol efficiently
 generates keys for application messages.
 
-The Delivery Service can have the role of helping whith reliability,
+The Delivery Service can have the role of helping with reliability,
 but is mainly useful for reliability in the asynchronous aspect of the
 communication between MLS clients.
 
 While it is difficult or impossible to prevent a network adversary to
 suppress payloads in transit, in certain infrastructures such as banks
-or governments settings, unidirectionnal transports can be used and be
+or governments settings, unidirectional transports can be used and be
 enforced via electronic or physical devices such as diodes. This can
 lead to payload corruption which does not affect the security or
 privacy properties of the MLS Protocol but does affect the reliability
@@ -859,7 +859,7 @@ of the service. In that case specific measures can be taken to ensure
 the appropriate level of redundancy and quality of service for MLS.
 
 > **RECOMMENDATION:**
-> If unidirectionnal transport is used for the secure transport
+> If unidirectional transport is used for the secure transport
 > channel, prefer using a protocol which provides Forward Error
 > Correction.
 
@@ -917,7 +917,7 @@ blessing cryptographic material used by an MLS client.
 An attacker that can generate or sign new credential may or may not
 have access to the underlying cryptographic material necessary to
 perform such operations. In that last case, it results in windows of
-time for which all emmited credentials might be compromised.
+time for which all emitted credentials might be compromised.
 
 > **RECOMMENDATION:**
 > Using HSMs to store the root signature keys to limit the ability of
@@ -971,7 +971,7 @@ code that can be scanned by the other parties.
 Another way to improve the security for the users is to provide a
 transparency mechanism which allows each user to check if credentials
 used in groups have been published in the transparency log. Another
-benefit of this mechanism is for revokation. The users of a group
+benefit of this mechanism is for revocation. The users of a group
 could check for revoked keys (in case of compromise detection) using a
 mechanism such as CRLite or some more advanced privacy preserving
 technology.
@@ -988,7 +988,7 @@ public keys of the MLS protocol. Some infrastructures will keep a
 mapping between signature public keys of clients and user
 identities. This can benefit an adversary that has compromised the AS
 (or required access according to regulation) the ability of monitoring
-unencrypted traffic and correllate the messages exchanged within the
+unencrypted traffic and correlate the messages exchanged within the
 same group.
 
 > **RECOMMENDATION:**
@@ -997,11 +997,11 @@ same group.
 
 In certain cases, the adversary can access to specific bindings
 between public keys and identities. If the signature keys are reused
-accross groups, the adversary can get more information about the
-targetted user.
+across groups, the adversary can get more information about the
+targeted user.
 
 > **RECOMMENDATION:**
-> Do not use the same signature keypair accross groups.
+> Do not use the same signature keypair across groups.
 
 > **RECOMMENDATION:**
 > Separate the service binding the identities and the public keys from
