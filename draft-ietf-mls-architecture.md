@@ -886,6 +886,43 @@ inherently lead to compromise of the message stream, but does allow it
 to attack forward security to a limited extent.  This threat can be
 mitigated by having initial keys expire.
 
+### Privacy of delivery and push notifications
+
+An important mechanism that is often ignored from the privacy
+considerations are the push tokens. In many modern messaging
+architectures applications are using push notification mechanisms
+typically provided by OS vendors. This is to make sure that when
+messages are available at the Delivery Service (or by other mechanisms
+if the DS is not a central server), the recipient application on a
+device knows about it. Sometimes the push notification can contain the
+application message itself which saves a round trip with the DS.
+
+To "push" this information to the device, the service provider and the
+OS infrastructures use unique per-device, per-application identifiers
+called push-tokens. This means that the push notification provider and
+the service provider have information on which devices receive
+information and at which point in time.
+
+Even though they can't necessarily access the content, which is
+typically encrypted MLS messages, the service provider and the push
+notification provider has to be trusted to avoid making correllation
+on which devices are recipients of the same message.
+
+For secure messaging systems, push notification are often sent
+real-time as it is not acceptable to create artificial delays for
+message retrival.
+
+> **RECOMMENDATION:**
+> If real time notification are not necessary and that specific steps
+> must be taken to improve privacy, one can delay notifications
+> randomly across recipient devices (mixnet...).
+
+> **RECOMMENDATION:**
+> If stronger privacy guarantees are needed vis-a-vis of the push
+> notification provider, the client can always periodically connect to
+> the Delivery Service without the need of a dedicated push
+> notification infrastructure.
+
 ## Authentication Service Compromise
 
 The Authentication Service design is left to the infrastructure
@@ -899,7 +936,6 @@ the AS can serve incorrect or attacker-provided identities to clients.
 -- The attacker can sign new credentials
 
 -- The attacker can publish or distribute credentials
-
 
 Infrastructures that provide cryptographic material or credentials in
 place of the MLS client (which is under the control of the user) have
