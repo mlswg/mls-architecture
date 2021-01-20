@@ -92,15 +92,16 @@ informative:
 The Messaging Layer Security (MLS) protocol {{MLSPROTO}} document has
 the role of defining a Group Key Agreement, all the necessary
 cryptographic operations, and serialization/deserialization functions
-necessary to create a scalable and secure group messaging protocol
-which is meant to protect against eavesdropping, tampering, message
-forgery, and provide good properties on past or future device
-compromises.
+necessary to create a scalable and secure group messaging protocol.
+The MLS protocol is meant to protect against eavesdropping, tampering,
+message forgery, and provide good properties such as forward-secrecy
+(FS) and post-compromise security (PCS) in the case of past or future
+device compromises.
 
 This document, on the other hand is intended to describe a general
-secure group messaging infrastructure and its security goals.
-It provides guidance on building a group messaging system and
-discusses security tradeoffs offered by multiple security mechanism
+secure group messaging infrastructure and its security goals.  It
+provides guidance on building a group messaging system and discusses
+security and privacy tradeoffs offered by multiple security mechanism
 that are part of the MLS protocol (ie. frequency of public encryption
 key rotation).
 
@@ -108,8 +109,8 @@ The document also extends the guidance to parts of the infrastructure
 that are not standardized by the MLS Protocol document and left to the
 application or the infrastructure architects to design.
 
-While most of the recommendations of this document are not mandatory
-to follow in order to interoperate at the protocol level, they vastly
+While the recommendations of this document are not mandatory to follow
+in order to interoperate at the protocol level, most will vastly
 influence the overall security guarantees that are achieved by the
 overall messaging system. This is especially true in case of active
 adversaries that are able to compromise clients, the delivery service
@@ -160,22 +161,42 @@ In order to communicate securely, users initially interact with
 services at their disposal to establish the necessary values and
 credentials required for encryption and authentication.
 
-The Service Provider presents two abstract services that allow
+The Service Provider presents two abstract functionalities that allow
 clients to prepare for sending and receiving messages securely:
 
-- An Authentication Service (AS) which is responsible for maintaining
-  user long term identities, issuing credentials which allow them to
-  authenticate each other, and potentially allowing users to
-  discover each other's long-term identity keys.
+- An Authentication Service (AS) functionality which is responsible
+  for maintaining a binding between a unique identifier (identity) and
+  the public key material (credential) used for authentication in the
+  MLS protocol. This functionality must also be able to generate these
+  credentials or validate them if they are provided by MLS clients.
 
-- A Delivery Service (DS) which is responsible for receiving and
-  redistributing messages between group members.
-  In the case of group messaging, the delivery service may also be
-  responsible for acting as a "broadcaster" where the sender sends a
-  single message to a group which is then forwarded to each recipient
-  in the group by the DS. The DS is also responsible for storing and
-  delivering initial public key material required by clients in order
-  to proceed with the group secret key establishment process.
+- A Delivery Service (DS) functionality which can receive and
+  redistributing messages between group members. In the case of group
+  messaging, the delivery service may also be responsible for acting
+  as a "broadcaster" where the sender sends a single message which is
+  then forwarded to each recipient in the group by the DS. The DS is
+  also responsible for storing and delivering initial public key
+  material required by MLS clients in order to proceed with the group
+  secret key establishment that is part of the MLS protocol.
+
+For convenience, this document adopts the representation of these
+services being standalone servers, however the MLS protocol design is
+made so that it is not necessarily the case.
+
+It is important to note that the Authentication Service functionality
+can be completely abstract in the case of a Service Provider which
+allows MLS clients to generate, redistribute and validate their
+credentials themselves.
+
+Similarily to the AS, the Delivery Service can be completely abstract
+if users are able to distribute credentials and messages without
+relying on a central Delivery Service. Note, though, that the MLS
+protocol requires group operation messages to be processed in-order by
+all MLS clients.
+
+In some sense, a set of MLS clients which can acheive the AS and DS
+functionalities without relying on an external party do not need a
+Service Provider.
 
 ~~~~
       ----------------      --------------
@@ -196,11 +217,12 @@ clients to prepare for sending and receiving messages securely:
 
 In many systems, the AS and the DS are actually operated by the same
 entity and may even be the same server. However, they are logically
-distinct and, in other systems, may be operated by different entities,
-hence we show them as being separate entities here. Other partitions
-are also possible, such as having a separate directory server.
+distinct and, in other systems, may be operated by different entities.
+Other partitions are also possible, such as having a separate
+directory functionality or service.
 
-A typical group messaging scenario might look like this:
+According to this architecture design, a typical group messaging
+scenario might look like this:
 
 1. Alice, Bob and Charlie create accounts with a service
    provider and obtain credentials from the AS.
