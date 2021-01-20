@@ -377,8 +377,8 @@ cryptographic information:
 * A credential from the Authentication Service attesting to the
   binding between the identity and the client's signature key.
 
-* The client's asymmetric encryption key material signed with the
-  signature key associated with the credential.
+* The client's asymmetric encryption public key material signed with
+  the signature public key associated with the credential.
 
 As noted above, users may own multiple clients, each with their
 own keying material, and thus there may be multiple entries
