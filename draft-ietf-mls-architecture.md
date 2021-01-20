@@ -890,8 +890,8 @@ mitigated by having initial keys expire.
 ### Privacy of delivery and push notifications
 
 An important mechanism that is often ignored from the privacy
-considerations are the push tokens. In many modern messaging
-architectures applications are using push notification mechanisms
+considerations are the push-tokens. In many modern messaging
+architectures, applications are using push notification mechanisms
 typically provided by OS vendors. This is to make sure that when
 messages are available at the Delivery Service (or by other mechanisms
 if the DS is not a central server), the recipient application on a
@@ -906,7 +906,7 @@ information and at which point in time.
 
 Even though they can't necessarily access the content, which is
 typically encrypted MLS messages, the service provider and the push
-notification provider has to be trusted to avoid making correllation
+notification provider have to be trusted to avoid making correllation
 on which devices are recipients of the same message.
 
 For secure messaging systems, push notification are often sent
@@ -918,6 +918,12 @@ message retrival.
 > must be taken to improve privacy, one can delay notifications
 > randomly across recipient devices using a mixnet or other
 > techniques.
+
+Note that it is quite easy for legal requests to ask the service
+provider for the push-token associated to an identifier and perform a
+second request to the company operating the push-notification system
+to get information about the device, which is often linked with a real
+identity via a cloud account, a credit card or other information.
 
 > **RECOMMENDATION:**
 > If stronger privacy guarantees are needed vis-a-vis of the push
