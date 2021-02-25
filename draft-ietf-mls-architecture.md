@@ -744,13 +744,6 @@ the lack of high bandwidth network connectivity), the lifetime of the
 cryptographic keys for attachments is usually higher than for
 messages, hence slightly weakening the PCS guarantees for attachments.
 
-#### Denial of Service {#denial-of-service}
-
-In general we do not consider Denial of Service (DoS) resistance to be
-the responsibility of the protocol. However, it should not be possible
-for anyone aside from the DS to perform a trivial DoS attack from
-which it is hard to recover.
-
 #### Non-Repudiation vs Deniability
 
 As described in {{client-compromise}}, MLS provides strong
@@ -849,10 +842,24 @@ adversary to extract information about the group memberships.
 
 ### DoS protection
 
-An important role of the secure transport layer is to prevent Denial
-of Service (DoS) attacks.
+In general we do not consider Denial of Service (DoS) resistance to be
+the responsibility of the protocol. However, it should not be possible
+for anyone aside from the DS to perform a trivial DoS attack from
+which it is hard to recover. This can be achieved through the secure
+transport layer.
 
-[TODO: Expand the DoS aspect.]
+In the centralized setting DoS protection can typically be performed
+by using tickets or cookies which identify users to a service for a
+certain number of connections. Such a system helps preventing
+anonymous clients to send arbitrary numbers of Group Operation
+messages to the Delivery Service or the MLS clients.
+
+> **RECOMMENDATION:**
+> Anonymous credentials can be used in order to help DoS attacks
+> prevention, in a privacy preserving manner. Note that the privacy of
+> these mechanisms has to be adjusted in accordance with the privacy
+> expected from the secure transport links. (See more discussion
+> further down.)
 
 ### Message suppression and error correction
 
@@ -1128,9 +1135,6 @@ In addition, a client cannot send a message to a group which appears to
 be from another client with a different identity. Note that if devices
 from the same user share keying material, then one will be able to
 impersonate another.
-
-Finally, clients should not be able to perform DoS attacks
-{{denial-of-service}}.
 
 # IANA Considerations
 
