@@ -1169,29 +1169,73 @@ regarding the following compromise scenarios:
 -- The attacker has access to all secrets of a user for all groups
 
 [[TODO: Make examples for more complex attacks, cross groups,
-multi collusions, fault attacks to jump...]]
+multi collusions...]]
+
+[[TODO: Lifetimes and secret erasure]]
+
+Recall that the MLS protocol provides chains of AEAD keys, per sender
+that are generated from Group Secrets. These keys are used to protect
+MLS Plaintext messages which can be Group Operation or Application
+messages. The Group Operation messages offer an additional protection
+as the secret exchanged within the TreeKEM group key agreement are
+public-key encrypted to subgroups with HPKE.
 
 ### Compromise of AEAD key material
 
-In specific circumpstances, adversaries may have access to specific
-AEAD key and nonces which protect the Application and Group Operation
-messages.
+In some circumpstances, adversaries may have access to specific AEAD
+keys and nonces which protect an Application or a Group Operation
+message. While this is a very weak kind of compromise, it can be
+realistic in cases of implementation vulnerabilities where only part
+of the memory leaks to the adversary.
 
-[[NOTE: Defense in depth, including context in the key
-derivation can provide protection against the derivation of
-the next AEAD key when the adversary only has the existing key]]
+When an AEAD key is compromised, the adversary has access to a set of
+AEAD keys for the same chain and the same epoch, hence can decrypt
+messages sent using keys of this chain. An adversary cannot send a
+message to a group which appears to be from any valid client since
+they cannot forge the signature.
 
-When a Client is fully compromised, then the attacker will be able
-to decrypt any messages for groups in which the Client is a member,
-and will be able to send messages impersonating the compromised
-Client. However, if the Client afterwards updates its keying material
-(see {{fs-and-pcs}}) (using fresh randomness that the attacker does
-not know) then the PCS property enables the Client to recover.
+The MLS protocol will ensure that an adversary cannot compute any
+previous AEAD keys for the same epoch, or any other epochs.  Because
+of its Forward Secrecy guarantees, MLS will also retain secrecy of all
+other AEAD keys generated for *other* MLS clients, outside this
+dedicated chain of AEAD keys and nonces, even within the epoch of the
+compromise. However the MLS protocol does not provide Post Compromise
+Secrecy for AEAD encryption within an epoch. This means that if the
+AEAD key of a chain is compromised, the adversary can compute an
+arbitrary number of subsequent AEAD keys for that chain.
 
-In addition, a client cannot send a message to a group which appears to
-be from another client with a different identity. Note that if devices
-from the same user share keying material, then one will be able to
-impersonate another.
+These guarantees are ensured by the structure of the MLS key schedule
+which provides Forward Secrecy for these AEAD encryptions, accross the
+messages within the epoch and also accross previous epochs.  Those
+chains are completely disjoint and compromising keys accross the
+chains would mean that some Group Secrets have been compromised, which
+is not the case in this attack scenario (we explore stronger
+compromise scenarios as part of the following sections).
+
+MLS provides Post-Compromise Secrecy against an active adaptative
+attacker across epochs for AEAD encryption, which means that as soon
+as the epoch is changed, if the attacker does not have access to more
+secret material they won't be able to access any protected messages
+from future epochs.
+
+In the case of an Application message, an AEAD key compromise means
+that the encrypted application message will be leaked as well as the
+signature over that message. This means, that the compromise has both
+confidentiality and privacy implications on the future AEAD
+encryptions of that chain.
+In the case of a Group Operation message, only the privacy is
+affected, as the signature is revealed, because the secrets themselves
+are protected by HPKE encryption.
+
+Note that under that compromise scenario, authentication is not
+affected in neither of these cases.  As every member of the group can
+compute the AEAD keys for all the chains (they have access to the
+Group Secrets) in order to send and receive messages, the
+authentication provided by the AEAD encryption layer of the common
+framing mechanism is very weak. Successful decryption of an AEAD
+encrypted message only guarantees that a member of the group sent the
+message.
+
 
 # IANA Considerations
 
