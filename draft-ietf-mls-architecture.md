@@ -1149,13 +1149,44 @@ anonymity properties.
 
 ## Client Compromise
 
-MLS provides a limited form of protection against compromised Clients
-through PCS. When the Client is fully compromised, then the attacker
-will be able to decrypt any messages for groups in which the Client is a
-member, and will be able to send messages impersonating the compromised
+The MLS protocol adopts a threat model which includes multiple forms
+of Client compromises. While adversaries are in a very strong position
+if they have compromised an MLS client, there are still situations
+where security guarantees can be recovered thanks to the PCS
+properties achieved by the MLS protocol.
+
+In this section we will explore the consequences and recommandations
+regarding the following compromise scenarios:
+
+-- The attacker has access to a specific application message key
+
+-- The attacker has access to the group secrets for one group
+
+-- The attacker has access to the signature key for one group
+
+-- The attacker has access to all secrets of a member for a group
+
+-- The attacker has access to all secrets of a user for all groups
+
+[[TODO: Make examples for more complex attacks, cross groups,
+multi collusions, fault attacks to jump...]]
+
+### Compromise of AEAD key material
+
+In specific circumpstances, adversaries may have access to specific
+AEAD key and nonces which protect the Application and Group Operation
+messages.
+
+[[NOTE: Defense in depth, including context in the key
+derivation can provide protection against the derivation of
+the next AEAD key when the adversary only has the existing key]]
+
+When a Client is fully compromised, then the attacker will be able
+to decrypt any messages for groups in which the Client is a member,
+and will be able to send messages impersonating the compromised
 Client. However, if the Client afterwards updates its keying material
-(see {{fs-and-pcs}}) (using fresh randomness that the attacker does not
-know) then the PCS property enables the Client to recover.
+(see {{fs-and-pcs}}) (using fresh randomness that the attacker does
+not know) then the PCS property enables the Client to recover.
 
 In addition, a client cannot send a message to a group which appears to
 be from another client with a different identity. Note that if devices
