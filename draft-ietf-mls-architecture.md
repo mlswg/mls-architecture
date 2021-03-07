@@ -1274,6 +1274,51 @@ operation. This means that, as long as other members of the group are
 honest, the protocol will guarantee message secrecy for all messages
 exchanged in the epochs after the compromised party has been removed.
 
+### Compromise by an active adversary with the ability to sign messages
+
+Under such a scenario, where an active adversary has compromised an
+MLS client, two different settings emerge. In the strongest compromise
+scenario, the attacker has access to the signing key and can forge
+authenticated messages. In a weaker, yet realistic scenario, the
+attacker has compromised a client but the client signature keys are
+protected with dedicated hardware features which do not allow direct
+access to the value of the private key and instead provide a signature
+API.
+
+When considering an active adaptative attacker with access to a
+signature oracle, the compromise scenario implies a significant
+impact on both the secrecy and authentication guarantees of the
+protocol, especially if the attacker also has access to the group
+secrets. In that case both secrecy and authentication are broken.
+The attacker can generate any message, for the current and future
+epochs until an honest update from the compromised client happens.
+
+Note that under this compromise scenario, the attacker can perform all
+operations which are available to an legitimate client even without
+access to the actual value of the signature key.
+
+Beware that an active adaptative attacker, can follow the protocol and
+request to update its own credential. This in turn induce a signature
+key rotation which could provide the attacker with part or the full
+value of the private key depending on the architecture of the service
+provider.
+
+> **RECOMMENDATION:**
+> Signature private keys should be compartimentalized from other
+> secrets and preferably protected by an HSM or dedicated hardware
+> features to allow recovery of the authentication for future messages
+> after a compromised.
+
+Even if the dedicated hardware approach mis used, ideally, neither the
+Client or the Authentication service alone should provide the
+signature private key. Both should contribute to the key and it should
+be stored securely by the client with no direct access.
+
+Without access to the group secrets, the adversary will not have the
+ability to generate messages which look valid to other members of the
+group and to the infrastructure as they need to have access to group
+secrets to compute the encryption keys or the membership tag.
+
 
 # IANA Considerations
 
