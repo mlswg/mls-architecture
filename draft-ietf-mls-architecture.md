@@ -128,6 +128,14 @@ Instructions are on that page as well.  Editorial changes can be
 managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
+DISCLAMER: A lot of work is still ongoing on the current version of
+this draft. Especially, this preliminary writing of the security
+considerations has not been reviewed by the working group yet and
+might contain errors.
+Please file an issue on the document's GitHub if you find errors.
+
+[[TODO: Remove disclamer.]]
+
 End-to-end security is a requirement for instant messaging systems and
 is commonly deployed in many such systems. In this context,
 "end-to-end" captures the notion that users of the system enjoy some
