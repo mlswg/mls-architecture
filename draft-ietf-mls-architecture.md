@@ -1244,6 +1244,32 @@ framing mechanism is very weak. Successful decryption of an AEAD
 encrypted message only guarantees that a member of the group sent the
 message.
 
+### Compromise of the Group Secrets of a single group for one or more group epochs
+
+The attack scenario considering an adversary gaining access to a set
+of Group secrets is significantly stronger. This can typically be the
+case when a member of the group is compromised.
+For this scenario, we consider that the signature keys are not
+compromised. This can be the case for instance if the adversary has
+access to part of the memory containing the group secrets but not to
+the signature keys which might be stored in a secure enclave.
+
+In this scenario, the adversary gains the ability to compute any
+number of AEAD encryption keys for any AEAD chains and can encrypt and
+decrypt all messages for the compromised epochs.
+
+If the adversary is passive, it is expected from the PCS properties of
+the MLS protocol that, as soon as an honest Commit message is sent by
+the compromised party, the next epochs will provide message secrecy.
+
+If the adversary is active, the adversary can follow the protocol and
+perform updates on behalf of the compromised party with no ability to
+an honest group to recover message secrecy. However, MLS provides PCS
+against active adaptative attackers through its Remove group
+operation. This means that, as long as other members of the group are
+honest, the protocol will guarantee message secrecy for all messages
+exchanged in the epochs after the compromised party has been removed.
+
 
 # IANA Considerations
 
