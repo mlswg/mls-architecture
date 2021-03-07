@@ -1183,6 +1183,8 @@ multi collusions...]]
 
 [[TODO: Lifetimes and secret erasure]]
 
+[[TODO: Cite the research papers in the context of these compromise models]]
+
 Recall that the MLS protocol provides chains of AEAD keys, per sender
 that are generated from Group Secrets. These keys are used to protect
 MLS Plaintext messages which can be Group Operation or Application
