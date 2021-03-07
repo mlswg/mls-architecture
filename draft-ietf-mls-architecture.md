@@ -1166,9 +1166,11 @@ properties achieved by the MLS protocol.
 In this section we will explore the consequences and recommandations
 regarding the following compromise scenarios:
 
--- The attacker has access to a specific application message key
+-- The attacker has access to a specific symmetric encryption key
 
 -- The attacker has access to the group secrets for one group
+
+-- The attacker has access to a signature oracle for any group
 
 -- The attacker has access to the signature key for one group
 
