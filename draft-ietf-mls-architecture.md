@@ -128,13 +128,13 @@ Instructions are on that page as well.  Editorial changes can be
 managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
-DISCLAMER: A lot of work is still ongoing on the current version of
+DISCLAIMER: A lot of work is still ongoing on the current version of
 this draft. Especially, this preliminary writing of the security
 considerations has not been reviewed by the working group yet and
 might contain errors.
 Please file an issue on the document's GitHub if you find errors.
 
-[[TODO: Remove disclamer.]]
+[[TODO: Remove disclaimer.]]
 
 End-to-end security is a requirement for instant messaging systems and
 is commonly deployed in many such systems. In this context,
@@ -196,13 +196,13 @@ can be completely abstract in the case of a Service Provider which
 allows MLS clients to generate, redistribute and validate their
 credentials themselves.
 
-Similarily to the AS, the Delivery Service can be completely abstract
+Similarly to the AS, the Delivery Service can be completely abstract
 if users are able to distribute credentials and messages without
 relying on a central Delivery Service. Note, though, that the MLS
 protocol requires group operation messages to be processed in-order by
 all MLS clients.
 
-In some sense, a set of MLS clients which can acheive the AS and DS
+In some sense, a set of MLS clients which can achieve the AS and DS
 functionalities without relying on an external party do not need a
 Service Provider.
 
@@ -457,7 +457,7 @@ The MLS protocol itself can verify these properties. For instance, if
 the DS reorders messages from a Client or provides different Clients
 with inconsistent orderings, then Clients can detect this
 misconduct. However, the protocol relies on the ordering, and on the
-fact that only one honest group operation message is faned-out to
+fact that only one honest group operation message is fanned-out to
 clients per Epoch, to provide Clients with a consistent view of the
 evolving Group State.
 
@@ -802,7 +802,7 @@ MLS threat model.
 
 Compromise scenarios, typically consist in a software adversary, which
 can maintain active adaptative compromise and arbitrarily change the
-behaviour of the client or service.
+behavior of the client or service.
 
 On the other hand, security goals consider that honest clients will
 always run the protocol according to its specification. This relies on
@@ -963,12 +963,12 @@ information and at which point in time.
 
 Even though they can't necessarily access the content, which is
 typically encrypted MLS messages, the service provider and the push
-notification provider have to be trusted to avoid making correllation
+notification provider have to be trusted to avoid making correlation
 on which devices are recipients of the same message.
 
 For secure messaging systems, push notification are often sent
 real-time as it is not acceptable to create artificial delays for
-message retrival.
+message retrieval.
 
 > **RECOMMENDATION:**
 > If real time notification are not necessary and that specific steps
@@ -1163,7 +1163,7 @@ if they have compromised an MLS client, there are still situations
 where security guarantees can be recovered thanks to the PCS
 properties achieved by the MLS protocol.
 
-In this section we will explore the consequences and recommandations
+In this section we will explore the consequences and recommendations
 regarding the following compromise scenarios:
 
 -- The attacker has access to a specific symmetric encryption key
@@ -1188,7 +1188,7 @@ public-key encrypted to subgroups with HPKE.
 
 ### Compromise of AEAD key material
 
-In some circumpstances, adversaries may have access to specific AEAD
+In some circumstances, adversaries may have access to specific AEAD
 keys and nonces which protect an Application or a Group Operation
 message. While this is a very weak kind of compromise, it can be
 realistic in cases of implementation vulnerabilities where only part
@@ -1211,9 +1211,9 @@ AEAD key of a chain is compromised, the adversary can compute an
 arbitrary number of subsequent AEAD keys for that chain.
 
 These guarantees are ensured by the structure of the MLS key schedule
-which provides Forward Secrecy for these AEAD encryptions, accross the
-messages within the epoch and also accross previous epochs.  Those
-chains are completely disjoint and compromising keys accross the
+which provides Forward Secrecy for these AEAD encryptions, across the
+messages within the epoch and also across previous epochs.  Those
+chains are completely disjoint and compromising keys across the
 chains would mean that some Group Secrets have been compromised, which
 is not the case in this attack scenario (we explore stronger
 compromise scenarios as part of the following sections).
@@ -1298,8 +1298,8 @@ secrets to compute the encryption keys or the membership tag.
 
 ### Compromise of the authentication with access to a signature key
 
-DISCLAMER: Significant work remains in this section.
-[[TODO: Remove disclamer.]]
+DISCLAIMER: Significant work remains in this section.
+[[TODO: Remove disclaimer.]]
 
 The difference between having access to the value of the signature key
 and only having access to a signing oracle is not about the ability of
@@ -1331,7 +1331,7 @@ could provide the attacker with part or the full value of the private
 key depending on the architecture of the service provider.
 
 > **RECOMMENDATION:**
-> Signature private keys should be compartimentalized from other
+> Signature private keys should be compartmentalized from other
 > secrets and preferably protected by an HSM or dedicated hardware
 > features to allow recovery of the authentication for future messages
 > after a compromised.
@@ -1345,7 +1345,7 @@ be stored securely by the client with no direct access.
 
 In real-world compromise scenarios, it is often the case that
 adversaries target specific devices to obtain parts of the memory or
-even the ability to execute arbitrary code in the targetted device.
+even the ability to execute arbitrary code in the targeted device.
 
 Also, recall that in this setting, the application will often retain
 the unencrypted messages. If so, the adversary does not have to break
@@ -1378,7 +1378,7 @@ changed with each message received by a client.
 However, the signature private keys are mostly used by clients to send
 a message. They also are providing the strong authentication
 guarantees to other clients, hence we consider that their protection
-by additionnal security mechanism should be a priority.
+by additional security mechanism should be a priority.
 
 Overall there is no way to detect or prevent these compromise, as
 discussed in the previous sections, performing separation of the
@@ -1388,7 +1388,7 @@ encryption private key used in the TreeKEM Group Key Agreement.
 
 > **RECOMMENDATION:**
 > The secret keys used for public key encryption should be stored
-> similarily to the way the signature keys are stored as key can be
+> similarly to the way the signature keys are stored as key can be
 > used to decrypt the group operation messages and contain the secret
 > material used to compute all the group secrets.
 
