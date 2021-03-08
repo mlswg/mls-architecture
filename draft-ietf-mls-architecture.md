@@ -1174,16 +1174,8 @@ regarding the following compromise scenarios:
 
 -- The attacker has access to the signature key for one group
 
--- The attacker has access to all secrets of a member for a group
-
 -- The attacker has access to all secrets of a user for all groups
-
-[[TODO: Make examples for more complex attacks, cross groups,
-multi collusions...]]
-
-[[TODO: Do we discuss PCFS in this document? If yes, where?]]
-
-[[TODO: Lifetimes and secret erasure]]
+   (full state compromise)
 
 [[TODO: Cite the research papers in the context of these compromise models]]
 
@@ -1306,6 +1298,9 @@ secrets to compute the encryption keys or the membership tag.
 
 ### Compromise of the authentication with access to a signature key
 
+DISCLAMER: Significant work remains in this section.
+[[TODO: Remove disclamer.]]
+
 The difference between having access to the value of the signature key
 and only having access to a signing oracle is not about the ability of
 an active adaptative network attacker to perform different operations
@@ -1346,11 +1341,35 @@ Client or the Authentication service alone should provide the
 signature private key. Both should contribute to the key and it should
 be stored securely by the client with no direct access.
 
-### Discussion of the realism of the threat model and compromise scenarios
+### Security consideration in the context of a full state compromise
+
+In real-world compromise scenarios, it is often the case that
+adversaries target specific devices to obtain parts of the memory or
+even the ability to execute arbitrary code in the targetted device.
+
+Also, recall that in this setting, the application will often retain
+the unencrypted messages. If so, the adversary does not have to break
+encryption at all to access sent and received messages. Messages may
+also be send by using the application to instruct the protocol
+implementation.
+
+> **RECOMMENDATION:**
+> If messages are stored on the device, they should be protected using
+> encryption at rest, and the keys used should be stored
+> securely using dedicated mechanisms on the device.
+
+> **RECOMMENDATION:**
+> If the threat model of the system is against an adversary which can
+> access the messages on the device without even needing to attack
+> MLS, the application should delete plaintext messages and
+> ciphertexts immediately after encryption or decryption.
+
+Even though, from the strict point of view of the security
+formalization, a ciphertext is always public and will forever be,
+there is no loss in trying to erase ciphertexts as much as possible.
 
 Note that this document makes a clear distinction between the way
 signature keys and other group shared secrets must be handled.
-
 In particular, a large set of group secrets cannot necessarily assumed
 to be protected by an HSM or secure enclave features. This is
 especially true because these keys are extremely frequently used and
@@ -1361,6 +1380,18 @@ a message. They also are providing the strong authentication
 guarantees to other clients, hence we consider that their protection
 by additionnal security mechanism should be a priority.
 
+Overall there is no way to detect or prevent these compromise, as
+discussed in the previous sections, performing separation of the
+application secret states can help recovery after compromise, this is
+the case for signature keys but similar concern exists for the
+encryption private key used in the TreeKEM Group Key Agreement.
+
+> **RECOMMENDATION:**
+> The secret keys used for public key encryption should be stored
+> similarily to the way the signature keys are stored as key can be
+> used to decrypt the group operation messages and contain the secret
+> material used to compute all the group secrets.
+
 Even if secure enclaves are not perfectly secure, or even completely
 broken, adopting additional protections for these keys can ease
 recovery of the secrecy and authentication guarantees after a
@@ -1368,6 +1399,14 @@ compromise where for instance, an attacker can sign messages without
 having access to the key. In certain contexts, the rotation of
 credentials might only be triggered by the AS through ACLs, hence be
 outside of the capabilities of the attacker.
+
+[[TODO: Considerations for Signature keys being reused or not across groups]]
+
+### More attack scenarios
+[[TODO: Make examples for more complex attacks, cross groups,
+multi collusions...]]
+
+[[TODO: Do we discuss PCFS in this document? If yes, where?]]
 
 
 # IANA Considerations
