@@ -1181,6 +1181,8 @@ regarding the following compromise scenarios:
 [[TODO: Make examples for more complex attacks, cross groups,
 multi collusions...]]
 
+[[TODO: Do we discuss PCFS in this document? If yes, where?]]
+
 [[TODO: Lifetimes and secret erasure]]
 
 [[TODO: Cite the research papers in the context of these compromise models]]
@@ -1297,11 +1299,41 @@ Note that under this compromise scenario, the attacker can perform all
 operations which are available to an legitimate client even without
 access to the actual value of the signature key.
 
-Beware that an active adaptative attacker, can follow the protocol and
-request to update its own credential. This in turn induce a signature
-key rotation which could provide the attacker with part or the full
-value of the private key depending on the architecture of the service
-provider.
+Without access to the group secrets, the adversary will not have the
+ability to generate messages which look valid to other members of the
+group and to the infrastructure as they need to have access to group
+secrets to compute the encryption keys or the membership tag.
+
+### Compromise of the authentication with access to a signature key
+
+The difference between having access to the value of the signature key
+and only having access to a signing oracle is not about the ability of
+an active adaptative network attacker to perform different operations
+during the time of the compromise, the attacker can perform every
+operations available to a legitimate client in both cases.
+
+There is a significant difference, however in terms of recovery after
+a compromise.
+
+Because of the PCS guarantees provided by the MLS protocol, when a
+previously compromised client performs an honest Commit which is not
+under the control of the adversary, both secrecy and authentication of
+messages can be recovered in the case where the attacker didn't get
+access to the key. Because the adversary doesn't have the key and has
+lost the ability to sign messages, they cannot authenticate messages
+on behalf of the compromised party, even if they still have control
+over some group keys by colluding with other members of the group.
+
+This is in contrast with the case where the signature key is leaked.
+In that case PCS of the MLS protocol will eventually allow recovery of
+the authentication of messages for future epochs but only after
+compromised parties refresh their credentials securely.
+
+Beware that in both oracle and private key access, an active
+adaptative attacker, can follow the protocol and request to update its
+own credential. This in turn induce a signature key rotation which
+could provide the attacker with part or the full value of the private
+key depending on the architecture of the service provider.
 
 > **RECOMMENDATION:**
 > Signature private keys should be compartimentalized from other
@@ -1309,15 +1341,33 @@ provider.
 > features to allow recovery of the authentication for future messages
 > after a compromised.
 
-Even if the dedicated hardware approach mis used, ideally, neither the
+Even if the dedicated hardware approach is used, ideally, neither the
 Client or the Authentication service alone should provide the
 signature private key. Both should contribute to the key and it should
 be stored securely by the client with no direct access.
 
-Without access to the group secrets, the adversary will not have the
-ability to generate messages which look valid to other members of the
-group and to the infrastructure as they need to have access to group
-secrets to compute the encryption keys or the membership tag.
+### Discussion of the realism of the threat model and compromise scenarios
+
+Note that this document makes a clear distinction between the way
+signature keys and other group shared secrets must be handled.
+
+In particular, a large set of group secrets cannot necessarily assumed
+to be protected by an HSM or secure enclave features. This is
+especially true because these keys are extremely frequently used and
+changed with each message received by a client.
+
+However, the signature private keys are mostly used by clients to send
+a message. They also are providing the strong authentication
+guarantees to other clients, hence we consider that their protection
+by additionnal security mechanism should be a priority.
+
+Even if secure enclaves are not perfectly secure, or even completely
+broken, adopting additional protections for these keys can ease
+recovery of the secrecy and authentication guarantees after a
+compromise where for instance, an attacker can sign messages without
+having access to the key. In certain contexts, the rotation of
+credentials might only be triggered by the AS through ACLs, hence be
+outside of the capabilities of the attacker.
 
 
 # IANA Considerations
