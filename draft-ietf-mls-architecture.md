@@ -500,9 +500,6 @@ long, thus containing the threat of compromise. The precise details of
 such mechanisms are a matter of local policy and beyond the scope of
 this document.
 
-
-# System Requirements
-
 ## Functional Requirements
 
 MLS is designed as a large scale group messaging protocol and hence
@@ -614,37 +611,6 @@ verify availability of protocol version, ciphersuites and extensions
 at all times once he has at least received the first group operation
 message.
 
-## Security and Privacy Requirements
-
-{::comment}
-[[TODO: should these be stated as assertions ("MLS guarantees that...") or
-goals ("MLS aims to guarantee that...")?]]
-{:/comment}
-
-
-### Privacy
-
-The protocol is designed in a way that limits the server-side (AS and
-DS) metadata footprint. The DS only persists data required for the
-delivery of messages and avoids Personally Identifiable Information
-(PII) or other sensitive metadata wherever possible. A Service Provider
-that has control over both the AS and the DS, will not be able to correlate
-encrypted messages forwarded by the DS, with the initial public keys signed
-by the AS.
-
-[[OPEN ISSUE: These privacy statements seem very strong.
-BB. I would be willing to keep them as requirements since we have
-example solutions in the Server-Assist draft.]]
-
-### Connections between Clients and Servers (one-to-one)
-
-We assume that all transport connections are secured via some transport
-layer security mechanism such as TLS {{?RFC8446}}. However,
-as noted above, the security of MLS will generally survive compromise
-of the transport layer, so long as identity keys provided by the AS are
-authenticated at a minimum. However, MLS ciphertext contains the Group
-Identifier, Epoch number and Content Type that may be used to improve
-attacks on the privacy of the group.
 
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
@@ -764,7 +730,6 @@ deployments, these services are provided by mechanisms which allow the
 receiver to prove a message's origin to a third party (this if often
 called "non-repudiation"), but it should also be possible to operate
 MLS in a "deniable" mode where such proof is not possible.
-[[OPEN ISSUE: Exactly how to supply this is still a protocol question.]]
 
 
 # Security and Privacy Considerations
