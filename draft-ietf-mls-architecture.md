@@ -508,68 +508,6 @@ systems that implement MLS provide support for conversations involving
 two or more members, and aim to scale to groups as large as 50,000 members,
 typically including many users using multiple devices.
 
-### Message Secrecy and Authentication {#message-secrecy-authentication}
-
-The trust establishment step of the MLS protocol is followed by a
-conversation protection step where encryption is used by clients to
-transmit authenticated messages to other clients through the DS.
-This ensures that the DS does not have access to the group's private
-content.
-
-MLS aims to provide secrecy, integrity and authentication for all
-messages.
-
-Message Secrecy in the context of MLS means that only intended
-recipients (current group members), can read any message sent to the
-group, even in the context of an active attacker as described in the
-threat model.
-
-Message Integrity and Authentication mean that an honest Client can
-only accept a message if it was sent by a group member and that no
-Client can send a message which other Clients accept as being from
-another Client.
-
-A corollary to this statement is that the AS and the DS cannot read
-the content of messages sent between Members as they are not Members
-of the Group. MLS optionally provides additional protections regarding
-traffic analysis so as to reduce the ability of attackers, or a
-compromised member of the messaging system, to deduce the content of
-the messages depending on (for example) their size. One of these
-protections includes padding messages in order to produce ciphertexts
-of standard length. While this protection is highly recommended it is
-not mandatory as it can be costly in terms of performance for clients
-and the SP.
-
-Message content can be deniable if the signature keys are exchanged
-over a deniable channel prior to signing messages.
-
-### Forward and Post-Compromise Security {#fs-and-pcs}
-
-MLS provides additional protection regarding secrecy of past messages
-and future messages. These cryptographic security properties are
-Forward Secrecy (FS) and Post-Compromise Security (PCS).
-
-FS means that access to all encrypted traffic history combined with an
-access to all current keying material on clients will not defeat the
-secrecy properties of messages older than the oldest key of the
-compromised client.
-Note that this means that clients have the extremely important role of
-deleting appropriate keys as soon as they have been used with the
-expected message, otherwise the secrecy of the messages and the
-security for MLS is considerably weakened.
-
-PCS means that if a group member's state is compromised at some time t
-but the group member subsequently performs an update at some time t',
-then all MLS guarantees apply to messages sent by the member after
-time t', and by other members after they have processed the
-update. For example, if an attacker learns all secrets known to Alice
-at time t, including both Alice's long-term secret keys and all shared
-group keys, but Alice performs a key update at time t', then the
-attacker is unable to violate any of the MLS security properties after
-the updates have been processed.
-
-Both of these properties are satisfied even against compromised
-DSs and ASs.
 
 ### Membership Changes
 
@@ -613,19 +551,6 @@ attachments may be different. For many reasons (a typical reason being
 the lack of high bandwidth network connectivity), the lifetime of the
 cryptographic keys for attachments is usually higher than for
 messages, hence slightly weakening the PCS guarantees for attachments.
-
-### Non-Repudiation vs Deniability
-
-As described in {{client-compromise}}, MLS provides strong
-authentication within a group, such that a group member cannot send a
-message that appears to be from another group member. Additionally,
-some services require that a recipient be able to prove to the
-service provider that a message was sent by a given client, in order
-to report abuse. MLS supports both of these use cases. In some
-deployments, these services are provided by mechanisms which allow the
-receiver to prove a message's origin to a third party (this if often
-called "non-repudiation"), but it should also be possible to operate
-MLS in a "deniable" mode where such proof is not possible.
 
 ### Asynchronous Usage
 
@@ -755,6 +680,80 @@ layer is present to protect metadata and privacy in general, while the
 MLS protocol is providing stronger guarantees such as confidentiality,
 integrity and authentication guarantees. Stronger properties such as
 deniability can also be achieved in specific architecture designs.
+
+### Message Secrecy and Authentication {#message-secrecy-authentication}
+
+The trust establishment step of the MLS protocol is followed by a
+conversation protection step where encryption is used by clients to
+transmit authenticated messages to other clients through the DS.
+This ensures that the DS does not have access to the group's private
+content.
+
+MLS aims to provide secrecy, integrity and authentication for all
+messages.
+
+Message Secrecy in the context of MLS means that only intended
+recipients (current group members), can read any message sent to the
+group, even in the context of an active attacker as described in the
+threat model.
+
+Message Integrity and Authentication mean that an honest Client can
+only accept a message if it was sent by a group member and that no
+Client can send a message which other Clients accept as being from
+another Client.
+
+A corollary to this statement is that the AS and the DS cannot read
+the content of messages sent between Members as they are not Members
+of the Group. MLS optionally provides additional protections regarding
+traffic analysis so as to reduce the ability of attackers, or a
+compromised member of the messaging system, to deduce the content of
+the messages depending on (for example) their size. One of these
+protections includes padding messages in order to produce ciphertexts
+of standard length. While this protection is highly recommended it is
+not mandatory as it can be costly in terms of performance for clients
+and the SP.
+
+Message content can be deniable if the signature keys are exchanged
+over a deniable channel prior to signing messages.
+
+### Forward and Post-Compromise Security {#fs-and-pcs}
+
+MLS provides additional protection regarding secrecy of past messages
+and future messages. These cryptographic security properties are
+Forward Secrecy (FS) and Post-Compromise Security (PCS).
+
+FS means that access to all encrypted traffic history combined with an
+access to all current keying material on clients will not defeat the
+secrecy properties of messages older than the oldest key of the
+compromised client.
+Note that this means that clients have the extremely important role of
+deleting appropriate keys as soon as they have been used with the
+expected message, otherwise the secrecy of the messages and the
+security for MLS is considerably weakened.
+
+PCS means that if a group member's state is compromised at some time t
+but the group member subsequently performs an update at some time t',
+then all MLS guarantees apply to messages sent by the member after
+time t', and by other members after they have processed the
+update. For example, if an attacker learns all secrets known to Alice
+at time t, including both Alice's long-term secret keys and all shared
+group keys, but Alice performs a key update at time t', then the
+attacker is unable to violate any of the MLS security properties after
+the updates have been processed.
+
+Both of these properties are satisfied even against compromised
+DSs and ASs.
+
+### Non-Repudiation vs Deniability
+
+MLS provides strong authentication within a group, such that a group member
+cannot send a message that appears to be from another group member.
+Additionally, some services require that a recipient be able to prove to the
+service provider that a message was sent by a given client, in order to report
+abuse. MLS supports both of these use cases. In some deployments, these services
+are provided by mechanisms which allow the receiver to prove a message's origin
+to a third party (this if often called "non-repudiation"), but it should also be
+possible to operate MLS in a "deniable" mode where such proof is not possible.
 
 ## Considerations for attacks outside of the threat model
 
