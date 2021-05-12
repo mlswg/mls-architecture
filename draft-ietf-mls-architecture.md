@@ -860,32 +860,6 @@ are provided by mechanisms which allow the receiver to prove a message's origin
 to a third party (this if often called "non-repudiation"), but it should also be
 possible to operate MLS in a "deniable" mode where such proof is not possible.
 
-## Considerations for attacks outside of the threat model
-
-Physical attacks on devices storing and executing MLS principals are
-not considered in depth in the threat model of the MLS protocol.
-While non-permanent, non-invasive attacks can sometime be equivalent
-to software attacks, physical attacks are considered outside of the
-MLS threat model.
-
-Compromise scenarios, typically consist in a software adversary, which
-can maintain active adaptative compromise and arbitrarily change the
-behavior of the client or service.
-
-On the other hand, security goals consider that honest clients will
-always run the protocol according to its specification. This relies on
-implementations of the protocol to securely implement the
-specification, which remains non-trivial.
-
-> **RECOMMENDATION:**
-> Additional steps should be taken to protect the device and the MLS
-> clients from physical compromise. In such setting, HSMs and secure
-> enclaves can be used to protect signature keys.
->
-> More information will be available in the Server-Assist draft.
-
-[[TODO: Reference to server assist when the draft is available.]]
-
 ## Delivery Service Compromise
 
 MLS is intended to provide strong guarantees in the face of compromise
@@ -1373,6 +1347,32 @@ multi collusions...]]
 
 [[TODO: Do we discuss PCFS in this document? If yes, where?]]
 
+
+## Considerations for attacks outside of the threat model
+
+Physical attacks on devices storing and executing MLS principals are
+not considered in depth in the threat model of the MLS protocol.
+While non-permanent, non-invasive attacks can sometime be equivalent
+to software attacks, physical attacks are considered outside of the
+MLS threat model.
+
+Compromise scenarios, typically consist in a software adversary, which
+can maintain active adaptative compromise and arbitrarily change the
+behavior of the client or service.
+
+On the other hand, security goals consider that honest clients will
+always run the protocol according to its specification. This relies on
+implementations of the protocol to securely implement the
+specification, which remains non-trivial.
+
+> **RECOMMENDATION:**
+> Additional steps should be taken to protect the device and the MLS
+> clients from physical compromise. In such setting, HSMs and secure
+> enclaves can be used to protect signature keys.
+>
+> More information will be available in the Server-Assist draft.
+
+[[TODO: Reference to server assist when the draft is available.]]
 
 # IANA Considerations
 
