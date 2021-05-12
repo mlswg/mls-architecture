@@ -849,7 +849,7 @@ the updates have been processed.
 Both of these properties are satisfied even against compromised
 DSs and ASs.
 
-### Non-Repudiation vs Deniability
+### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
 MLS provides strong authentication within a group, such that a group member
 cannot send a message that appears to be from another group member.
@@ -1218,7 +1218,7 @@ identity via a cloud account, a credit card or other information.
 > to the Delivery Service without the need of a dedicated push
 > notification infrastructure.
 
-### Authentication Service Compromise
+### Authentication Service Compromise {#as-compromise}
 
 The Authentication Service design is left to the infrastructure
 designers. In most designs, a compromised AS is a serious matter, as
