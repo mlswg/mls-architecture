@@ -784,6 +784,8 @@ the appropriate level of redundancy and quality of service for MLS.
 > channel, prefer using a protocol which provides Forward Error
 > Correction.
 
+## Intended Security Guarantees
+
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
 The trust establishment step of the MLS protocol is followed by a
