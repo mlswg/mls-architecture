@@ -860,244 +860,10 @@ are provided by mechanisms which allow the receiver to prove a message's origin
 to a third party (this if often called "non-repudiation"), but it should also be
 possible to operate MLS in a "deniable" mode where such proof is not possible.
 
-## Delivery Service Compromise
-
-MLS is intended to provide strong guarantees in the face of compromise
-of the DS. Even a totally compromised DS should not be able to read
-messages or inject messages that will be acceptable to legitimate
-clients. It should also not be able to undetectably remove, reorder
-or replay messages.
-
-However, a DS can mount a variety of DoS attacks on the system,
-including total DoS attacks (where it simply refuses to forward any
-messages) and partial DoS attacks (where it refuses to forward
-messages to and from specific clients).
-As noted in {{delivery-guarantees}}, these attacks are only partially
-detectable by clients without an out-of-band channel. Ultimately,
-failure of the DS to provide reasonable service must be dealt with as
-a customer service matter, not via technology.
-
-Because the DS is responsible for providing the initial keying
-material to clients, it can provide stale keys. This does not
-inherently lead to compromise of the message stream, but does allow it
-to attack forward security to a limited extent. This threat can be
-mitigated by having initial keys expire.
-
-### Privacy of delivery and push notifications
-
-An important mechanism that is often ignored from the privacy
-considerations are the push-tokens. In many modern messaging
-architectures, applications are using push notification mechanisms
-typically provided by OS vendors. This is to make sure that when
-messages are available at the Delivery Service (or by other mechanisms
-if the DS is not a central server), the recipient application on a
-device knows about it. Sometimes the push notification can contain the
-application message itself which saves a round trip with the DS.
-
-To "push" this information to the device, the service provider and the
-OS infrastructures use unique per-device, per-application identifiers
-called push-tokens. This means that the push notification provider and
-the service provider have information on which devices receive
-information and at which point in time.
-
-Even though they can't necessarily access the content, which is
-typically encrypted MLS messages, the service provider and the push
-notification provider have to be trusted to avoid making correlation
-on which devices are recipients of the same message.
-
-For secure messaging systems, push notification are often sent
-real-time as it is not acceptable to create artificial delays for
-message retrieval.
-
-> **RECOMMENDATION:**
-> If real time notification are not necessary and that specific steps
-> must be taken to improve privacy, one can delay notifications
-> randomly across recipient devices using a mixnet or other
-> techniques.
-
-Note that it is quite easy for legal requests to ask the service
-provider for the push-token associated to an identifier and perform a
-second request to the company operating the push-notification system
-to get information about the device, which is often linked with a real
-identity via a cloud account, a credit card or other information.
-
-> **RECOMMENDATION:**
-> If stronger privacy guarantees are needed vis-a-vis of the push
-> notification provider, the client can choose to periodically connect
-> to the Delivery Service without the need of a dedicated push
-> notification infrastructure.
-
-## Authentication Service Compromise
-
-The Authentication Service design is left to the infrastructure
-designers. In most designs, a compromised AS is a serious matter, as
-the AS can serve incorrect or attacker-provided identities to clients.
-
--- The attacker can link an identity to a credential
-
--- The attacker can generate new credentials
-
--- The attacker can sign new credentials
-
--- The attacker can publish or distribute credentials
-
-Infrastructures that provide cryptographic material or credentials in
-place of the MLS client (which is under the control of the user) have
-often the ability to use the associated secrets to perform operations
-on behalf of the user, which is unacceptable in many situations. Other
-mechanisms can be used to prevent this issue, such as the service
-blessing cryptographic material used by an MLS client.
-
-> **RECOMMENDATION:**
-> Make clients submit signature public keys to the AS, this is usually
-> better than the AS generating public key pairs because the AS
-> cannot sign on behalf of the client. This is a benefit of a Public
-> Key Infrastructure in the style of the Internet PKI.
-
-An attacker that can generate or sign new credential may or may not
-have access to the underlying cryptographic material necessary to
-perform such operations. In that last case, it results in windows of
-time for which all emitted credentials might be compromised.
-
-> **RECOMMENDATION:**
-> Using HSMs to store the root signature keys to limit the ability of
-> an adversary with no physical access to extract the top-level
-> signature key.
-
-### Authentication compromise: Ghost users and impersonations
-
-One thing for which the MLS Protocol is designed for is to make sure
-that all clients know who is in the group at all times. This means
-that - if all Members of the group and the Authentication Service are
-honest - no other parties than the members of the current group can
-read and write messages protected by the protocol for that Group.
-
-Beware though, the link between the cryptographic identity of the
-Client and the real identity of the User is important.
-With some Authentication Service designs, a private or centralized
-authority can be trusted to generate or validate signature keypairs
-used in the MLS protocol. This is typically the case in some of the
-biggest messaging infrastructures.
-
-While this service is often very well protected from external
-attackers, it might be the case that this service is compromised.
-In such infrastructure, the AS could generate or validate a signature
-keypair for an identity which is not the expected one. Because a user
-can have many MLS clients running the MLS protocol, it possibly has
-many signature keypairs for multiple devices.
-
-In the case where an adversarial keypair is generated for a specific
-identity, an infrastructure without any transparency mechanism or
-out-of-band authentication mechanism could inject a malicious client
-into a group by impersonating a user. This is especially the case in
-large groups where the UI might not reflect all the changes back the
-the users.
-
-> **RECOMMENDATION:**
-> Make sure that MLS clients reflect all the membership changes to the
-> users as they happen. If a choice has to be made because the number
-> of notifications is too high, a public log should be maintained in
-> the state of the device so that user can examine it.
-
-While the ways to handle MLS credentials are not defined by the
-protocol or the architecture documents, the MLS protocol has been
-designed with a mechanism that can be used to provide out-of-band
-authentication to users. The "authentication_secret" generated for
-each user at each epoch of the group is a one-time, per client,
-authentication secret which can be exchanged between users to prove
-their identity to each other. This can be done for instance using a QR
-code that can be scanned by the other parties.
-
-Another way to improve the security for the users is to provide a
-transparency mechanism which allows each user to check if credentials
-used in groups have been published in the transparency log. Another
-benefit of this mechanism is for revocation. The users of a group
-could check for revoked keys (in case of compromise detection) using a
-mechanism such as CRLite or some more advanced privacy preserving
-technology.
-
-> **RECOMMENDATION:**
-> Provide a Key Transparency and Out-of-Band authentication mechanisms
-> to limit the impact of an Authentication Service compromise.
-
-We note, again, that as described prior to that section, the
-Authentication Service is facultative to design a working
-infrastructure and can be replaced by many mechanisms such as
-establishing prior one-to-one deniable channels, gossiping, or using
-TOFU for credentials used by the MLS Protocol.
-
-Another important consideration is the ease of redistributing new keys
-on client compromise, which helps recovering security faster in
-various cases.
-
-### Privacy of the Group Membership
-
-Often, expectation from users is that the infrastructure will not
-retain the ability to constantly map the user identity to signature
-public keys of the MLS protocol. Some infrastructures will keep a
-mapping between signature public keys of clients and user
-identities. This can benefit an adversary that has compromised the AS
-(or required access according to regulation) the ability of monitoring
-unencrypted traffic and correlate the messages exchanged within the
-same group.
-
-> **RECOMMENDATION:**
-> Always use encrypted group operation messages to reduce issues
-> related to privacy.
-
-In certain cases, the adversary can access to specific bindings
-between public keys and identities. If the signature keys are reused
-across groups, the adversary can get more information about the
-targeted user.
-
-> **RECOMMENDATION:**
-> Do not use the same signature keypair across groups.
-
-> **RECOMMENDATION:**
-> Separate the service binding the identities and the public keys from
-> the service which generates or validates the credentials or
-> cryptographic material of the Clients.
-
-
-## Shared considerations regarding adversarial AS or DS services
-
-### Privacy of the network connections
-
-There are many scenarios leading to communication between the
-application on a device and the Delivery Service or the Authentication
-Service. In particular when:
-
-- The application connects to the Authentication Service to generate
-  or validate a new credential before distributing it.
-
-- The application fetches credentials at the Delivery Service prior to
-  creating a messaging group (one-to-one or more than two clients).
-
-- The application fetches service provider information or messages on
-  the Delivery Service.
-
-- The application sends service provider information or messages to
-  the Delivery Service.
-
-In all these cases, the application will often connect to the device
-via a secure transport which leaks information about the origin of the
-request such as the IP address and depending on the protocol the MAC
-address of the device.
-
-Similar concern exist in the peer-to-peer use cases of MLS.
-
-> **RECOMMENDATION:**
-> In the case where privacy or anonymity is important, using adequate
-> protection such as TOR or a VPN can improve metadata protection.
-
-More generally, using anonymous credential in an MLS based
-architecture might not be enough to provide strong privacy or
-anonymity properties.
-
-## Client Compromise
+## Endpoint Compromise
 
 The MLS protocol adopts a threat model which includes multiple forms
-of Client compromises. While adversaries are in a very strong position
+of endpoint/client compromise. While adversaries are in a very strong position
 if they have compromised an MLS client, there are still situations
 where security guarantees can be recovered thanks to the PCS
 properties achieved by the MLS protocol.
@@ -1347,6 +1113,240 @@ multi collusions...]]
 
 [[TODO: Do we discuss PCFS in this document? If yes, where?]]
 
+
+## Delivery Service Compromise
+
+MLS is intended to provide strong guarantees in the face of compromise
+of the DS. Even a totally compromised DS should not be able to read
+messages or inject messages that will be acceptable to legitimate
+clients. It should also not be able to undetectably remove, reorder
+or replay messages.
+
+However, a DS can mount a variety of DoS attacks on the system,
+including total DoS attacks (where it simply refuses to forward any
+messages) and partial DoS attacks (where it refuses to forward
+messages to and from specific clients).
+As noted in {{delivery-guarantees}}, these attacks are only partially
+detectable by clients without an out-of-band channel. Ultimately,
+failure of the DS to provide reasonable service must be dealt with as
+a customer service matter, not via technology.
+
+Because the DS is responsible for providing the initial keying
+material to clients, it can provide stale keys. This does not
+inherently lead to compromise of the message stream, but does allow it
+to attack forward security to a limited extent. This threat can be
+mitigated by having initial keys expire.
+
+### Privacy of delivery and push notifications
+
+An important mechanism that is often ignored from the privacy
+considerations are the push-tokens. In many modern messaging
+architectures, applications are using push notification mechanisms
+typically provided by OS vendors. This is to make sure that when
+messages are available at the Delivery Service (or by other mechanisms
+if the DS is not a central server), the recipient application on a
+device knows about it. Sometimes the push notification can contain the
+application message itself which saves a round trip with the DS.
+
+To "push" this information to the device, the service provider and the
+OS infrastructures use unique per-device, per-application identifiers
+called push-tokens. This means that the push notification provider and
+the service provider have information on which devices receive
+information and at which point in time.
+
+Even though they can't necessarily access the content, which is
+typically encrypted MLS messages, the service provider and the push
+notification provider have to be trusted to avoid making correlation
+on which devices are recipients of the same message.
+
+For secure messaging systems, push notification are often sent
+real-time as it is not acceptable to create artificial delays for
+message retrieval.
+
+> **RECOMMENDATION:**
+> If real time notification are not necessary and that specific steps
+> must be taken to improve privacy, one can delay notifications
+> randomly across recipient devices using a mixnet or other
+> techniques.
+
+Note that it is quite easy for legal requests to ask the service
+provider for the push-token associated to an identifier and perform a
+second request to the company operating the push-notification system
+to get information about the device, which is often linked with a real
+identity via a cloud account, a credit card or other information.
+
+> **RECOMMENDATION:**
+> If stronger privacy guarantees are needed vis-a-vis of the push
+> notification provider, the client can choose to periodically connect
+> to the Delivery Service without the need of a dedicated push
+> notification infrastructure.
+
+## Authentication Service Compromise
+
+The Authentication Service design is left to the infrastructure
+designers. In most designs, a compromised AS is a serious matter, as
+the AS can serve incorrect or attacker-provided identities to clients.
+
+-- The attacker can link an identity to a credential
+
+-- The attacker can generate new credentials
+
+-- The attacker can sign new credentials
+
+-- The attacker can publish or distribute credentials
+
+Infrastructures that provide cryptographic material or credentials in
+place of the MLS client (which is under the control of the user) have
+often the ability to use the associated secrets to perform operations
+on behalf of the user, which is unacceptable in many situations. Other
+mechanisms can be used to prevent this issue, such as the service
+blessing cryptographic material used by an MLS client.
+
+> **RECOMMENDATION:**
+> Make clients submit signature public keys to the AS, this is usually
+> better than the AS generating public key pairs because the AS
+> cannot sign on behalf of the client. This is a benefit of a Public
+> Key Infrastructure in the style of the Internet PKI.
+
+An attacker that can generate or sign new credential may or may not
+have access to the underlying cryptographic material necessary to
+perform such operations. In that last case, it results in windows of
+time for which all emitted credentials might be compromised.
+
+> **RECOMMENDATION:**
+> Using HSMs to store the root signature keys to limit the ability of
+> an adversary with no physical access to extract the top-level
+> signature key.
+
+### Authentication compromise: Ghost users and impersonations
+
+One thing for which the MLS Protocol is designed for is to make sure
+that all clients know who is in the group at all times. This means
+that - if all Members of the group and the Authentication Service are
+honest - no other parties than the members of the current group can
+read and write messages protected by the protocol for that Group.
+
+Beware though, the link between the cryptographic identity of the
+Client and the real identity of the User is important.
+With some Authentication Service designs, a private or centralized
+authority can be trusted to generate or validate signature keypairs
+used in the MLS protocol. This is typically the case in some of the
+biggest messaging infrastructures.
+
+While this service is often very well protected from external
+attackers, it might be the case that this service is compromised.
+In such infrastructure, the AS could generate or validate a signature
+keypair for an identity which is not the expected one. Because a user
+can have many MLS clients running the MLS protocol, it possibly has
+many signature keypairs for multiple devices.
+
+In the case where an adversarial keypair is generated for a specific
+identity, an infrastructure without any transparency mechanism or
+out-of-band authentication mechanism could inject a malicious client
+into a group by impersonating a user. This is especially the case in
+large groups where the UI might not reflect all the changes back the
+the users.
+
+> **RECOMMENDATION:**
+> Make sure that MLS clients reflect all the membership changes to the
+> users as they happen. If a choice has to be made because the number
+> of notifications is too high, a public log should be maintained in
+> the state of the device so that user can examine it.
+
+While the ways to handle MLS credentials are not defined by the
+protocol or the architecture documents, the MLS protocol has been
+designed with a mechanism that can be used to provide out-of-band
+authentication to users. The "authentication_secret" generated for
+each user at each epoch of the group is a one-time, per client,
+authentication secret which can be exchanged between users to prove
+their identity to each other. This can be done for instance using a QR
+code that can be scanned by the other parties.
+
+Another way to improve the security for the users is to provide a
+transparency mechanism which allows each user to check if credentials
+used in groups have been published in the transparency log. Another
+benefit of this mechanism is for revocation. The users of a group
+could check for revoked keys (in case of compromise detection) using a
+mechanism such as CRLite or some more advanced privacy preserving
+technology.
+
+> **RECOMMENDATION:**
+> Provide a Key Transparency and Out-of-Band authentication mechanisms
+> to limit the impact of an Authentication Service compromise.
+
+We note, again, that as described prior to that section, the
+Authentication Service is facultative to design a working
+infrastructure and can be replaced by many mechanisms such as
+establishing prior one-to-one deniable channels, gossiping, or using
+TOFU for credentials used by the MLS Protocol.
+
+Another important consideration is the ease of redistributing new keys
+on client compromise, which helps recovering security faster in
+various cases.
+
+### Privacy of the Group Membership
+
+Often, expectation from users is that the infrastructure will not
+retain the ability to constantly map the user identity to signature
+public keys of the MLS protocol. Some infrastructures will keep a
+mapping between signature public keys of clients and user
+identities. This can benefit an adversary that has compromised the AS
+(or required access according to regulation) the ability of monitoring
+unencrypted traffic and correlate the messages exchanged within the
+same group.
+
+> **RECOMMENDATION:**
+> Always use encrypted group operation messages to reduce issues
+> related to privacy.
+
+In certain cases, the adversary can access to specific bindings
+between public keys and identities. If the signature keys are reused
+across groups, the adversary can get more information about the
+targeted user.
+
+> **RECOMMENDATION:**
+> Do not use the same signature keypair across groups.
+
+> **RECOMMENDATION:**
+> Separate the service binding the identities and the public keys from
+> the service which generates or validates the credentials or
+> cryptographic material of the Clients.
+
+
+## Shared considerations regarding adversarial AS or DS services
+
+### Privacy of the network connections
+
+There are many scenarios leading to communication between the
+application on a device and the Delivery Service or the Authentication
+Service. In particular when:
+
+- The application connects to the Authentication Service to generate
+  or validate a new credential before distributing it.
+
+- The application fetches credentials at the Delivery Service prior to
+  creating a messaging group (one-to-one or more than two clients).
+
+- The application fetches service provider information or messages on
+  the Delivery Service.
+
+- The application sends service provider information or messages to
+  the Delivery Service.
+
+In all these cases, the application will often connect to the device
+via a secure transport which leaks information about the origin of the
+request such as the IP address and depending on the protocol the MAC
+address of the device.
+
+Similar concern exist in the peer-to-peer use cases of MLS.
+
+> **RECOMMENDATION:**
+> In the case where privacy or anonymity is important, using adequate
+> protection such as TOR or a VPN can improve metadata protection.
+
+More generally, using anonymous credential in an MLS based
+architecture might not be enough to provide strong privacy or
+anonymity properties.
 
 ## Considerations for attacks outside of the threat model
 
