@@ -1105,7 +1105,7 @@ having access to the key. In certain contexts, the rotation of
 credentials might only be triggered by the AS through ACLs, hence be
 outside of the capabilities of the attacker.
 
-[[TODO: Considerations for Signature keys being reused or not across groups]]
+[[TODO: Considerations for Signature keys being :reused or not across groups]]
 
 ### More attack scenarios
 [[TODO: Make examples for more complex attacks, cross groups,
@@ -1114,7 +1114,9 @@ multi collusions...]]
 [[TODO: Do we discuss PCFS in this document? If yes, where?]]
 
 
-## Delivery Service Compromise
+## Service Node Compromise
+
+### Delivery Service Compromise
 
 MLS is intended to provide strong guarantees in the face of compromise
 of the DS. Even a totally compromised DS should not be able to read
@@ -1137,7 +1139,7 @@ inherently lead to compromise of the message stream, but does allow it
 to attack forward security to a limited extent. This threat can be
 mitigated by having initial keys expire.
 
-### Privacy of delivery and push notifications
+#### Privacy of delivery and push notifications
 
 An important mechanism that is often ignored from the privacy
 considerations are the push-tokens. In many modern messaging
@@ -1181,7 +1183,7 @@ identity via a cloud account, a credit card or other information.
 > to the Delivery Service without the need of a dedicated push
 > notification infrastructure.
 
-## Authentication Service Compromise
+### Authentication Service Compromise
 
 The Authentication Service design is left to the infrastructure
 designers. In most designs, a compromised AS is a serious matter, as
@@ -1218,7 +1220,7 @@ time for which all emitted credentials might be compromised.
 > an adversary with no physical access to extract the top-level
 > signature key.
 
-### Authentication compromise: Ghost users and impersonations
+#### Authentication compromise: Ghost users and impersonations
 
 One thing for which the MLS Protocol is designed for is to make sure
 that all clients know who is in the group at all times. This means
@@ -1284,7 +1286,7 @@ Another important consideration is the ease of redistributing new keys
 on client compromise, which helps recovering security faster in
 various cases.
 
-### Privacy of the Group Membership
+#### Privacy of the Group Membership
 
 Often, expectation from users is that the infrastructure will not
 retain the ability to constantly map the user identity to signature
