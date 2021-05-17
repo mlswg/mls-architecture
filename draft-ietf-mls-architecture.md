@@ -1390,6 +1390,10 @@ This document makes no requests of IANA.
   CISPA Helmholtz Center for Information Security \\
   cremers@cispa.de
 
+* Britta Hale \\
+  Naval Postgraduate School \\
+  britta.hale@nps.edu
+
 * Thyla van der Merwe \\
   Royal Holloway, University of London \\
   thyla.van.der@merwe.tech
