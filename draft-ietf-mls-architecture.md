@@ -352,10 +352,12 @@ signed by the private key corresponding to a member's Credential, but can
 instead be signed by a different key, which is authenticated by the key in the
 Credential in some way.
 
-While Credential Authentication can be performed by a separate entity, message
+While Credential authentication can be performed by a separate entity, message
 authentication will likely be performed individually by each member. As a
 consequence, the message authentication part of the AS would have to run on the
 members' devices.
+
+### AS Security
 
 By the nature of its roles in MLS authentication, the AS is invested with a
 large amount of trust and the compromise of one of its functionalities could
@@ -363,6 +365,7 @@ allow an adversary to, among other things, impersonate group members.
 
 We will discuss security considerations regarding the compromise of the
 different AS functionalities in detail in Section {{as-compromise}}.
+
 
 ## Delivery Service
 
