@@ -1400,6 +1400,10 @@ This document makes no requests of IANA.
   Naval Postgraduate School \\
   britta.hale@nps.edu
 
+* Konrad Kohbrok \\
+  Wire \\
+  konrad@wire.com
+
 * Thyla van der Merwe \\
   Royal Holloway, University of London \\
   thyla.van.der@merwe.tech
