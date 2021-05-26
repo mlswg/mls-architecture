@@ -316,56 +316,54 @@ cannot assume they are a member of the group.
 
 The Authentication Service (AS) has to provide two functionalities:
 
-1. authenticate the Credentials (i.e. the identity/signature keypair) used in a
-   group
-2. authenticate messages sent in groups given the signature over the message and
-   the sending member's Credential
+1. authenticate the Credentials (i.e. the identity/signature keypair)
+   used in a group
+2. authenticate messages sent in groups given the signature over the
+   message and the sending member's Credential
 
-The AS is considered an abstract layer by the MLS specification. Although the
-name suggests that it is a separate "service", part of this service could be
-running on the members' devices, while another part is a separate entity
-entirely.
+The AS is considered an abstract layer by the MLS specification, part
+of this service could be, for instance, running on the members'
+devices, while another part is a separate entity entirely.
+
+By the nature of its roles in MLS authentication, the AS is invested
+with a large amount of trust and the compromise of one of its
+functionalities could allow an adversary to, among other things,
+impersonate group members. We discuss security considerations
+regarding the compromise of the different AS functionalities in detail
+in Section {{as-compromise}}.
 
 ### Credential Authentication
 
-In most cases, the first functionality will be provided by a distinct entity,
-which fulfills a role similar to that of an certification authority in the
-WebPKI: It provides a binding of an identity (e.g., a user name, phone number,
-email address, etc) to a signature key. The identity/signature key pair can then
-either be used directly in a group, or as an intermediate, which in turn
-authenticates the Credential used in the group.
+In many cases, the first functionality might be provided by a service
+which fulfills a role similar to a certification authority in the
+WebPKI: It provides a binding of an identity (e.g., a user name, phone
+number, email address, etc) to a signature key. The identity/signature
+key pair can then either be used directly in a group, or as an root of
+trust which in turn authenticates credentials used in the group.
 
-The flexibility afforded by the latter option allows for multiple infrastructure
-considerations and has the benefit of providing ways to use different signature
-keys across different groups by using hierarchical authentication keys. This
-flexibility also comes at the price of a security tradeoff, described in the
-security considerations, between potential unlinkability of the signature keys
-across groups and the amount of time required to reinstate authentication and
-secrecy of messages after the compromise of a device.
+The flexibility afforded by the latter option allows for multiple
+infrastructure considerations and has the benefit of providing ways to
+use different signature keys across different groups by using
+hierarchical authentication keys. This flexibility also comes at the
+price of a security tradeoff, described in the security
+considerations, between potential unlinkability of the signature keys
+across groups and the amount of time required to reinstate
+authentication and secrecy of messages after the compromise of a
+device.
 
 ### Message Authentication
 
-MLS messages are authenticated by a signature conforming to the signature scheme
-of the group's ciphersuite. To allow for deniability (see Section
-{{Non-Repudiation-vs-Deniability}}), messages do not necessarily have to be
-signed by the private key corresponding to a member's Credential, but can
-instead be signed by a different key, which is authenticated by the key in the
-Credential in some way.
+MLS messages are authenticated by a signature conforming to the
+signature scheme of the group's ciphersuite. To allow for deniability
+(see Section {{Non-Repudiation-vs-Deniability}}), messages do not
+necessarily have to be signed by the private key corresponding to a
+member's credential but the key has to be authenticated using some
+mechanism.
 
-While Credential authentication can be performed by a separate entity, message
-authentication will likely be performed individually by each member. As a
-consequence, the message authentication part of the AS would have to run on the
-members' devices.
-
-### AS Security
-
-By the nature of its roles in MLS authentication, the AS is invested with a
-large amount of trust and the compromise of one of its functionalities could
-allow an adversary to, among other things, impersonate group members.
-
-We will discuss security considerations regarding the compromise of the
-different AS functionalities in detail in Section {{as-compromise}}.
-
+While Credential authentication can be performed by a separate entity,
+message authentication should be performed by each member separately
+due to the encryption layer of the protocol which protects the
+signature of the message.
 
 ## Delivery Service
 
