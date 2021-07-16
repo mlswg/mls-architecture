@@ -792,40 +792,39 @@ the appropriate level of redundancy and quality of service for MLS.
 
 ## Intended Security Guarantees
 
+MLS aims to provide a number of security guarantees, covering authentication, as
+well as confidentiality guarantees to different degrees in different scenarios.
+
+TODO: Authentication guarantees at the moment of joining a group are interesting
+and I don't see a section where it would fit. I'm thinking in particular about
+the parent hash and tree hashes in combination with with signatures and the key
+schedule. I know that several groups have worked on this and results are
+scattered between a few papers. In particular, I think the guarantees for a
+member being added to a new group are interesting.
+
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
-The trust establishment step of the MLS protocol is followed by a
-conversation protection step where encryption is used by clients to
-transmit authenticated messages to other clients through the DS.
-This ensures that the DS does not have access to the group's private
-content.
+MLS enforces the encryption of application messages and thus generally
+guarantees authentication and confidentiality of application messages sent in a
+group.
 
-MLS aims to provide secrecy, integrity and authentication for all
-messages.
+In particular, this means that only other members of a given group can decrypt
+the payload of a given application message, which includes information about the
+sender of the message.
 
-Message Secrecy in the context of MLS means that only intended
-recipients (current group members), can read any message sent to the
-group, even in the context of an active attacker as described in the
-threat model.
+Similarly, group members receiving a message from another group member can
+authenticate that group member as the sender of the message and verify the
+message's integrity.
 
-Message Integrity and Authentication mean that an honest Client can
-only accept a message if it was sent by a group member and that no
-Client can send a message which other Clients accept as being from
-another Client.
+Message content can be deniable if the signature keys are exchanged over a
+deniable channel prior to signing messages.
 
-A corollary to this statement is that the AS and the DS cannot read
-the content of messages sent between Members as they are not Members
-of the Group. MLS optionally provides additional protections regarding
-traffic analysis so as to reduce the ability of attackers, or a
-compromised member of the messaging system, to deduce the content of
-the messages depending on (for example) their size. One of these
-protections includes padding messages in order to produce ciphertexts
-of standard length. While this protection is highly recommended it is
-not mandatory as it can be costly in terms of performance for clients
-and the SP.
+Depending on the group settings, handshake messages can be encrypted as well. If
+that is the case, the same security guarantees apply.
 
-Message content can be deniable if the signature keys are exchanged
-over a deniable channel prior to signing messages.
+MLS optionally allows the addition of padding to messages, mitigating the amount
+of information leaked about the length of the plaintext to an observer on the
+network.
 
 ### Forward and Post-Compromise Security {#fs-and-pcs}
 
