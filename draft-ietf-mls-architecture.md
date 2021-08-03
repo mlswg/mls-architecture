@@ -316,10 +316,10 @@ cannot assume they are a member of the group.
 
 The Authentication Service (AS) has to provide two functionalities:
 
-1. authenticate the Credentials (i.e. the identity/signature keypair)
+1. authenticate the credentials (i.e. the identity/signature keypair)
    used in a group
 2. authenticate messages sent in groups given the signature over the
-   message and the sending member's Credential
+   message and the sending member's credential
 
 The AS is considered an abstract layer by the MLS specification, part
 of this service could be, for instance, running on the members'
@@ -354,13 +354,14 @@ device.
 ### Message Authentication
 
 MLS messages are authenticated by a signature conforming to the
-signature scheme of the group's ciphersuite. To allow for deniability
-(see Section {{Non-Repudiation-vs-Deniability}}), messages do not
-necessarily have to be signed by the private key corresponding to a
-member's credential but the key has to be authenticated using some
-mechanism.
+signature scheme of the group's ciphersuite. To allow for message 
+deniability (see Section {{Non-Repudiation-vs-Deniability}}), messages 
+are not required to be signed by the private key corresponding to a
+member's credential, but the key must be authenticated using some
+mechanism. Thus, message authentication relies on the accuracy of 
+the key's authentication vice the credential authentication.
 
-While Credential authentication can be performed by a separate entity,
+While credential authentication can be performed by a separate entity,
 message authentication should be performed by each member separately
 due to the encryption layer of the protocol which protects the
 signature of the message.
