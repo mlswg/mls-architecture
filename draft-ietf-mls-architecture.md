@@ -309,8 +309,9 @@ using one signature key per device or even one signature key per group.
 The formal definition of a Group in MLS is the set of clients that
 have knowledge of the shared group secret established in the group key
 establishment phase of the protocol and have contributed to it.
-Until a Member has contributed to the group secret, other members
-cannot assume they are a member of the group.
+Until a Member has been added to the group and contributed to the group 
+secret in a manner verifiable by other members of the group, other 
+members cannot assume that the Member is a member of the group.
 
 ## Authentication Service
 
