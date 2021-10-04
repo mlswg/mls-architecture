@@ -309,8 +309,8 @@ using one signature key per device or even one signature key per group.
 The formal definition of a Group in MLS is the set of clients that
 have knowledge of the shared group secret established in the group key
 establishment phase of the protocol and have contributed to it.
-Until a Member has been added to the group and contributed to the group 
-secret in a manner verifiable by other members of the group, other 
+Until a Member has been added to the group and contributed to the group
+secret in a manner verifiable by other members of the group, other
 members cannot assume that the Member is a member of the group.
 
 ## Authentication Service
@@ -355,11 +355,11 @@ device.
 ### Message Authentication
 
 MLS messages are authenticated by a signature conforming to the
-signature scheme of the group's ciphersuite. To allow for message 
-deniability (see Section {{Non-Repudiation-vs-Deniability}}), messages 
+signature scheme of the group's ciphersuite. To allow for message
+deniability (see Section {{Non-Repudiation-vs-Deniability}}), messages
 are not required to be signed by the private key corresponding to a
 member's credential, but the key must be authenticated using some
-mechanism. Thus, message authentication relies on the accuracy of 
+mechanism. Thus, message authentication relies on the accuracy of
 the key's authentication vice the credential authentication.
 
 While credential authentication can be performed by a separate entity,
@@ -424,9 +424,9 @@ stored on the Delivery Service.
 
 ### Key Retrieval
 
-When a client wishes to establish a group, it first contacts the Delivery 
-Service to request a KeyPackage for each other client, authenticates the 
-KeyPackages using the signature keys, and then can use those to form 
+When a client wishes to establish a group, it first contacts the Delivery
+Service to request a KeyPackage for each other client, authenticates the
+KeyPackages using the signature keys, and then can use those to form
 the group.
 
 ### Delivery of messages and attachments {#delivery-guarantees}
@@ -442,7 +442,7 @@ of messages. Specifically, we assume that Delivery Services provide:
   and in approximately the order in which they are sent
   by clients. The latter is an approximate guarantee because
   multiple clients may send messages at the same time
-  and so the Delivery Service needs some latitude in enforcing 
+  and so the Delivery Service needs some latitude in enforcing
   ordering across clients.
 
 * Consistent ordering: the Delivery Service must ensure that all clients
@@ -458,14 +458,14 @@ within an MLSCiphertext message in order to provide ordering:
 
 * The Epoch number, which represents the number of changes (version) of
   the group associated with a specific GID, and allows for
-  lexicographical ordering of messages from different epochs within the 
+  lexicographical ordering of messages from different epochs within the
   same group;
 
-* The Content Type of the message, which allows the Delivery Service to 
+* The Content Type of the message, which allows the Delivery Service to
    determine the ordering requirement on the message.
 
 The MLS protocol itself can verify these properties. For instance, if
-the Delivery Service reorders messages from a client or provides different 
+the Delivery Service reorders messages from a client or provides different
 clients with inconsistent orderings, then clients can detect this
 misconduct. However, the protocol relies on the ordering, and on the
 fact that only one honest group operation message is fanned-out to
@@ -486,10 +486,10 @@ groups often require an infrastructure which provides server fanout.
 In the case of client fanout, the destinations of a message is known by
 all clients, hence the server usually does not need this information.
 However, they may learn this information through traffic analysis.
-Unfortunately, in a server side fanout model, the Delivery Service can 
-learn that a given client is sending the same message to a set of other 
+Unfortunately, in a server side fanout model, the Delivery Service can
+learn that a given client is sending the same message to a set of other
 clients. In addition, there may be applications of MLS in which the group
-membership list is stored on some server associated with the Delivery 
+membership list is stored on some server associated with the Delivery
 Service.
 
 While this knowledge is not a break of authentication or
@@ -509,8 +509,8 @@ case where the client has not processed messages, but MLS-using
 systems can enforce some mechanism to try to retain these properties.
 Typically this will consist of evicting clients which are idle for too
 long, or mandate a silent key update from clients that is not attached to
-other messaging traffic, thus containing the threat of compromise. The 
-precise details of such mechanisms are a matter of local policy and beyond 
+other messaging traffic, thus containing the threat of compromise. The
+precise details of such mechanisms are a matter of local policy and beyond
 the scope of this document.
 
 ## Functional Requirements
@@ -530,7 +530,7 @@ group members have agreed on the list of current group members.
 Some applications may wish to enforce ACLs to limit addition or
 removal of group members, to privileged clients or users. Others may
 wish to require authorization from the current group members or a
-subset thereof.  Regardless, MLS does not allow for or support addition 
+subset thereof.  Regardless, MLS does not allow for or support addition
 or removal of group members without informing all other members.
 
 Once a client is part of a group, the set of devices controlled by the
@@ -540,10 +540,10 @@ might want to allow certain members of the group to add or
 remove devices on behalf of another member, while other applications
 might want a more strict policy and allow only the owner of the
 devices to add or remove them at the potential cost of weaker PCS
-guarantees. Application setup may also determine other forms of 
-membership validity, e.g. through an identity key alignment to the 
-member with separate signature keys per device. If a certificate chain is 
-used to sign off on device signature keys, then revocation by the owner 
+guarantees. Application setup may also determine other forms of
+membership validity, e.g. through an identity key alignment to the
+member with separate signature keys per device. If a certificate chain is
+used to sign off on device signature keys, then revocation by the owner
 adds an alternative flag to prompt membership removal.
 
 [[OPEN ISSUE: Above paragraph conflicts slightly under assumptions about
@@ -559,18 +559,18 @@ if the group secrets have not been deleted properly.
 
 Any user may have membership in several groups simultaneously.
 The set of members of any group may or may not form a subset of the
-members of another group. MLS guarantees that the FS and PCS goals 
-within a given group are maintained and not weakened by user membership 
+members of another group. MLS guarantees that the FS and PCS goals
+within a given group are maintained and not weakened by user membership
 in multiple groups. However, actions in other groups likewise do not strengthen
-the FS and PCS guarantees within a given group, e.g. key updates within a 
-given group following a device compromise does not provide PCS healing in 
+the FS and PCS guarantees within a given group, e.g. key updates within a
+given group following a device compromise does not provide PCS healing in
 other groups; each group must be updated separately to achieve internal goals.
 This also applies to future groups that a member has yet to join, that are likewise
 unaffected by updates performed in current groups.
 
-Some applications may strengthen connectivity among parallel groups by 
-requiring periodic key updates from a user across all groups in which they have 
-membership, or using the PSK mechanism to link healing properties among 
+Some applications may strengthen connectivity among parallel groups by
+requiring periodic key updates from a user across all groups in which they have
+membership, or using the PSK mechanism to link healing properties among
 parallel groups. Such application choices however are outside the scope of MLS.
 
 ### Security of Attachments
@@ -637,23 +637,23 @@ states, breaking their ability to communicate.
 
 Group members whose local MLS state is lost or corrupted
 can reinitialize their state and continue participating in the
-group. This does not provide the member with access to group 
-messages from during the state loss window, but enables proof of 
-prior membership in the group. Applications may choose various 
-configurations for providing lost messages to valid group members 
+group. This does not provide the member with access to group
+messages from during the state loss window, but enables proof of
+prior membership in the group. Applications may choose various
+configurations for providing lost messages to valid group members
 that are able to prove prior membership.
 
 [[OPEN ISSUE: The previous statement seems too strong, establish
 what exact functional requirement we have regarding state recovery.
 Previously: "This may entail some level of message loss, but
-does not result in permanent exclusion from the group." 
+does not result in permanent exclusion from the group."
 -- Statement edited]]
 
 ### Support for Multiple Devices
 
 It is typically expected for users within a group to own various
-devices. A new device can be added to a group and be considered as 
-a new client by the protocol. This client will not gain access to the history 
+devices. A new device can be added to a group and be considered as
+a new client by the protocol. This client will not gain access to the history
 even if it is owned by someone who owns another member of the group.
 Restoring history is typically not allowed at the protocol level but
 applications can elect to provide such a mechanism outside of MLS.
@@ -671,7 +671,7 @@ members. No assumptions are made about the format of the payload.
 The protocol aims to be compatible with federated environments. While
 this document does not specify all necessary mechanisms required for
 federation, multiple MLS implementations can interoperate to form
-federated systems if they use compatible authentication mechanisms, 
+federated systems if they use compatible authentication mechanisms,
 ciphersuites, and infrastructure functionalities.
 
 ### Compatibility with Future Versions of MLS
@@ -719,7 +719,7 @@ deniability can also be achieved in specific architecture designs.
 ## Assumptions on Transport Security Links
 
 Any secure channel can be used as a transport layer to protect MLS
-messages such as QUIC, TLS, WireGuard or TOR. However, the MLS 
+messages such as QUIC, TLS, WireGuard or TOR. However, the MLS
 protocol is designed to consider the following threat-model:
 
 -- The attacker can read and write arbitrary messages inside the
@@ -740,7 +740,7 @@ always encrypted in MLS.
 
 Contrary to popular messaging services, the full list of recipients
 cannot be sent to the server for dispatching messages because that
-list is potentially extremely large in MLS. Therefore, the metadata 
+list is potentially extremely large in MLS. Therefore, the metadata
 typically consists of a pseudo-random Group Identifier (GID), a numerical
 index referring to the key needed to decrypt the ciphertext content, and
 another numerical value to determine the epoch of the group (the
@@ -776,8 +776,8 @@ adversary to extract information about the group memberships.
 
 In general we do not consider Denial of Service (DoS) resistance to be
 the responsibility of the protocol. However, it should not be possible
-for anyone aside from the Delivery Service to perform a trivial DoS 
-attack from which it is hard to recover. This can be achieved through 
+for anyone aside from the Delivery Service to perform a trivial DoS
+attack from which it is hard to recover. This can be achieved through
 the secure transport layer.
 
 In the centralized setting, DoS protection can typically be performed
