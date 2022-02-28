@@ -44,40 +44,6 @@ author:
     email: alan@wire.com
 
 informative:
-  MLSPROTO:
-       title: "Messaging Layer Security Protocol"
-       date: 2018
-       author:
-         -  ins: R. Barnes
-            name: Richard Barnes
-            organization: Cisco
-            email: rlb@ipv.sx
-         -
-            ins: B. Beurdouche
-            name: Benjamin Beurdouche
-            organization: Inria
-            email: benjamin.beurdouche@inria.fr
-         -
-            ins: J. Millican
-            name: Jon Millican
-            organization: Facebook
-            email: jmillican@fb.com
-         -
-            ins: E. Omara
-            name: Emad Omara
-            organization: Google
-            email: emadomara@google.com
-         -
-            ins: K. Cohn-Gordon
-            name: Katriel Cohn-Gordon
-            organization: University of Oxford
-            email: me@katriel.co.uk
-         -
-            ins: R. Robert
-            name: Raphael Robert
-            organization: Wire
-            email: raphael@wire.com
-
   KeyTransparency:
        target: https://KeyTransparency.org
        title: Key Transparency
@@ -89,7 +55,7 @@ informative:
 
 --- abstract
 
-The Messaging Layer Security (MLS) protocol {{MLSPROTO}} document has
+The Messaging Layer Security (MLS) protocol {{!I-D.ietf-mls-protocol}} specification has
 the role of defining a Group Key Agreement, all the necessary
 cryptographic operations, and serialization/deserialization functions
 necessary to create a scalable and secure group messaging protocol.
@@ -98,11 +64,11 @@ message forgery, and provide good properties such as forward-secrecy
 (FS) and post-compromise security (PCS) in the case of past or future
 device compromises.
 
-This document, on the other hand is intended to describe a general
+This document describes a general
 secure group messaging infrastructure and its security goals.  It
 provides guidance on building a group messaging system and discusses
 security and privacy tradeoffs offered by multiple security mechanism
-that are part of the MLS protocol (ie. frequency of public encryption
+that are part of the MLS protocol (e.g., frequency of public encryption
 key rotation).
 
 The document also extends the guidance to parts of the infrastructure
@@ -110,9 +76,9 @@ that are not standardized by the MLS Protocol document and left to the
 application or the infrastructure architects to design.
 
 While the recommendations of this document are not mandatory to follow
-in order to interoperate at the protocol level, most will vastly
-influence the overall security guarantees that are achieved by the
-overall messaging system. This is especially true in case of active
+in order to interoperate at the protocol level,
+they affect the overall security guarantees that are achieved by a
+messaging application. This is especially true in case of active
 adversaries that are able to compromise clients, the delivery service
 or the authentication service.
 
@@ -128,32 +94,21 @@ Instructions are on that page as well.  Editorial changes can be
 managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
-DISCLAIMER: A lot of work is still ongoing on the current version of
-this draft. Especially, this preliminary writing of the security
-considerations has not been reviewed by the working group yet and
-might contain errors.
-Please file an issue on the document's GitHub if you find errors.
-
-[[TODO: Remove disclaimer.]]
-
 End-to-end security is a requirement for instant messaging systems and
 is commonly deployed in many such systems. In this context,
 "end-to-end" captures the notion that users of the system enjoy some
 level of security -- with the precise level depending on the system
-design -- even when the service provider they are using performs
-unsatisfactorily.
+design -- even in the face of malicious actions by the operator of the messaging
+system.
 
 Messaging Layer Security (MLS) specifies an architecture (this
-document) and an abstract protocol {{MLSPROTO}} for providing
+document) and a protocol {{!I-D.ietf-mls-protocol}} for providing
 end-to-end security in this setting. MLS is not intended as a full
 instant messaging protocol but rather is intended to be embedded in
-concrete protocols, such as XMPP {{?RFC6120}}. In addition, it does not
-specify a complete wire encoding, but rather a set of abstract data
-structures which can then be mapped onto a variety of concrete
-encodings, such as TLS {{?RFC8446}}, CBOR {{?RFC7049}}, and
-JSON {{?RFC7159}}.  Implementations which adopt compatible encodings
-will have some degree of interoperability at the message level, though
-they may have incompatible identity/authentication infrastructures.
+concrete protocols, such as XMPP {{?RFC6120}}.  Implementations of the MLS
+protocol will interoperate at the cryptographic level, though
+they may have incompatibilities in terms of how protected messages are
+delivered, contents of protected messages, and identity/authentication infrastructures.
 The MLS protocol has been designed to provide the same security
 guarantees to all users, for all group sizes, even when it reduces to
 only two users.
