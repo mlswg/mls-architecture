@@ -128,13 +128,13 @@ The Service Provider presents two abstract functionalities that allow
 clients to prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) functionality which is responsible
-  for maintaining a binding between a unique identifier (identity) and
-  the public key material (credential) used for authentication in the
-  MLS protocol. This functionality must also be able to generate these
-  credentials or validate them if they are provided by MLS clients.
+  for attesting to bindings between application-meaningful identifiers and
+  the public key material used for authentication in the
+  MLS protocol. This functionality must also be able to generate
+  credentials that encode these bindings and validate credentials provided by MLS clients.
 
 - A Delivery Service (DS) functionality which can receive and
-  redistributing messages between group members. In the case of group
+  distribute messages between group members. In the case of group
   messaging, the delivery service may also be responsible for acting
   as a "broadcaster" where the sender sends a single message which is
   then forwarded to each recipient in the group by the DS. The DS is
@@ -205,7 +205,7 @@ scenario might look like this:
 4. Bob and/or Charlie respond to Alice's message. In addition, they
    might choose to update their key material which provides
    post-compromise security {{fs-and-pcs}}. As a consequence of that
-   change, the group secrets are updated
+   change, the group secrets are updated.
 
 Clients may wish to do the following:
 
@@ -251,13 +251,13 @@ public values such as a name (an identity), a public encryption key
 and a public signature key. Ownership of a client by a user is
 determined by the fact that the user has knowledge of the
 associated secret values. When a client is part of a Group, it is
-called a Member and its signature key pair uniquely defines its
-identity to other clients or members in the Group.
+called a Member and its signature key pair uniquely identifies it
+to other clients or members in the Group.
 In some messaging systems, clients belonging to the same user must
-all share the same identity key pair, but MLS does not assume this.
+all share the same signature key pair, but MLS does not assume this.
 
-Users will typically own multiple clients, potentially one or more per
-end-user devices (phones, web clients or other devices...) and may
+Users will often use multiple clients, potentially one or more per
+device (phones, web clients or other devices...), and may
 choose to authenticate using the same signature key across devices,
 using one signature key per device or even one signature key per group.
 
