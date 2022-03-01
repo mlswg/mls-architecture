@@ -317,14 +317,36 @@ members cannot assume that the Member is a member of the group.
 
 The Authentication Service (AS) has to provide two functionalities:
 
-1. authenticate the credentials (i.e. the identity/signature keypair)
-   used in a group
-2. authenticate messages sent in groups given the signature over the
-   message and the sending member's credential
+1. Issue credentials to clients that attest to bindings between identities and
+   signature key pairs
+
+2. Enable a group member to verify that a credential presented by another member
+   is valid
+
+A member with a valid credential authenticates its MLS messages by signing them
+with the private key corresponding to the public key in its credential.
 
 The AS is considered an abstract layer by the MLS specification, part
 of this service could be, for instance, running on the members'
-devices, while another part is a separate entity entirely.
+devices, while another part is a separate entity entirely.  The following
+examples illustrate the breadth of this concept:
+
+* A PKI could be used as an AS {{?RFC5280}}.  The issuance function would be
+  provided by the certificate authorities in the PKI, and the verification
+  function would correspond to certificate verification by clients.
+
+* Several current messaging applications rely on users verifying each others'
+  key fingerprints for authentication.  In this scenario, the issuance function
+  is simply the generation of a key pair (i.e., credential is just an identifier and
+  public key, with no information to assist in verification).  The verification
+  function is the application functionality that enables users to verify keys.
+
+* In a system based on Key Transparency (KT) {{?KeyTransparency}}, the issuance
+  function would correspond to the insertion of a key in a KT log under a user's
+  identity. The verification function would correspond to verifying a key's
+  inclusion in the log for a claimed identity, together with the KT log's
+  mechanisms for a user to monitor and control which keys are associated to
+  their identity.
 
 By the nature of its roles in MLS authentication, the AS is invested
 with a large amount of trust and the compromise of one of its
@@ -333,39 +355,13 @@ impersonate group members. We discuss security considerations
 regarding the compromise of the different AS functionalities in detail
 in Section {{as-compromise}}.
 
-### Credential Authentication
-
-In many cases, the first functionality might be provided by a service
-which fulfills a role similar to a certification authority in the
-WebPKI: it provides a binding of an identity (e.g., a user name, phone
-number, email address, etc) to a signature key. The identity/signature
-key pair can then either be used directly in a group, or as an root of
-trust which in turn authenticates credentials used in the group.
-
-The flexibility afforded by the latter option allows for multiple
-infrastructure considerations and has the benefit of providing ways to
-use different signature keys across different groups by using
-hierarchical authentication keys. This flexibility also comes at the
-price of a security tradeoff, described in the security
-considerations, between potential unlinkability of the signature keys
-across groups and the amount of time required to reinstate
-authentication and secrecy of messages after the compromise of a
-device.
-
-### Message Authentication
-
-MLS messages are authenticated by a signature conforming to the
-signature scheme of the group's ciphersuite. To allow for message
-deniability (see Section {{Non-Repudiation-vs-Deniability}}), messages
-are not required to be signed by the private key corresponding to a
-member's credential, but the key must be authenticated using some
-mechanism. Thus, message authentication relies on the accuracy of
-the key's authentication vice the credential authentication.
-
-While credential authentication can be performed by a separate entity,
-message authentication should be performed by each member separately
-due to the encryption layer of the protocol which protects the
-signature of the message.
+The association between members' identities and signature keys is fairly
+flexible in MLS.  As noted above, there is no requirement that all appearances
+of a given user use the same key pair.  A member can also rotate the signature
+key they use within a group.  These mechanisms allow clients to use different
+signature keys in different contexts and at different points in time, providing
+unlinkability and post-compromise security benefits.  Some security trade-offs
+related to this flexibility are discussed in the security considerations.
 
 ## Delivery Service
 
