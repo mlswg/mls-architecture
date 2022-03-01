@@ -324,20 +324,23 @@ security considerations.
 The Delivery Service (DS) is expected to play multiple roles in the
 Service Provider architecture:
 
-* To act as a directory service providing the initial keying material
+* Acting as a directory service providing the initial keying material
   for clients to use.
   This allows a client to establish a shared key and send encrypted
   messages to other clients even if the other client is offline.
 
-* To route messages between clients and to act as a message
-  broadcaster, taking in one message and forwarding it to multiple
-  clients (also known as "server side fanout").
+* Routing MLS messages between clients.
+
+Some MLS messages need only be delivered to some members of group (e.g., the
+message initializing a new member's state), while others need to be delivered to
+all members.  A DS may enable these delivery patterns via unicast channels
+(sometimes known as "client fanout"), broadcast channels ("server fanout"), or a
+mix of both.
 
 Because the MLS protocol provides a way for clients to send and receive
 application messages asynchronously, it only provides causal
 ordering of application messages from senders while it has to enforce
 global ordering of group operations to provide Group Agreement.
-[[TODO: Casual ordering?]]
 
 Depending on the level of trust given by the group to the Delivery
 Service, the functional and privacy guarantees provided by MLS may
