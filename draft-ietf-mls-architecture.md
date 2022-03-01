@@ -251,15 +251,14 @@ public values such as a name (an identity), a public encryption key
 and a public signature key. Ownership of a client by a user is
 determined by the fact that the user has knowledge of the
 associated secret values. When a client is part of a Group, it is
-called a Member and its signature key pair uniquely identifies it
-to other clients or members in the Group.
+called a Member.
 In some messaging systems, clients belonging to the same user must
 all share the same signature key pair, but MLS does not assume this.
 
-Users will often use multiple clients, potentially one or more per
-device (phones, web clients or other devices...), and may
-choose to authenticate using the same signature key across devices,
-using one signature key per device or even one signature key per group.
+Users will often use multiple devices, e.g., a phone as well as a laptop.
+Different devices may be represented as different clients, with independent
+cryptographic state, or they may share cryptographic state, relying on some
+application-provided mechanism to sync across devices.
 
 The formal definition of a Group in MLS is the set of clients that
 have knowledge of the shared group secret established in the group key
