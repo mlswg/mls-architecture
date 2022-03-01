@@ -341,7 +341,7 @@ examples illustrate the breadth of this concept:
   public key, with no information to assist in verification).  The verification
   function is the application functionality that enables users to verify keys.
 
-* In a system based on Key Transparency (KT) {{?KeyTransparency}}, the issuance
+* In a system based on Key Transparency (KT) {{KeyTransparency}}, the issuance
   function would correspond to the insertion of a key in a KT log under a user's
   identity. The verification function would correspond to verifying a key's
   inclusion in the log for a claimed identity, together with the KT log's
