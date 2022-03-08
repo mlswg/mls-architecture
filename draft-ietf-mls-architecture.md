@@ -356,12 +356,14 @@ regarding the compromise of the different AS functionalities in detail
 in Section {{as-compromise}}.
 
 The association between members' identities and signature keys is fairly
-flexible in MLS.  As noted above, there is no requirement that all appearances
-of a given user use the same key pair.  A member can also rotate the signature
-key they use within a group.  These mechanisms allow clients to use different
-signature keys in different contexts and at different points in time, providing
-unlinkability and post-compromise security benefits.  Some security trade-offs
-related to this flexibility are discussed in the security considerations.
+flexible in MLS.  As noted above, there is no requirement that all clients
+belonging to a given user use the same key pair (in fact, such key reuse is
+forbidden to ensure clients have independent cryptographic state).  A member can
+also rotate the signature key they use within a group.  These mechanisms allow
+clients to use different signature keys in different contexts and at different
+points in time, providing unlinkability and post-compromise security benefits.
+Some security trade-offs related to this flexibility are discussed in the
+security considerations.
 
 ## Delivery Service
 
