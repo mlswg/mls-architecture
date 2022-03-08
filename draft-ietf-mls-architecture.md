@@ -86,6 +86,26 @@ informative:
        -
           ins: Google
 
+  Loopix:
+      title: "The Loopix Anonymity System"
+      date: 2017
+      author:
+        -
+          ins: A.M. Piotrowska
+          name: Ania M. Piotrowska 
+        -
+          ins: J. Hayes
+          name: Jamie Hayes
+        -
+          ins: T. Elahi
+          name: Tariq Elahi
+        -
+          ins: S. Meiser
+          name: Sebastian Meiser
+        -
+          ins: G. Danezis
+          name: George Danezis
+
 
 --- abstract
 
@@ -377,18 +397,7 @@ Service Provider architecture:
   This allows a client to establish a shared key and send encrypted
   messages to other clients even if the other client is offline.
 
-* Routing MLS messages between clients.
-
-Some MLS messages need only be delivered to some members of group (e.g., the
-message initializing a new member's state), while others need to be delivered to
-all members.  A DS may enable these delivery patterns via unicast channels
-(sometimes known as "client fanout"), broadcast channels ("server fanout"), or a
-mix of both.
-
-Because the MLS protocol provides a way for clients to send and receive
-application messages asynchronously, it only provides causal
-ordering of application messages from senders while it has to enforce
-global ordering of group operations to provide Group Agreement.
+* Routing MLS messages among clients.
 
 Depending on the level of trust given by the group to the Delivery
 Service, the functional and privacy guarantees provided by MLS may
@@ -413,8 +422,10 @@ cryptographic information:
 * A credential from the Authentication Service attesting to the
   binding between the identity and the client's signature key.
 
-* The client's asymmetric encryption public key material signed with
-  the signature public key associated with the credential.
+* The client's asymmetric encryption public key material.
+
+All the parameters in the KeyPackage are signed with the signature private key
+corresponding to to the credential.
 
 As noted above, users may own multiple clients, each with their
 own keying material, and thus there may be multiple entries
@@ -434,46 +445,66 @@ the group.
 
 ### Delivery of messages and attachments {#delivery-guarantees}
 
-The main responsibility of the Delivery Service is to ensure delivery
-of messages. Specifically, we assume that Delivery Services provide:
+The main responsibility of the Delivery Service is to ensure delivery of
+messages. Some MLS messages need only be delivered to some members of group
+(e.g., the message initializing a new member's state), while others need to be
+delivered to all members.  The Delivery Service may enable these delivery
+patterns via unicast channels (sometimes known as "client fanout"), broadcast
+channels ("server fanout"), or a mix of both.
 
-* Reliable delivery: when a message is provided to the Delivery Service,
-  it is eventually delivered to all clients.
+For the most part, MLS does not require the Delivery Service to deliver messages
+in any particular order.  The one requirement is that because an MLS group has a
+linear history, the members of the group must agree on the order in which
+changes are applied.  Concretely, the group must agree on which MLS Commit
+messages to apply.  There are a variety of ways to achieve this agreement, but
+most of them rely on some help from the Delivery Service.  For example, if a
+Delivery Service provides delivery in the same order to all group members, then
+the members can simply apply Commits in the order in which they appear.
 
-* In-order delivery: messages are delivered to the group
-  in the order they are received by the Delivery Service
-  and in approximately the order in which they are sent
-  by clients. The latter is an approximate guarantee because
-  multiple clients may send messages at the same time
-  and so the Delivery Service needs some latitude in enforcing
-  ordering across clients.
+For the most part, MLS does not require the Delivery Service to deliver messages
+in any particular order.  The one requirement is that because an MLS group has a
+linear history, the members of the group must agree on the order in which
+changes are applied.  Concretely, the group must agree on which MLS Commit
+messages to apply.
 
-* Consistent ordering: the Delivery Service must ensure that all clients
-  have the same view of message ordering for cryptographically
-  relevant operations. This means that the Delivery Service MUST enforce
-  global consistency of the ordering of group operation messages.
+Each Commit is premised on a given state or "epoch" of the group.  The Delivery
+Service must transmit to the group exactly one Commit message per epoch.
 
-Note that the protocol provides three important pieces of information
+Much like the Authentication Service, the Delivery Service can be split between
+server and client components. Acheiving required uniqueness property will
+typically require a combination of client and server behaviors.  For example,
+both of the following examples provide a unique Commit per epoch:
+
+* An "filtering server" Delivery Service where a server rejects all but the
+  first Commit for an epoch and clients apply each Commit they receive.
+
+* An "ordered server" Delivery Service where a server forwards all messages
+  but assures that all clients see Commits in the same order, and clients.
+
+* A "passive server" Delivery Service where a servier forwards all messages
+  without ordering or reliability guarantees, and clients execute some secondary
+  consensus protocol to choose among the Commits received in a window.
+
+The MLS protocol provides three important pieces of information
 within an MLSCiphertext message in order to provide ordering:
 
-* The Group Identifier (GID) to allow for distinguishing the group for
+* The Group Identifier (group ID) to allow for distinguishing the group for
   which the message has been sent;
 
 * The Epoch number, which represents the number of changes (version) of
-  the group associated with a specific GID, and allows for
+  the group associated with a specific group ID, and allows for
   lexicographical ordering of messages from different epochs within the
   same group;
 
 * The Content Type of the message, which allows the Delivery Service to
-   determine the ordering requirement on the message.
+  determine the ordering requirement on the message, in particular
+  distinguishing Commit messages from other messages.
 
-The MLS protocol itself can verify these properties. For instance, if
-the Delivery Service reorders messages from a client or provides different
-clients with inconsistent orderings, then clients can detect this
-misconduct. However, the protocol relies on the ordering, and on the
-fact that only one honest group operation message is fanned-out to
-clients per Epoch, to provide clients with a consistent view of the
-evolving Group State.
+The MLS protocol itself can verify these properties. For instance, if the
+Delivery Service reorders messages from a client or provides different clients
+with inconsistent orderings, then clients can put messages back in their proper
+order.  The asynchronous nature of MLS means that within an epoch, messages are
+only ordered per-sender, not globally.
 
 Note that some forms of Delivery Service misbehavior are still possible and
 difficult to detect. For instance, a Delivery Service can simply refuse
@@ -484,7 +515,7 @@ distinguish this form of Denial of Service (DoS) attack.
 ### Membership knowledge
 
 Group membership is itself sensitive information and MLS is designed
-to drastically limit the amount of persistant metadata. However, large
+to limit the amount of persistant metadata. However, large
 groups often require an infrastructure which provides server fanout.
 In the case of client fanout, the destinations of a message is known by
 all clients, hence the server usually does not need this information.
@@ -495,10 +526,9 @@ clients. In addition, there may be applications of MLS in which the group
 membership list is stored on some server associated with the Delivery
 Service.
 
-While this knowledge is not a break of authentication or
-confidentiality, it is a serious issue for privacy. In the case where
-metadata has to be persisted for functionality, it SHOULD be stored
-encrypted at rest.
+While this knowledge is not a breach of the protocol's authentication or
+confidentiality guarantees, it is a serious issue for privacy.  Applications
+should consider anonymous systems for server fanout such as Loopix {{Loopix}}.
 
 ### Membership and offline members
 
@@ -511,8 +541,8 @@ MLS cannot inherently defend against this problem, especially in the
 case where the client has not processed messages, but MLS-using
 systems can enforce some mechanism to try to retain these properties.
 Typically this will consist of evicting clients which are idle for too
-long, or mandate a silent key update from clients that is not attached to
-other messaging traffic, thus containing the threat of compromise. The
+long, or mandating a key update from clients that are not otherwise sending
+messages. The
 precise details of such mechanisms are a matter of local policy and beyond
 the scope of this document.
 
