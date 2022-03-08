@@ -58,7 +58,7 @@ informative:
       author:
         -
           ins: A.M. Piotrowska
-          name: Ania M. Piotrowska 
+          name: Ania M. Piotrowska
         -
           ins: J. Hayes
           name: Jamie Hayes
