@@ -679,12 +679,12 @@ assumes that the attacker has complete control of the network. It is
 intended to provide the security services described in the face of
 such attackers.
 
--- The attacker can monitor the entire network.
+- The attacker can monitor the entire network.
 
--- The attacker can read unprotected messages.
+- The attacker can read unprotected messages.
 
--- The attacker can generate and inject any message in the unprotected
-   transport layer.
+- The attacker can generate and inject any message in the unprotected
+  transport layer.
 
 In addition, these guarantees are intended to degrade gracefully in
 the presence of compromise of the transport security links as well as
@@ -703,8 +703,8 @@ Any secure channel can be used as a transport layer to protect MLS
 messages such as QUIC, TLS, WireGuard or TOR. However, the MLS
 protocol is designed to consider the following threat-model:
 
--- The attacker can read and write arbitrary messages inside the
-   secure transport channel.
+- The attacker can read, write, and delete arbitrary messages inside the
+  secure transport channel.
 
 This departs from most threat models where we consider that the secure
 channel used for transport always provides secrecy. The reason for
@@ -719,20 +719,20 @@ contained in the unencrypted header of the MLS protocol message
 format for group operation messages, and application messages are
 always encrypted in MLS.
 
-Contrary to popular messaging services, the full list of recipients
-cannot be sent to the server for dispatching messages because that
+MLS avoids needing to send the full list of recipients
+to the server for dispatching messages because that
 list is potentially extremely large in MLS. Therefore, the metadata
-typically consists of a pseudo-random Group Identifier (GID), a numerical
-index referring to the key needed to decrypt the ciphertext content, and
-another numerical value to determine the epoch of the group (the
-number of group operations that have been performed).
+typically consists of a pseudo-random Group Identifier (GID), a numerical value
+to determine the epoch of the group (the number of changes that have been made
+to the group), and another numerical value referring to the specific key needed
+to decrypt the ciphertext content.
 
-The MLS protocol provides an authenticated "Authenticated Additional
+The MLS protocol provides an authenticated "Additional Authenticated
 Data" field for applications to make data available outside the
 MLSCiphertext.
 
 > **RECOMMENDATION:**
-> Use the "Authenticated Additional Data" field of the MLSCiphertext
+> Use the "Additional Authenticated Data" field of the MLSCiphertext
 > message instead of using other unauthenticated means of sending
 > metadata throughout the infrastructure. If the data is private, the
 > infrastructure should use encrypted Application messages instead.
@@ -776,18 +776,24 @@ messages to the Delivery Service or the MLS clients.
 
 ### Message Suppression and Error Correction
 
-The MLS protocol is particularly sensitive about group operation
-message loss and reordering. This is because in the default setting,
-MLS clients have to process those specific messages in order to have a
-synchronized group state, after what the MLS protocol efficiently
-generates keys for application messages.
-[[TODO: It is unclear from this text whether MLS is "sensitive" in that it
-provides additional constraints to prevent this, or is "sensitive" in that it is
-vulnerable. Need to clarify]]
+As noted above, MLS is designed to provide some robustness in the face of
+tampering within the secure transport, i.e., tampering by the Delivery Service.
+The confidentiality and authenticity properties of MLS prevent the DS reading or
+writing messages.  MLS also provides a few tools for detecting message
+suppression, with the caveat that message suppression cannot always be
+distinguished from transport failure.
 
-The Delivery Service can have the role of helping with reliability,
-but is mainly useful for reliability in the asynchronous aspect of the
-communication between MLS clients.
+Each encrypted MLS message carries a "generation" number which is per-sender
+incrementing counter.  If a group member observes a gap in the generation
+sequence for a sender, then they know that they have missed a message from that
+sender.  MLS also provides a facility for group members to send authenticated
+acknowledgements of application messages received within a group.
+
+As discusssed in {{delivery-service}}, the Delivery Service is trusted to select
+the single Commit message that is applied in each epoch from among the ones sent
+by group members.  Since only one Commit per epoch is meaningful, it's not
+useful for the DS to transmit multiple Commits too clients.  The risk remains
+that the DS will use the ability maiciously.
 
 While it is difficult or impossible to prevent a network adversary from
 suppressing payloads in transit, in certain infrastructures such as banks
@@ -875,8 +881,14 @@ Additionally, some services require that a recipient be able to prove to the
 service provider that a message was sent by a given client, in order to report
 abuse. MLS supports both of these use cases. In some deployments, these services
 are provided by mechanisms which allow the receiver to prove a message's origin
-to a third party (this if often called "non-repudiation"), but it should also be
-possible to operate MLS in a "deniable" mode where such proof is not possible.
+to a third party. This is often called "non-repudiation". 
+
+Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
+property that it is impossible to prove to a third party that a message was sent
+by a given sender.  MLS does not make any claims with regard to deniability.  It
+may be possible to operate MLS in ways that provide certain deniability
+properties, but defining the specific requirements and resulting notions of
+deniability requires further analysis.
 
 ## Endpoint Compromise
 
@@ -889,16 +901,16 @@ properties achieved by the MLS protocol.
 In this section we will explore the consequences and recommendations
 regarding the following compromise scenarios:
 
--- The attacker has access to a specific symmetric encryption key
+- The attacker has access to a specific symmetric encryption key
 
--- The attacker has access to the group secrets for one group
+- The attacker has access to the group secrets for one group
 
--- The attacker has access to a signature oracle for any group
+- The attacker has access to a signature oracle for any group
 
--- The attacker has access to the signature key for one group
+- The attacker has access to the signature key for one group
 
--- The attacker has access to all secrets of a user for all groups
-   (full state compromise)
+- The attacker has access to all secrets of a user for all groups
+  (full state compromise)
 
 [[TODO: Cite the research papers in the context of these compromise models]]
 
@@ -924,7 +936,7 @@ message to a group which appears to be from any valid client since
 they cannot forge the signature.
 
 The MLS protocol will ensure that an adversary cannot compute any
-previous AEAD keys for the same epoch, or any other epochs.  Because
+previous or future AEAD keys for the same epoch, or any other epochs.  Because
 of its Forward Secrecy guarantees, MLS will also retain secrecy of all
 other AEAD keys generated for *other* MLS clients, outside this
 dedicated chain of AEAD keys and nonces, even within the epoch of the
@@ -1021,9 +1033,6 @@ secrets to compute the encryption keys or the membership tag.
 
 ### Compromise of the authentication with access to a signature key
 
-DISCLAIMER: Significant work remains in this section.
-[[TODO: Remove disclaimer.]]
-
 The difference between having access to the value of the signature key
 and only having access to a signing oracle is not about the ability of
 an active adaptative network attacker to perform different operations
@@ -1058,11 +1067,6 @@ key depending on the architecture of the service provider.
 > secrets and preferably protected by an HSM or dedicated hardware
 > features to allow recovery of the authentication for future messages
 > after a compromised.
-
-Even if the dedicated hardware approach is used, ideally, neither the
-Client or the Authentication service alone should provide the
-signature private key. Both should contribute to the key and it should
-be stored securely by the client with no direct access.
 
 ### Security consideration in the context of a full state compromise
 
@@ -1122,15 +1126,6 @@ compromise where for instance, an attacker can sign messages without
 having access to the key. In certain contexts, the rotation of
 credentials might only be triggered by the AS through ACLs, hence be
 outside of the capabilities of the attacker.
-
-[[TODO: Considerations for Signature keys being :reused or not across groups]]
-
-### More attack scenarios
-[[TODO: Make examples for more complex attacks, cross groups,
-multi collusions...]]
-
-[[TODO: Do we discuss PCFS in this document? If yes, where?]]
-
 
 ## Service Node Compromise
 
@@ -1242,13 +1237,13 @@ The Authentication Service design is left to the infrastructure
 designers. In most designs, a compromised AS is a serious matter, as
 the AS can serve incorrect or attacker-provided identities to clients.
 
--- The attacker can link an identity to a credential
+- The attacker can link an identity to a credential
 
--- The attacker can generate new credentials
+- The attacker can generate new credentials
 
--- The attacker can sign new credentials
+- The attacker can sign new credentials
 
--- The attacker can publish or distribute credentials
+- The attacker can publish or distribute credentials
 
 Infrastructures that provide cryptographic material or credentials in
 place of the MLS client (which is under the control of the user) have
@@ -1389,10 +1384,6 @@ specification, which remains non-trivial.
 > Additional steps should be taken to protect the device and the MLS
 > clients from physical compromise. In such setting, HSMs and secure
 > enclaves can be used to protect signature keys.
->
-> More information will be available in the Server-Assist draft.
-
-[[TODO: Reference to server assist when the draft is available.]]
 
 # IANA Considerations
 
