@@ -429,7 +429,7 @@ Service to request a KeyPackage for each other client, authenticates the
 KeyPackages using the signature keys, and then can use those to form
 the group.
 
-### Delivery of messages and attachments {#delivery-guarantees}
+### Delivery of Messages {#delivery-guarantees}
 
 The main responsibility of the Delivery Service is to ensure delivery
 of messages. Specifically, we assume that Delivery Services provide:
@@ -516,11 +516,10 @@ the scope of this document.
 ## Functional Requirements
 
 MLS is designed as a large scale group messaging protocol and hence
-aims to provide performance and safety to its users.  Messaging
+aims to provide both performance and safety to its users.  Messaging
 systems that implement MLS provide support for conversations involving
-two or more members, and aim to scale to groups as large as 50,000 members,
+two or more members, and aim to scale to groups with tens of thousands of members,
 typically including many users using multiple devices.
-
 
 ### Membership Changes
 
@@ -530,7 +529,8 @@ group members have agreed on the list of current group members.
 Some applications may wish to enforce ACLs to limit addition or
 removal of group members, to privileged clients or users. Others may
 wish to require authorization from the current group members or a
-subset thereof.  Regardless, MLS does not allow for or support addition
+subset thereof.  Such policies can be implemented at the application layer, on
+top of MLS. Regardless, MLS does not allow for or support addition
 or removal of group members without informing all other members.
 
 Once a client is part of a group, the set of devices controlled by the
@@ -539,25 +539,25 @@ This authorization could depend on the application: some applications
 might want to allow certain members of the group to add or
 remove devices on behalf of another member, while other applications
 might want a more strict policy and allow only the owner of the
-devices to add or remove them at the potential cost of weaker PCS
-guarantees. Application setup may also determine other forms of
-membership validity, e.g. through an identity key alignment to the
-member with separate signature keys per device. If a certificate chain is
+devices to add or remove them.
+
+Application setup may also determine other criteria for
+membership validity. For example, per-device signature keys can be signed by an
+identity key recognized by other participants. If a certificate chain is
 used to sign off on device signature keys, then revocation by the owner
 adds an alternative flag to prompt membership removal.
 
-[[OPEN ISSUE: Above paragraph conflicts slightly under assumptions about
-multiple device memberships vs. those described below under "Support for
-Multiple Devices"]]
-
-Members who are removed from a group do not enjoy special privileges:
-compromise of a removed group member does not affect the security
-of messages sent after their removal but might affect previous messages
-if the group secrets have not been deleted properly.
+An MLS group's secrets change on every change of membership, so each client only
+has access to the secrets used by the group while they are a member.  Messages
+sent before a client joins or after they are removed are protected with keys
+that are not accessible to the client.  Compromise of a member removed from a
+group does not affect the security of messages sent after their removal.
+Messages sent during the client's membership are also secure as long as the
+client has properly implemented the MLS deletion schedule.
 
 ### Parallel Groups
 
-Any user may have membership in several groups simultaneously.
+Any user or client may have membership in several groups simultaneously.
 The set of members of any group may or may not form a subset of the
 members of another group. MLS guarantees that the FS and PCS goals
 within a given group are maintained and not weakened by user membership
@@ -568,28 +568,17 @@ other groups; each group must be updated separately to achieve internal goals.
 This also applies to future groups that a member has yet to join, that are likewise
 unaffected by updates performed in current groups.
 
-Some applications may strengthen connectivity among parallel groups by
+Applications may strengthen connectivity among parallel groups by
 requiring periodic key updates from a user across all groups in which they have
 membership, or using the PSK mechanism to link healing properties among
-parallel groups. Such application choices however are outside the scope of MLS.
-
-### Security of Attachments
-
-The security properties expected for attachments in the MLS protocol
-are very similar to the ones expected from messages. The distinction
-between messages and attachments stems from the fact that the typical
-average time between the download of a message and the one from the
-attachments may be different. For many reasons (a typical reason being
-the lack of high bandwidth network connectivity), the lifetime of the
-cryptographic keys for attachments is usually higher than for
-messages, hence slightly weakening the PCS guarantees for attachments.
+parallel groups.
 
 ### Asynchronous Usage
 
 No operation in MLS requires two distinct clients or members to be
 online simultaneously. In particular, members participating in
-conversations protected using MLS can update shared keys, add or
-remove new members, and send messages and attachments without waiting
+conversations protected using MLS can update the group's keys, add or
+remove new members, and send messages without waiting
 for another user's reply.
 
 Messaging systems that implement MLS have to provide a transport layer
@@ -602,10 +591,10 @@ operations equally. This is because all clients within a group
 (members) have access to the shared cryptographic material. However
 every service/infrastructure has control over policies applied to
 its own clients. Applications managing MLS clients can be configured
-to allow for specific group operations. An application can, for
-example, decide to provide specific permissions to a group
-administrator that will be the one to perform add and remove
-operations, but the flexibility is immense here. On the other hand, in
+to allow for specific group operations. On the one hand, an application could
+decide that a group
+administrator will be the only member to perform add and remove
+operations. On the other hand, in
 many settings such as open discussion forums, joining can be allowed
 for anyone.
 
@@ -622,8 +611,9 @@ use them for tracking.
 > Prefer using encrypted group operation messages to avoid privacy
 > issues related to non-encrypted signatures.
 
-Note that in the default case of encrypted handshake messages, the
-application level must make sure that the access control policies are
+Note that in the default case of encrypted handshake messages, any access
+control policies will be applied at the clien, so the
+application must ensure that the access control policies are
 consistent across all clients to make sure that they remain in sync.
 If two different policies were applied, the clients might not accept
 or reject a group operation and end-up in different cryptographic
@@ -635,19 +625,16 @@ states, breaking their ability to communicate.
 
 ### Recovery After State Loss
 
-Group members whose local MLS state is lost or corrupted
-can reinitialize their state and continue participating in the
-group. This does not provide the member with access to group
+Group members whose local MLS state is lost or corrupted can reinitialize their
+state by re-joining the group as a new member and removing the member
+representing their earlier state.  An application can require that a client
+performing such a reinitialization proof its prior membership with a PSK.
+
+Reinitializing in this way does not provide the member with access to group
 messages from during the state loss window, but enables proof of
 prior membership in the group. Applications may choose various
 configurations for providing lost messages to valid group members
 that are able to prove prior membership.
-
-[[OPEN ISSUE: The previous statement seems too strong, establish
-what exact functional requirement we have regarding state recovery.
-Previously: "This may entail some level of message loss, but
-does not result in permanent exclusion from the group."
--- Statement edited]]
 
 ### Support for Multiple Devices
 
@@ -657,14 +644,22 @@ a new client by the protocol. This client will not gain access to the history
 even if it is owned by someone who owns another member of the group.
 Restoring history is typically not allowed at the protocol level but
 applications can elect to provide such a mechanism outside of MLS.
-Such mechanisms, if used, may undermine the FS and PCS guarantees
+Such mechanisms, if used, may reduce the FS and PCS guarantees
 provided by MLS.
 
-### Extensibility / Pluggability
+### Extensibility
 
-Messages that do not affect the group state can carry an arbitrary
-payload with the purpose of sharing that payload between group
-members. No assumptions are made about the format of the payload.
+The MLS protocol provides several extension points where additional information
+can be provided.  Extensions to KeyPackages allow clients to disclose additional
+information about their capabilities.  Groups can also have extension data
+associated to them, and the group agreement properties of MLS will confirm that
+all members of the group agree on the content of these extensions.
+
+Application messages carried by MLS are opaque; they can contain arbitrary data.
+The MLS framing for application messages also provides a field where clients can
+send information that is authenticated but not encrypted.  Such information can
+be used by servers that handle the message, but group members are assured that
+it has not been tampered with.
 
 ### Federation
 
@@ -690,6 +685,11 @@ verify availability of protocol version, ciphersuites and extensions
 at all times once he has at least received the first group operation
 message.
 
+Each member of an MLS group advertises the protocol functionality they support.
+These capability advertisements can be updated over time, e.g., if client
+software is updated while the client is a member of a group. Thus, in addition
+to preventing downgrade attacks, the members of a group can also observe when it
+is safe to upgrade to a new ciphersuite or protocol version.
 
 # Security and Privacy Considerations
 
