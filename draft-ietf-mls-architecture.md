@@ -814,13 +814,6 @@ the appropriate level of redundancy and quality of service for MLS.
 MLS aims to provide a number of security guarantees, covering authentication, as
 well as confidentiality guarantees to different degrees in different scenarios.
 
-[[TODO: Authentication guarantees at the moment of joining a group are interesting
-and I don't see a section where it would fit. I'm thinking in particular about
-the parent hash and tree hashes in combination with with signatures and the key
-schedule. I know that several groups have worked on this and results are
-scattered between a few papers. In particular, I think the guarantees for a
-member being added to a new group are interesting.]]
-
 ### Message Secrecy and Authentication {#message-secrecy-authentication}
 
 MLS enforces the encryption of application messages and thus generally
@@ -911,8 +904,6 @@ regarding the following compromise scenarios:
 
 - The attacker has access to all secrets of a user for all groups
   (full state compromise)
-
-[[TODO: Cite the research papers in the context of these compromise models]]
 
 Recall that the MLS protocol provides chains of AEAD keys, per sender
 that are generated from Group Secrets. These keys are used to protect
