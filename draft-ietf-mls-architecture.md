@@ -881,7 +881,7 @@ Additionally, some services require that a recipient be able to prove to the
 service provider that a message was sent by a given client, in order to report
 abuse. MLS supports both of these use cases. In some deployments, these services
 are provided by mechanisms which allow the receiver to prove a message's origin
-to a third party. This is often called "non-repudiation". 
+to a third party. This is often called "non-repudiation".
 
 Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
 property that it is impossible to prove to a third party that a message was sent
