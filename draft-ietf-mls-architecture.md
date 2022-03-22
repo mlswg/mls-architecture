@@ -478,7 +478,7 @@ both of the following examples provide a unique Commit per epoch:
 * A "filtering server" Delivery Service where a server rejects all but the
   first Commit for an epoch and clients apply each Commit they receive.
 
-* An "ordered server" Delivery Service where a server forwards all messages
+* An "ordering server" Delivery Service where a server forwards all messages
   but assures that all clients see Commits in the same order, and clients.
 
 * A "passive server" Delivery Service where a server forwards all messages
