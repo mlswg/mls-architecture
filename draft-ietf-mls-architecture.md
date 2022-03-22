@@ -1382,6 +1382,10 @@ This document makes no requests of IANA.
 
 # Contributors
 
+* Richard Barnes \\
+  Cisco \\
+  rlb@ipv.sx
+
 * Katriel Cohn-Gordon \\
   University of Oxford \\
   me@katriel.co.uk
