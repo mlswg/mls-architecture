@@ -423,7 +423,7 @@ Each Commit is premised on a given state or "epoch" of the group.  The Delivery
 Service must transmit to the group exactly one Commit message per epoch.
 
 Much like the Authentication Service, the Delivery Service can be split between
-server and client components. Acheiving required uniqueness property will
+server and client components. Achieving the required uniqueness property will
 typically require a combination of client and server behaviors.  For example,
 all of the following examples provide a unique Commit per epoch:
 
