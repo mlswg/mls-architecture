@@ -377,7 +377,7 @@ cryptographic information:
 * The client's asymmetric encryption public key material.
 
 All the parameters in the KeyPackage are signed with the signature private key
-corresponding to to the credential.
+corresponding to the credential.
 
 As noted above, users may own multiple clients, each with their
 own keying material, and thus there may be multiple entries
