@@ -475,7 +475,7 @@ server and client components. Acheiving required uniqueness property will
 typically require a combination of client and server behaviors.  For example,
 both of the following examples provide a unique Commit per epoch:
 
-* An "filtering server" Delivery Service where a server rejects all but the
+* A "filtering server" Delivery Service where a server rejects all but the
   first Commit for an epoch and clients apply each Commit they receive.
 
 * An "ordered server" Delivery Service where a server forwards all messages
