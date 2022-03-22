@@ -473,7 +473,7 @@ Service must transmit to the group exactly one Commit message per epoch.
 Much like the Authentication Service, the Delivery Service can be split between
 server and client components. Acheiving required uniqueness property will
 typically require a combination of client and server behaviors.  For example,
-both of the following examples provide a unique Commit per epoch:
+all of the following examples provide a unique Commit per epoch:
 
 * A "filtering server" Delivery Service where a server rejects all but the
   first Commit for an epoch and clients apply each Commit they receive.
