@@ -683,7 +683,7 @@ such attackers.
 
 - The attacker can read unprotected messages.
 
-- The attacker can generate and inject any message in the unprotected
+- The attacker can generate, inject and delete any message in the unprotected
   transport layer.
 
 In addition, these guarantees are intended to degrade gracefully in
@@ -783,7 +783,7 @@ writing messages.  MLS also provides a few tools for detecting message
 suppression, with the caveat that message suppression cannot always be
 distinguished from transport failure.
 
-Each encrypted MLS message carries a "generation" number which is per-sender
+Each encrypted MLS message carries a "generation" number which is a per-sender
 incrementing counter.  If a group member observes a gap in the generation
 sequence for a sender, then they know that they have missed a message from that
 sender.  MLS also provides a facility for group members to send authenticated
@@ -792,8 +792,8 @@ acknowledgements of application messages received within a group.
 As discusssed in {{delivery-service}}, the Delivery Service is trusted to select
 the single Commit message that is applied in each epoch from among the ones sent
 by group members.  Since only one Commit per epoch is meaningful, it's not
-useful for the DS to transmit multiple Commits too clients.  The risk remains
-that the DS will use the ability maiciously.
+useful for the DS to transmit multiple Commits to clients.  The risk remains
+that the DS will use the ability maliciously.
 
 While it is difficult or impossible to prevent a network adversary from
 suppressing payloads in transit, in certain infrastructures such as banks
