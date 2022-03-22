@@ -44,40 +44,6 @@ author:
     email: alan@wire.com
 
 informative:
-  MLSPROTO:
-       title: "Messaging Layer Security Protocol"
-       date: 2018
-       author:
-         -  ins: R. Barnes
-            name: Richard Barnes
-            organization: Cisco
-            email: rlb@ipv.sx
-         -
-            ins: B. Beurdouche
-            name: Benjamin Beurdouche
-            organization: Inria
-            email: benjamin.beurdouche@inria.fr
-         -
-            ins: J. Millican
-            name: Jon Millican
-            organization: Facebook
-            email: jmillican@fb.com
-         -
-            ins: E. Omara
-            name: Emad Omara
-            organization: Google
-            email: emadomara@google.com
-         -
-            ins: K. Cohn-Gordon
-            name: Katriel Cohn-Gordon
-            organization: University of Oxford
-            email: me@katriel.co.uk
-         -
-            ins: R. Robert
-            name: Raphael Robert
-            organization: Wire
-            email: raphael@wire.com
-
   KeyTransparency:
        target: https://KeyTransparency.org
        title: Key Transparency
@@ -89,7 +55,7 @@ informative:
 
 --- abstract
 
-The Messaging Layer Security (MLS) protocol {{MLSPROTO}} document has
+The Messaging Layer Security (MLS) protocol {{!I-D.ietf-mls-protocol}} specification has
 the role of defining a Group Key Agreement, all the necessary
 cryptographic operations, and serialization/deserialization functions
 necessary to create a scalable and secure group messaging protocol.
@@ -98,11 +64,11 @@ message forgery, and provide good properties such as forward-secrecy
 (FS) and post-compromise security (PCS) in the case of past or future
 device compromises.
 
-This document, on the other hand is intended to describe a general
+This document describes a general
 secure group messaging infrastructure and its security goals.  It
 provides guidance on building a group messaging system and discusses
 security and privacy tradeoffs offered by multiple security mechanism
-that are part of the MLS protocol (ie. frequency of public encryption
+that are part of the MLS protocol (e.g., frequency of public encryption
 key rotation).
 
 The document also extends the guidance to parts of the infrastructure
@@ -110,9 +76,9 @@ that are not standardized by the MLS Protocol document and left to the
 application or the infrastructure architects to design.
 
 While the recommendations of this document are not mandatory to follow
-in order to interoperate at the protocol level, most will vastly
-influence the overall security guarantees that are achieved by the
-overall messaging system. This is especially true in case of active
+in order to interoperate at the protocol level,
+they affect the overall security guarantees that are achieved by a
+messaging application. This is especially true in case of active
 adversaries that are able to compromise clients, the delivery service
 or the authentication service.
 
@@ -128,32 +94,21 @@ Instructions are on that page as well.  Editorial changes can be
 managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
-DISCLAIMER: A lot of work is still ongoing on the current version of
-this draft. Especially, this preliminary writing of the security
-considerations has not been reviewed by the working group yet and
-might contain errors.
-Please file an issue on the document's GitHub if you find errors.
-
-[[TODO: Remove disclaimer.]]
-
 End-to-end security is a requirement for instant messaging systems and
 is commonly deployed in many such systems. In this context,
 "end-to-end" captures the notion that users of the system enjoy some
 level of security -- with the precise level depending on the system
-design -- even when the service provider they are using performs
-unsatisfactorily.
+design -- even in the face of malicious actions by the operator of the messaging
+system.
 
 Messaging Layer Security (MLS) specifies an architecture (this
-document) and an abstract protocol {{MLSPROTO}} for providing
+document) and a protocol {{!I-D.ietf-mls-protocol}} for providing
 end-to-end security in this setting. MLS is not intended as a full
 instant messaging protocol but rather is intended to be embedded in
-concrete protocols, such as XMPP {{?RFC6120}}. In addition, it does not
-specify a complete wire encoding, but rather a set of abstract data
-structures which can then be mapped onto a variety of concrete
-encodings, such as TLS {{?RFC8446}}, CBOR {{?RFC7049}}, and
-JSON {{?RFC7159}}.  Implementations which adopt compatible encodings
-will have some degree of interoperability at the message level, though
-they may have incompatible identity/authentication infrastructures.
+concrete protocols, such as XMPP {{?RFC6120}}.  Implementations of the MLS
+protocol will interoperate at the cryptographic level, though
+they may have incompatibilities in terms of how protected messages are
+delivered, contents of protected messages, and identity/authentication infrastructures.
 The MLS protocol has been designed to provide the same security
 guarantees to all users, for all group sizes, even when it reduces to
 only two users.
@@ -173,13 +128,13 @@ The Service Provider presents two abstract functionalities that allow
 clients to prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) functionality which is responsible
-  for maintaining a binding between a unique identifier (identity) and
-  the public key material (credential) used for authentication in the
-  MLS protocol. This functionality must also be able to generate these
-  credentials or validate them if they are provided by MLS clients.
+  for attesting to bindings between application-meaningful identifiers and
+  the public key material used for authentication in the
+  MLS protocol. This functionality must also be able to generate
+  credentials that encode these bindings and validate credentials provided by MLS clients.
 
 - A Delivery Service (DS) functionality which can receive and
-  redistributing messages between group members. In the case of group
+  distribute messages between group members. In the case of group
   messaging, the delivery service may also be responsible for acting
   as a "broadcaster" where the sender sends a single message which is
   then forwarded to each recipient in the group by the DS. The DS is
@@ -250,7 +205,7 @@ scenario might look like this:
 4. Bob and/or Charlie respond to Alice's message. In addition, they
    might choose to update their key material which provides
    post-compromise security {{fs-and-pcs}}. As a consequence of that
-   change, the group secrets are updated
+   change, the group secrets are updated.
 
 Clients may wish to do the following:
 
@@ -296,15 +251,14 @@ public values such as a name (an identity), a public encryption key
 and a public signature key. Ownership of a client by a user is
 determined by the fact that the user has knowledge of the
 associated secret values. When a client is part of a Group, it is
-called a Member and its signature key pair uniquely defines its
-identity to other clients or members in the Group.
+called a Member.
 In some messaging systems, clients belonging to the same user must
-all share the same identity key pair, but MLS does not assume this.
+all share the same signature key pair, but MLS does not assume this.
 
-Users will typically own multiple clients, potentially one or more per
-end-user devices (phones, web clients or other devices...) and may
-choose to authenticate using the same signature key across devices,
-using one signature key per device or even one signature key per group.
+Users will often use multiple devices, e.g., a phone as well as a laptop.
+Different devices may be represented as different clients, with independent
+cryptographic state, or they may share cryptographic state, relying on some
+application-provided mechanism to sync across devices.
 
 The formal definition of a Group in MLS is the set of clients that
 have knowledge of the shared group secret established in the group key
@@ -313,15 +267,15 @@ Until a Member has been added to the group and contributed to the group
 secret in a manner verifiable by other members of the group, other
 members cannot assume that the Member is a member of the group.
 
-## Authentication Service
+# Authentication Service
 
 The Authentication Service (AS) has to provide two functionalities:
 
-1. Issue credentials to clients that attest to bindings between identities and
-   signature key pairs
+1. Issue or Authenticate credentials to clients that attest to bindings
+   between identities and signature key pairs;
 
 2. Enable a group member to verify that a credential presented by another member
-   is valid
+   is valid.
 
 A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key in its credential.
@@ -365,7 +319,8 @@ points in time, providing unlinkability and post-compromise security benefits.
 Some security trade-offs related to this flexibility are discussed in the
 security considerations.
 
-## Delivery Service
+
+# Delivery Service
 
 The Delivery Service (DS) is expected to play multiple roles in the
 Service Provider architecture:
@@ -397,7 +352,7 @@ in the case of a Delivery Service server fanout, the Delivery Service can be
 considered as an active, adaptive network attacker from the point of
 view of the security analysis.
 
-### Key Storage
+## Key Storage
 
 Upon joining the system, each client stores its initial cryptographic
 key material with the Delivery Service. This key material, called a
@@ -420,14 +375,14 @@ remove or update their initial key material, and for ensuring
 that the identifier for these keys are unique across all keys
 stored on the Delivery Service.
 
-### Key Retrieval
+## Key Retrieval
 
 When a client wishes to establish a group, it first contacts the Delivery
 Service to request a KeyPackage for each other client, authenticates the
 KeyPackages using the signature keys, and then can use those to form
 the group.
 
-### Delivery of messages and attachments {#delivery-guarantees}
+## Delivery of messages and attachments {#delivery-guarantees}
 
 The main responsibility of the Delivery Service is to ensure delivery
 of messages. Specifically, we assume that Delivery Services provide:
@@ -476,7 +431,7 @@ to relay messages to and from a given client. Without some
 sort of side information, other clients cannot generally
 distinguish this form of Denial of Service (DoS) attack.
 
-### Membership knowledge
+## Membership knowledge
 
 Group membership is itself sensitive information and MLS is designed
 to drastically limit the amount of persistant metadata. However, large
@@ -495,7 +450,7 @@ confidentiality, it is a serious issue for privacy. In the case where
 metadata has to be persisted for functionality, it SHOULD be stored
 encrypted at rest.
 
-### Membership and offline members
+## Membership and offline members
 
 Because Forward Secrecy (FS) and Post-Compromise Security (PCS) rely
 on the active deletion and replacement of keying material, any client
@@ -511,7 +466,7 @@ other messaging traffic, thus containing the threat of compromise. The
 precise details of such mechanisms are a matter of local policy and beyond
 the scope of this document.
 
-## Functional Requirements
+# Functional Requirements
 
 MLS is designed as a large scale group messaging protocol and hence
 aims to provide performance and safety to its users.  Messaging
@@ -520,7 +475,7 @@ two or more members, and aim to scale to groups as large as 50,000 members,
 typically including many users using multiple devices.
 
 
-### Membership Changes
+## Membership Changes
 
 MLS aims to provide agreement on group membership, meaning that all
 group members have agreed on the list of current group members.
@@ -553,7 +508,7 @@ compromise of a removed group member does not affect the security
 of messages sent after their removal but might affect previous messages
 if the group secrets have not been deleted properly.
 
-### Parallel Groups
+## Parallel Groups
 
 Any user may have membership in several groups simultaneously.
 The set of members of any group may or may not form a subset of the
@@ -571,7 +526,7 @@ requiring periodic key updates from a user across all groups in which they have
 membership, or using the PSK mechanism to link healing properties among
 parallel groups. Such application choices however are outside the scope of MLS.
 
-### Security of Attachments
+## Security of Attachments
 
 The security properties expected for attachments in the MLS protocol
 are very similar to the ones expected from messages. The distinction
@@ -582,7 +537,7 @@ the lack of high bandwidth network connectivity), the lifetime of the
 cryptographic keys for attachments is usually higher than for
 messages, hence slightly weakening the PCS guarantees for attachments.
 
-### Asynchronous Usage
+## Asynchronous Usage
 
 No operation in MLS requires two distinct clients or members to be
 online simultaneously. In particular, members participating in
@@ -593,7 +548,7 @@ for another user's reply.
 Messaging systems that implement MLS have to provide a transport layer
 for delivering messages asynchronously and reliably.
 
-### Access Control
+## Access Control
 
 The MLS protocol allows each member of the messaging group to perform
 operations equally. This is because all clients within a group
@@ -631,7 +586,7 @@ states, breaking their ability to communicate.
 > Avoid using inconsistent access control policies in the case of
 > encrypted group operations.
 
-### Recovery After State Loss
+## Recovery After State Loss
 
 Group members whose local MLS state is lost or corrupted
 can reinitialize their state and continue participating in the
@@ -647,7 +602,7 @@ Previously: "This may entail some level of message loss, but
 does not result in permanent exclusion from the group."
 -- Statement edited]]
 
-### Support for Multiple Devices
+## Support for Multiple Devices
 
 It is typically expected for users within a group to own various
 devices. A new device can be added to a group and be considered as
@@ -658,13 +613,13 @@ applications can elect to provide such a mechanism outside of MLS.
 Such mechanisms, if used, may undermine the FS and PCS guarantees
 provided by MLS.
 
-### Extensibility / Pluggability
+## Extensibility / Pluggability
 
 Messages that do not affect the group state can carry an arbitrary
 payload with the purpose of sharing that payload between group
 members. No assumptions are made about the format of the payload.
 
-### Federation
+## Federation
 
 The protocol aims to be compatible with federated environments. While
 this document does not specify all necessary mechanisms required for
@@ -672,7 +627,7 @@ federation, multiple MLS implementations can interoperate to form
 federated systems if they use compatible authentication mechanisms,
 ciphersuites, and infrastructure functionalities.
 
-### Compatibility with Future Versions of MLS
+## Compatibility with Future Versions of MLS
 
 It is important that multiple versions of MLS be able to coexist in
 the future. Thus, MLS offers a version negotiation mechanism; this
