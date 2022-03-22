@@ -612,7 +612,7 @@ use them for tracking.
 > issues related to non-encrypted signatures.
 
 Note that in the default case of encrypted handshake messages, any access
-control policies will be applied at the clien, so the
+control policies will be applied at the client, so the
 application must ensure that the access control policies are
 consistent across all clients to make sure that they remain in sync.
 If two different policies were applied, the clients might not accept
@@ -628,7 +628,7 @@ states, breaking their ability to communicate.
 Group members whose local MLS state is lost or corrupted can reinitialize their
 state by re-joining the group as a new member and removing the member
 representing their earlier state.  An application can require that a client
-performing such a reinitialization proof its prior membership with a PSK.
+performing such a reinitialization prove its prior membership with a PSK.
 
 Reinitializing in this way does not provide the member with access to group
 messages from during the state loss window, but enables proof of
