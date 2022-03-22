@@ -413,12 +413,6 @@ most of them rely on some help from the Delivery Service.  For example, if a
 Delivery Service provides delivery in the same order to all group members, then
 the members can simply apply Commits in the order in which they appear.
 
-For the most part, MLS does not require the Delivery Service to deliver messages
-in any particular order.  The one requirement is that because an MLS group has a
-linear history, the members of the group must agree on the order in which
-changes are applied.  Concretely, the group must agree on which MLS Commit
-messages to apply.
-
 Each Commit is premised on a given state or "epoch" of the group.  The Delivery
 Service must transmit to the group exactly one Commit message per epoch.
 
@@ -479,8 +473,10 @@ membership list is stored on some server associated with the Delivery
 Service.
 
 While this knowledge is not a breach of the protocol's authentication or
-confidentiality guarantees, it is a serious issue for privacy.  Applications
-should consider anonymous systems for server fanout such as Loopix {{Loopix}}.
+confidentiality guarantees, it is a serious issue for privacy.  In the case
+where metadata has to be persisted for functionality, it SHOULD be stored
+encrypted at rest. Applications should also consider anonymous systems for
+server fanout such as Loopix {{Loopix}}.
 
 ## Membership and offline members
 
