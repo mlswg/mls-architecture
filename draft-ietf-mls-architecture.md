@@ -936,7 +936,7 @@ message to a group which appears to be from any valid client since
 they cannot forge the signature.
 
 The MLS protocol will ensure that an adversary cannot compute any
-previous or future AEAD keys for the same epoch, or any other epochs.  Because
+previous AEAD keys for the same epoch, or any other epochs.  Because
 of its Forward Secrecy guarantees, MLS will also retain secrecy of all
 other AEAD keys generated for *other* MLS clients, outside this
 dedicated chain of AEAD keys and nonces, even within the epoch of the
