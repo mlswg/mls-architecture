@@ -319,7 +319,6 @@ points in time, providing unlinkability and post-compromise security benefits.
 Some security trade-offs related to this flexibility are discussed in the
 security considerations.
 
-
 # Delivery Service
 
 The Delivery Service (DS) is expected to play multiple roles in the
