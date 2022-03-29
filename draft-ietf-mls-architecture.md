@@ -1376,6 +1376,30 @@ specification, which remains non-trivial.
 > clients from physical compromise. In such setting, HSMs and secure
 > enclaves can be used to protect signature keys.
 
+# Deployment Considerations
+
+A specific deployment of MLS needs to be able to clearly describe the following deployment decisions:
+
+- Authentication Service
+  - credential issuance
+  - credential verification
+- Delivery Service
+  - add, remove, and update initial key material for self
+  - ensure global uniqueness of all initial key material
+  - look up initial keying material for a peer
+  - route a message to a peer
+  - does the DS enforce a total ordering on messages in a group?
+- Message Format
+  - how to structure and interpret message cleartext
+  - how to structure and interpret additional authenticated data
+- Cryptographic Requirements
+  - required/forbidden ciphersuites
+  - required/forbidden credential types
+- Extensions, Proposals, and Versions
+  - required/forbidden extensions
+  - required/forbidden proposal messages
+  - required/forbidden versions of MLS
+
 # IANA Considerations
 
 This document makes no requests of IANA.
