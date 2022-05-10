@@ -1402,8 +1402,7 @@ This document makes no requests of IANA.
   konrad.kohbrok@datashrine.de
 
 * Thyla van der Merwe \\
-  ETH Zurich \\
-  thyla.van.der@merwe.tech
+  tjvdmerwe@gmail.com
 
 * Jon Millican \\
   Meta Platforms \\
