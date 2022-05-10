@@ -1387,7 +1387,7 @@ This document makes no requests of IANA.
   rlb@ipv.sx
 
 * Katriel Cohn-Gordon \\
-  University of Oxford \\
+  Meta Platforms \\
   me@katriel.co.uk
 
 * Cas Cremers \\
@@ -1399,17 +1399,14 @@ This document makes no requests of IANA.
   britta.hale@nps.edu
 
 * Konrad Kohbrok \\
-  Wire \\
-  konrad@wire.com
+  konrad.kohbrok@datashrine.de
 
 * Thyla van der Merwe \\
-  Royal Holloway, University of London \\
-  thyla.van.der@merwe.tech
+  tjvdmerwe@gmail.com
 
 * Jon Millican \\
-  Facebook \\
+  Meta Platforms \\
   jmillican@fb.com
 
 * Raphael Robert \\
-  Wire \\
-  raphael@wire.com
+  ietf@raphaelrobert.com
