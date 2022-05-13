@@ -514,13 +514,29 @@ subset thereof.  Such policies can be implemented at the application layer, on
 top of MLS. Regardless, MLS does not allow for or support addition
 or removal of group members without informing all other members.
 
-Once a client is part of a group, the set of devices controlled by the
-user can only be altered by an authorized member of the group.
-This authorization could depend on the application: some applications
+MLS provides two mechanisms for changing the membership of a group.  The primary
+mechanism is for an authorized member of the group to send a Commit that adds or
+removes other members.  Applications may apply policies to this mechanism.  For
+example, some applications
 might want to allow certain members of the group to add or
 remove devices on behalf of another member, while other applications
 might want a more strict policy and allow only the owner of the
 devices to add or remove them.
+
+The second mechanism by which membership can change is an "external join": A
+member of the group publishes certain information about the group, which a new
+member can use to construct an "external" Commit message that adds the new
+member to the group.  (There is no similarly unilateral way for a member to
+leave the group; they must be removed by a remaining member.)
+
+With both mechanisms, changes to the membership are initiated from inside the
+group.  When members perform changes directly, this is clearly the case.
+External joins are authorized indirectly, in the sense that a member publishing
+a GroupInfo object authorizes anyone to join who has access to the GroupInfo
+object.  External joins do not allow for more granular authorization checks to
+be done before the new member is added to the group, so if an application wishes
+to both allow external joins and enforce such checks, then the application will
+need to do such checks when a member joins, and remove them if checks fail.
 
 Application setup may also determine other criteria for
 membership validity. For example, per-device signature keys can be signed by an
@@ -551,8 +567,15 @@ unaffected by updates performed in current groups.
 
 Applications may strengthen connectivity among parallel groups by
 requiring periodic key updates from a user across all groups in which they have
-membership, or using the PSK mechanism to link healing properties among
-parallel groups.
+membership.
+
+Applications may use the PSK mechanism to link healing properties among parallel
+groups.  For example, suppose a common member M of two groups A and B has
+performed a key update in group A but not in group B.  The key update provides
+PCS with regard to M in group A.  If a PSK exported from group A and injected
+into group B, then some of these PCS properties carry over to group B, since the
+PSK and secrets derived from it are only known to the new, updated version of M,
+not to the old, possibly compromised version of M.
 
 ## Asynchronous Usage
 
@@ -604,12 +627,34 @@ states, breaking their ability to communicate.
 > Avoid using inconsistent access control policies in the case of
 > encrypted group operations.
 
+MLS allows actors outside the group to influence the group in two ways: External
+signers can submit proposals for changes to the group, and new joiners can use
+an external join to add themselves to the group.  The `external_senders`
+extension ensures that all members agree on which signers are allowed to send
+proposals, but any other policies must be assured to be consistent as above.
+When external joins are allowed in a group, a joiner cannot be vetted before
+joining, so policy enforcement must be reactive.
+
+> ** RECOMMENDATION:**
+> Have an explicit group policy about whether external joins are allowed.
+
+> **RECOMMENDATION:**
+> In a group that allows external join, verify that new joiners are authorized,
+> and remove them if not.
+
 ## Recovery After State Loss
 
 Group members whose local MLS state is lost or corrupted can reinitialize their
 state by re-joining the group as a new member and removing the member
 representing their earlier state.  An application can require that a client
 performing such a reinitialization prove its prior membership with a PSK.
+
+There are a few costs to this approach.  If a group uses such PSKs as
+the sole form of authorization to join the group, there is a risk that leaked
+PSKs could allow an unauthorized party to join.  At a practical level, the
+application will need to ensure that the new members have the required PSK,
+including any new members that have joined the group since the epoch in which
+the PSK was issued.
 
 Reinitializing in this way does not provide the member with access to group
 messages from during the state loss window, but enables proof of
