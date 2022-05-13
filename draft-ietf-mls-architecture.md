@@ -164,7 +164,19 @@ clients to prepare for sending and receiving messages securely:
 
 For convenience, this document adopts the representation of these
 services being standalone servers, however the MLS protocol design is
-made so that it is not necessarily the case.
+made so that it is not necessarily the case.  These services may reside on the
+same server or different servers; they may be distributed between server and
+client components; and they may even involve some action by users.  For example:
+
+* Several secure messaging services today provide a centralized DS, and
+  rely on manual comparison of clients' public keys as the AS.
+
+* MLS clients connected to a peer-to-peer network could instantiate a
+  decentralized DS by transmitting MLS messages over that network.
+
+* In an MLS group using a PKI for authentication, the AS would comprise the
+  certificate issuance and validation processes, both of which involve logic
+  inside MLS clients as well as various servers.
 
 It is important to note that the Authentication Service functionality
 can be completely abstract in the case of a Service Provider which
