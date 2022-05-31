@@ -308,7 +308,7 @@ The Authentication Service (AS) has to provide two functionalities:
 2. Enable a group member to verify that a credential presented by another member
    is valid
 
-A member with a valid credential authenticates it's MLS messages by signing them
+A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key in its credential.
 
 The AS is considered an abstract layer by the MLS specification, part
