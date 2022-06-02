@@ -338,7 +338,7 @@ with a large amount of trust and the compromise of one of its
 functionalities could allow an adversary to, among other things,
 impersonate group members. We discuss security considerations
 regarding the compromise of the different AS functionalities in detail
-in Section {{as-compromise}}.
+in {{as-compromise}}.
 
 The association between members' identities and signature keys is fairly
 flexible in MLS.  As noted above, there is no requirement that all clients
@@ -394,7 +394,7 @@ view of the security analysis.
 Upon joining the system, each client stores its initial cryptographic
 key material with the Delivery Service. This key material, called a
 KeyPackage, advertises the functional abilities of the client such as
-supported protocol versions and extensions and the following
+supported protocol versions, extensions, and the following
 cryptographic information:
 
 * A credential from the Authentication Service attesting to the
@@ -492,7 +492,7 @@ groups often require an infrastructure which provides server fanout.
 In the case of client fanout, the destination of a message is known by
 all clients, hence the server usually does not need this information.
 However, they may learn this information through traffic analysis.
-Unfortunately, in a server side fanout model, the Delivery Service can
+Unfortunately, in a server-side fanout model, the Delivery Service can
 learn that a given client is sending the same message to a set of other
 clients. In addition, there may be applications of MLS in which the group
 membership list is stored on some server associated with the Delivery
@@ -710,6 +710,109 @@ These capability advertisements can be updated over time, e.g., if client
 software is updated while the client is a member of a group. Thus, in addition
 to preventing downgrade attacks, the members of a group can also observe when it
 is safe to upgrade to a new ciphersuite or protocol version.
+
+# Interoperability Requirements
+
+A fully functional deployment of MLS requires a number of infrastructure
+services to be available, as well as several policies and design trade-offs that
+are decided by the application. This section lists all of the dependencies of an
+MLS deployment that are external to the protocol specification, but would still
+need to be aligned for two deployments to potentially interoperate.
+
+MLS has the built-in ability to negotiate protocol versions, ciphersuites,
+extensions, and credential types. For two deployments to interoperate, they must
+have overlapping support in each of these categories.
+
+MLS relies on the following network services. These network services would
+either need to be the same, or compatible at the wire-format level, in order for
+two different deployments based on them to interoperate.
+
+- An **Authentication Service**, described fully in {{authentication-service}},
+  defines the types of credentials which may be used in a deployment and
+  provides methods for:
+  1. Issuing new credentials,
+  2. Validating existing credentials against a reference identifier, and
+  3. Validating whether or not two credentials represent the same user.
+- A **Delivery Service**, described fully in {{delivery-service}}, provides
+  methods for:
+  1. Delivering messages sent to a group to all members in the group.
+  2. Delivering Welcome messages to new members of a group.
+  3. Downloading KeyPackages for specific clients, and uploading new KeyPackages
+     for a user's own clients.
+- Additional services may or may not be required depending on the application
+  design:
+  - If assisted joining is desired (meaning that the ratchet tree is not
+    provided in Welcome messages), there must be a method to download the
+    ratchet tree corresponding to a group.
+  - If assisted joining is desired and the Delivery Service is not able to
+    compute the ratchet tree itself (because some proposals or commits are sent
+    encrypted), there must be a method for group members to publish the updated
+    ratchet tree after each commit.
+  - If external joiners are allowed, there must be a method to publish a
+    serialized `GroupInfo` object (with an `external_pub` extension) that
+    corresponds to a specific group and epoch, and keep that object in
+    sync with the state of the group.
+  - If an application chooses not to allow assisted or external joining, it may
+    instead provide a method for external users to solicit group members (or a
+    designated service) to add them to a group.
+  - If the application uses external PSKs, or uses resumption PSKs that all
+    members of a group may not have access to, there must be a method for
+    distributing these PSKs to group members.
+  - If an application wishes to detect and possibly discipline members that send
+    malformed commits with the intention of corrupting a group's state, there
+    must be a method for reporting and validating malformed commits.
+
+MLS requires the following parameters to be defined, which must be the same for
+two implementations to interoperate:
+
+- The maximum total lifetime that is acceptable for a KeyPackage.
+- How long to store the resumption secret for past epochs of a group.
+- The degree of tolerance that's allowed for out-of-order message delivery:
+  - How long to keep unused nonce and key pairs for a sender
+  - A maximum number of unused key pairs to keep.
+  - A maximum number of steps that clients will move a secret tree ratchet
+    forward in response to a single message before rejecting it.
+
+MLS provides the following locations where an application may store arbitrary
+data. The format and intention of any data in these locations must align for two
+deployments to interoperate:
+
+- Application data, sent as the payload of an encrypted message.
+- Additional authenticated data, sent unencrypted in an otherwise encrypted
+  message.
+- Group IDs, as decided by group creators and used to uniquely identify a group.
+- The `application_id` extension of a LeafNode.
+
+MLS requires the following policies to be defined, which restrict the set of
+acceptable behavior in a group. These policies must be consistent between
+deployments for them to interoperate:
+
+- A policy on when to send proposals and commits in plaintext instead of
+  encrypted.
+- A policy for which proposals are valid to have in a commit, including but not
+  limited to:
+  - When a member is allowed to add or remove other members of the group.
+  - When, and under what circumstances, a reinitialization proposal is allowed.
+  - When proposals from external senders are allowed.
+  - When external joiners are allowed.
+- A policy for when two credentials represent the same client. Note that many
+  credentials may be issued authenticating the same identity but for different
+  signature keys, because each credential corresponds to a different device
+  (client) owned by the same application user. However, one device may control
+  many signature keys but should still only be considered a single client.
+- A policy on how long to allow a member to stay in a group without updating its
+  leaf keys, and whether there should be any attempt to resolve a stale leaf key
+  before removing the member.
+
+Finally, there are some additional application-defined behaviors that are
+partially an individual application's decision but may overlap with
+interoperability:
+
+- If there's any policy on how or when to pad messages.
+- If there is any policy for when to send a reinitialization proposal.
+- How often clients should update their leaf keys.
+- Whether to prefer sending full commits or partial/empty commits.
+- Whether there should be a `required_capabilities` extension in groups.
 
 # Security and Privacy Considerations
 
