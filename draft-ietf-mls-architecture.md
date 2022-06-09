@@ -514,7 +514,7 @@ subset thereof.  Such policies can be implemented at the application layer, on
 top of MLS. Regardless, MLS does not allow for or support addition
 or removal of group members without informing all other members.
 
-Membership of an MLS group is the managed at the level of individual clients.
+Membership of an MLS group is managed at the level of individual clients.
 In most cases, a client corresponds to a specific device used by a user. If a
 user has multiple devices, the user will be represented in a group by multiple
 clients.  If an application wishes to implement operations at the level of
@@ -572,7 +572,7 @@ membership.
 Applications may use the PSK mechanism to link healing properties among parallel
 groups.  For example, suppose a common member M of two groups A and B has
 performed a key update in group A but not in group B.  The key update provides
-PCS with regard to M in group A.  If a PSK exported from group A and injected
+PCS with regard to M in group A.  If a PSK is exported from group A and injected
 into group B, then some of these PCS properties carry over to group B, since the
 PSK and secrets derived from it are only known to the new, updated version of M,
 not to the old, possibly compromised version of M.
@@ -645,7 +645,7 @@ representing their earlier state.  An application can require that a client
 performing such a reinitialization prove its prior membership with a PSK.
 
 There are a few practical challenges to this approach.  For example, the
-application will need to ensure that the new members have the required PSK,
+application will need to ensure that all members have the required PSK,
 including any new members that have joined the group since the epoch in which
 the PSK was issued.
 
