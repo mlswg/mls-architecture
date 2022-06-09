@@ -514,20 +514,20 @@ subset thereof.  Such policies can be implemented at the application layer, on
 top of MLS. Regardless, MLS does not allow for or support addition
 or removal of group members without informing all other members.
 
+Membership of an MLS group is the managed at the level of individual clients.
+In most cases, a client corresponds to a specific device used by a user. If a
+user has multiple devices, the user will be represented in a group by multiple
+clients.  If an application wishes to implement operations at the level of
+users, it is up to the application to track which clients belong to a given user
+and ensure that they are added / removed consistently.
+
 MLS provides two mechanisms for changing the membership of a group.  The primary
 mechanism is for an authorized member of the group to send a Commit that adds or
-removes other members.  Applications may apply policies to this mechanism.  For
-example, some applications
-might want to allow certain members of the group to add or
-remove devices on behalf of another member, while other applications
-might want a more strict policy and allow only the owner of the
-devices to add or remove them.
-
-The second mechanism by which membership can change is an "external join": A
-member of the group publishes certain information about the group, which a new
-member can use to construct an "external" Commit message that adds the new
-member to the group.  (There is no similarly unilateral way for a member to
-leave the group; they must be removed by a remaining member.)
+removes other members.  The second mechanism is an "external join": A member of
+the group publishes certain information about the group, which a new member can
+use to construct an "external" Commit message that adds the new member to the
+group.  (There is no similarly unilateral way for a member to leave the group;
+they must be removed by a remaining member.)
 
 With both mechanisms, changes to the membership are initiated from inside the
 group.  When members perform changes directly, this is clearly the case.
@@ -632,15 +632,10 @@ signers can submit proposals for changes to the group, and new joiners can use
 an external join to add themselves to the group.  The `external_senders`
 extension ensures that all members agree on which signers are allowed to send
 proposals, but any other policies must be assured to be consistent as above.
-When external joins are allowed in a group, a joiner cannot be vetted before
-joining, so policy enforcement must be reactive.
 
 > ** RECOMMENDATION:**
-> Have an explicit group policy about whether external joins are allowed.
-
-> **RECOMMENDATION:**
-> In a group that allows external join, verify that new joiners are authorized,
-> and remove them if not.
+> Have an explicit group policy setting the conditions under which external
+> joins are allowed.
 
 ## Recovery After State Loss
 
@@ -649,9 +644,7 @@ state by re-joining the group as a new member and removing the member
 representing their earlier state.  An application can require that a client
 performing such a reinitialization prove its prior membership with a PSK.
 
-There are a few costs to this approach.  If a group uses such PSKs as
-the sole form of authorization to join the group, there is a risk that leaked
-PSKs could allow an unauthorized party to join.  At a practical level, the
+There are a few practical challenges to this approach.  For example, the
 application will need to ensure that the new members have the required PSK,
 including any new members that have joined the group since the epoch in which
 the PSK was issued.
