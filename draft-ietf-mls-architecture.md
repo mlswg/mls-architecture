@@ -43,6 +43,29 @@ author:
     organization: Wire
     email: alan@wire.com
 
+contributor:
+- name: Richard Barnes
+  org: Cisco
+  email: rlb@ipv.sx
+- name: Katriel Cohn-Gordon
+  org: Meta Platforms
+  email: me@katriel.co.uk
+- name: Cas Cremers
+  org: CISPA Helmholtz Center for Information Security
+  email: cremers@cispa.de
+- name: Britta Hale
+  org: Naval Postgraduate School
+  email: britta.hale@nps.edu
+- name: Konrad Kohbrok
+  email: konrad.kohbrok@datashrine.de
+- name: Thyla van der Merwe
+  email: tjvdmerwe@gmail.com
+- name: Jon Millican
+  org: Meta Platforms
+  email: jmillican@fb.com
+- name: Raphael Robert
+  email: ietf@raphaelrobert.com
+
 informative:
   KeyTransparency:
        target: https://KeyTransparency.org
@@ -1429,34 +1452,3 @@ analyzes the authentication and cross-group healing guarantees provided by MLS.
 # IANA Considerations
 
 This document makes no requests of IANA.
-
-# Contributors
-
-* Richard Barnes \\
-  Cisco \\
-  rlb@ipv.sx
-
-* Katriel Cohn-Gordon \\
-  Meta Platforms \\
-  me@katriel.co.uk
-
-* Cas Cremers \\
-  CISPA Helmholtz Center for Information Security \\
-  cremers@cispa.de
-
-* Britta Hale \\
-  Naval Postgraduate School \\
-  britta.hale@nps.edu
-
-* Konrad Kohbrok \\
-  konrad.kohbrok@datashrine.de
-
-* Thyla van der Merwe \\
-  tjvdmerwe@gmail.com
-
-* Jon Millican \\
-  Meta Platforms \\
-  jmillican@fb.com
-
-* Raphael Robert \\
-  ietf@raphaelrobert.com
