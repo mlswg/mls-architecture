@@ -379,7 +379,7 @@ view of the security analysis.
 Upon joining the system, each client stores its initial cryptographic
 key material with the Delivery Service. This key material, called a
 KeyPackage, advertises the functional abilities of the client such as
-supported protocol versions, extensions, and the following
+supported protocol versions, supported extensions, and the following
 cryptographic information:
 
 * A credential from the Authentication Service attesting to the
@@ -696,27 +696,33 @@ software is updated while the client is a member of a group. Thus, in addition
 to preventing downgrade attacks, the members of a group can also observe when it
 is safe to upgrade to a new ciphersuite or protocol version.
 
-# Interoperability Requirements
+# Operational Requirements
 
-A fully functional deployment of MLS requires a number of infrastructure
-services to be available, as well as several policies and design trade-offs that
-are decided by the application. This section lists all of the dependencies of an
-MLS deployment that are external to the protocol specification, but would still
-need to be aligned for two deployments to potentially interoperate.
+MLS is a security layer that needs to be integrated with an application. A
+fully-functional deployment of MLS will have to make a number of decisions about
+how MLS is configured and operated.  Deployments that wish to interoperate will
+need to make compatible decisions. This section lists all of the dependencies of
+an MLS deployment that are external to the protocol specification, but would
+still need to be aligned within a given MLS deployment, or for two deployments
+to potentially interoperate.
 
-MLS has the built-in ability to negotiate protocol versions, ciphersuites,
-extensions, and credential types. For two deployments to interoperate, they must
-have overlapping support in each of these categories.
+The protocol has a built-in ability to negotiate protocol versions,
+ciphersuites, extensions, credential types, and additional proposal types. For
+two deployments to interoperate, they must have overlapping support in each of
+these categories. A `required_capabilities` extension can help maintain
+interoperability with a wider set of clients by ensuring that certain
+functionality continues to be supported by a group, even if the clients in the
+group aren't currently relying on it.
 
 MLS relies on the following network services. These network services would
-either need to be the same, or compatible at the wire-format level, in order for
+need to be compatible in order for
 two different deployments based on them to interoperate.
 
 - An **Authentication Service**, described fully in {{authentication-service}},
   defines the types of credentials which may be used in a deployment and
   provides methods for:
   1. Issuing new credentials,
-  2. Validating existing credentials against a reference identifier, and
+  2. Validating a credential against a reference identifier, and
   3. Validating whether or not two credentials represent the same user.
 - A **Delivery Service**, described fully in {{delivery-service}}, provides
   methods for:
@@ -786,8 +792,7 @@ deployments for them to interoperate:
   (client) owned by the same application user. However, one device may control
   many signature keys but should still only be considered a single client.
 - A policy on how long to allow a member to stay in a group without updating its
-  leaf keys, and whether there should be any attempt to resolve a stale leaf key
-  before removing the member.
+  leaf keys before removing them.
 
 Finally, there are some additional application-defined behaviors that are
 partially an individual application's decision but may overlap with
