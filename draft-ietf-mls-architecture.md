@@ -58,6 +58,8 @@ contributor:
   email: britta.hale@nps.edu
 - name: Konrad Kohbrok
   email: konrad.kohbrok@datashrine.de
+- name: Brendan McMillion
+  email: brendanmcmillion@gmail.com
 - name: Thyla van der Merwe
   email: tjvdmerwe@gmail.com
 - name: Jon Millican
