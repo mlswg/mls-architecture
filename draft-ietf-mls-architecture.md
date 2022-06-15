@@ -361,7 +361,7 @@ all groups of which the user is a member. If a client credential does not
 appear in all groups after some relatively short period of time, clients have
 an indication that the credential might have been created without the user's
 knowledge. Due to the asynchronous nature of MLS, however, there may be
-transient inconsistencies in a user's device set, so correlating users'
+transient inconsistencies in a user's client set, so correlating users'
 clients across groups is more of a detection mechanism than a prevention
 mechanism.
 
