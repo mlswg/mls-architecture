@@ -351,18 +351,18 @@ Some security trade-offs related to this flexibility are discussed in the
 security considerations.
 
 In many applications, there are multiple MLS clients that represent a single
-user, for example a human user with a mobile and desktop version of an
+entity, for example a human user with a mobile and desktop version of an
 application. Often the same set of clients is represented in exactly the same
-list groups. In applications where this is the intended situation, other clients
+list of groups. In applications where this is the intended situation, other clients
 can check that a user is consistently represented by the same set of clients.
 This would make it more difficult for a malicious AS to issue fake credentials
 for a particular user because clients would expect the credential to appear in
-all groups of which the user is a member. If a device credential does not
+all groups of which the user is a member. If a client credential does not
 appear in all groups after some relatively short period of time, clients have
 an indication that the credential might have been created without the user's
 knowledge. Due to the asynchronous nature of MLS, however, there may be
 transient inconsistencies in a user's device set, so correlating users'
-devices across groups is more of a detection mechanism than a prevention
+clients across groups is more of a detection mechanism than a prevention
 mechanism.
 
 # Delivery Service
