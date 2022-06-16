@@ -307,18 +307,21 @@ cryptographic state.
 
 # Authentication Service
 
-The Authentication Service (AS) has to provide two functionalities:
+The Authentication Service (AS) has to provide three functionalities:
 
 1. Issue credentials to clients that attest to bindings between identities and
    signature key pairs
 
 2. Enable a group member to verify that a credential presented by another member
-   is valid
+   is valid with respect to a reference identifier
+
+3. Enable a group member to verify that a credential represents the same
+   application-level device as another credential
 
 A member with a valid credential authenticates its MLS messages by signing them
-with the private key corresponding to the public key in its credential.
+with the private key corresponding to the public key bound by its credential.
 
-The AS is considered an abstract layer by the MLS specification, part
+The AS is considered an abstract layer by the MLS specification and part
 of this service could be, for instance, running on the members'
 devices, while another part is a separate entity entirely.  The following
 examples illustrate the breadth of this concept:
@@ -329,7 +332,7 @@ examples illustrate the breadth of this concept:
 
 * Several current messaging applications rely on users verifying each others'
   key fingerprints for authentication.  In this scenario, the issuance function
-  is simply the generation of a key pair (i.e., credential is just an identifier and
+  is simply the generation of a key pair (i.e., a credential is just an identifier and
   public key, with no information to assist in verification).  The verification
   function is the application functionality that enables users to verify keys.
 
@@ -380,7 +383,7 @@ Service Provider architecture:
 * Acting as a directory service providing the initial keying material
   for clients to use.
   This allows a client to establish a shared key and send encrypted
-  messages to other clients even if the other client is offline.
+  messages to other clients even if they're offline.
 
 * Routing MLS messages among clients.
 
@@ -393,10 +396,10 @@ Unlike the Authentication Service which is trusted for authentication
 and secrecy, the Delivery Service is completely untrusted regarding
 this property. While privacy of group membership might be a problem
 in the case of a Delivery Service server fanout, the Delivery Service can be
-considered as an active, adaptive network attacker from the point of
-view of the security analysis.
+considered as an active, adaptive network attacker for the purpose of
+security analysis.
 
-## Key Storage
+## Key Storage and Retrieval
 
 Upon joining the system, each client stores its initial cryptographic
 key material with the Delivery Service. This key material, called a
@@ -407,125 +410,105 @@ cryptographic information:
 * A credential from the Authentication Service attesting to the
   binding between the identity and the client's signature key.
 
-* The client's asymmetric encryption public key material.
+* The client's asymmetric encryption public key.
 
 All the parameters in the KeyPackage are signed with the signature private key
 corresponding to the credential.
 
-As noted above, users may own multiple clients, each with their
-own keying material, and thus there may be multiple entries
-stored by each user.
-
-The Delivery Service is also responsible for allowing users to add,
-remove or update their initial key material, and for ensuring
-that the identifier for these keys are unique across all keys
-stored on the Delivery Service.
-
-## Key Retrieval
+As noted above, users may own multiple clients, each with their own keying
+material. Clients may also want to support many protocol versions and
+ciphersuites. As such, there may be multiple entries stored by each user.
 
 When a client wishes to establish a group, it first contacts the Delivery
 Service to request a KeyPackage for each other client, authenticates the
-KeyPackages using the signature keys, and then can use those to form
+KeyPackages using the signature keys, and then uses those to form
 the group.
 
 ## Delivery of Messages {#delivery-guarantees}
 
 The main responsibility of the Delivery Service is to ensure delivery of
-messages. Some MLS messages need only be delivered to some members of a group
-(e.g., the message initializing a new member's state), while others need to be
-delivered to all members.  The Delivery Service may enable these delivery
-patterns via unicast channels (sometimes known as "client fanout"), broadcast
-channels ("server fanout"), or a mix of both.
+messages. Some MLS messages need only be delivered to specific clients (e.g., a
+Welcome message initializing a new member's state), while others need to be
+delivered to all the members of a group.  The Delivery Service may enable the
+latter delivery pattern via unicast channels (sometimes known as "client
+fanout"), broadcast channels ("server fanout"), or a mix of both.
 
 For the most part, MLS does not require the Delivery Service to deliver messages
-in any particular order.  The one requirement is that because an MLS group has a
+in any particular order. The one exception is that, because an MLS group has a
 linear history, the members of the group must agree on the order in which
-changes are applied.  Concretely, the group must agree on which MLS Commit
-messages to apply.  There are a variety of ways to achieve this agreement, but
-most of them rely on some help from the Delivery Service.  For example, if a
-Delivery Service provides delivery in the same order to all group members, then
-the members can simply apply Commits in the order in which they appear.
+changes are applied.  Concretely, the group must agree on a single MLS Commit
+message that ends each epoch and begins the next one.
 
-Each Commit is premised on a given state or "epoch" of the group.  The Delivery
-Service must transmit to the group exactly one Commit message per epoch.
+In practice, there's a realistic risk of two members generating Commit messages
+at the same time, based on the same state, and both attempting to send them to
+the group at the same time. The extent to which this is a problem, and the
+appropriate solution, depends on the design of the Delivery Service. Per the CAP
+theorem, there are two general classes of distributed system:
 
-Much like the Authentication Service, the Delivery Service can be split between
-server and client components. Achieving the required uniqueness property will
-typically require a combination of client and server behaviors.  For example,
-all of the following examples provide a unique Commit per epoch:
+* Consistent and Partition-tolerant, or CP, systems can provide a globally
+  consistent view of data but may stop working if there are network issues.
+* Available and Partition-tolerant, or AP, systems continue working despite
+  network issues but may return different views of data to different users.
 
-* A "filtering server" Delivery Service where a server rejects all but the
-  first Commit for an epoch and clients apply each Commit they receive.
+Strategies for sequencing messages in CP and AP systems are described in the
+next two subsections.
 
-* An "ordering server" Delivery Service where a server forwards all messages
-  but assures that all clients see Commits in the same order, and clients.
+However, note that a Delivery Service could also reorder messages or provide an
+inconsistent view to different users not just accidentally, but maliciously. The
+protocol is designed such that this only results in a group no longer being
+functional and the group members possibly detecting this and requesting
+reinitialization.
 
-* A "passive server" Delivery Service where a server forwards all messages
-  without ordering or reliability guarantees, and clients execute some secondary
-  consensus protocol to choose among the Commits received in a window.
+Other forms of Delivery Service misbehavior are still possible that are not easy
+to detect. For instance, a Delivery Service can simply refuse to relay messages
+to and from a given client. Without some sort of side information, other clients
+cannot generally detect this form of Denial of Service (DoS) attack.
 
-The MLS protocol provides three important pieces of information
-within an MLSCiphertext message in order to provide ordering:
+### CP Ordering
 
-* The Group Identifier (group ID) to allow for distinguishing the group for
-  which the message has been sent;
+With this approach, the Delivery Service ensures that incoming
+messages have a linear order and all members agree on that order.
+The Delivery Service is trusted to break ties
+when two members send a Commit message at the same time.
 
-* The Epoch number, which represents the number of changes (version) of
-  the group associated with a specific group ID, and allows for
-  lexicographical ordering of messages from different epochs within the
-  same group;
+The Delivery Service can either rely on the `epoch` field of an MLSMessage, or
+messages can have an additional counter field sent in cleartext that's checked
+by the Delivery Service and used for tie-breaking. The counter would start at 0
+and be incremented for each subsequent message. If two group members send a
+message with the same counter, or two Commits with the same `epoch`, the first
+one to arrive would be accepted and the second one would be rejected. The
+rejected message would either be dropped by the client or resent later.
 
-* The Content Type of the message, which allows the Delivery Service to
-  determine the ordering requirement on the message, in particular
-  distinguishing Commit messages from other messages.
+The counter approach would be done to apply ordering to all messages, while the
+`epoch` approach would be done to only ensure an order on Commits.
 
-The MLS protocol itself can verify these properties. For instance, if the
-Delivery Service reorders messages from a client or provides different clients
-with inconsistent orderings, then clients can put messages back in their proper
-order.  The asynchronous nature of MLS means that within an epoch, messages are
-only ordered per-sender, not globally.
+### AP Ordering
 
-Note that some forms of Delivery Service misbehavior are still possible and
-difficult to detect. For instance, a Delivery Service can simply refuse
-to relay messages to and from a given client. Without some
-sort of side information, other clients cannot generally
-distinguish this form of Denial of Service (DoS) attack.
+With this approach, the Delivery Service is built in a way that may be
+significantly more available or performant than a CP system, but offers weaker
+consistency guarantees. Messages may arrive to different clients in different
+orders and with varying amounts of latency, which means clients are responsible
+for reconciliation.
 
-## Membership knowledge
+Upon receiving a Commit from the Delivery Service, clients can either:
 
-Group membership is itself sensitive information and MLS is designed
-to limit the amount of persistent metadata. However, large
-groups often require an infrastructure which provides server fanout.
-In the case of client fanout, the destination of a message is known by
-all clients, hence the server usually does not need this information.
-However, they may learn this information through traffic analysis.
-Unfortunately, in a server-side fanout model, the Delivery Service can
-learn that a given client is sending the same message to a set of other
-clients. In addition, there may be applications of MLS in which the group
-membership list is stored on some server associated with the Delivery
-Service.
+1. Pause sending new messages for a short amount of time to account for a
+   reasonable degree of network latency and see if any other Commits are
+   received for the same epoch. If multiple Commits are received, the clients
+   can use a deterministic tie-breaking policy to decide which to accept, and
+   then resume sending messages as normal.
+2. Accept the Commit immediately but keep a copy of the previous group state for
+   a short period of time. If another Commit for a past epoch is received,
+   clients use a deterministic tie-breaking policy to decide if they should
+   continue using the Commit they originally accepted or revert and use the
+   later one. Note that any copies of previous or forked group states MUST be
+   deleted within a reasonable amount of time to ensure the protocol provides
+   forward-secrecy.
 
-While this knowledge is not a breach of the protocol's authentication or
-confidentiality guarantees, it is a serious issue for privacy.  In the case
-where metadata has to be persisted for functionality, it SHOULD be stored
-encrypted at rest. Applications should also consider anonymous systems for
-server fanout such as Loopix {{Loopix}}.
-
-## Membership and offline members
-
-Because Forward Secrecy (FS) and Post-Compromise Security (PCS) rely
-on the active deletion and replacement of keying material, any client
-which is persistently offline may still be holding old keying material
-and thus be a threat to both FS and PCS if it is later compromised.
-
-MLS cannot inherently defend against this problem, especially in the
-case where the client has not processed messages, but MLS-using
-systems can enforce some mechanism to try to retain these properties.
-Typically this will consist of evicting clients which are idle for too
-long, or mandating a key update from clients that are not otherwise sending
-messages. The
-precise details of such mechanisms are a matter of local policy and beyond
-the scope of this document.
+In the event of a network partition, a subset of members may be isolated from
+the rest of the group long enough that the mechanisms above no longer work. This
+can only be solved by sending a ReInit proposal to both groups, possibly with an
+external sender type, and recreating the group to contain all members again.
 
 # Functional Requirements
 
