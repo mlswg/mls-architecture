@@ -433,9 +433,15 @@ cryptographic information:
 All the parameters in the KeyPackage are signed with the signature private key
 corresponding to the credential.
 
-As noted above, users may own multiple clients, each with their own keying
-material. Clients may also want to support many protocol versions and
-ciphersuites. As such, there may be multiple entries stored by each user.
+The Delivery Service is responsible for ensuring that each KeyPackage is only
+served once, with the possible exception of a "last resort" KeyPackage that's
+specially designated by the client to be used multiple times. As noted in the
+previous section, users may own multiple clients, each with their own keying
+material. Clients may also want to support multiple protocol versions and
+ciphersuites. As such, there may be multiple entries stored by each user for a
+mix of protocol versions, ciphersuites, and end-user devices. The Delivery
+Service should provide the minimum number of KeyPackages necessary to satisfy a
+request.
 
 When a client wishes to establish a group, it first contacts the Delivery
 Service to request a KeyPackage for each other client, authenticates the
