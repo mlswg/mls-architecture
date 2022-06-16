@@ -190,8 +190,8 @@ clients to prepare for sending and receiving messages securely:
 For convenience, this document adopts the representation of these
 services being standalone servers, however the MLS protocol design is
 made so that this is not necessarily the case.  These services may reside on the
-same server or different servers; they may be distributed between server and
-client components; and they may even involve some action by users.  For example:
+same server or different servers, they may be distributed between server and
+client components, and they may even involve some action by users.  For example:
 
 * Several secure messaging services today provide a centralized DS, and
   rely on manual comparison of clients' public keys as the AS.
@@ -205,18 +205,11 @@ client components; and they may even involve some action by users.  For example:
 
 It is important to note that the Authentication Service functionality
 can be completely abstract in the case of a Service Provider which
-allows MLS clients to generate, redistribute and validate their
+allows MLS clients to generate, distribute, and validate
 credentials themselves.
-
-Similarly to the AS, the Delivery Service can be completely abstract
+Similar to the AS, the Delivery Service can be completely abstract
 if users are able to distribute credentials and messages without
-relying on a central Delivery Service. Note, though, that the MLS
-protocol requires group operation messages to be processed in-order by
-all MLS clients.
-
-In some sense, a set of MLS clients which can achieve the AS and DS
-functionalities without relying on an external party do not need a
-Service Provider.
+relying on a central Delivery Service.
 
 ~~~ aasvg
      +----------------+    +--------------+
@@ -233,12 +226,6 @@ Service Provider.
                            .                                .
                            ..................................
 ~~~
-
-In many systems, the AS and the DS are actually operated by the same
-entity and may even be the same server. However, they are logically
-distinct and, in other systems, may be operated by different entities.
-Other partitions are also possible, such as having a separate
-directory functionality or service.
 
 According to this architecture design, a typical group messaging
 scenario might look like this:
@@ -260,7 +247,7 @@ scenario might look like this:
 
 4. Bob and/or Charlie respond to Alice's message. In addition, they
    might choose to update their key material which provides
-   post-compromise security {{fs-and-pcs}}. As a consequence of that
+   post-compromise security (see {{fs-and-pcs}}). As a consequence of that
    change, the group secrets are updated.
 
 Clients may wish to do the following:
@@ -287,14 +274,7 @@ or remove another client in a group. This is in contrast to some
 designs in which there is a single group controller who can modify the
 group. MLS is compatible with having group administration restricted
 to certain users, but we assume that those restrictions are enforced
-by authentication and access control at the application layer.
-
-Thus, for instance, while the MLS protocol allows for any existing
-member of a group to add a new client, applications which use MLS
-might enforce additional restrictions for which only a subset of
-members can qualify, and thus will handle enforcing group policies
-(such as determining if a user is allowed to add new users to the
-group) at the application level.
+by the application layer.
 
 ## Group Members and Clients
 
@@ -303,7 +283,7 @@ possibly using multiple endpoint devices to interact with the
 Service Provider, this definition is too simplistic.
 
 Formally, a client is a set of cryptographic objects composed of
-public values such as a name (an identity), a public encryption key
+public values such as a name (an identity), a public encryption key,
 and a public signature key. Ownership of a client by a user is
 determined by the fact that the user has knowledge of the
 associated secret values. When a client is part of a Group, it is
@@ -312,16 +292,8 @@ In some messaging systems, clients belonging to the same user must
 all share the same signature key pair, but MLS does not assume this.
 
 Users will often use multiple devices, e.g., a phone as well as a laptop.
-Different devices may be represented as different clients, with independent
-cryptographic state, or they may share cryptographic state, relying on some
-application-provided mechanism to sync across devices.
-
-The formal definition of a Group in MLS is the set of clients that
-have knowledge of the shared group secret established in the group key
-establishment phase of the protocol and have contributed to it.
-Until a Member has been added to the group and contributed to the group
-secret in a manner verifiable by other members of the group, other
-members cannot assume that the Member is a member of the group.
+Different devices are represented as different clients with independent
+cryptographic state.
 
 # Authentication Service
 
