@@ -292,6 +292,12 @@ In some messaging systems, clients belonging to the same user must
 all share the same signature key pair, but MLS does not assume this.
 
 Users will often use multiple devices, e.g., a phone as well as a laptop.
+The formal definition of a Group in MLS is the set of clients that
+have knowledge of the shared group secret established in the group key
+establishment phase of the protocol and have contributed to it.
+Until a Member has been added to the group and contributed to the group
+secret in a manner verifiable by other members of the group, other
+members cannot assume that the Member is a member of the group.
 Different devices are represented as different clients with independent
 cryptographic state.
 
