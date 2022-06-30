@@ -207,7 +207,7 @@ It is important to note that the Authentication Service functionality
 can be completely abstract in the case of a Service Provider which
 allows MLS clients to generate, distribute, and validate
 credentials themselves.
-Similar to the AS, the Delivery Service can be completely abstract
+As with the AS, the Delivery Service can be completely abstract
 if users are able to distribute credentials and messages without
 relying on a central Delivery Service.
 
