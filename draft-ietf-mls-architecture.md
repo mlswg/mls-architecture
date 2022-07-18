@@ -330,11 +330,11 @@ The Authentication Service (AS) has to provide three functionalities:
 1. Issue credentials to clients that attest to bindings between identities and
    signature key pairs
 
-2. Enable a group member to verify that a credential presented by another member
+2. Enable a client to verify that a credential presented by another client
    is valid with respect to a reference identifier
 
 3. Enable a group member to verify that a credential represents the same
-   application-level device as another credential
+   application-level device as another credential when possible
 
 A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key bound by its credential.
@@ -464,7 +464,7 @@ changes are applied.  Concretely, the group must agree on a single MLS Commit
 message that ends each epoch and begins the next one.
 
 In practice, there's a realistic risk of two members generating Commit messages
-at the same time, based on the same state, and both attempting to send them to
+at the same time, based on the same counter, and both attempting to send them to
 the group at the same time. The extent to which this is a problem, and the
 appropriate solution, depends on the design of the Delivery Service. Per the CAP
 theorem, there are two general classes of distributed system:
@@ -477,8 +477,8 @@ theorem, there are two general classes of distributed system:
 Strategies for sequencing messages in CP and AP systems are described in the
 next two subsections.
 
-However, note that a Delivery Service could also reorder messages or provide an
-inconsistent view to different users not just accidentally, but maliciously. The
+However, note that a malicious Delivery Service could also reorder messages or provide an
+inconsistent view to different users. The
 protocol is designed such that this only results in a group no longer being
 functional and the group members possibly detecting this and requesting
 reinitialization.
