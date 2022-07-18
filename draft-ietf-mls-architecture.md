@@ -210,6 +210,8 @@ credentials themselves.
 As with the AS, the Delivery Service can be completely abstract
 if users are able to distribute credentials and messages without
 relying on a central Delivery Service.
+Note, though, that in such scenarios, clients will need to implement logic that
+assures the delivery properties required of the DS (see {{delivery-guarantees}}).
 
 ~~~ aasvg
      +----------------+    +--------------+
@@ -292,6 +294,8 @@ In some messaging systems, clients belonging to the same user must
 all share the same signature key pair, but MLS does not assume this.
 
 Users will often use multiple devices, e.g., a phone as well as a laptop.
+Different devices may be represented as different clients, with independent
+cryptographic state.
 The formal definition of a Group in MLS is the set of clients that
 have knowledge of the shared group secret established in the group key
 establishment phase of the protocol and have contributed to it.
