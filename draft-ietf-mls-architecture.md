@@ -451,12 +451,12 @@ the group at the same time. The extent to which this is a problem, and the
 appropriate solution, depends on the design of the Delivery Service. Per the CAP
 theorem, there are two general classes of distributed system:
 
-* Consistent and Partition-tolerant, or CP, systems can provide a globally
+* Consistent and Partition-tolerant, or Strongly Consistent, systems can provide a globally
   consistent view of data but may stop working if there are network issues.
-* Available and Partition-tolerant, or AP, systems continue working despite
+* Available and Partition-tolerant, or Eventually Consistent, systems continue working despite
   network issues but may return different views of data to different users.
 
-Strategies for sequencing messages in CP and AP systems are described in the
+Strategies for sequencing messages in strongly and eventually consistent systems are described in the
 next two subsections.
 
 However, note that a malicious Delivery Service could also reorder messages or provide an
@@ -470,7 +470,7 @@ to detect. For instance, a Delivery Service can simply refuse to relay messages
 to and from a given client. Without some sort of side information, other clients
 cannot generally detect this form of Denial of Service (DoS) attack.
 
-### CP Ordering
+### Strongly Consistent
 
 With this approach, the Delivery Service ensures that incoming
 messages have a linear order and all members agree on that order.
@@ -488,10 +488,10 @@ rejected message would either be dropped by the client or resent later.
 The counter approach would be done to apply ordering to all messages, while the
 `epoch` approach would be done to only ensure an order on Commits.
 
-### AP Ordering
+### Eventually Consistent
 
 With this approach, the Delivery Service is built in a way that may be
-significantly more available or performant than a CP system, but offers weaker
+significantly more available or performant than a strongly consistent system, but offers weaker
 consistency guarantees. Messages may arrive to different clients in different
 orders and with varying amounts of latency, which means clients are responsible
 for reconciliation.
