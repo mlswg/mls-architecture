@@ -77,26 +77,13 @@ informative:
        -
           ins: Google
 
-  Loopix:
-      title: "The Loopix Anonymity System"
-      date: 2017
-      author:
-        -
-          ins: A.M. Piotrowska
-          name: Ania M. Piotrowska
-        -
-          ins: J. Hayes
-          name: Jamie Hayes
-        -
-          ins: T. Elahi
-          name: Tariq Elahi
-        -
-          ins: S. Meiser
-          name: Sebastian Meiser
-        -
-          ins: G. Danezis
-          name: George Danezis
-
+  CAPBR:
+    title: "Towards robust distributed systems."
+    date: 2000
+    author:
+      - name: Eric A. Brewer
+    refcontent:
+      - "Symposium on Principles of Distributed Computing (PODC)"
 
 --- abstract
 
@@ -402,8 +389,8 @@ security analysis.
 ## Key Storage and Retrieval
 
 Upon joining the system, each client stores its initial cryptographic
-key material with the Delivery Service. Clients then continue adding new (and
-removing old) initial keying material on a regular basis. This key material, called a
+key material with the Delivery Service. Clients then continue adding and
+removing keying material on a regular basis. This key material, called a
 KeyPackage, advertises the functional abilities of the client such as
 supported protocol versions, supported extensions, and the following
 cryptographic information:
@@ -443,9 +430,9 @@ fanout"), broadcast channels ("server fanout"), or a mix of both.
 For the most part, MLS does not require the Delivery Service to deliver messages
 in any particular order. Applications can set policies that control their
 tolerance for out-of-order messages (see {{operational-requirements}}), and
-messages that arrive significantly out-of-order will be dropped without
+messages that arrive significantly out-of-order can be dropped without
 otherwise affecting the protocol. There are two exceptions to this. First,
-Proposal messages must all arrive before the Commit that references them.
+Proposal messages should all arrive before the Commit that references them.
 Second, because an MLS group has a linear history of epochs, the members of the
 group must agree on the order in which
 changes are applied.  Concretely, the group must agree on a single MLS Commit
@@ -455,7 +442,7 @@ In practice, there's a realistic risk of two members generating Commit messages
 at the same time, based on the same counter, and both attempting to send them to
 the group at the same time. The extent to which this is a problem, and the
 appropriate solution, depends on the design of the Delivery Service. Per the CAP
-theorem, there are two general classes of distributed system that the Delivery
+theorem {{CAPBR}}, there are two general classes of distributed system that the Delivery
 Service might fall into:
 
 * Consistent and Partition-tolerant, or Strongly Consistent, systems can provide a globally
@@ -491,10 +478,10 @@ wait to apply it until it's broadcast back to them by the Delivery Service,
 assuming they don't receive another Commit first.
 
 The Delivery Service can rely on the `epoch` and `content_type` fields of an
-MLSMessage to provide a guaranteed order only for handshake messages, and possibly
+MLSMessage for providing an order only to handshake messages, and possibly
 even filter or reject redundant Commit messages proactively to prevent them from
-being broadcast. Alternatively, the Delivery Service could simply apply a
-guaranteed order to all messages and rely on clients to ignore redundant
+being broadcast. Alternatively, the Delivery Service could simply apply an
+order to all messages and rely on clients to ignore redundant
 Commits.
 
 ### Eventually Consistent
@@ -829,6 +816,10 @@ two implementations to interoperate:
   - A maximum number of unused key pairs to keep.
   - A maximum number of steps that clients will move a secret tree ratchet
     forward in response to a single message before rejecting it.
+  - Whether to buffer messages that aren't able to be understood yet due to
+    other messages not arriving first, and if so, how many to buffer. For
+    example, Commit messages that arrive before a proposal they reference, or
+    application messages that arrive before the Commit starting an epoch.
 
 MLS provides the following locations where an application may store arbitrary
 data. The format and intention of any data in these locations must align for two
