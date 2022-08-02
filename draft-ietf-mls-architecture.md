@@ -316,7 +316,7 @@ The Authentication Service (AS) has to provide three functionalities:
    is valid with respect to a reference identifier
 
 3. Enable a group member to verify that a credential represents the same
-   application-level device as another credential when possible
+   application-level instance of an MLS user as another credential
 
 A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key bound by its credential.
@@ -402,7 +402,8 @@ security analysis.
 ## Key Storage and Retrieval
 
 Upon joining the system, each client stores its initial cryptographic
-key material with the Delivery Service. This key material, called a
+key material with the Delivery Service. Clients then continue adding new (and
+removing old) initial keying material on a regular basis. This key material, called a
 KeyPackage, advertises the functional abilities of the client such as
 supported protocol versions, supported extensions, and the following
 cryptographic information:
@@ -440,8 +441,13 @@ latter delivery pattern via unicast channels (sometimes known as "client
 fanout"), broadcast channels ("server fanout"), or a mix of both.
 
 For the most part, MLS does not require the Delivery Service to deliver messages
-in any particular order. The one exception is that, because an MLS group has a
-linear history, the members of the group must agree on the order in which
+in any particular order. Applications can set policies that control their
+tolerance for out-of-order messages (see {{operational-requirements}}), and
+messages that arrive significantly out-of-order will be dropped without
+otherwise affecting the protocol. There are two exceptions to this. First,
+Proposal messages must all arrive before the Commit that references them.
+Second, because an MLS group has a linear history of epochs, the members of the
+group must agree on the order in which
 changes are applied.  Concretely, the group must agree on a single MLS Commit
 message that ends each epoch and begins the next one.
 
@@ -449,7 +455,8 @@ In practice, there's a realistic risk of two members generating Commit messages
 at the same time, based on the same counter, and both attempting to send them to
 the group at the same time. The extent to which this is a problem, and the
 appropriate solution, depends on the design of the Delivery Service. Per the CAP
-theorem, there are two general classes of distributed system:
+theorem, there are two general classes of distributed system that the Delivery
+Service might fall into:
 
 * Consistent and Partition-tolerant, or Strongly Consistent, systems can provide a globally
   consistent view of data but may stop working if there are network issues.
@@ -472,21 +479,23 @@ cannot generally detect this form of Denial of Service (DoS) attack.
 
 ### Strongly Consistent
 
-With this approach, the Delivery Service ensures that incoming
+With this approach, the Delivery Service ensures that some types of incoming
 messages have a linear order and all members agree on that order.
 The Delivery Service is trusted to break ties
 when two members send a Commit message at the same time.
 
-The Delivery Service can either rely on the `epoch` field of an MLSMessage, or
-messages can have an additional counter field sent in cleartext that's checked
-by the Delivery Service and used for tie-breaking. The counter would start at 0
-and be incremented for each subsequent message. If two group members send a
-message with the same counter, or two Commits with the same `epoch`, the first
-one to arrive would be accepted and the second one would be rejected. The
-rejected message would either be dropped by the client or resent later.
+As an example, there could be an "ordering server" Delivery Service that
+broadcasts all messages received to all users and ensures that all clients see
+handshake messages in the same order. Clients that send a Commit would then
+wait to apply it until it's broadcast back to them by the Delivery Service,
+assuming they don't receive another Commit first.
 
-The counter approach would be done to apply ordering to all messages, while the
-`epoch` approach would be done to only ensure an order on Commits.
+The Delivery Service can rely on the `epoch` and `content_type` fields of an
+MLSMessage to provide a guaranteed order only for handshake messages, and possibly
+even filter or reject redundant Commit messages proactively to prevent them from
+being broadcast. Alternatively, the Delivery Service could simply apply a
+guaranteed order to all messages and rely on clients to ignore redundant
+Commits.
 
 ### Eventually Consistent
 
@@ -495,6 +504,10 @@ significantly more available or performant than a strongly consistent system, bu
 consistency guarantees. Messages may arrive to different clients in different
 orders and with varying amounts of latency, which means clients are responsible
 for reconciliation.
+
+This type of Delivery Service might arise, for example, when group members are
+sending each message to each other member inidividually, or when a distributed
+peer-to-peer network is used to broadcast messages.
 
 Upon receiving a Commit from the Delivery Service, clients can either:
 
@@ -515,6 +528,10 @@ In the event of a network partition, a subset of members may be isolated from
 the rest of the group long enough that the mechanisms above no longer work. This
 can only be solved by sending a ReInit proposal to both groups, possibly with an
 external sender type, and recreating the group to contain all members again.
+
+If the Commit references an unknown proposal, group members may need to solicit
+the Delivery Service or other group members inidividually for the contents of
+the proposal.
 
 # Functional Requirements
 
