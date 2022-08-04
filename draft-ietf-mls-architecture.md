@@ -303,7 +303,7 @@ The Authentication Service (AS) has to provide three functionalities:
    is valid with respect to a reference identifier
 
 3. Enable a group member to verify that a credential represents the same
-   application-level instance of an MLS user as another credential
+   client as another credential
 
 A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key bound by its credential.
@@ -776,7 +776,7 @@ two different deployments based on them to interoperate.
   provides methods for:
   1. Issuing new credentials,
   2. Validating a credential against a reference identifier, and
-  3. Validating whether or not two credentials represent the same user.
+  3. Validating whether or not two credentials represent the same client.
 - A **Delivery Service**, described fully in {{delivery-service}}, provides
   methods for:
   1. Delivering messages sent to a group to all members in the group.
