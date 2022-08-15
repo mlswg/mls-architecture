@@ -817,7 +817,7 @@ two implementations to interoperate:
   - A maximum number of steps that clients will move a secret tree ratchet
     forward in response to a single message before rejecting it.
   - Whether to buffer messages that aren't able to be understood yet due to
-    other messages not arriving first, and if so, how many to buffer. For
+    other messages not arriving first, and if so, how many and for how long. For
     example, Commit messages that arrive before a proposal they reference, or
     application messages that arrive before the Commit starting an epoch.
 
