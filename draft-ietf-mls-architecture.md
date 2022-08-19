@@ -493,7 +493,7 @@ orders and with varying amounts of latency, which means clients are responsible
 for reconciliation.
 
 This type of Delivery Service might arise, for example, when group members are
-sending each message to each other member inidividually, or when a distributed
+sending each message to each other member individually, or when a distributed
 peer-to-peer network is used to broadcast messages.
 
 Upon receiving a Commit from the Delivery Service, clients can either:
@@ -517,7 +517,7 @@ can only be solved by sending a ReInit proposal to both groups, possibly with an
 external sender type, and recreating the group to contain all members again.
 
 If the Commit references an unknown proposal, group members may need to solicit
-the Delivery Service or other group members inidividually for the contents of
+the Delivery Service or other group members individually for the contents of
 the proposal.
 
 # Functional Requirements
@@ -976,7 +976,7 @@ Each encrypted MLS message carries a "generation" number which is a per-sender
 incrementing counter.  If a group member observes a gap in the generation
 sequence for a sender, then they know that they have missed a message from that
 sender.  MLS also provides a facility for group members to send authenticated
-acknowledgements of application messages received within a group.
+acknowledgments of application messages received within a group.
 
 As discussed in {{delivery-service}}, the Delivery Service is trusted to select
 the single Commit message that is applied in each epoch from among the ones sent
@@ -1069,8 +1069,8 @@ the client has not processed messages.
 > Mandate a key updates from clients that are not otherwise sending messages
 > and evict clients which are idle for too long.
 
-These recommandations will reduce the ability of idle compromised clients to
-decrypt a potenitally long set of messages that might have followed the point of
+These recommendations will reduce the ability of idle compromised clients to
+decrypt a potentially long set of messages that might have followed the point of
 the compromise.
 
 The precise details of such mechanisms are a matter of local policy and beyond
