@@ -1510,7 +1510,9 @@ and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.
 
 > **RECOMMENDATION:**
-> Do not use the same signature keypair across groups.
+> Do not use the same signature keypair across groups. Update all keys for all
+> groups on a regular basis. Do not preserve keys in different groups when
+> suspecting a compromise.
 
 > **RECOMMENDATION:**
 > Separate the service binding the identities and the public keys from the
