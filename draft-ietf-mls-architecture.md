@@ -1572,16 +1572,16 @@ analyzes the authentication and cross-group healing guarantees provided by MLS.
 
 # Informative References
 
-* ACDT19: https://eprint.iacr.org/2019/1189
 * ACCKKMPPWY19: https://eprint.iacr.org/2019/1489
-* ACJM20: https://eprint.iacr.org/2020/752
-* AJM20: https://eprint.iacr.org/2020/1327
+* ACDT19: https://eprint.iacr.org/2019/1189
 * ACDT21: https://eprint.iacr.org/2021/1083
+* ACJM20: https://eprint.iacr.org/2020/752
 * AHKM21: https://eprint.iacr.org/2021/1456
-* CHK19: https://eprint.iacr.org/2021/137
-* BCK21: https://eprint.iacr.org/2021/137
-* BBR18: https://hal.inria.fr/hal-02425247
+* AJM20: https://eprint.iacr.org/2020/1327
 * BBN19: https://hal.laas.fr/INRIA/hal-02425229
+* BBR18: https://hal.inria.fr/hal-02425247
+* BCK21: https://eprint.iacr.org/2021/137
+* CHK21: https://www.usenix.org/system/files/sec21-cremers.pdf
 
 # IANA Considerations
 
