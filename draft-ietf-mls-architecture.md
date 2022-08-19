@@ -1516,6 +1516,24 @@ various cases.
 
 #### Privacy of the Group Membership
 
+Group membership is itself sensitive information and MLS is designed to limit
+the amount of persistent metadata. However, large groups often require an
+infrastructure which provides server fanout.  In the case of client fanout, the
+destination of a message is known by all clients, hence the server usually does
+not need this information.  However, they may learn this information through
+traffic analysis.  Unfortunately, in a server-side fanout model, the Delivery
+Service can learn that a given client is sending the same message to a set of
+other clients. In addition, there may be applications of MLS in which the group
+membership list is stored on some server associated with the Delivery Service.
+
+While this knowledge is not a breach of the protocol's authentication or
+confidentiality guarantees, it is a serious issue for privacy.
+
+> **RECOMMENDATION:**
+> In the case where metadata has to be persisted for functionality, it should be
+> stored encrypted at rest and during the execution. Applications should also
+> consider anonymous systems for server fanout.
+
 Often, expectation from users is that the infrastructure will not
 retain the ability to constantly map the user identity to signature
 public keys of the MLS protocol. Some infrastructures will keep a
