@@ -1571,25 +1571,25 @@ Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
 analyzed by [BBN19] (draft 7), [ACDT21] (draft 11) and [AJM20] (draft 12).
 
-Individual components of various drafts of the MLS protocol have been analyzed in
-isolation and with differing adversarial models, for example, [BBR18], [ACDT19],
-[ACCKKMPPWY19], [AJM20] and [ACJM20] analyze the ratcheting tree as the
-sub-protocol of MLS that facilitates key agreement, while [BCK21] analyzes the
-key derivation paths in the ratchet tree and key schedule. Finally, [CHK19]
+Individual components of various drafts of the MLS protocol have been analyzed
+in isolation and with differing adversarial models, for example, [BBR18],
+[ACDT19], [ACCKKMPPWY19], [AJM20] and [ACJM20] analyze the ratcheting tree as
+the sub-protocol of MLS that facilitates key agreement, while [BCK21] analyzes
+the key derivation paths in the ratchet tree and key schedule. Finally, [CHK21]
 analyzes the authentication and cross-group healing guarantees provided by MLS.
 
 # Informative References
 
-* ACDT19: https://eprint.iacr.org/2019/1189
 * ACCKKMPPWY19: https://eprint.iacr.org/2019/1489
-* ACJM20: https://eprint.iacr.org/2020/752
-* AJM20: https://eprint.iacr.org/2020/1327
+* ACDT19: https://eprint.iacr.org/2019/1189
 * ACDT21: https://eprint.iacr.org/2021/1083
+* ACJM20: https://eprint.iacr.org/2020/752
 * AHKM21: https://eprint.iacr.org/2021/1456
-* CHK19: https://eprint.iacr.org/2021/137
-* BCK21: https://eprint.iacr.org/2021/137
-* BBR18: https://hal.inria.fr/hal-02425247
+* AJM20: https://eprint.iacr.org/2020/1327
 * BBN19: https://hal.laas.fr/INRIA/hal-02425229
+* BBR18: https://hal.inria.fr/hal-02425247
+* BCK21: https://eprint.iacr.org/2021/137
+* CHK21: https://www.usenix.org/system/files/sec21-cremers.pdf
 
 # IANA Considerations
 
