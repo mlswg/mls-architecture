@@ -1055,6 +1055,27 @@ the updates have been processed.
 Both of these properties are satisfied even against compromised
 DSs and ASs.
 
+Confidentiality is mainly ensured on the client side.  Because Forward Secrecy
+(FS) and Post-Compromise Security (PCS) rely on the active deletion and
+replacement of keying material, any client which is persistently offline may
+still be holding old keying material and thus be a threat to both FS and PCS if
+it is later compromised.
+
+MLS partially defend against this problem by active member including freshness,
+however not much can be done on the inactive side especially in the case where
+the client has not processed messages.
+
+> **RECOMMENDATION:**
+> Mandate a key updates from clients that are not otherwise sending messages
+> and evict clients which are idle for too long.
+
+These recommandations will reduce the ability of idle compromised clients to
+decrypt a potenitally long set of messages that might have followed the point of
+the compromise.
+
+The precise details of such mechanisms are a matter of local policy and beyond
+the scope of this document.
+
 ### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
 MLS provides strong authentication within a group, such that a group member
