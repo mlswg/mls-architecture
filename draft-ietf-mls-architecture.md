@@ -1563,11 +1563,11 @@ Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
 analyzed by [BBN19] (draft 7), [ACDT21] (draft 11) and [AJM20] (draft 12).
 
-Individual components of various drafts of the MLS protocol have been analyzed in
-isolation and with differing adversarial models, for example, [BBR18], [ACDT19],
-[ACCKKMPPWY19], [AJM20] and [ACJM20] analyze the ratcheting tree as the
-sub-protocol of MLS that facilitates key agreement, while [BCK21] analyzes the
-key derivation paths in the ratchet tree and key schedule. Finally, [CHK19]
+Individual components of various drafts of the MLS protocol have been analyzed
+in isolation and with differing adversarial models, for example, [BBR18],
+[ACDT19], [ACCKKMPPWY19], [AJM20] and [ACJM20] analyze the ratcheting tree as
+the sub-protocol of MLS that facilitates key agreement, while [BCK21] analyzes
+the key derivation paths in the ratchet tree and key schedule. Finally, [CHK19]
 analyzes the authentication and cross-group healing guarantees provided by MLS.
 
 # Informative References
