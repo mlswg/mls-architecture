@@ -545,9 +545,11 @@ group.  When members perform changes directly, this is clearly the case.
 External joins are authorized indirectly, in the sense that a member publishing
 a GroupInfo object authorizes anyone to join who has access to the GroupInfo
 object.  External joins do not allow for more granular authorization checks to
-be done before the new member is added to the group, so if an application wishes
-to both allow external joins and enforce such checks, then the application will
-need to do such checks when a member joins, and remove them if checks fail.
+be done before the new member is added to the group, so if an application
+wishes to both allow external joins and enforce such checks, then either all
+the members of the group must all have the ability to check and reject invalid
+External joins autonomously, or the application needs to do such checks when a
+member joins and remove them if those checks fail.
 
 Application setup may also determine other criteria for membership validity. For
 example, per-device signature keys can be signed by an identity key recognized
@@ -639,7 +641,7 @@ an external join to add themselves to the group.  The `external_senders`
 extension ensures that all members agree on which signers are allowed to send
 proposals, but any other policies must be assured to be consistent as above.
 
-> ** RECOMMENDATION:**
+> **RECOMMENDATION:**
 > Have an explicit group policy setting the conditions under which external
 > joins are allowed.
 
@@ -703,8 +705,9 @@ it has not been tampered with.
 The protocol aims to be compatible with federated environments. While this
 document does not specify all necessary mechanisms required for federation,
 multiple MLS implementations can interoperate to form federated systems if they
-use compatible authentication mechanisms, ciphersuites, and infrastructure
-functionalities.
+use compatible authentication mechanisms, ciphersuites, application content,
+and infrastructure functionalities. Federation is described in more detail in
+{{?I-D.ietf-mls-federation}}.
 
 ## Compatibility with Future Versions of MLS
 
