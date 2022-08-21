@@ -799,7 +799,7 @@ two implementations to interoperate:
     forward in response to a single message before rejecting it.
   - Whether to buffer messages that aren't able to be understood yet due to
     other messages not arriving first, and if so, how many and for how long. For
-    example, Commoit messages that arrive before a proposal they reference, or
+    example, Commit messages that arrive before a proposal they reference, or
     application messages that arrive before the Commit starting an epoch.
 
 MLS provides the following locations where an application may store arbitrary
