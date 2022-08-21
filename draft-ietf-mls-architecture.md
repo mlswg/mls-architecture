@@ -85,6 +85,26 @@ informative:
     refcontent:
       - "Symposium on Principles of Distributed Computing (PODC)"
 
+  Loopix
+    title: "The Loopix Anonymity System"
+    date: 2017
+    author:
+      -
+        ins: A.M. Piotrowska
+        name: Ania M. Piotrowska
+      -
+        ins: J. Hayes
+        name: Jamie Hayes
+      -
+        ins: T. Elahi
+        name: Tariq Elahi
+      -
+        ins: S. Meiser
+        name: Sebastian Meiser
+      -
+        ins: G. Danezis
+        name: George Danezis
+
 --- abstract
 
 The Messaging Layer Security (MLS) protocol {{!I-D.ietf-mls-protocol}}
@@ -1516,7 +1536,7 @@ confidentiality guarantees, it is a serious issue for privacy.
 > **RECOMMENDATION:**
 > In the case where metadata has to be persisted for functionality, it should be
 > stored encrypted at rest and during the execution. Applications should also
-> consider anonymous systems for server fanout.
+> consider anonymous systems for server fanout (for example {{Loopix}}).
 
 Often, expectation from users is that the infrastructure will not retain the
 ability to constantly map the user identity to signature public keys of the MLS
