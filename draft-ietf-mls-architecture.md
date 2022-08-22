@@ -1361,7 +1361,7 @@ extent. This threat can be mitigated by having initial keys expire.
 Initial keying material (KeyPackages) using the `basic` Credential type
 is more vulnerable to replacement by a malicious or compromised DS, as
 there is no built-in cryptographic binding between the identity and the
-public key of the client. 
+public key of the client.
 
 > **RECOMMENDATION:**
 > Prefer a Credential type in KeyPackages which includes a strong
