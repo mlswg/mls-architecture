@@ -85,7 +85,7 @@ informative:
     refcontent:
       - "Symposium on Principles of Distributed Computing (PODC)"
 
-  Loopix
+  Loopix:
     title: "The Loopix Anonymity System"
     date: 2017
     author:
