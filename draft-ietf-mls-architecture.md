@@ -87,7 +87,7 @@ informative:
 
 --- abstract
 
-The Messaging Layer Security (MLS) protocol {{!I-D.ietf-mls-protocol}}
+The Messaging Layer Security (MLS) protocol (I-D.ietf-mls-protocol)
 specification has the role of defining a Group Key Agreement protocol, including
 all the cryptographic operations and serialization/deserialization functions
 necessary for scalable and secure group messaging.
@@ -492,7 +492,7 @@ Upon receiving a Commit from the Delivery Service, clients can either:
    a short period of time. If another Commit for a past epoch is received,
    clients use a deterministic tie-breaking policy to decide if they should
    continue using the Commit they originally accepted or revert and use the
-   later one. Note that any copies of previous or forked group states MUST be
+   later one. Note that any copies of previous or forked group states must be
    deleted within a reasonable amount of time to ensure the protocol provides
    forward-secrecy.
 
