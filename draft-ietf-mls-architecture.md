@@ -33,11 +33,6 @@ author:
     organization: Twitter
     email: singuva@twitter.com
  -
-    ins: A. Kwon
-    name: Albert Kwon
-    organization: MIT
-    email: kwonal@mit.edu
- -
     ins: A. Duric
     name: Alan Duric
     organization: Wire
@@ -56,6 +51,9 @@ contributor:
 - name: Britta Hale
   org: Naval Postgraduate School
   email: britta.hale@nps.edu
+- name: Albert Kwon
+  org: Badge Inc.
+  email: kwonalbert@badgeinc.com
 - name: Konrad Kohbrok
   email: konrad.kohbrok@datashrine.de
 - name: Brendan McMillion
