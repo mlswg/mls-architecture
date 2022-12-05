@@ -55,6 +55,7 @@ contributor:
   org: Badge Inc.
   email: kwonalbert@badgeinc.com
 - name: Konrad Kohbrok
+  org: Phoenix R&D
   email: konrad.kohbrok@datashrine.de
 - name: Brendan McMillion
   email: brendanmcmillion@gmail.com
@@ -64,6 +65,7 @@ contributor:
   org: Meta Platforms
   email: jmillican@fb.com
 - name: Raphael Robert
+  org: Phoenix R&D
   email: ietf@raphaelrobert.com
 
 informative:
