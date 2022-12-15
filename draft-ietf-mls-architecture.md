@@ -560,9 +560,13 @@ Strategies for sequencing messages in strongly and eventually consistent systems
 are described in the next two subsections.
 
 However, note that a malicious Delivery Service could also reorder messages or
-provide an inconsistent view to different users. The protocol is designed such
-that this only results in a group no longer being functional and the group
-members possibly detecting this and requesting reinitialization.
+provide an inconsistent view to different users.  The "generation" counter in
+MLS messages provides per-sender loss detection and ordering that cannot be
+manipulated by the DS.  A mechanism for more robust protections is discussed in
+{{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
+partitioning key exchange messages; this can be detected only by out of band
+comparison (e.g., confirming that all clients have the same
+`epoch_authenticator` value`).
 
 Other forms of Delivery Service misbehavior are still possible that are not easy
 to detect. For instance, a Delivery Service can simply refuse to relay messages
