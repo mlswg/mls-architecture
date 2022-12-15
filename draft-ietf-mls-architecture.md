@@ -667,13 +667,9 @@ a GroupInfo object authorizes anyone to join who has access to the GroupInfo
 object. Both types of joins are done via a Commit message, which could be
 blocked by the DS or rejected by clients if the join is not authorized.  The
 former approach requires that Commits be visible to the DS; the latter approach
-requires that clients all share a consistent policy. In the event that an
-unauthorized member is able to join (e.g., via an un-checked external join), MLS
-enables any member to remove them.  If the application has each client detect
-and remove unauthorized clients before sending messages within the group, then
-an unauthorized joiner will not have access to anything confidential to the
-authorized members of the group, though they may have sent something to the
-group in the window between joining and removal.
+requires that clients all share a consistent policy. In the unfortunate event
+that an unauthorized member is able to join, MLS enables any member to remove
+them.
 
 Application setup may also determine other criteria for membership validity. For
 example, per-device signature keys can be signed by an identity key recognized
