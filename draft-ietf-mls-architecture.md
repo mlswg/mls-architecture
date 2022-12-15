@@ -1658,13 +1658,11 @@ confidentiality guarantees, it is a serious issue for privacy.
 > stored encrypted at rest and during the execution. Applications should also
 > consider anonymous systems for server fanout (for example {{Loopix}}).
 
-Often, expectation from users is that the infrastructure will not retain the
-ability to constantly map the user identity to signature public keys of the MLS
-protocol. Some infrastructures will keep a mapping between signature public keys
-of clients and user identities. This can benefit an adversary that has
-compromised the AS (or required access according to regulation) the ability of
-monitoring unencrypted traffic and correlating the messages exchanged within the
-same group.
+Some infrastructures will keep a
+mapping between signature public keys of clients and user identities. This can
+benefit an adversary that has compromised the AS (or required access according
+to regulation) the ability of monitoring unencrypted traffic and correlating the
+messages exchanged within the same group.
 
 > **RECOMMENDATION:**
 > Always use encrypted group operation messages to reduce issues related to
