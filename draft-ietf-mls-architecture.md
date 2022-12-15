@@ -514,15 +514,23 @@ The Delivery Service is responsible for ensuring that each KeyPackage is only
 used to add its client to a single group, with the possible exception of a "last
 resort" KeyPackage that's specially designated by the client to be used multiple
 times. As noted in the previous section, users may own multiple clients, each
-with their own keying material. Clients may also want to support multiple
-protocol versions and ciphersuites. As such, there may be multiple entries
+with their own keying material. Each KeyPackage is specific to an MLS version
+and ciphersuite, but a client may want to offer support for multiple
+protocol versions and ciphersuites. As such, there may be multiple KeyPackages
 stored by each user for a mix of protocol versions, ciphersuites, and end-user
-devices. The Delivery Service should provide the minimum number of KeyPackages
-necessary to satisfy a request.
+devices -- in addition to the multiplicity required to support single-use.
 
-When a client wishes to establish a group, it first contacts the Delivery
-Service to request a KeyPackage for each other client, authenticates the
-KeyPackages using the signature keys, and then uses those to form the group.
+When a client wishes to establish a group or add clients to a group, it first
+contacts the Delivery Service to request KeyPackages for each other client,
+authenticates the KeyPackages using the signature keys, and then uses those to
+add the other clients to the group.
+
+When a client requests a KeyPackage in order to add a user to a group, the
+Delivery Service should provide the minimum number of KeyPackages necessary to
+satisfy the request.  For example, if the request specifies the MLS version, the
+DS might provide one KeyPackage per supported ciphersuite, even if it has
+multiple such KeyPackages to enable the corresponding client to be added to
+multiple groups before needing to upload more fresh KeyPackages.
 
 ## Delivery of Messages {#delivery-guarantees}
 
