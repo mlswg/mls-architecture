@@ -683,7 +683,9 @@ sent before a client joins or after they are removed are protected with keys
 that are not accessible to the client.  Compromise of a member removed from a
 group does not affect the security of messages sent after their removal.
 Messages sent during the client's membership are also secure as long as the
-client has properly implemented the MLS deletion schedule.
+client has properly implemented the MLS deletion schedule, which calls for the
+secrets used to encrypt or decrypt a message to be deleted after use, along with
+any secrets that could be used to derive them.
 
 ## Parallel Groups
 
