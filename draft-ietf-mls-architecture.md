@@ -1452,7 +1452,7 @@ One thing for which the MLS Protocol is designed for is to make sure that all
 clients know who is in the group at all times. This means that - if all Members
 of the group and the Authentication Service are honest - no other parties than
 the members of the current group can read and write messages protected by the
-protocol for that Group. Note that when BasicCredential is used, the
+protocol for that Group. Note that when a `basic` Credential is used, the
 Authentication Service also needs an out-of-band mechanism to verify the
 identity asserted in the Credential.
 
@@ -1467,7 +1467,7 @@ Credential type used. For example, cryptographic verification of credentials
 can be largely performed autonomously on the clients for the `x509`
 Credential type. In contrast, when MLS clients use the `basic` Credential type,
 a larger degree of trust must be placed in a (likely) centralized
-authentication resource.
+authentication resource, or on out-of-band processes such as manual verification.
 
 While this service is often very well protected from external attackers, it
 might be the case that this service is compromised.  In such infrastructure, the
