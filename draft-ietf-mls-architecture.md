@@ -797,6 +797,34 @@ proposals, but any other policies must be assured to be consistent as above.
 > Have an explicit group policy setting the conditions under which external
 > joins are allowed.
 
+## Handling Authentication Failures 
+
+Within an MLS group, every member is authenticated to other member, by means of
+credentials issued and verified by the Authentication Service.  MLS does not
+prescribe what actions, if any, an application should take in the event that a
+group member presents an invalid credential.  For example, an application may
+require such a member to be immediately evicted, or may allow some grace period
+for the problem to be remediated. To avoid operational problems, it is important
+for all clients in a group to have a consistent view of which credentials in a
+group are valid, and how to respond to invalidity.
+
+> **RECOMMENDATION:**
+> Have a uniform credential validation process to ensure that all group members
+> evaluate other members' credentials in the same way.
+
+> **RECOMMENDATION:**
+> Have a uniform policy for how invalid credentials are handled.
+
+In some authentication systems, it is possible for a previously-valid credential
+to become invalid over time.  For example, in a system based on X.509
+certificates, credentials can expire or be revoked.  Fortunately, the MLS update
+mechansisms allow a client to replace an old credential with a new one. This is
+best done before the old credential becomes invalid.
+
+> **RECOMMENDATION:**
+> Proactively rotate credentials, especially if a credential is about to become
+> invalid.
+
 ## Recovery After State Loss
 
 Group members whose local MLS state is lost or corrupted can reinitialize their
