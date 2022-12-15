@@ -679,17 +679,17 @@ information about their capabilities.  Groups can also have extension data
 associated with them, and the group agreement properties of MLS will confirm
 that all members of the group agree on the content of these extensions.
 
-## Application Data Framing and Negotiation
+## Application Data Framing and Type Advertisements
 
 Application messages carried by MLS are opaque to the protocol; they can contain
 arbitrary data. Each application which uses MLS needs to define the format of
-its `application_data` and any mechanism necessary to negotiate the format of
+its `application_data` and any mechanism necessary to determine the format of
 that content over the lifetime of an MLS group. In many applications this means
 managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.
 
 > **RECOMMENDATION:**
-> Use the default content mechanism defined in {{?I-D.mahy-mls-content-neg}},
+> Use the default content mechanism defined in {{?I-D.mahy-mls-content-adv}},
 > unless the specific application defines another mechanism which more
 > appropriately addresses the same requirements for that application of MLS.
 
