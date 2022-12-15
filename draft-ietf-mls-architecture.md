@@ -1195,6 +1195,28 @@ may be possible to operate MLS in ways that provide certain deniability
 properties, but defining the specific requirements and resulting notions of
 deniability requires further analysis.
 
+### Associating a User's Clients
+
+When the same user uses multiple clients, it may be possible for other members
+of a group to recognize all of those clients as belonging to the same user.  For
+example, all of a user's clients might present credentials authenticating the
+user's identity.  This association among devices might be considered a leak of
+private information.  An application that wishes to mitigate this privacy risk
+has a couple of options.
+
+This risk only arises when the leaf nodes for the clients in question provide
+data that can be used to correlate the clients.  So one way to mitigate this
+risk is by only doing device-level authentication within MLS. If user-level
+authentication is still desirable, the application would have to be provide it
+through some other mechanism.
+
+It is also possible to maintain user-level authentication while hiding
+information about the clients that a user uses.  This can be done by having the
+clients share cryptographic state, so that they appear as a single client within
+the MLS group.  The application would need to provide a synchronization
+mechanism so that the clients' state remained consistent across changes to the
+MLS group.
+
 ## Endpoint Compromise
 
 The MLS protocol adopts a threat model which includes multiple forms of
