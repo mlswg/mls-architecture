@@ -1539,12 +1539,15 @@ incorrect or attacker-provided identities to clients.
 
 - The attacker can publish or distribute credentials
 
-Infrastructures that provide cryptographic material or credentials in place of
-the MLS client (which is under the control of the user) often have the ability
-to use the associated secrets to perform operations on behalf of the user, which
-is unacceptable in many situations. Other mechanisms can be used to prevent this
-issue, such as the service blessing cryptographic material used by an MLS
-client.
+In the past, some systems have had a centralized server geenrate signature key
+pairs and distribute them to clients.  In such cases, the centralized server is
+a point of compromise, since it stores signature private keys that can be used
+to impersonate clients.  A better approach is instead to generate signature key
+pairs in clients and have them "blessed" by the centralized service, e.g., by
+having the service issue a credential binding the key pair to the client's
+identity.  In this approach, there is still a risk that the centralized service
+will authorize additional key pairs, but it will not be able to use existing,
+client-generated private keys.
 
 > **RECOMMENDATION:**
 > Make clients submit signature public keys to the AS, this is usually better
