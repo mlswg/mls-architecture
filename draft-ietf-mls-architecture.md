@@ -797,7 +797,7 @@ proposals, but any other policies must be assured to be consistent as above.
 > Have an explicit group policy setting the conditions under which external
 > joins are allowed.
 
-## Handling Authentication Failures 
+## Handling Authentication Failures
 
 Within an MLS group, every member is authenticated to other member, by means of
 credentials issued and verified by the Authentication Service.  MLS does not
