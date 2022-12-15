@@ -351,7 +351,7 @@ look like this:
    {{fs-and-pcs}}). As a consequence of that change, the group secrets are
    updated.
 
-Clients may wish to do the following:
+MLS allows clients to perform several actions in this setting:
 
  -  create a group by inviting a set of other clients;
 
@@ -363,7 +363,7 @@ Clients may wish to do the following:
 
  -  join an existing group;
 
- -  leave a group;
+ -  leave a group (by asking to be removed);
 
  -  send a message to everyone in the group;
 
