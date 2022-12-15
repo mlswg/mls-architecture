@@ -1220,7 +1220,7 @@ the following compromise scenarios:
 - The attacker has access to all secrets of a user for all groups
   (full state compromise)
 
-Recall that the MLS protocol provides chains of AEAD keys, per sender that are
+The MLS protocol provides per-sender chains of AEAD keys that are
 generated from Group Secrets. These keys are used to protect MLS Plaintext
 messages which can be Group Operation or Application messages. The Group
 Operation messages offer an additional protection as the secret exchanged within
