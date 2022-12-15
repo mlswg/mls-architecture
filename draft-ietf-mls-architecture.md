@@ -85,6 +85,106 @@ informative:
     refcontent:
       - "Symposium on Principles of Distributed Computing (PODC)"
 
+  ACCKKMPPWY19:
+    title: "Security Analysis and Improvements for the IETF MLS Standard for Group Messaging"
+    date: 2019
+    author:
+      - name: Joel Alwen
+      - name: Margarita Capretto
+      - name: Miguel Cueto
+      - name: Chethan Kamath
+      - name: Karen Klein
+      - name: Ilia Markov
+      - name: Guillermo Pascual-Perez
+      - name: Krzysztof Pietrzak
+      - name: Michael Walter
+      - name: Michelle Yeo
+    target: https://eprint.iacr.org/2019/1489
+
+  ACDT19:
+    title: "Security Analysis and Improvements for the IETF MLS Standard for Group Messaging"
+    date: 2019
+    author:
+      - name: Joel Alwen
+      - name: Sandro Coretti
+      - name: Yevgeniy Dodis
+      - name: Yiannis Tselekounis
+    target: https://eprint.iacr.org/2019/1189.pdf
+
+  ACDT21:
+    title: "Modular Design of Secure Group Messaging Protocols and the Security of MLS"
+    date: 2021
+    author:
+      - name: Joel Alwen
+      - name: Sandro Coretti
+      - name: Yevgeniy Dodis
+      - name: Yiannis Tselekounis
+    target: https://eprint.iacr.org/2021/1083.pdf
+
+  ACJM20:
+    title: "Continuous Group Key Agreement with Active Security"
+    date: 2020
+    author:
+      - name: Joel Alwen
+      - name: Sandro Coretti
+      - name: Daniel Jost
+      - name: Marta Mularczyk
+    target: https://eprint.iacr.org/2020/752.pdf
+
+  AHKM21:
+    title: "Server-Aided Continuous Group Key Agreement"
+    date: 2021
+    author:
+      - name: Joel Alwen
+      - name: Dominik Hartmann
+      - name: Eike Kiltz
+      - name: Marta Mularczyk
+    target: https://eprint.iacr.org/2021/1456.pdf
+
+  AJM20:
+    title: "On The Insider Security of MLS"
+    date: 2020
+    author:
+      - name: Joel Alwen
+      - name: Daniel Jost
+      - name: Marta Mularczyk
+    target: https://eprint.iacr.org/2020/1327.pdf
+
+  BBN19:
+    title: "Formal Models and Verified Protocols for Group Messaging: Attacks and Proofs for IETF MLS"
+    date: 2019
+    author:
+      - name: Karthikeyan Bhargavan
+      - name: Benjamin Beurdouche
+      - name: Prasad Naldurg
+    target: https://hal.laas.fr/INRIA/hal-02425229/document
+
+  BBR18:
+    title: "TreeKEM: Asynchronous Decentralized Key Management for Large Dynamic Groups A protocol proposal for Messaging Layer Security (MLS)"
+    date: 2018
+    author:
+      - name: Karthikeyan Bhargavan
+      - name: Richard Barnes
+      - name: Eric Rescorla
+    target: "https://hal.inria.fr/hal-02425247/file/treekem+%281%29.pdf"
+
+  BCK21:
+    title: "Cryptographic Security of the MLS RFC, Draft 11"
+    date: 2021
+    author:
+      - name: Chris Brzuska
+      - name: Eric Cornelissen
+      - name: Konrad Kohbrok
+    target: https://eprint.iacr.org/2021/137.pdf
+
+  CHK21:
+    title: "The Complexities of Healing in Secure Group Messaging: Why Cross-Group Effects Matter"
+    date: 2021
+    author:
+      - name: Cas Cremers
+      - name: Britta Hale
+      - name: Konrad Kohbrok
+    target: https://www.usenix.org/system/files/sec21-cremers.pdf
   Loopix:
     title: "The Loopix Anonymity System"
     date: 2017
@@ -1601,27 +1701,14 @@ the protocol to securely implement the specification, which remains non-trivial.
 
 Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
-analyzed by [BBN19] (draft 7), [ACDT21] (draft 11) and [AJM20] (draft 12).
+analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
 
 Individual components of various drafts of the MLS protocol have been analyzed
-in isolation and with differing adversarial models, for example, [BBR18],
-[ACDT19], [ACCKKMPPWY19], [AJM20] and [ACJM20] analyze the ratcheting tree as
-the sub-protocol of MLS that facilitates key agreement, while [BCK21] analyzes
-the key derivation paths in the ratchet tree and key schedule. Finally, [CHK21]
+in isolation and with differing adversarial models, for example, {{BBR18}},
+{{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the ratcheting tree as
+the sub-protocol of MLS that facilitates key agreement, while {{BCK21}} analyzes
+the key derivation paths in the ratchet tree and key schedule. Finally, {{CHK21}}
 analyzes the authentication and cross-group healing guarantees provided by MLS.
-
-# Informative References
-
-* ACCKKMPPWY19: https://eprint.iacr.org/2019/1489
-* ACDT19: https://eprint.iacr.org/2019/1189
-* ACDT21: https://eprint.iacr.org/2021/1083
-* ACJM20: https://eprint.iacr.org/2020/752
-* AHKM21: https://eprint.iacr.org/2021/1456
-* AJM20: https://eprint.iacr.org/2020/1327
-* BBN19: https://hal.laas.fr/INRIA/hal-02425229
-* BBR18: https://hal.inria.fr/hal-02425247
-* BCK21: https://eprint.iacr.org/2021/137
-* CHK21: https://www.usenix.org/system/files/sec21-cremers.pdf
 
 # IANA Considerations
 
