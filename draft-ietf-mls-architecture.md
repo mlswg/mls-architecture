@@ -1511,7 +1511,7 @@ For secure messaging systems, push notifications are often sent real-time as it
 is not acceptable to create artificial delays for message retrieval.
 
 > **RECOMMENDATION:**
-> If real time notifications are not necessary , one can delay notifications
+> If real time notifications are not necessary, one can delay notifications
 > randomly across recipient devices using a mixnet or other techniques.
 
 Note that it is quite easy for legal requests to ask the service provider for
