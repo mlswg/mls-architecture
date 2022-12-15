@@ -262,10 +262,12 @@ all users, for all group sizes, even when it reduces to only two users.
 
 # General Setting
 
-Informally, a group is a set of users who possibly use multiple endpoint devices
-to interact with the Service Provider (SP).  A group may be as small as two
-members (the simple case of person to person messaging) or as large as
-thousands.
+MLS provides a way for _clients_ to form _groups_ within which they can
+communicate securely.  For example, a set of users might use clients on their
+phones or laptops to join a group and communicate with each other. A group may
+be as small as two clients (e.g., for simple person to person messaging) or as
+large as thousands.  A client that is part of a group is a _member_ of that
+group.
 
 In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
@@ -370,7 +372,7 @@ MLS allows clients to perform several actions in this setting:
  -  receive a message from someone in the group.
 
 At the cryptographic level, clients (and by extension members in groups) have
-equal permissions. For instance, any member can add or remove another client in
+equal permissions. For instance, any member can add or remove another member in
 a group. This is in contrast to some designs in which there is a single group
 controller who can modify the group. MLS is compatible with having group
 administration restricted to certain users, but we assume that those
