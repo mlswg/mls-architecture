@@ -138,7 +138,7 @@ informative:
       - name: Joel Alwen
       - name: Dominik Hartmann
       - name: Eike Kiltz
-      - name: Yiannis Tselekounis
+      - name: Marta Mularczyk
     target: https://eprint.iacr.org/2021/1456.pdf
 
   AJM20:
