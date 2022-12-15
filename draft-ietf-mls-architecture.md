@@ -293,7 +293,7 @@ The Authentication Service (AS) has to provide three functionalities:
 3. Enable a group member to verify that a credential represents the same client
    as another credential
 
-A member with a valid credential authenticates it's MLS messages by signing them
+A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key bound by its credential.
 
 The AS is considered an abstract layer by the MLS specification and part of this
@@ -1257,7 +1257,7 @@ these keys are extremely frequently used and changed with each message received
 by a client.
 
 However, the signature private keys are mostly used by clients to send a
-message. They are also providing strong authentication guarantees to other
+message. They also provide strong authentication guarantees to other
 clients, hence we consider that their protection by additional security
 mechanisms should be a priority.
 
