@@ -999,7 +999,9 @@ achieved in specific architecture designs.
 
 ## Assumptions on Transport Security Links
 
-Any secure channel can be used as a transport layer to protect MLS messages such
+As discussed above, MLS provides the highest level of security when its messages
+are delivered over a secure transport.
+Any secure channel can be used as a transport layer to protect MLS messages, such
 as QUIC, TLS, WireGuard or TOR. However, the MLS protocol is designed to
 consider the following threat-model:
 
