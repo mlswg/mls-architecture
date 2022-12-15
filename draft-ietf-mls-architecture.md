@@ -1104,7 +1104,7 @@ of service for MLS.
 
 > **RECOMMENDATION:**
 > If unidirectional transport is used for the secure transport channel, prefer
-> using a protocol which provides Forward Error Correction.
+> using a transport protocol which provides Forward Error Correction.
 
 ## Intended Security Guarantees
 
