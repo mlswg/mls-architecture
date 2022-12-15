@@ -775,7 +775,8 @@ performing such a reinitialization prove its prior membership with a PSK.
 There are a few practical challenges to this approach.  For example, the
 application will need to ensure that all members have the required PSK,
 including any new members that have joined the group since the epoch in which
-the PSK was issued.
+the PSK was issued.  And of course, if the PSK is lost or corrupted along with
+the member's other state, then it cannot be used to recover.
 
 Reinitializing in this way does not provide the member with access to group
 messages from during the state loss window, but enables proof of prior
