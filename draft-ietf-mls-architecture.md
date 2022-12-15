@@ -185,7 +185,6 @@ informative:
       - name: Britta Hale
       - name: Konrad Kohbrok
     target: https://www.usenix.org/system/files/sec21-cremers.pdf
- 
   Loopix:
     title: "The Loopix Anonymity System"
     date: 2017
