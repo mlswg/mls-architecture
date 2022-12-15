@@ -318,7 +318,7 @@ breadth of this concept:
   function would correspond to the insertion of a key in a KT log under a user's
   identity. The verification function would correspond to verifying a key's
   inclusion in the log for a claimed identity, together with the KT log's
-  mechanisms for a user to monitor and control which keys are associated to
+  mechanisms for a user to monitor and control which keys are associated with
   their identity.
 
 By the nature of its roles in MLS authentication, the AS is invested with a
@@ -1030,12 +1030,12 @@ replacement of keying material, any client which is persistently offline may
 still be holding old keying material and thus be a threat to both FS and PCS if
 it is later compromised.
 
-MLS partially defend against this problem by active member including freshness,
+MLS partially defends against this problem by active members including freshness,
 however not much can be done on the inactive side especially in the case where
 the client has not processed messages.
 
 > **RECOMMENDATION:**
-> Mandate a key updates from clients that are not otherwise sending messages and
+> Mandate key updates from clients that are not otherwise sending messages and
 > evict clients which are idle for too long.
 
 These recommendations will reduce the ability of idle compromised clients to
@@ -1132,7 +1132,7 @@ signature is revealed, because the secrets themselves are protected by HPKE
 encryption.
 
 Note that under that compromise scenario, authentication is not affected in
-neither of these cases.  As every member of the group can compute the AEAD keys
+either of these cases.  As every member of the group can compute the AEAD keys
 for all the chains (they have access to the Group Secrets) in order to send and
 receive messages, the authentication provided by the AEAD encryption layer of
 the common framing mechanism is very weak. Successful decryption of an AEAD
@@ -1156,7 +1156,7 @@ protocol that, as soon as an honest Commit message is sent by the compromised
 party, the next epochs will provide message secrecy.
 
 If the adversary is active, the adversary can follow the protocol and perform
-updates on behalf of the compromised party with no ability to an honest group to
+updates on behalf of the compromised party with no ability for an honest group to
 recover message secrecy. However, MLS provides PCS against active adaptive
 attackers through its Remove group operation. This means that, as long as other
 members of the group are honest, the protocol will guarantee message secrecy for
@@ -1182,7 +1182,7 @@ The attacker can generate any message, for the current and future epochs until
 an honest update from the compromised client happens.
 
 Note that under this compromise scenario, the attacker can perform all
-operations which are available to an legitimate client even without access to
+operations which are available to a legitimate client even without access to
 the actual value of the signature key.
 
 Without access to the group secrets, the adversary will not have the ability to
@@ -1214,7 +1214,7 @@ case PCS of the MLS protocol will eventually allow recovery of the
 authentication of messages for future epochs but only after compromised parties
 refresh their credentials securely.
 
-Beware that in both oracle and private key access, an active adaptive attacker,
+Beware that in both oracle and private key access, an active adaptive attacker
 can follow the protocol and request to update its own credential. This in turn
 induces a signature key rotation which could provide the attacker with part or
 the full value of the private key depending on the architecture of the service
@@ -1259,11 +1259,11 @@ these keys are extremely frequently used and changed with each message received
 by a client.
 
 However, the signature private keys are mostly used by clients to send a
-message. They also are providing the strong authentication guarantees to other
+message. They also provide strong authentication guarantees to other
 clients, hence we consider that their protection by additional security
-mechanism should be a priority.
+mechanisms should be a priority.
 
-Overall there is no way to detect or prevent these compromise, as discussed in
+Overall there is no way to detect or prevent these compromises, as discussed in
 the previous sections, performing separation of the application secret states
 can help recovery after compromise, this is the case for signature keys but
 similar concern exists for the encryption private key used in the TreeKEM Group
@@ -1358,7 +1358,7 @@ encrypted MLS messages, the service provider and the push notification provider
 have to be trusted to avoid making correlation on which devices are recipients
 of the same message.
 
-For secure messaging systems, push notification are often sent real-time as it
+For secure messaging systems, push notifications are often sent real-time as it
 is not acceptable to create artificial delays for message retrieval.
 
 > **RECOMMENDATION:**
@@ -1392,7 +1392,7 @@ incorrect or attacker-provided identities to clients.
 - The attacker can publish or distribute credentials
 
 Infrastructures that provide cryptographic material or credentials in place of
-the MLS client (which is under the control of the user) have often the ability
+the MLS client (which is under the control of the user) often have the ability
 to use the associated secrets to perform operations on behalf of the user, which
 is unacceptable in many situations. Other mechanisms can be used to prevent this
 issue, such as the service blessing cryptographic material used by an MLS
