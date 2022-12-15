@@ -1288,8 +1288,8 @@ encryption keys for any AEAD chains and can encrypt and decrypt all messages for
 the compromised epochs.
 
 If the adversary is passive, it is expected from the PCS properties of the MLS
-protocol that, as soon as an honest Commit message is sent by the compromised
-party, the next epochs will provide message secrecy.
+protocol that, as soon as the compromised party remediates the compromise and
+sends an honest Commit message, the next epochs will provide message secrecy.
 
 If the adversary is active, the adversary can follow the protocol and perform
 updates on behalf of the compromised party with no ability for an honest group to
@@ -1314,8 +1314,8 @@ the compromise scenario implies a significant impact on both the secrecy and
 authentication guarantees of the protocol, especially if the attacker also has
 access to the group secrets. In that case both secrecy and authentication are
 broken.
-The attacker can generate any message, for the current and future epochs until
-an honest update from the compromised client happens.
+The attacker can generate any message, for the current and future epochs, until
+the compromise is remediated and the formerly compromised client sends an honest update.
 
 Note that under this compromise scenario, the attacker can perform all
 operations which are available to a legitimate client even without access to
