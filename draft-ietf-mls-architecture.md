@@ -752,16 +752,17 @@ interoperate.
 - An **Authentication Service**, described fully in {{authentication-service}},
   defines the types of credentials which may be used in a deployment and
   provides methods for:
-  1. Issuing new credentials,
-  2. Validating a credential against a reference identifier, and
-  3. Validating whether or not two credentials represent the same client.
-
+  1. Issuing new credentials with a relevant credential lifetime,
+  2. Validating a credential against a reference identifier,
+  3. Validating whether or not two credentials represent the same client, and
+  4. Optionally revoking credentials which are no longer authorized.
 - A **Delivery Service**, described fully in {{delivery-service}}, provides
   methods for:
   1. Delivering messages sent to a group to all members in the group.
   2. Delivering Welcome messages to new members of a group.
-  3. Downloading KeyPackages for specific clients, and uploading new KeyPackages
-     for a user's own clients.
+  3. Uploading new KeyPackages for a user's own clients.
+  4. Downloading KeyPackages for specific clients. Typically, KeyPackages are
+     used once and consumed.
 
 - Additional services may or may not be required depending on the application
   design:
@@ -815,14 +816,22 @@ MLS requires the following policies to be defined, which restrict the set of
 acceptable behavior in a group. These policies must be consistent between
 deployments for them to interoperate:
 
+- A policy on which ciphersuites are acceptable.
+- A policy on any mandatory or forbidden MLS extensions.
 - A policy on when to send proposals and commits in plaintext instead of
   encrypted.
 - A policy for which proposals are valid to have in a commit, including but not
   limited to:
   - When a member is allowed to add or remove other members of the group.
   - When, and under what circumstances, a reinitialization proposal is allowed.
-  - When proposals from external senders are allowed.
-  - When external joiners are allowed.
+  - When proposals from external senders are allowed and how to authorize
+    those proposals.
+  - When external joiners are allowed and how to authorize those external
+    commits.
+  - Which other proposal types are allowed.
+- A policy of when members should commit pending proposals in a group.
+- A policy of how to protect and share the GroupInfo objects needed for
+  external joins.
 - A policy for when two credentials represent the same client. Note that many
   credentials may be issued authenticating the same identity but for different
   signature keys, because each credential corresponds to a different device
