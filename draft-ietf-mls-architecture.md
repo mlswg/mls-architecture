@@ -1563,7 +1563,7 @@ emitted credentials might be compromised.
 
 #### Authentication compromise: Ghost users and impersonations
 
-One important feature of MLS is that all 
+One important feature of MLS is that all
 clients know who is in the group at all times. This means that - if all Members
 of the group and the Authentication Service are honest - no other parties than
 the members of the current group can read and write messages protected by the
