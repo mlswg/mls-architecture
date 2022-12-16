@@ -1564,13 +1564,11 @@ emitted credentials might be compromised.
 #### Authentication compromise: Ghost users and impersonations
 
 One important feature of MLS is that all
-Members know which other clients are in the group at all times. If all Members
+Members know which other members are in the group at all times. If all Members
 of the group and the Authentication Service are honest, no parties other than
 the members of the current group can read and write messages protected by the
 protocol for that Group.
 
-Beware though, the link between the cryptographic
-identity of the client and the real identity of the End User is important.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials
 can be largely performed autonomously on the clients for the `x509`
@@ -1582,18 +1580,18 @@ authentication resource, or on out-of-band processes such as manual verification
 > Select the strongest MLS Credential type available among the
 > target members of an MLS group.
 
-While the Authentication Service is often very well protected from external
-attackers, it might be the case that this service is compromised. In such
-infrastructure, the AS could validate a (or generate a new) signature keypair for
-an identity which is not the expected one. Because a user can have many MLS
+If the AS is compromised, it could validate a (or generate a new) signature keypair for
+an attacker. Because a user can have many MLS
 clients running the MLS protocol, it possibly has many signature keypairs
-for multiple devices. Note that when a `basic` Credential is used, the
+for multiple devices. These attacks could be very difficult to detect.
+
+> **RECOMMENDATION:**
+> Provide a key transparency mechanism for the Authentication Services to allow public
+> verification of the credentials authenticated by this service.
+
+Note that when a `basic` Credential is used, the
 Authentication Service also needs an out-of-band mechanism to verify the
 identity asserted in the Credential.
-
-With some Authentication Service designs, a private or centralized authority
-is trusted to validate signature keypairs used in the MLS protocol. This is
-typically the case in some of the biggest messaging infrastructures.
 
 In the case where an adversarial keypair is generated for a specific identity,
 an infrastructure without any transparency mechanism or out-of-band
