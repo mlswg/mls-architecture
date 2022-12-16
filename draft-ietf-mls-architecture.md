@@ -1541,7 +1541,7 @@ incorrect or attacker-provided identities to clients.
 
 - The attacker can publish or distribute credentials
 
-In the past, some systems have had a centralized server geenrate signature key
+In the past, some systems have had a centralized server generate signature key
 pairs and distribute them to clients.  In such cases, the centralized server is
 a point of compromise, since it stores signature private keys that can be used
 to impersonate clients.  A better approach is instead to generate signature key
@@ -1659,10 +1659,10 @@ confidentiality guarantees, it is a serious issue for privacy.
 > consider anonymous systems for server fanout (for example {{Loopix}}).
 
 Some infrastructures will keep a
-mapping between signature public keys of clients and user identities. This can
-benefit an adversary that has compromised the AS (or required access according
-to regulation) the ability of monitoring unencrypted traffic and correlating the
-messages exchanged within the same group.
+Some infrastructure keeps a mapping between keys used in the MLS protocol and
+user identities. An attacker with access to this information due to compromise
+or regulation can associate unencrypted group messages (e.g., Commits and
+Proposals) with the corresponding user identity.
 
 > **RECOMMENDATION:**
 > Always use encrypted group operation messages to reduce issues related to
