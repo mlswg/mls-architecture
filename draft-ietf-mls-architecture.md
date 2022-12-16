@@ -774,7 +774,7 @@ group member presents an invalid credential.  For example, an application may
 require such a member to be immediately evicted, or may allow some grace period
 for the problem to be remediated. To avoid operational problems, it is important
 for all clients in a group to have a consistent view of which credentials in a
-group are valid, and how to respond to invalidity.
+group are valid, and how to respond to invalid credentials.
 
 > **RECOMMENDATION:**
 > Have a uniform credential validation process to ensure that all group members
