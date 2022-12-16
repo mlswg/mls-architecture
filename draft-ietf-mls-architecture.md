@@ -767,7 +767,7 @@ proposals, but any other policies must be assured to be consistent as above.
 
 ## Handling Authentication Failures
 
-Within an MLS group, every member is authenticated to other member, by means of
+Within an MLS group, every member is authenticated to other member by means of
 credentials issued and verified by the Authentication Service.  MLS does not
 prescribe what actions, if any, an application should take in the event that a
 group member presents an invalid credential.  For example, an application may
@@ -785,8 +785,8 @@ group are valid, and how to respond to invalid credentials.
 
 In some authentication systems, it is possible for a previously-valid credential
 to become invalid over time.  For example, in a system based on X.509
-certificates, credentials can expire or be revoked.  Fortunately, the MLS update
-mechansisms allow a client to replace an old credential with a new one. This is
+certificates, credentials can expire or be revoked.  The MLS update
+mechanisms allow a client to replace an old credential with a new one. This is
 best done before the old credential becomes invalid.
 
 > **RECOMMENDATION:**
