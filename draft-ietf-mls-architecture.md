@@ -77,13 +77,7 @@ informative:
        -
           ins: Google
 
-  CAPBR:
-    title: "Towards robust distributed systems."
-    date: 2000
-    author:
-      - name: Eric A. Brewer
-    refcontent:
-      - "Symposium on Principles of Distributed Computing (PODC)"
+  CAPBR: DOI.10.1145/343477.343502
 
   ACCKKMPPWY19:
     title: "Security Analysis and Improvements for the IETF MLS Standard for Group Messaging"
@@ -262,10 +256,12 @@ all users, for all group sizes, even when it reduces to only two users.
 
 # General Setting
 
-Informally, a group is a set of users who possibly use multiple endpoint devices
-to interact with the Service Provider (SP).  A group may be as small as two
-members (the simple case of person to person messaging) or as large as
-thousands.
+MLS provides a way for _clients_ to form _groups_ within which they can
+communicate securely.  For example, a set of users might use clients on their
+phones or laptops to join a group and communicate with each other. A group may
+be as small as two clients (e.g., for simple person to person messaging) or as
+large as thousands.  A client that is part of a group is a _member_ of that
+group.
 
 In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
@@ -351,7 +347,7 @@ look like this:
    {{fs-and-pcs}}). As a consequence of that change, the group secrets are
    updated.
 
-Clients may wish to do the following:
+MLS allows clients to perform several actions in this setting:
 
  -  create a group by inviting a set of other clients;
 
@@ -363,14 +359,14 @@ Clients may wish to do the following:
 
  -  join an existing group;
 
- -  leave a group;
+ -  leave a group (by asking to be removed);
 
  -  send a message to everyone in the group;
 
  -  receive a message from someone in the group.
 
 At the cryptographic level, clients (and by extension members in groups) have
-equal permissions. For instance, any member can add or remove another client in
+equal permissions. For instance, any member can add or remove another member in
 a group. This is in contrast to some designs in which there is a single group
 controller who can modify the group. MLS is compatible with having group
 administration restricted to certain users, but we assume that those
@@ -509,18 +505,26 @@ All the parameters in the KeyPackage are signed with the signature private key
 corresponding to the credential.
 
 The Delivery Service is responsible for ensuring that each KeyPackage is only
-served once, with the possible exception of a "last resort" KeyPackage that's
-specially designated by the client to be used multiple times. As noted in the
-previous section, users may own multiple clients, each with their own keying
-material. Clients may also want to support multiple protocol versions and
-ciphersuites. As such, there may be multiple entries stored by each user for a
-mix of protocol versions, ciphersuites, and end-user devices. The Delivery
-Service should provide the minimum number of KeyPackages necessary to satisfy a
-request.
+used to add its client to a single group, with the possible exception of a "last
+resort" KeyPackage that's specially designated by the client to be used multiple
+times. As noted in the previous section, users may own multiple clients, each
+with their own keying material. Each KeyPackage is specific to an MLS version
+and ciphersuite, but a client may want to offer support for multiple
+protocol versions and ciphersuites. As such, there may be multiple KeyPackages
+stored by each user for a mix of protocol versions, ciphersuites, and end-user
+devices -- in addition to the multiplicity required to support single-use.
 
-When a client wishes to establish a group, it first contacts the Delivery
-Service to request a KeyPackage for each other client, authenticates the
-KeyPackages using the signature keys, and then uses those to form the group.
+When a client wishes to establish a group or add clients to a group, it first
+contacts the Delivery Service to request KeyPackages for each other client,
+authenticates the KeyPackages using the signature keys, and then uses those to
+add the other clients to the group.
+
+When a client requests a KeyPackage in order to add a user to a group, the
+Delivery Service should provide the minimum number of KeyPackages necessary to
+satisfy the request.  For example, if the request specifies the MLS version, the
+DS might provide one KeyPackage per supported ciphersuite, even if it has
+multiple such KeyPackages to enable the corresponding client to be added to
+multiple groups before needing to upload more fresh KeyPackages.
 
 ## Delivery of Messages {#delivery-guarantees}
 
@@ -560,9 +564,13 @@ Strategies for sequencing messages in strongly and eventually consistent systems
 are described in the next two subsections.
 
 However, note that a malicious Delivery Service could also reorder messages or
-provide an inconsistent view to different users. The protocol is designed such
-that this only results in a group no longer being functional and the group
-members possibly detecting this and requesting reinitialization.
+provide an inconsistent view to different users.  The "generation" counter in
+MLS messages provides per-sender loss detection and ordering that cannot be
+manipulated by the DS.  A mechanism for more robust protections is discussed in
+{{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
+partitioning key exchange messages; this can be detected only by out of band
+comparison (e.g., confirming that all clients have the same
+`epoch_authenticator` value`).
 
 Other forms of Delivery Service misbehavior are still possible that are not easy
 to detect. For instance, a Delivery Service can simply refuse to relay messages
@@ -664,12 +672,12 @@ With both mechanisms, changes to the membership are initiated from inside the
 group.  When members perform changes directly, this is clearly the case.
 External joins are authorized indirectly, in the sense that a member publishing
 a GroupInfo object authorizes anyone to join who has access to the GroupInfo
-object.  External joins do not allow for more granular authorization checks to
-be done before the new member is added to the group, so if an application
-wishes to both allow external joins and enforce such checks, then either all
-the members of the group must all have the ability to check and reject invalid
-External joins autonomously, or the application needs to do such checks when a
-member joins and remove them if those checks fail.
+object. Both types of joins are done via a Commit message, which could be
+blocked by the DS or rejected by clients if the join is not authorized.  The
+former approach requires that Commits be visible to the DS; the latter approach
+requires that clients all share a consistent policy. In the unfortunate event
+that an unauthorized member is able to join, MLS enables any member to remove
+them.
 
 Application setup may also determine other criteria for membership validity. For
 example, per-device signature keys can be signed by an identity key recognized
@@ -1151,12 +1159,12 @@ appropriate keys as soon as they have been used with the expected message,
 otherwise the secrecy of the messages and the security for MLS is considerably
 weakened.
 
-PCS means that if a group member's state is compromised at some time t but the
-group member subsequently performs an update at some time t', then all MLS
-guarantees apply to messages sent by the member after time t', and by other
+PCS means that if a group member's state is compromised at some time t1 but the
+group member subsequently performs an update at some time t2, then all MLS
+guarantees apply to messages sent by the member after time t2, and by other
 members after they have processed the update. For example, if an attacker learns
-all secrets known to Alice at time t, including both Alice's long-term secret
-keys and all shared group keys, but Alice performs a key update at time t', then
+all secrets known to Alice at time t1, including both Alice's long-term secret
+keys and all shared group keys, but Alice performs a key update at time t2, then
 the attacker is unable to violate any of the MLS security properties after the
 updates have been processed.
 
@@ -1462,7 +1470,7 @@ DS. Even a totally compromised DS should not be able to read messages or inject
 messages that will be acceptable to legitimate clients. It should also not be
 able to undetectably remove, reorder or replay messages.
 
-However, a DS can mount a variety of DoS attacks on the system, including total
+However, a malicious DS can mount a variety of DoS attacks on the system, including total
 DoS attacks (where it simply refuses to forward any messages) and partial DoS
 attacks (where it refuses to forward messages to and from specific clients).
 As noted in {{delivery-guarantees}}, these attacks are only partially detectable
@@ -1512,9 +1520,8 @@ For secure messaging systems, push notifications are often sent real-time as it
 is not acceptable to create artificial delays for message retrieval.
 
 > **RECOMMENDATION:**
-> If real time notifications are not necessary and that specific steps must be
-> taken to improve privacy, one can delay notifications randomly across
-> recipient devices using a mixnet or other techniques.
+> If real time notifications are not necessary, one can delay notifications
+> randomly across recipient devices using a mixnet or other techniques.
 
 Note that it is quite easy for legal requests to ask the service provider for
 the push-token associated to an identifier and perform a second request to the
@@ -1523,7 +1530,7 @@ device, which is often linked with a real identity via a cloud account, a credit
 card or other information.
 
 > **RECOMMENDATION:**
-> If stronger privacy guarantees are needed vis-a-vis the push notification
+> If stronger privacy guarantees are needed with regard to the push notification
 > provider, the client can choose to periodically connect to the Delivery
 > Service without the need of a dedicated push notification infrastructure.
 
@@ -1564,11 +1571,11 @@ emitted credentials might be compromised.
 
 > **RECOMMENDATION:**
 > Use HSMs to store the root signature keys to limit the ability of an
-> adversary with no physical access to extract the top-level signature key.
+> adversary with no physical access to extract the top-level signature private key.
 
 #### Authentication compromise: Ghost users and impersonations
 
-One thing for which the MLS Protocol is designed for is to make sure that all
+One important feature of MLS is that all
 clients know who is in the group at all times. This means that - if all Members
 of the group and the Authentication Service are honest - no other parties than
 the members of the current group can read and write messages protected by the
@@ -1631,9 +1638,9 @@ privacy preserving technology.
 > the impact of an Authentication Service compromise.
 
 We note, again, that as described prior to that section, the Authentication
-Service is facultative to design a working infrastructure and can be replaced by
+Service may not be a centralized system, and could be realized by
 many mechanisms such as establishing prior one-to-one deniable channels,
-gossiping, or using TOFU for credentials used by the MLS Protocol.
+gossiping, or using trust on first use (TOFU) for credentials used by the MLS Protocol.
 
 Another important consideration is the ease of redistributing new keys on client
 compromise, which helps recovering security faster in various cases.
@@ -1655,18 +1662,17 @@ confidentiality guarantees, it is a serious issue for privacy.
 
 > **RECOMMENDATION:**
 > In the case where metadata has to be persisted for functionality, it should be
-> stored encrypted at rest and during the execution. Applications should also
-> consider anonymous systems for server fanout (for example {{Loopix}}).
+> stored encrypted at rest and then decrypted during the execution. Applications
+> should also consider anonymous systems for server fanout (for example
+> {{Loopix}}).
 
-Some infrastructures will keep a
 Some infrastructure keeps a mapping between keys used in the MLS protocol and
 user identities. An attacker with access to this information due to compromise
 or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.
 
 > **RECOMMENDATION:**
-> Always use encrypted group operation messages to reduce issues related to
-> privacy.
+> Always use encrypted group operation messages to limit privacy risks.
 
 In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
