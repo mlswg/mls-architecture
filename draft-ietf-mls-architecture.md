@@ -1265,22 +1265,25 @@ When the same user uses multiple clients, it may be possible for other members
 of a group to recognize all of those clients as belonging to the same user.  For
 example, all of a user's clients might present credentials authenticating the
 user's identity.  This association among devices might be considered a leak of
-private information.  An application that wishes to mitigate this privacy risk
-has a couple of options.
+private information.  The remainder of this section describes several approaches for addressing this.
 
 This risk only arises when the leaf nodes for the clients in question provide
 data that can be used to correlate the clients.  So one way to mitigate this
-risk is by only doing device-level authentication within MLS. If user-level
+risk is by only doing client-level authentication within MLS. If user-level
 authentication is still desirable, the application would have to be provide it
 through some other mechanism.
 
 It is also possible to maintain user-level authentication while hiding
-information about the clients that a user uses.  This can be done by having the
+information about the clients that a user owns.  This can be done by having the
 clients share cryptographic state, so that they appear as a single client within
 the MLS group.  The application would need to provide a synchronization
 mechanism so that the clients' state remained consistent across changes to the
 MLS group.
 
+>**RECOMMENDATION:**
+> Avoid sharing cryptographic state between clients to improve resilience against compromises.
+> An attacker could use one compromised device to establish ownership of a state across
+> other devices and reduce the ability of the user to recover.
 ## Endpoint Compromise
 
 The MLS protocol adopts a threat model which includes multiple forms of
