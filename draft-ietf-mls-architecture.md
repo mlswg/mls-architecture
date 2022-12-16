@@ -691,7 +691,9 @@ sent before a client joins or after they are removed are protected with keys
 that are not accessible to the client.  Compromise of a member removed from a
 group does not affect the security of messages sent after their removal.
 Messages sent during the client's membership are also secure as long as the
-client has properly implemented the MLS deletion schedule.
+client has properly implemented the MLS deletion schedule, which calls for the
+secrets used to encrypt or decrypt a message to be deleted after use, along with
+any secrets that could be used to derive them.
 
 ## Parallel Groups
 
@@ -783,7 +785,8 @@ performing such a reinitialization prove its prior membership with a PSK.
 There are a few practical challenges to this approach.  For example, the
 application will need to ensure that all members have the required PSK,
 including any new members that have joined the group since the epoch in which
-the PSK was issued.
+the PSK was issued.  And of course, if the PSK is lost or corrupted along with
+the member's other state, then it cannot be used to recover.
 
 Reinitializing in this way does not provide the member with access to group
 messages from during the state loss window, but enables proof of prior
@@ -1006,7 +1009,9 @@ achieved in specific architecture designs.
 
 ## Assumptions on Transport Security Links
 
-Any secure channel can be used as a transport layer to protect MLS messages such
+As discussed above, MLS provides the highest level of security when its messages
+are delivered over a secure transport.
+Any secure channel can be used as a transport layer to protect MLS messages, such
 as QUIC, TLS, WireGuard or TOR. However, the MLS protocol is designed to
 consider the following threat-model:
 
@@ -1109,7 +1114,7 @@ of service for MLS.
 
 > **RECOMMENDATION:**
 > If unidirectional transport is used for the secure transport channel, prefer
-> using a protocol which provides Forward Error Correction.
+> using a transport protocol which provides Forward Error Correction.
 
 ## Intended Security Guarantees
 
@@ -1225,7 +1230,7 @@ the following compromise scenarios:
 - The attacker has access to all secrets of a user for all groups
   (full state compromise)
 
-Recall that the MLS protocol provides chains of AEAD keys, per sender that are
+The MLS protocol provides per-sender chains of AEAD keys that are
 generated from Group Secrets. These keys are used to protect MLS Plaintext
 messages which can be Group Operation or Application messages. The Group
 Operation messages offer an additional protection as the secret exchanged within
@@ -1293,8 +1298,8 @@ encryption keys for any AEAD chains and can encrypt and decrypt all messages for
 the compromised epochs.
 
 If the adversary is passive, it is expected from the PCS properties of the MLS
-protocol that, as soon as an honest Commit message is sent by the compromised
-party, the next epochs will provide message secrecy.
+protocol that, as soon as the compromised party remediates the compromise and
+sends an honest Commit message, the next epochs will provide message secrecy.
 
 If the adversary is active, the adversary can follow the protocol and perform
 updates on behalf of the compromised party with no ability for an honest group to
@@ -1319,8 +1324,8 @@ the compromise scenario implies a significant impact on both the secrecy and
 authentication guarantees of the protocol, especially if the attacker also has
 access to the group secrets. In that case both secrecy and authentication are
 broken.
-The attacker can generate any message, for the current and future epochs until
-an honest update from the compromised client happens.
+The attacker can generate any message, for the current and future epochs, until
+the compromise is remediated and the formerly compromised client sends an honest update.
 
 Note that under this compromise scenario, the attacker can perform all
 operations which are available to a legitimate client even without access to
@@ -1543,12 +1548,15 @@ incorrect or attacker-provided identities to clients.
 
 - The attacker can publish or distribute credentials
 
-Infrastructures that provide cryptographic material or credentials in place of
-the MLS client (which is under the control of the user) often have the ability
-to use the associated secrets to perform operations on behalf of the user, which
-is unacceptable in many situations. Other mechanisms can be used to prevent this
-issue, such as the service blessing cryptographic material used by an MLS
-client.
+In the past, some systems have had a centralized server generate signature key
+pairs and distribute them to clients.  In such cases, the centralized server is
+a point of compromise, since it stores signature private keys that can be used
+to impersonate clients.  A better approach is instead to generate signature key
+pairs in clients and have them "blessed" by the centralized service, e.g., by
+having the service issue a credential binding the key pair to the client's
+identity.  In this approach, there is still a risk that the centralized service
+will authorize additional key pairs, but it will not be able to use existing,
+client-generated private keys.
 
 > **RECOMMENDATION:**
 > Make clients submit signature public keys to the AS, this is usually better
@@ -1658,13 +1666,10 @@ confidentiality guarantees, it is a serious issue for privacy.
 > should also consider anonymous systems for server fanout (for example
 > {{Loopix}}).
 
-Often, expectation from users is that the infrastructure will not retain the
-ability to constantly map the user identity to signature public keys of the MLS
-protocol. Some infrastructures will keep a mapping between signature public keys
-of clients and user identities. This can enable an adversary that has
-compromised the AS (or required access according to regulation) to
-monitor unencrypted traffic and correlate the messages exchanged within the
-same group.
+Some infrastructure keeps a mapping between keys used in the MLS protocol and
+user identities. An attacker with access to this information due to compromise
+or regulation can associate unencrypted group messages (e.g., Commits and
+Proposals) with the corresponding user identity.
 
 > **RECOMMENDATION:**
 > Always use encrypted group operation messages to limit privacy risks.
