@@ -57,6 +57,9 @@ contributor:
 - name: Konrad Kohbrok
   org: Phoenix R&D
   email: konrad.kohbrok@datashrine.de
+- name: Rohan Mahy
+  org: Wire
+  email: rohan.mahy@wire.com
 - name: Brendan McMillion
   email: brendanmcmillion@gmail.com
 - name: Thyla van der Merwe
