@@ -1294,6 +1294,7 @@ MLS group.
 > improve resilience against compromises.  An attacker could use one compromised
 > device to establish ownership of a state across other devices and reduce the
 > ability of the user to recover.
+
 ## Endpoint Compromise
 
 The MLS protocol adopts a threat model which includes multiple forms of
