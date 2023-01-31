@@ -202,26 +202,6 @@ informative:
         ins: G. Danezis
         name: George Danezis
 
-  TOR:
-    title: "Tor: The Second-Generation Onion Router"
-    date: 2004
-    author:
-      -
-        name: Roger Dingledine
-      -
-        name: Nick Mathewson
-      -
-        name: Paul Syverson
-    target: https://svn.torproject.org/svn/projects/design-paper/tor-design.html
-
-  WireGuard:
-    title: "WireGuard: Next Generation Kernel Network Tunnel"
-    date: 2020
-    author:
-        name: Jason Donenfeld
-    target: https://www.wireguard.com/papers/wireguard.pdf
-
-
 
 
 --- abstract
@@ -1074,10 +1054,10 @@ achieved in specific architecture designs.
 ## Assumptions on Transport Security Links
 
 As discussed above, MLS provides the highest level of security when its messages
-are delivered over a secure transport.  Any secure channel can be used as a
-transport layer to protect MLS messages, such as QUIC {{?RFC9000}}, TLS
-{{?RFC8446}}, IPsec {{?RFC6071}}, WireGuard {{WireGuard}}, or TOR
-{{TOR}}. However, the MLS protocol is designed to consider the following
+are delivered over a secure transport.  Any secure channel,
+such as QUIC {{?RFC9000}}, TLS {{?RFC8446}}, can be used to
+transport MLS messages.
+However, the MLS protocol is designed to consider the following
 threat-model:
 
 - The attacker can read, write, and delete arbitrary messages inside the secure
