@@ -849,7 +849,7 @@ managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.
 
 > **RECOMMENDATION:** Use the default content mechanism defined in
-> {{?I-D.mahy-mls-content-adv}}, unless the specific application defines another
+> {{?I-D.ietf-mls-extensions}}, unless the specific application defines another
 > mechanism which more appropriately addresses the same requirements for that
 > application of MLS.
 
