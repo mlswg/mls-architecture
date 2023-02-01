@@ -272,47 +272,31 @@ group. As groups change membership and group or member properties, they
 advance from one _epoch_ to another and the cryptographic state of the
 group evolves.
 
-Below are some additional terms which are used in this document. For a more
+The group is represented using a _ratchet tree_, which represents the members
+as the leaves of a tree. It is used to efficiently encrypt to subsets of the
+members. Each member has a _LeafNode_ object in the tree holding the client's
+identity, credentials, and capabilities.
+
+Various messages are used in the evolution from epoch to epoch.
+A _Proposal_ message proposes
+a change to be made in the next epoch, such as adding or removing a member.
+A _Commit_ message initiates a new epoch by instructing members of the group to
+implement a collection of proposals. Proposals and Commits are collectively
+called _Handshake messages_.
+A _KeyPackage_ provides keys that can be used to add the client to a group,
+including its LeafNode, and _Signature Key_.
+A _Welcome_ message provides a new member to the group with the information to
+initialize their state for the epoch in which they were added.
+
+Of course most (but not all) applications use MLS to send encrypted group messages.
+An _application message_ is an MLS message with an arbitrary application payload.
+
+Finally, a _PublicMessage_ contains an integrity-protected MLS Handshake message,
+while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
+or Application message.
+
+For a more
 detailed explanation of these terms, please consult the MLS protocol specification.
-
-Proposal:
-: An MLS message describing a tentative change to the state of a group.
-
-Commit:
-: An MLS message which advances the group into the next epoch. Members
-  calculate the state of the new epoch from the Commit and the state of
-  the previous epoch. A Commit often contains Proposals.
-
-Welcome:
-: An MLS message encrypted for one or more new members which gives
-  them the cryptographic state of a group.
-
-Handshake message:
-: A Proposal or Commit sent to a group.
-
-Application message:
-: An MLS message with an arbitrary application payload.
-
-PublicMessage:
-: An integrity-protected MLS Handshake message.
-
-PrivateMessage:
-: A confidential, integrity-protected Handshake or Application message.
-
-Signature Key:
-: A signing key pair used to authenticate the sender of a message.
-
-Ratchet Tree:
-: A representation of the members of a group as the leaves of a binary
-  tree. It is used to efficiently encrypt to subsets of the leaves.
-
-LeafNode:
-: A structure holding a client's identity and capabilities, stored either
-  in a Ratchet Tree leaf or in a Key Package.
-
-Key Package:
-: A signed object describing a client, containing a LeafNode and a public
-  key used to encrypt a Welcome message to that client.
 
 ## Abstract Services
 
