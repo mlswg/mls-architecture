@@ -1090,10 +1090,10 @@ metadata if it cannot compromise the secure channel.
 ### Integrity and Authentication of Custom Metadata
 
 The MLS protocol provides an authenticated "Additional Authenticated Data" field
-for applications to make data available outside the MLSCiphertext.
+for applications to make data available outside a PrivateMessage.
 
 > **RECOMMENDATION:** Use the "Additional Authenticated Data" field of the
-> MLSCiphertext message instead of using other unauthenticated means of sending
+> PrivateMessage instead of using other unauthenticated means of sending
 > metadata throughout the infrastructure. If the data is private, the
 > infrastructure should use encrypted Application messages instead.
 
@@ -1120,10 +1120,10 @@ connections. Such a system helps in preventing anonymous clients from sending
 arbitrary numbers of group operation messages to the Delivery Service or the MLS
 clients.
 
-> **RECOMMENDATION:** Anonymous credentials can be used in order to help DoS
+> **RECOMMENDATION:** Use credentials uncorellated to specific users to help DoS
 > attacks prevention, in a privacy preserving manner. Note that the privacy of
 > these mechanisms has to be adjusted in accordance with the privacy expected
-> from the secure transport links. (See more discussion further down.)
+> from secure transport links. (See more discussion in the next section.)
 
 ### Message Suppression and Error Correction
 
@@ -1244,10 +1244,10 @@ to a third party. This is often called "non-repudiation".
 
 Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
 property that it is impossible to prove to a third party that a message was sent
-by a given sender.  MLS does not make any claims with regard to deniability.  It
-may be possible to operate MLS in ways that provide certain deniability
-properties, but defining the specific requirements and resulting notions of
-deniability requires further analysis.
+by a given sender. Deniability is not currently provided by the MLS protocol, but the
+protocol avoids constraints that would make it impossible to add deniability
+properties (via extensions) in the future. Defining the specific requirements
+and resulting notions of deniability requires further analysis.
 
 ### Associating a User's Clients
 
