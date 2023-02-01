@@ -261,12 +261,60 @@ all users, for all group sizes, even when it reduces to only two users.
 
 # General Setting
 
+## Terminology
+
 MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
 large as thousands.  A client that is part of a group is a _member_ of that
-group.
+group. As groups change membership and group or member properties, they
+advance from one _epoch_ to another and the cryptographic state of the
+group evolves.
+
+Below are some additional terms which are used in this document. For a more
+detailed explanation of these terms, please consult the MLS protocol specification.
+
+Proposal:
+: An MLS message describing a tentative change to the state of a group.
+
+Commit:
+: An MLS message which advances the group into the next epoch. Members
+  calculate the state of the new epoch from the Commit and the state of
+  the previous epoch. A Commit often contains Proposals.
+
+Welcome:
+: An MLS message encrypted for one or more new members which gives
+  them the cryptographic state of a group.
+
+Handshake message:
+: A Proposal or Commit sent to a group.
+
+Application message:
+: An MLS message with an arbitrary application payload.
+
+PublicMessage:
+: An integrity-protected MLS Handshake message.
+
+PrivateMessage:
+: A confidential, integrity-protected Handshake or Application message.
+
+Signature Key:
+: A signing key pair used to authenticate the sender of a message.
+
+Ratchet Tree:
+: A representation of the members of a group as the leaves of a binary
+  tree. It is used to efficiently encrypt to subsets of the leaves.
+
+LeafNode:
+: A structure holding a client's identity and capabilities, stored either
+  in a Ratchet Tree leaf or in a Key Package.
+
+Key Package:
+: A signed object describing a client, containing a LeafNode and a public
+  key used to encrypt a Welcome message to that client.
+
+## Abstract Services
 
 In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
