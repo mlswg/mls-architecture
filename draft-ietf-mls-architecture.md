@@ -1075,11 +1075,11 @@ unencrypted header of the MLS protocol message format for group operation
 messages, and application messages are always encrypted in MLS.
 
 MLS avoids needing to send the full list of recipients to the server for
-dispatching messages because that list is potentially extremely large in
-MLS. Header metadata in MLS messages typically consists of an opaque `group_id`,
-a numerical value to determine the epoch of the group (the number of changes
-that have been made to the group), and whether the message is an application
-message, a proposal, or a commit.
+dispatching messages because that list could potentially contain thousands of
+recipients. Header metadata in MLS messages typically consists of an opaque
+`group_id`, a numerical value to determine the epoch of the group (the number
+of changes that have been made to the group), and whether the message is an
+application message, a proposal, or a commit.
 
 Even though some of this metadata information does not consist of secret
 payloads, in correlation with other data a network observer might be able to
@@ -1279,7 +1279,7 @@ MLS group.
 ## Endpoint Compromise
 
 The MLS protocol adopts a threat model which includes multiple forms of
-endpoint/client compromise. While adversaries are in a very strong position if
+endpoint/client compromise. While adversaries are in a strong position if
 they have compromised an MLS client, there are still situations where security
 guarantees can be recovered thanks to the PCS properties achieved by the MLS
 protocol.
@@ -1348,7 +1348,7 @@ Note that under that compromise scenario, authentication is not affected in
 either of these cases.  As every member of the group can compute the AEAD keys
 for all the chains (they have access to the Group Secrets) in order to send and
 receive messages, the authentication provided by the AEAD encryption layer of
-the common framing mechanism is very weak. Successful decryption of an AEAD
+the common framing mechanism is weak. Successful decryption of an AEAD
 encrypted message only guarantees that a member of the group sent the message.
 
 ### Compromise of the Group Secrets of a single group for one or more group epochs
@@ -1465,7 +1465,7 @@ erase ciphertexts as much as possible.
 Note that this document makes a clear distinction between the way signature keys
 and other group shared secrets must be handled.  In particular, a large set of
 group secrets cannot necessarily be assumed to be protected by an HSM or secure
-enclave features. This is especially true because these keys are extremely
+enclave features. This is especially true because these keys are
 frequently used and changed with each message received by a client.
 
 However, the signature private keys are mostly used by clients to send a
