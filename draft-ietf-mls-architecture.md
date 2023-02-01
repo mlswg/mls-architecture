@@ -1456,7 +1456,7 @@ application to instruct the protocol implementation.
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
 > which can access the messages on the device without even needing to attack
 > MLS, the application should delete plaintext messages and ciphertexts
-> immediately after encryption or decryption.
+> as soon as practical after encryption or decryption.
 
 Even though, from the strict point of view of the security formalization, a
 ciphertext is always public and will forever be, there is no loss in trying to
@@ -1725,8 +1725,8 @@ user identities. An attacker with access to this information due to compromise
 or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.
 
-> **RECOMMENDATION:** Always use encrypted group operation messages to limit
-> privacy risks.
+> **RECOMMENDATION:** Use encrypted group operation messages to limit
+> privacy risks whenever possible.
 
 In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
