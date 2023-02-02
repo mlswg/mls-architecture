@@ -578,7 +578,7 @@ However, note that a malicious Delivery Service could also reorder messages or
 provide an inconsistent view to different users.  The "generation" counter in
 MLS messages provides per-sender loss detection and ordering that cannot be
 manipulated by the DS.  A mechanism for more robust protections is discussed in
-{{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
+{{Section 2.1 of I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
 partitioning key exchange messages; this can be detected only by out of band
 comparison (e.g., confirming that all clients have the same
 `epoch_authenticator` value`).
@@ -855,7 +855,7 @@ managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.
 
 > **RECOMMENDATION:** Use the default content mechanism defined in
-> {{?I-D.ietf-mls-extensions}}, unless the specific application defines another
+> {{Section 2.3 of I-D.ietf-mls-extensions}}, unless the specific application defines another
 > mechanism which more appropriately addresses the same requirements for that
 > application of MLS.
 
