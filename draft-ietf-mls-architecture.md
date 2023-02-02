@@ -72,13 +72,16 @@ contributor:
   email: ietf@raphaelrobert.com
 
 informative:
-  KeyTransparency:
-       target: https://KeyTransparency.org
-       title: Key Transparency
-       date: 2017
+  CONIKS:
+       target: https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-melara.pdf
+       title: "CONIKS: Bringing Key Transparency to End Users"
+       date: 2015
        author:
-       -
-          ins: Google
+         - name: Marcela Melara
+         - name: Aaron Blankstein
+         - name: Joseph Bonneau
+         - name: Edward Felten
+         - name: Michael Freedman
 
   CAPBR: DOI.10.1145/343477.343502
 
@@ -436,7 +439,7 @@ breadth of this concept:
   The verification function is the application functionality that enables users
   to verify keys.
 
-* In a system based on Key Transparency (KT) {{KeyTransparency}}, the issuance
+* In a system based on {{CONIKS}} end user Key Transparency (KT), the issuance
   function would correspond to the insertion of a key in a KT log under a user's
   identity. The verification function would correspond to verifying a key's
   inclusion in the log for a claimed identity, together with the KT log's
