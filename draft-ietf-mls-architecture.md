@@ -432,7 +432,7 @@ breadth of this concept:
   provided by the certificate authorities in the PKI, and the verification
   function would correspond to certificate verification by clients.
 
-* Several current messaging applications rely on users verifying each others'
+* Several current messaging applications rely on users verifying each other's
   key fingerprints for authentication.  In this scenario, the issuance function
   is simply the generation of a key pair (i.e., a credential is just an
   identifier and public key, with no information to assist in verification).
@@ -579,7 +579,7 @@ provide an inconsistent view to different users.  The "generation" counter in
 MLS messages provides per-sender loss detection and ordering that cannot be
 manipulated by the DS.  A mechanism for more robust protections is discussed in
 {{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
-partitioning key exchange messages; this can be detected only by out of band
+partitioning key exchange messages; this can be detected only by out-of-band
 comparison (e.g., confirming that all clients have the same
 `epoch_authenticator` value`).
 
@@ -745,7 +745,7 @@ delivering messages asynchronously and reliably.
 
 The MLS protocol allows each member of the messaging group to perform operations
 equally. This is because all clients within a group (members) have access to the
-shared cryptographic material. However every service/infrastructure has control
+shared cryptographic material. However, every service/infrastructure has control
 over policies applied to its own clients. Applications managing MLS clients can
 be configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -784,7 +784,7 @@ proposals, but any other policies must be assured to be consistent as above.
 
 ## Handling Authentication Failures
 
-Within an MLS group, every member is authenticated to other member by means of
+Within an MLS group, every member is authenticated to every other member by means of
 credentials issued and verified by the Authentication Service.  MLS does not
 prescribe what actions, if any, an application should take in the event that a
 group member presents an invalid credential.  For example, an application may
@@ -926,7 +926,7 @@ interoperate.
 
 - A **Delivery Service**, described fully in {{delivery-service}}, provides
   methods for:
-  1. Delivering messages sent to a group to all members in the group.
+  1. Delivering messages for a group to all members in the group.
   2. Delivering Welcome messages to new members of a group.
   3. Uploading new KeyPackages for a user's own clients.
   4. Downloading KeyPackages for specific clients. Typically, KeyPackages are
@@ -1200,7 +1200,7 @@ MLS provides additional protection regarding secrecy of past messages and future
 messages. These cryptographic security properties are Forward Secrecy (FS) and
 Post-Compromise Security (PCS).
 
-FS means that access to all encrypted traffic history combined with an access to
+FS means that access to all encrypted traffic history combined with access to
 all current keying material on clients will not defeat the secrecy properties of
 messages older than the oldest key of the compromised client.  Note that this
 means that clients have the extremely important role of deleting appropriate
@@ -1267,7 +1267,7 @@ for addressing this.
 This risk only arises when the leaf nodes for the clients in question provide
 data that can be used to correlate the clients.  So one way to mitigate this
 risk is by only doing client-level authentication within MLS. If user-level
-authentication is still desirable, the application would have to be provide it
+authentication is still desirable, the application would have to provide it
 through some other mechanism.
 
 It is also possible to maintain user-level authentication while hiding
