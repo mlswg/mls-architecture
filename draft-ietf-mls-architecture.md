@@ -578,7 +578,7 @@ However, note that a malicious Delivery Service could also reorder messages or
 provide an inconsistent view to different users.  The "generation" counter in
 MLS messages provides per-sender loss detection and ordering that cannot be
 manipulated by the DS.  A mechanism for more robust protections is discussed in
-{{Section 2.1 of I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
+{{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
 partitioning key exchange messages; this can be detected only by out of band
 comparison (e.g., confirming that all clients have the same
 `epoch_authenticator` value`).
@@ -1053,9 +1053,9 @@ of compromise of the transport security links as well as of both clients and
 elements of the messaging system, as described in the remainder of this section.
 
 Generally, MLS is designed under the assumption that the transport layer is
-present to keep metadata private, while the MLS protocol provides confidentiality,
+present to keep metadata private from network observers, while the MLS protocol provides confidentiality,
 integrity and authentication guarantees of the application data (which could pass
-through multiple systems). Additional properties such as deniability could also be
+through multiple systems). Additional properties such as partial anonymity or deniability could also be
 achieved in specific architecture designs.
 
 ## Assumptions on Transport Security Links
@@ -1338,7 +1338,7 @@ and compromising keys across the chains would mean that some Group Secrets have
 been compromised, which is not the case in this attack scenario (we explore
 stronger compromise scenarios as part of the following sections).
 
-MLS provides Post-Compromise Secrecy against an active adaptive attacker across
+MLS provides Post-Compromise Security against an active adaptive attacker across
 epochs for AEAD encryption, which means that as soon as the epoch is changed, if
 the attacker does not have access to more secret material they won't be able to
 access any protected messages from future epochs.
@@ -1697,7 +1697,7 @@ revocation. The users of a group could check for revoked keys (in case of
 compromise detection) using a mechanism such as CRLite or some more advanced
 privacy preserving technology.
 
-> **RECOMMENDATION:** Provide a Key Transparency and Out-of-Band authentication
+> **RECOMMENDATION:** Provide one or more out-of-band authentication
 > mechanisms to limit the impact of an Authentication Service compromise.
 
 We note, again, that as described prior to that section, the Authentication
