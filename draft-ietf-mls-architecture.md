@@ -269,14 +269,14 @@ MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
-large as thousands.  A client that is part of a group is a _member_ of that
+large as tens of thousands.  A client that is part of a group is a _member_ of that
 group.
 
 In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
 encryption and authentication.
 
-The Service Provider presents two abstract functionalities that allow clients to
+The MLS service requires two abstract functionalities that allow clients to
 prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) functionality which is responsible for
@@ -338,7 +338,7 @@ assures the delivery properties required of the DS (see
 According to this architecture design, a typical group messaging scenario might
 look like this:
 
-1. Alice, Bob and Charlie create accounts with a service provider and obtain
+1. Alice, Bob, and Charlie create accounts with a service provider and obtain
    credentials from the AS.
 
 2. Alice, Bob and Charlie authenticate to the DS and store some initial keying
@@ -1081,7 +1081,7 @@ unencrypted header of the MLS protocol message format for group operation
 messages, and application messages are always encrypted in MLS.
 
 MLS avoids needing to send the full list of recipients to the server for
-dispatching messages because that list could potentially contain thousands of
+dispatching messages because that list could potentially contain tens of thousands of
 recipients. Header metadata in MLS messages typically consists of an opaque
 `group_id`, a numerical value to determine the epoch of the group (the number
 of changes that have been made to the group), and whether the message is an
