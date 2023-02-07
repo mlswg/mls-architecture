@@ -246,8 +246,8 @@ managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
 End-to-end security is a used in the vast majority of instant messaging systems,
-and also deployed in systems for other purposes such as calling and conferencing
-systems. In this context, "end-to-end" captures
+and also deployed in systems for other purposes such as calling and conferencing.
+In this context, "end-to-end" captures
 the notion that users of the system enjoy some level of security -- with the
 precise level depending on the system design -- even in the face of malicious
 actions by the operator of the messaging system.
@@ -276,7 +276,7 @@ In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
 encryption and authentication.
 
-The MLS service requires two abstract functionalities that allow clients to
+The MLS protocol requires two abstract functionalities that allow clients to
 prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) functionality which is responsible for
@@ -1054,7 +1054,7 @@ elements of the messaging system, as described in the remainder of this section.
 
 Generally, MLS is designed under the assumption that the transport layer is
 present to keep metadata private from network observers, while the MLS protocol provides confidentiality,
-integrity and authentication guarantees of the application data (which could pass
+integrity, and authentication guarantees for the application data (which could pass
 through multiple systems). Additional properties such as partial anonymity or deniability could also be
 achieved in specific architecture designs.
 
@@ -1126,8 +1126,8 @@ connections. Such a system helps in preventing anonymous clients from sending
 arbitrary numbers of group operation messages to the Delivery Service or the MLS
 clients.
 
-> **RECOMMENDATION:** Use credentials uncorellated to specific users to help DoS
-> attacks prevention, in a privacy preserving manner. Note that the privacy of
+> **RECOMMENDATION:** Use credentials uncorrellated with specific users to help prevent DoS
+> attacks, in a privacy preserving manner. Note that the privacy of
 > these mechanisms has to be adjusted in accordance with the privacy expected
 > from secure transport links. (See more discussion in the next section.)
 
@@ -1252,7 +1252,7 @@ Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
 property that it is impossible to prove to a third party that a message was sent
 by a given sender. Deniability is not currently provided by the MLS protocol, but the
 protocol avoids constraints that would make it impossible to add deniability
-properties (via extensions) in the future. Defining the specific requirements
+properties (via extensions). Defining the specific requirements
 and resulting notions of deniability requires further analysis.
 
 ### Associating a User's Clients
@@ -1590,8 +1590,8 @@ is not acceptable to create artificial delays for message retrieval.
 > delay notifications randomly across recipient devices using a mixnet or other
 > techniques.
 
-Note that with a legal requests to ask the service provider for
-the push-token associated to an identifier, it is easy to correlate the token
+Note that with a legal request to ask the service provider for
+the push-token associated with an identifier, it is easy to correlate the token
 with a second request to the
 company operating the push-notification system to get information about the
 device, which is often linked with a real identity via a cloud account, a credit
