@@ -1649,7 +1649,7 @@ read and write messages protected by the protocol for that Group.
 
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
-be largely performed autonomously (e.g. without additional network traffic) by
+be largely performed autonomously (e.g. without user interaction) by
 the clients themselves for the `x509` Credential
 type. In contrast, when MLS clients use the `basic` Credential type, a larger
 degree of trust must be placed in a (likely) centralized authentication
