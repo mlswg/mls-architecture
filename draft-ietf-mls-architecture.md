@@ -284,7 +284,7 @@ A _Commit_ message initiates a new epoch by instructing members of the group to
 implement a collection of proposals. Proposals and Commits are collectively
 called _Handshake messages_.
 A _KeyPackage_ provides keys that can be used to add the client to a group,
-including its LeafNode, and _Signature Key_.
+including an initiation LeafNode, and _Signature Key_.
 A _Welcome_ message provides a new member to the group with the information to
 initialize their state for the epoch in which they were added.
 
