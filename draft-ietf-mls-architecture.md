@@ -157,7 +157,7 @@ informative:
       - name: Karthikeyan Bhargavan
       - name: Benjamin Beurdouche
       - name: Prasad Naldurg
-    target: https://hal.laas.fr/INRIA/hal-02425229/document
+    target: https://hal.laas.fr/INRIA/hal-02425229v1/file/mls-treekem.pdf
 
   BBR18:
     title: "TreeKEM: Asynchronous Decentralized Key Management for Large Dynamic Groups A protocol proposal for Messaging Layer Security (MLS)"
