@@ -308,7 +308,7 @@ may even involve some action by users.  For example:
 * In an MLS group using a Public Key Infrastructure (PKI) for authentication,
   the AS would comprise the certificate issuance and validation processes,
   both of which involve logic inside MLS clients as well as various
-  existing PKI roles (ex: Certificate Authorities).
+  existing PKI roles (ex: Certification Authorities).
 
 It is important to note that the Authentication Service functionality can be
 completely abstract in the case of a Service Provider which allows MLS clients
