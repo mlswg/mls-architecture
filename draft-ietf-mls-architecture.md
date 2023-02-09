@@ -265,12 +265,44 @@ all users, for all group sizes, even for a group of only two clients.
 
 # General Setting
 
+## Terminology
+
 MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
 large as tens of thousands.  A client that is part of a group is a _member_ of that
-group.
+group. As groups change membership and group or member properties, they
+advance from one _epoch_ to another and the cryptographic state of the
+group evolves.
+
+The group is represented using a _ratchet tree_, which represents the members
+as the leaves of a tree. It is used to efficiently encrypt to subsets of the
+members. Each member has a _LeafNode_ object in the tree holding the client's
+identity, credentials, and capabilities.
+
+Various messages are used in the evolution from epoch to epoch.
+A _Proposal_ message proposes
+a change to be made in the next epoch, such as adding or removing a member.
+A _Commit_ message initiates a new epoch by instructing members of the group to
+implement a collection of proposals. Proposals and Commits are collectively
+called _Handshake messages_.
+A _KeyPackage_ provides keys that can be used to add the client to a group,
+including its LeafNode, and _Signature Key_.
+A _Welcome_ message provides a new member to the group with the information to
+initialize their state for the epoch in which they were added.
+
+Of course most (but not all) applications use MLS to send encrypted group messages.
+An _application message_ is an MLS message with an arbitrary application payload.
+
+Finally, a _PublicMessage_ contains an integrity-protected MLS Handshake message,
+while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
+or Application message.
+
+For a more
+detailed explanation of these terms, please consult the MLS protocol specification.
+
+## Abstract Services
 
 In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
