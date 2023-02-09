@@ -72,13 +72,16 @@ contributor:
   email: ietf@raphaelrobert.com
 
 informative:
-  KeyTransparency:
-       target: https://KeyTransparency.org
-       title: Key Transparency
-       date: 2017
+  CONIKS:
+       target: https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-melara.pdf
+       title: "CONIKS: Bringing Key Transparency to End Users"
+       date: 2015
        author:
-       -
-          ins: Google
+         - name: Marcela Melara
+         - name: Aaron Blankstein
+         - name: Joseph Bonneau
+         - name: Edward Felten
+         - name: Michael Freedman
 
   CAPBR: DOI.10.1145/343477.343502
 
@@ -154,7 +157,7 @@ informative:
       - name: Karthikeyan Bhargavan
       - name: Benjamin Beurdouche
       - name: Prasad Naldurg
-    target: https://hal.laas.fr/INRIA/hal-02425229/document
+    target: https://hal.laas.fr/INRIA/hal-02425229v1/file/mls-treekem.pdf
 
   BBR18:
     title: "TreeKEM: Asynchronous Decentralized Key Management for Large Dynamic Groups A protocol proposal for Messaging Layer Security (MLS)"
@@ -242,8 +245,9 @@ Instructions are on that page as well.  Editorial changes can be
 managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
-End-to-end security is a requirement for instant messaging systems and is
-commonly deployed in many such systems. In this context, "end-to-end" captures
+End-to-end security is a used in the vast majority of instant messaging systems,
+and also deployed in systems for other purposes such as calling and conferencing.
+In this context, "end-to-end" captures
 the notion that users of the system enjoy some level of security -- with the
 precise level depending on the system design -- even in the face of malicious
 actions by the operator of the messaging system.
@@ -257,7 +261,7 @@ level, though they may have incompatibilities in terms of how protected messages
 are delivered, contents of protected messages, and identity/authentication
 infrastructures.
 The MLS protocol has been designed to provide the same security guarantees to
-all users, for all group sizes, even when it reduces to only two users.
+all users, for all group sizes, even for a group of only two clients.
 
 # General Setting
 
@@ -265,14 +269,14 @@ MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
-large as thousands.  A client that is part of a group is a _member_ of that
+large as tens of thousands.  A client that is part of a group is a _member_ of that
 group.
 
 In order to communicate securely, users initially interact with services at
 their disposal to establish the necessary values and credentials required for
 encryption and authentication.
 
-The Service Provider presents two abstract functionalities that allow clients to
+The MLS protocol requires two abstract functionalities that allow clients to
 prepare for sending and receiving messages securely:
 
 - An Authentication Service (AS) functionality which is responsible for
@@ -301,9 +305,10 @@ may even involve some action by users.  For example:
 * MLS clients connected to a peer-to-peer network could instantiate a
   decentralized DS by transmitting MLS messages over that network.
 
-* In an MLS group using a PKI for authentication, the AS would comprise the
-  certificate issuance and validation processes, both of which involve logic
-  inside MLS clients as well as various servers.
+* In an MLS group using a Public Key Infrastructure (PKI) for authentication,
+  the AS would comprise the certificate issuance and validation processes,
+  both of which involve logic inside MLS clients as well as various
+  existing PKI roles (ex: Certification Authorities).
 
 It is important to note that the Authentication Service functionality can be
 completely abstract in the case of a Service Provider which allows MLS clients
@@ -333,7 +338,7 @@ assures the delivery properties required of the DS (see
 According to this architecture design, a typical group messaging scenario might
 look like this:
 
-1. Alice, Bob and Charlie create accounts with a service provider and obtain
+1. Alice, Bob, and Charlie create accounts with a service provider and obtain
    credentials from the AS.
 
 2. Alice, Bob and Charlie authenticate to the DS and store some initial keying
@@ -427,14 +432,14 @@ breadth of this concept:
   provided by the certificate authorities in the PKI, and the verification
   function would correspond to certificate verification by clients.
 
-* Several current messaging applications rely on users verifying each others'
+* Several current messaging applications rely on users verifying each other's
   key fingerprints for authentication.  In this scenario, the issuance function
   is simply the generation of a key pair (i.e., a credential is just an
   identifier and public key, with no information to assist in verification).
   The verification function is the application functionality that enables users
   to verify keys.
 
-* In a system based on Key Transparency (KT) {{KeyTransparency}}, the issuance
+* In a system based on {{CONIKS}} end user Key Transparency (KT), the issuance
   function would correspond to the insertion of a key in a KT log under a user's
   identity. The verification function would correspond to verifying a key's
   inclusion in the log for a claimed identity, together with the KT log's
@@ -487,8 +492,8 @@ functional and privacy guarantees provided by MLS may differ but the
 authentication and confidentiality guarantees remain the same.
 
 Unlike the Authentication Service which is trusted for authentication and
-secrecy, the Delivery Service is completely untrusted regarding this
-property. While privacy of group membership might be a problem in the case of a
+secrecy, the Delivery Service is completely untrusted regarding these
+properties. While privacy of group membership might be a problem in the case of a
 Delivery Service server fanout, the Delivery Service can be considered as an
 active, adaptive network attacker for the purpose of security analysis.
 
@@ -520,8 +525,10 @@ in addition to the multiplicity required to support single-use.
 
 When a client wishes to establish a group or add clients to a group, it first
 contacts the Delivery Service to request KeyPackages for each other client,
-authenticates the KeyPackages using the signature keys, and then uses those to
-add the other clients to the group.
+authenticates the KeyPackages using the signature keys, includes the KeyPackages
+in Add Proposals, encrypts the information needed to join the group
+(the _GroupInfo_ object) with an ephemeral key, then separately encrypts the
+ephemeral key with the `init_key` from each KeyPackage.
 
 When a client requests a KeyPackage in order to add a user to a group, the
 Delivery Service should provide the minimum number of KeyPackages necessary to
@@ -572,7 +579,7 @@ provide an inconsistent view to different users.  The "generation" counter in
 MLS messages provides per-sender loss detection and ordering that cannot be
 manipulated by the DS.  A mechanism for more robust protections is discussed in
 {{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
-partitioning key exchange messages; this can be detected only by out of band
+partitioning key exchange messages; this can be detected only by out-of-band
 comparison (e.g., confirming that all clients have the same
 `epoch_authenticator` value`).
 
@@ -640,10 +647,10 @@ proposal.
 # Functional Requirements
 
 MLS is designed as a large-scale group messaging protocol and hence aims to
-provide both performance and safety to its users.  Messaging systems that
-implement MLS provide support for conversations involving two or more members,
-and aim to scale to groups with tens of thousands of members, typically
-including many users using multiple devices.
+provide both performance and security (e.g. integrity and confidentiality)
+to its users. Messaging systems that implement MLS provide support for
+conversations involving two or more members, and aim to scale to groups with
+tens of thousands of members, typically including many users using multiple devices.
 
 ## Membership Changes
 
@@ -738,7 +745,7 @@ delivering messages asynchronously and reliably.
 
 The MLS protocol allows each member of the messaging group to perform operations
 equally. This is because all clients within a group (members) have access to the
-shared cryptographic material. However every service/infrastructure has control
+shared cryptographic material. However, every service/infrastructure has control
 over policies applied to its own clients. Applications managing MLS clients can
 be configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -750,7 +757,7 @@ messages. This flexibility is to allow services to perform access control tasks
 on behalf of the group.
 
 While the Application messages will always be encrypted, having the handshake
-messages in plaintext has inconveniences in terms of privacy as someone could
+messages in plaintext has privacy consequences as someone could
 collect the signatures on the handshake messages and use them for tracking.
 
 > **RECOMMENDATION:** Prefer using encrypted group operation messages to avoid
@@ -777,7 +784,7 @@ proposals, but any other policies must be assured to be consistent as above.
 
 ## Handling Authentication Failures
 
-Within an MLS group, every member is authenticated to other member by means of
+Within an MLS group, every member is authenticated to every other member by means of
 credentials issued and verified by the Authentication Service.  MLS does not
 prescribe what actions, if any, an application should take in the event that a
 group member presents an invalid credential.  For example, an application may
@@ -848,7 +855,7 @@ managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.
 
 > **RECOMMENDATION:** Use the default content mechanism defined in
-> {{?I-D.mahy-mls-content-adv}}, unless the specific application defines another
+> {{Section 2.3 of I-D.ietf-mls-extensions}}, unless the specific application defines another
 > mechanism which more appropriately addresses the same requirements for that
 > application of MLS.
 
@@ -919,7 +926,7 @@ interoperate.
 
 - A **Delivery Service**, described fully in {{delivery-service}}, provides
   methods for:
-  1. Delivering messages sent to a group to all members in the group.
+  1. Delivering messages for a group to all members in the group.
   2. Delivering Welcome messages to new members of a group.
   3. Uploading new KeyPackages for a user's own clients.
   4. Downloading KeyPackages for specific clients. Typically, KeyPackages are
@@ -1046,15 +1053,15 @@ of compromise of the transport security links as well as of both clients and
 elements of the messaging system, as described in the remainder of this section.
 
 Generally, MLS is designed under the assumption that the transport layer is
-present to protect metadata and privacy in general, while the MLS protocol is
-providing stronger guarantees such as confidentiality, integrity and
-authentication guarantees. Stronger properties such as deniability can also be
+present to keep metadata private from network observers, while the MLS protocol provides confidentiality,
+integrity, and authentication guarantees for the application data (which could pass
+through multiple systems). Additional properties such as partial anonymity or deniability could also be
 achieved in specific architecture designs.
 
 ## Assumptions on Transport Security Links
 
 As discussed above, MLS provides the highest level of security when its messages
-are delivered over a secure transport.  Any secure channel,
+are delivered over an encrypted transport.  Any secure channel,
 such as QUIC {{?RFC9000}}, TLS {{?RFC8446}}, can be used to
 transport MLS messages.
 However, the MLS protocol is designed to consider the following
@@ -1073,15 +1080,19 @@ limited amount of metadata. Very little information is contained in the
 unencrypted header of the MLS protocol message format for group operation
 messages, and application messages are always encrypted in MLS.
 
-MLS avoids needing to send the full list of recipients to the server for
-dispatching messages because that list is potentially extremely large in
-MLS. Header metadata in MLS messages typically consists of an opaque `group_id`,
-a numerical value to determine the epoch of the group (the number of changes
-that have been made to the group), and whether the message is an application
-message, a proposal, or a commit.
+> **RECOMMENDATION:** Use transports that provide reliability and metadata
+> confidentiality whenever possible, e.g., by transmitting MLS messages over
+> a protocol such as TLS {{?RFC8446}} or QUIC {{?RFC9000}}.
 
-Even though some of this metadata information does not consist of secret
-payloads, in correlation with other data a network observer might be able to
+MLS avoids needing to send the full list of recipients to the server for
+dispatching messages because that list could potentially contain tens of thousands of
+recipients. Header metadata in MLS messages typically consists of an opaque
+`group_id`, a numerical value to determine the epoch of the group (the number
+of changes that have been made to the group), and whether the message is an
+application message, a proposal, or a commit.
+
+Even though some of this metadata information does not consist of sensitive
+information, in correlation with other data a network observer might be able to
 reconstruct sensitive information. Using a secure channel to transfer this
 information will prevent a network attacker from accessing this MLS protocol
 metadata if it cannot compromise the secure channel.
@@ -1089,11 +1100,11 @@ metadata if it cannot compromise the secure channel.
 ### Integrity and Authentication of Custom Metadata
 
 The MLS protocol provides an authenticated "Additional Authenticated Data" field
-for applications to make data available outside the MLSCiphertext.
+for applications to make data available outside a PrivateMessage.
 
 > **RECOMMENDATION:** Use the "Additional Authenticated Data" field of the
-> MLSCiphertext message instead of using other unauthenticated means of sending
-> metadata throughout the infrastructure. If the data is private, the
+> PrivateMessage instead of using other unauthenticated means of sending
+> metadata throughout the infrastructure. If the data should be kept private, the
 > infrastructure should use encrypted Application messages instead.
 
 ### Metadata Protection for Unencrypted Group Operations
@@ -1119,16 +1130,16 @@ connections. Such a system helps in preventing anonymous clients from sending
 arbitrary numbers of group operation messages to the Delivery Service or the MLS
 clients.
 
-> **RECOMMENDATION:** Anonymous credentials can be used in order to help DoS
-> attacks prevention, in a privacy preserving manner. Note that the privacy of
+> **RECOMMENDATION:** Use credentials uncorrellated with specific users to help prevent DoS
+> attacks, in a privacy preserving manner. Note that the privacy of
 > these mechanisms has to be adjusted in accordance with the privacy expected
-> from the secure transport links. (See more discussion further down.)
+> from secure transport links. (See more discussion in the next section.)
 
 ### Message Suppression and Error Correction
 
 As noted above, MLS is designed to provide some robustness in the face of
 tampering within the secure transport, i.e., tampering by the Delivery Service.
-The confidentiality and authenticity properties of MLS prevent the DS reading or
+The confidentiality and authenticity properties of MLS prevent the DS from reading or
 writing messages.  MLS also provides a few tools for detecting message
 suppression, with the caveat that message suppression cannot always be
 distinguished from transport failure.
@@ -1193,7 +1204,7 @@ MLS provides additional protection regarding secrecy of past messages and future
 messages. These cryptographic security properties are Forward Secrecy (FS) and
 Post-Compromise Security (PCS).
 
-FS means that access to all encrypted traffic history combined with an access to
+FS means that access to all encrypted traffic history combined with access to
 all current keying material on clients will not defeat the secrecy properties of
 messages older than the oldest key of the compromised client.  Note that this
 means that clients have the extremely important role of deleting appropriate
@@ -1260,7 +1271,7 @@ for addressing this.
 This risk only arises when the leaf nodes for the clients in question provide
 data that can be used to correlate the clients.  So one way to mitigate this
 risk is by only doing client-level authentication within MLS. If user-level
-authentication is still desirable, the application would have to be provide it
+authentication is still desirable, the application would have to provide it
 through some other mechanism.
 
 It is also possible to maintain user-level authentication while hiding
@@ -1278,7 +1289,7 @@ MLS group.
 ## Endpoint Compromise
 
 The MLS protocol adopts a threat model which includes multiple forms of
-endpoint/client compromise. While adversaries are in a very strong position if
+endpoint/client compromise. While adversaries are in a strong position if
 they have compromised an MLS client, there are still situations where security
 guarantees can be recovered thanks to the PCS properties achieved by the MLS
 protocol.
@@ -1307,7 +1318,7 @@ agreement are public-key encrypted to subgroups with HPKE.
 
 In some circumstances, adversaries may have access to specific AEAD keys and
 nonces which protect an Application or a Group Operation message. While this is
-a very weak kind of compromise, it can be realistic in cases of implementation
+a limited kind of compromise, it can be realistic in cases of implementation
 vulnerabilities where only part of the memory leaks to the adversary.
 
 When an AEAD key is compromised, the adversary has access to a set of AEAD keys
@@ -1331,7 +1342,7 @@ and compromising keys across the chains would mean that some Group Secrets have
 been compromised, which is not the case in this attack scenario (we explore
 stronger compromise scenarios as part of the following sections).
 
-MLS provides Post-Compromise Secrecy against an active adaptive attacker across
+MLS provides Post-Compromise Security against an active adaptive attacker across
 epochs for AEAD encryption, which means that as soon as the epoch is changed, if
 the attacker does not have access to more secret material they won't be able to
 access any protected messages from future epochs.
@@ -1347,7 +1358,7 @@ Note that under that compromise scenario, authentication is not affected in
 either of these cases.  As every member of the group can compute the AEAD keys
 for all the chains (they have access to the Group Secrets) in order to send and
 receive messages, the authentication provided by the AEAD encryption layer of
-the common framing mechanism is very weak. Successful decryption of an AEAD
+the common framing mechanism is weak. Successful decryption of an AEAD
 encrypted message only guarantees that a member of the group sent the message.
 
 ### Compromise of the Group Secrets of a single group for one or more group epochs
@@ -1455,7 +1466,7 @@ application to instruct the protocol implementation.
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
 > which can access the messages on the device without even needing to attack
 > MLS, the application should delete plaintext messages and ciphertexts
-> immediately after encryption or decryption.
+> as soon as practical after encryption or decryption.
 
 Even though, from the strict point of view of the security formalization, a
 ciphertext is always public and will forever be, there is no loss in trying to
@@ -1464,7 +1475,7 @@ erase ciphertexts as much as possible.
 Note that this document makes a clear distinction between the way signature keys
 and other group shared secrets must be handled.  In particular, a large set of
 group secrets cannot necessarily be assumed to be protected by an HSM or secure
-enclave features. This is especially true because these keys are extremely
+enclave features. This is especially true because these keys are
 frequently used and changed with each message received by a client.
 
 However, the signature private keys are mostly used by clients to send a
@@ -1583,8 +1594,9 @@ is not acceptable to create artificial delays for message retrieval.
 > delay notifications randomly across recipient devices using a mixnet or other
 > techniques.
 
-Note that it is quite easy for legal requests to ask the service provider for
-the push-token associated to an identifier and perform a second request to the
+Note that with a legal request to ask the service provider for
+the push-token associated with an identifier, it is easy to correlate the token
+with a second request to the
 company operating the push-notification system to get information about the
 device, which is often linked with a real identity via a cloud account, a credit
 card or other information.
@@ -1608,8 +1620,8 @@ incorrect or attacker-provided identities to clients.
 
 - The attacker can publish or distribute credentials
 
-In the past, some systems have had a centralized server generate signature key
-pairs and distribute them to clients.  In such cases, the centralized server is
+It is possible for a system to have a centralized server generate signature key
+pairs and distribute them to clients. This is strongly discouraged. In such cases, the centralized server is
 a point of compromise, since it stores signature private keys that can be used
 to impersonate clients.  A better approach is instead to generate signature key
 pairs in clients and have them "blessed" by the centralized service, e.g., by
@@ -1641,7 +1653,8 @@ read and write messages protected by the protocol for that Group.
 
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
-be largely performed autonomously on the clients for the `x509` Credential
+be largely performed autonomously (e.g. without user interaction) by
+the clients themselves for the `x509` Credential
 type. In contrast, when MLS clients use the `basic` Credential type, a larger
 degree of trust must be placed in a (likely) centralized authentication
 resource, or on out-of-band processes such as manual verification.
@@ -1688,7 +1701,7 @@ revocation. The users of a group could check for revoked keys (in case of
 compromise detection) using a mechanism such as CRLite or some more advanced
 privacy preserving technology.
 
-> **RECOMMENDATION:** Provide a Key Transparency and Out-of-Band authentication
+> **RECOMMENDATION:** Provide one or more out-of-band authentication
 > mechanisms to limit the impact of an Authentication Service compromise.
 
 We note, again, that as described prior to that section, the Authentication
@@ -1724,8 +1737,8 @@ user identities. An attacker with access to this information due to compromise
 or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.
 
-> **RECOMMENDATION:** Always use encrypted group operation messages to limit
-> privacy risks.
+> **RECOMMENDATION:** Use encrypted group operation messages to limit
+> privacy risks whenever possible.
 
 In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
