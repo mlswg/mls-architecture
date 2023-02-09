@@ -1080,6 +1080,10 @@ limited amount of metadata. Very little information is contained in the
 unencrypted header of the MLS protocol message format for group operation
 messages, and application messages are always encrypted in MLS.
 
+ **RECOMMENDATION:** Use transports that provide reliability and metadata
+ confidentiality whenever possible, e.g., by transmitting MLS messages over
+ a protocol such as TLS {{?RFC8446}} or QUIC {{?RFC9000}}.
+
 MLS avoids needing to send the full list of recipients to the server for
 dispatching messages because that list could potentially contain tens of thousands of
 recipients. Header metadata in MLS messages typically consists of an opaque
