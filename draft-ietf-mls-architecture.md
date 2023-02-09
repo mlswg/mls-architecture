@@ -31,7 +31,7 @@ author:
     ins: S. Inguva
     name: Srinivas Inguva
     organization: Twitter
-    email: singuva@twitter.com
+    email: singuva@yahoo.com
  -
     ins: A. Duric
     name: Alan Duric
@@ -66,7 +66,7 @@ contributor:
   email: tjvdmerwe@gmail.com
 - name: Jon Millican
   org: Meta Platforms
-  email: jmillican@fb.com
+  email: jmillican@meta.com
 - name: Raphael Robert
   org: Phoenix R&D
   email: ietf@raphaelrobert.com
