@@ -30,7 +30,6 @@ author:
  -
     ins: S. Inguva
     name: Srinivas Inguva
-    organization: Twitter
     email: singuva@yahoo.com
  -
     ins: A. Duric
