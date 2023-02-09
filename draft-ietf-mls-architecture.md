@@ -1254,10 +1254,10 @@ to a third party. This is often called "non-repudiation".
 
 Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
 property that it is impossible to prove to a third party that a message was sent
-by a given sender. Deniability is not currently provided by the MLS protocol, but the
-protocol avoids constraints that would make it impossible to add deniability
-properties (via extensions). Defining the specific requirements
-and resulting notions of deniability requires further analysis.
+by a given sender.  MLS does not make any claims with regard to deniability.  It
+may be possible to operate MLS in ways that provide certain deniability
+properties, but defining the specific requirements and resulting notions of
+deniability requires further analysis.
 
 ### Associating a User's Clients
 
