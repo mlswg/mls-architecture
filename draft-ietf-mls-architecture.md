@@ -250,7 +250,9 @@ and also deployed in systems for other purposes such as calling and conferencing
 In this context, "end-to-end" captures
 the notion that users of the system enjoy some level of security -- with the
 precise level depending on the system design -- even in the face of malicious
-actions by the operator of the messaging system.
+actions by the operator of the messaging system. See
+{{!I-D.draft-knodel-e2ee-definition}} for a more detailed definition of
+end-to-end security.
 
 Messaging Layer Security (MLS) specifies an architecture (this document) and a
 protocol {{!I-D.ietf-mls-protocol}} for providing end-to-end security in this
