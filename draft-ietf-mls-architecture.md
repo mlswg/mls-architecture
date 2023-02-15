@@ -185,6 +185,17 @@ informative:
       - name: Britta Hale
       - name: Konrad Kohbrok
     target: https://www.usenix.org/system/files/sec21-cremers.pdf
+
+  WPBB22:
+    title: "TreeSync: Authenticated Group Management for Messaging Layer Security"
+    date: 2022
+    author:
+      - name: Théophile Wallez
+      - name: Jonathan Protzenko
+      - name: Benjamin Beurdouche
+      - name: Karthikeyan Bhargavan
+    target: https://eprint.iacr.org/2022/1732.pdf
+
   Loopix:
     title: "The Loopix Anonymity System"
     date: 2017
@@ -1778,8 +1789,9 @@ analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
 Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models, for example, {{BBR18}},
 {{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the
-ratcheting tree as the sub-protocol of MLS that facilitates key agreement, while
-{{BCK21}} analyzes the key derivation paths in the ratchet tree and key
+ratcheting tree as the sub-protocol of MLS that facilitates key agreement,
+{{WPBB22}} analyzes the sub-protocol of MLS for group state agreement and authentication,
+while {{BCK21}} analyzes the key derivation paths in the ratchet tree and key
 schedule. Finally, {{CHK21}} analyzes the authentication and cross-group healing
 guarantees provided by MLS.
 
