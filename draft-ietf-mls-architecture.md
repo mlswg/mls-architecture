@@ -258,7 +258,7 @@ level, though they may have incompatibilities in terms of how protected messages
 are delivered, contents of protected messages, and identity/authentication
 infrastructures.
 The MLS protocol has been designed to provide the same security guarantees to
-all users, for all group sizes, even for a group of only two clients.
+all users, for all group sizes, including groups of only two clients.
 
 # General Setting
 
