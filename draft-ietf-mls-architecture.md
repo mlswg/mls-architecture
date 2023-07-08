@@ -210,27 +210,24 @@ informative:
 --- abstract
 
 The Messaging Layer Security (MLS) protocol (I-D.ietf-mls-protocol)
-specification has the role of defining a Group Key Agreement protocol, including
-all the cryptographic operations and serialization/deserialization functions
-necessary for scalable and secure group messaging.  The MLS protocol is meant to
-protect against eavesdropping, tampering, message forgery, and provide further
-properties such as Forward Secrecy (FS) and Post-Compromise Security (PCS) in
-the case of past or future device compromises.
+provides a Group Key Agreement protocol for messaging applications.
+MLS is meant to protect against eavesdropping, tampering, message
+forgery, and provide Forward Secrecy (FS) and Post-Compromise Security
+(PCS).
 
-This document describes a general secure group messaging infrastructure and its
-security goals.  It provides guidance on building a group messaging system and
-discusses security and privacy tradeoffs offered by multiple security mechanisms
-that are part of the MLS protocol (e.g., frequency of public encryption key
-rotation).
-
-The document also provides guidance for parts of the infrastructure that are not
-standardized by the MLS Protocol document and left to the application or the
-infrastructure architects to design.
+This document describes the architecture for using MLS in a general
+secure group messaging infrastructure and defines the security goals
+for MLS.  It provides guidance on building a group messaging system
+and discusses security and privacy tradeoffs offered by multiple
+security mechanisms that are part of the MLS protocol (e.g., frequency
+of public encryption key rotation). The document also provides
+guidance for parts of the infrastructure that are not standardized by
+MLS and are instead left to the application.
 
 While the recommendations of this document are not mandatory to follow in order
 to interoperate at the protocol level, they affect the overall security
 guarantees that are achieved by a messaging application. This is especially true
-in case of active adversaries that are able to compromise clients, the delivery
+in the case of active adversaries that are able to compromise clients, the delivery
 service, or the authentication service.
 
 --- middle
