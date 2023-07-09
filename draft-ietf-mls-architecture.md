@@ -563,24 +563,21 @@ across groups is more of a detection mechanism than a prevention mechanism.
 
 # Delivery Service
 
-The Delivery Service (DS) is expected to play multiple roles in the Service
-Provider architecture:
+The Delivery Service (DS) plays two major roles in MLS:
 
-* Acting as a directory service providing the initial keying material for
-  clients to use.  This allows a client to establish a shared key and send
+* As a directory service providing the initial keying material for
+  clients to use. This allows a client to establish a shared key and send
   encrypted messages to other clients even if they're offline.
 
 * Routing MLS messages among clients.
 
-Depending on the level of trust given by the group to the Delivery Service, the
-functional and privacy guarantees provided by MLS may differ but the
-authentication and confidentiality guarantees remain the same.
-
-Unlike the Authentication Service which is trusted for authentication and
-secrecy, the Delivery Service is completely untrusted regarding these
-properties. While privacy of group membership might be a problem in the case of a
-Delivery Service server fanout, the Delivery Service can be considered as an
-active, adaptive network attacker for the purpose of security analysis.
+While MLS depends on correct behavior by the Authentication Service in
+order to provide endpoint authentication and hence confidentiality of
+the group key, these properties do not depend on correct behavior by
+the DS; even a malicious DS cannot add itself to groups or recover
+the group key. However, depending precisely on how MLS is used, the DS may
+be able to determine group membership or prevent changes to the
+group from taking place (e.g., by blocking group change messages).
 
 ## Key Storage and Retrieval
 
