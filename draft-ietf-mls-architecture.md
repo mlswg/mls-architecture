@@ -388,31 +388,33 @@ controller who can modify the group. MLS is compatible with having group
 administration restricted to certain users, but we assume that those
 restrictions are enforced by the application layer.
 
-## Group Members and Clients
+## Users, Clients, and Groups
 
-While informally, a group can be considered to be a set of users possibly using
-multiple endpoint devices to interact with the Service Provider, this definition
-is too simplistic.
+While it's natural to think of a messaging system as consisting of groups
+of users, possibly using different devices, in MLS the basic unit of
+operation is not the user but rathr the "client".
+Formally, a client is a set of cryptographic objects composed of
+public values such as a name (an identity), a public encryption key,
+and a public signature key. As usual, a user demonstrates ownership of
+the client by demonstrating knowledge of the associated secret
+values.
 
-Formally, a client is a set of cryptographic objects composed of public values
-such as a name (an identity), a public encryption key, and a public signature
-key. Ownership of a client by a user is determined by the fact that the user has
-knowledge of the associated secret values. When a client is part of a Group, it
-is called a Member.
-In some messaging systems, clients belonging to the same user must all share the
-same signature key pair, but MLS does not assume this.
+In some messaging systems, clients belonging to the same user
+must all share the same signature key pair, but MLS does not assume
+this; instead a user may have multiple clients with the same identity
+and different keys. In this case, each client will have its own
+cryptographic state, and it is up to the application to determine
+how to present this situation to users. For instance, it may render
+messages to and from a given user identically regardless of which
+client they are associated with, or may choose to distinguish them.
 
-Users will often use multiple devices, e.g., a phone as well as a laptop.
-Different devices may be represented as different clients, with independent
-cryptographic state.
-The formal definition of a Group in MLS is the set of clients that have
-knowledge of the shared group secret established in the group key establishment
-phase of the protocol and have contributed to it.
-Until a Member has been added to the group and contributed to the group secret
-in a manner verifiable by other members of the group, other members cannot
-assume that the Member is a member of the group.
-Different devices are represented as different clients with independent
-cryptographic state.
+When a client is part of a Group, it is called a Member.  A group in
+MLS is defined as the set of clients that have knowledge of the shared
+group secret established in the group key establishment phase of the
+protocol and have contributed to it.  Until a Member has been added to
+the group and contributed to the group secret in a manner verifiable
+by other members of the group, other members cannot assume that the
+Member is a member of the group.
 
 # Authentication Service
 
