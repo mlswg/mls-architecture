@@ -381,7 +381,7 @@ controller who can modify the group. MLS is compatible with having group
 administration restricted to certain users, but we assume that those
 restrictions are enforced by the application layer.
 
-## Group Members and Clients
+## Group Members and Clients {#group-members}
 
 While informally, a group can be considered to be a set of users possibly using
 multiple endpoint devices to interact with the Service Provider, this definition
@@ -497,8 +497,7 @@ group from taking place (e.g., by blocking group change messages).
 ## Key Storage and Retrieval
 
 Upon joining the system, each client stores its initial cryptographic key
-material with the Delivery Service. Clients then continue adding and removing
-keying material on a regular basis. This key material, called a KeyPackage,
+material with the Delivery Service. This key material, called a KeyPackage,
 advertises the functional abilities of the client such as supported protocol
 versions, supported extensions, and the following cryptographic information:
 
@@ -507,18 +506,13 @@ versions, supported extensions, and the following cryptographic information:
 
 * The client's asymmetric encryption public key.
 
-All the parameters in the KeyPackage are signed with the signature private key
-corresponding to the credential.
-
-The Delivery Service is responsible for ensuring that each KeyPackage is only
-used to add its client to a single group, with the possible exception of a "last
-resort" KeyPackage that's specially designated by the client to be used multiple
-times. As noted in the previous section, users may own multiple clients, each
+All the parameters in the KeyPackage are signed with the signature
+private key corresponding to the credential.
+As noted in {{group-members}}, users may own multiple clients, each
 with their own keying material. Each KeyPackage is specific to an MLS version
 and ciphersuite, but a client may want to offer support for multiple protocol
 versions and ciphersuites. As such, there may be multiple KeyPackages stored by
-each user for a mix of protocol versions, ciphersuites, and end-user devices --
-in addition to the multiplicity required to support single-use.
+each user for a mix of protocol versions, ciphersuites, and end-user devices.
 
 When a client wishes to establish a group or add clients to a group, it first
 contacts the Delivery Service to request KeyPackages for each other client,
@@ -526,13 +520,24 @@ authenticates the KeyPackages using the signature keys, includes the KeyPackages
 in Add Proposals, encrypts the information needed to join the group
 (the _GroupInfo_ object) with an ephemeral key, then separately encrypts the
 ephemeral key with the `init_key` from each KeyPackage.
-
 When a client requests a KeyPackage in order to add a user to a group, the
 Delivery Service should provide the minimum number of KeyPackages necessary to
 satisfy the request.  For example, if the request specifies the MLS version, the
 DS might provide one KeyPackage per supported ciphersuite, even if it has
 multiple such KeyPackages to enable the corresponding client to be added to
 multiple groups before needing to upload more fresh KeyPackages.
+
+In order to avoid replay attacks and provide forward secrecy for
+messages sent using the initial keying material, KeyPackages are
+intended to be used only once. The Delivery Service is responsible for
+ensuring that each KeyPackage is only used to add its client to a
+single group, with the possible exception of a "last resort"
+KeyPackage that is specially designated by the client to be used
+multiple times. Clients are responsible for providing new
+KeyPackages as necessary in order to minimize the chance that
+the "last resort" KeyPackage will be used.
+
+
 
 ## Delivery of Messages {#delivery-guarantees}
 
