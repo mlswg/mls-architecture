@@ -30,7 +30,6 @@ author:
  -
     ins: S. Inguva
     name: Srinivas Inguva
-    organization: Twitter
     email: singuva@yahoo.com
  -
     ins: A. Duric
@@ -185,6 +184,17 @@ informative:
       - name: Britta Hale
       - name: Konrad Kohbrok
     target: https://www.usenix.org/system/files/sec21-cremers.pdf
+
+  WPBB22:
+    title: "TreeSync: Authenticated Group Management for Messaging Layer Security"
+    date: 2022
+    author:
+      - name: Théophile Wallez
+      - name: Jonathan Protzenko
+      - name: Benjamin Beurdouche
+      - name: Karthikeyan Bhargavan
+    target: https://eprint.iacr.org/2022/1732.pdf
+
   Loopix:
     title: "The Loopix Anonymity System"
     date: 2017
@@ -210,27 +220,24 @@ informative:
 --- abstract
 
 The Messaging Layer Security (MLS) protocol (I-D.ietf-mls-protocol)
-specification has the role of defining a Group Key Agreement protocol, including
-all the cryptographic operations and serialization/deserialization functions
-necessary for scalable and secure group messaging.  The MLS protocol is meant to
-protect against eavesdropping, tampering, message forgery, and provide further
-properties such as Forward Secrecy (FS) and Post-Compromise Security (PCS) in
-the case of past or future device compromises.
+provides a Group Key Agreement protocol for messaging applications.
+MLS is meant to protect against eavesdropping, tampering, message
+forgery, and provide Forward Secrecy (FS) and Post-Compromise Security
+(PCS).
 
-This document describes a general secure group messaging infrastructure and its
-security goals.  It provides guidance on building a group messaging system and
-discusses security and privacy tradeoffs offered by multiple security mechanisms
-that are part of the MLS protocol (e.g., frequency of public encryption key
-rotation).
-
-The document also provides guidance for parts of the infrastructure that are not
-standardized by the MLS Protocol document and left to the application or the
-infrastructure architects to design.
+This document describes the architecture for using MLS in a general
+secure group messaging infrastructure and defines the security goals
+for MLS.  It provides guidance on building a group messaging system
+and discusses security and privacy tradeoffs offered by multiple
+security mechanisms that are part of the MLS protocol (e.g., frequency
+of public encryption key rotation). The document also provides
+guidance for parts of the infrastructure that are not standardized by
+MLS and are instead left to the application.
 
 While the recommendations of this document are not mandatory to follow in order
 to interoperate at the protocol level, they affect the overall security
 guarantees that are achieved by a messaging application. This is especially true
-in case of active adversaries that are able to compromise clients, the delivery
+in the case of active adversaries that are able to compromise clients, the delivery
 service, or the authentication service.
 
 --- middle
@@ -261,7 +268,7 @@ level, though they may have incompatibilities in terms of how protected messages
 are delivered, contents of protected messages, and identity/authentication
 infrastructures.
 The MLS protocol has been designed to provide the same security guarantees to
-all users, for all group sizes, even for a group of only two clients.
+all users, for all group sizes, including groups of only two clients.
 
 # General Setting
 
@@ -270,22 +277,21 @@ communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
 large as tens of thousands.  A client that is part of a group is a _member_ of that
-group.
+group. A user might have multiple MLS clients associated with the
+same identity, for instance if they have different devices.
 
-In order to communicate securely, users initially interact with services at
-their disposal to establish the necessary values and credentials required for
-encryption and authentication.
+MLS is designed to operate within the context of a messaging service, which
+may be a single service provider, a federated system, or some kind of
+peer-to-peer system. The service needs to provide two services that
+facilitate client communication using MLS:
 
-The MLS protocol requires two abstract functionalities that allow clients to
-prepare for sending and receiving messages securely:
-
-- An Authentication Service (AS) functionality which is responsible for
+- An Authentication Service (AS) which is responsible for
   attesting to bindings between application-meaningful identifiers and the
-  public key material used for authentication in the MLS protocol. This
-  functionality must also be able to generate credentials that encode these
+  public key material used for authentication in the MLS protocol. The
+  AS must also be able to generate credentials that encode these
   bindings and validate credentials provided by MLS clients.
 
-- A Delivery Service (DS) functionality which can receive and distribute
+- A Delivery Service (DS)  which can receive and distribute
   messages between group members. In the case of group messaging, the delivery
   service may also be responsible for acting as a "broadcaster" where the sender
   sends a single message which is then forwarded to each recipient in the group
@@ -293,9 +299,9 @@ prepare for sending and receiving messages securely:
   public key material required by MLS clients in order to proceed with the group
   secret key establishment that is part of the MLS protocol.
 
-For convenience, this document adopts the representation of these services being
-standalone servers, however the MLS protocol design is made so that this is not
-necessarily the case.  These services may reside on the same server or different
+For presentation purposes, this document treats the AS and DS as conventional
+network services, however MLS does not require a specific implementation
+for the AS or DS. These services may reside on the same server or different
 servers, they may be distributed between server and client components, and they
 may even involve some action by users.  For example:
 
@@ -310,13 +316,14 @@ may even involve some action by users.  For example:
   both of which involve logic inside MLS clients as well as various
   existing PKI roles (ex: Certification Authorities).
 
-It is important to note that the Authentication Service functionality can be
-completely abstract in the case of a Service Provider which allows MLS clients
-to generate, distribute, and validate credentials themselves.  As with the AS,
-the Delivery Service can be completely abstract if users are able to distribute
-credentials and messages without relying on a central Delivery Service.  Note,
-though, that in such scenarios, clients will need to implement logic that
-assures the delivery properties required of the DS (see
+It is important to note that the Authentication Service can be
+completely abstract in the case of a Service Provider which allows MLS
+clients to generate, distribute, and validate credentials themselves.
+As with the AS, the Delivery Service can be completely abstract if
+users are able to distribute credentials and messages without relying
+on a central Delivery Service (as in a peer-to-peer system).  Note,
+though, that in such scenarios, clients will need to implement logic
+that assures the delivery properties required of the DS (see
 {{delivery-guarantees}}).
 
 ~~~ aasvg
@@ -334,78 +341,156 @@ assures the delivery properties required of the DS (see
                            .                                .
                            ..................................
 ~~~
+{: #fig-mls-overview title="A Simplified Messaging System"}
 
-According to this architecture design, a typical group messaging scenario might
-look like this:
+{{fig-mls-overview}} shows the relationship of these concepts,
+with three clients and one group, and clients 2 and 3 being
+part of the group and client 1 not being part of any group.
 
-1. Alice, Bob, and Charlie create accounts with a service provider and obtain
-   credentials from the AS.
 
-2. Alice, Bob and Charlie authenticate to the DS and store some initial keying
-   material which can be used to send encrypted messages to them for the first
-   time. This keying material is authenticated with their long-term credentials.
+# Overview of Operation
 
-3. When Alice wants to send a message to Bob and Charlie, she contacts the DS
-   and looks up their initial keying material.  She uses these keys to establish
-   a new set of keys which she can use to send encrypted messages to Bob and
-   Charlie. She then sends the encrypted message(s) to the DS, which forwards
-   them to the recipients.
+{{fig-group-formation-example}} shows the formation of an example
+group consisting of Alice, Bob, and Charlie, with Alice
+driving the creation of the group.
 
-4. Bob and/or Charlie respond to Alice's message. In addition, they might choose
-   to update their key material which provides post-compromise security (see
-   {{fs-and-pcs}}). As a consequence of that change, the group secrets are
-   updated.
+~~~ aasvg
+Alice     Bob       Charlie                     AS        DS
 
-MLS allows clients to perform several actions in this setting:
+Create account --------------------------------->                |
+<------------------------------------- Credential                |
+          Create account ----------------------->                | Step 1
+          <--------------------------- Credential                |
+                    Create account ------------->                |
+                    <----------------- Credential                |
 
- -  create a group by inviting a set of other clients;
+Initial Keying Material ----------------------------------->     |
+          Initial Keying Material ------------------------->     | Step 2
+                    Initial Keying Material --------------->     |
 
- -  add one or more clients to an existing group;
+Get Bob Initial Keying Material ---------------->                |
+<-------------------- Bob Initial Keying Material                |
+Add Bob to Group ------------------------------------------>     | Step 3
+Welcome (Bob)---------------------------------------------->     |
+          <-------------------------------- Add Bob to Group     |
+          <----------------------------------- Welcome (Bob)     |
 
- -  remove one or more members from an existing group;
+Get Charlie Initial Keying Material ------------>                |
+<---------------- Charlie Initial Keying Material                |
+Add Charlie to Group -------------------------------------->     |
+Welcome (Charlie) ----------------------------------------->     | Step 4
+          <---------------------------- Add Charlie to Group     |
+                     <----------------- Add Charlie to Group     |
+                     <-------------------- Welcome (Charlie)     |
+~~~
+{: #fig-group-formation-example title="Group Formation Example"}
 
- -  update their own key material
+This process proceeds as follows.
 
- -  join an existing group;
+## Step 1: Account Creation
 
- -  leave a group (by asking to be removed);
+Alice, Bob, and Charlie create accounts with a service provider and obtain
+credentials from the AS. This is a one-time setup phase.
 
- -  send a message to everyone in the group;
+## Step 2: Initial Keying Material
 
- -  receive a message from someone in the group.
+Alice, Bob, and Charlie authenticate to the DS and store some initial
+keying material which can be used to send encrypted messages to them
+for the first time. This keying material is authenticated with their
+long-term credentials. Although in principle this keying material
+can be reused for multiple senders, in order to provide forward secrecy
+it is better for this material to be regularly refreshed so that each
+sender can use a new key.
 
-At the cryptographic level, clients (and by extension members in groups) have
-equal permissions. For instance, any member can add or remove another member in
-a group. This is in contrast to some designs in which there is a single group
-controller who can modify the group. MLS is compatible with having group
-administration restricted to certain users, but we assume that those
-restrictions are enforced by the application layer.
+## Step 3: Adding Bob go the Group
 
-## Group Members and Clients {#group-members}
+When Alice wants to create a group including Bob, she first uses the AS to look
+up his initial keying material. She then generates two messages:
 
-While informally, a group can be considered to be a set of users possibly using
-multiple endpoint devices to interact with the Service Provider, this definition
-is too simplistic.
+* A message to the entire group (which at this point is just her and Bob)
+  that adds Bob to the group.
 
-Formally, a client is a set of cryptographic objects composed of public values
-such as a name (an identity), a public encryption key, and a public signature
-key. Ownership of a client by a user is determined by the fact that the user has
-knowledge of the associated secret values. When a client is part of a Group, it
-is called a Member.
-In some messaging systems, clients belonging to the same user must all share the
-same signature key pair, but MLS does not assume this.
+* A _Welcome_ message just to Bob encrypted with his initial keying material that
+  includes the secret keying information necessary to join the group.
 
-Users will often use multiple devices, e.g., a phone as well as a laptop.
-Different devices may be represented as different clients, with independent
-cryptographic state.
-The formal definition of a Group in MLS is the set of clients that have
-knowledge of the shared group secret established in the group key establishment
-phase of the protocol and have contributed to it.
-Until a Member has been added to the group and contributed to the group secret
-in a manner verifiable by other members of the group, other members cannot
-assume that the Member is a member of the group.
-Different devices are represented as different clients with independent
-cryptographic state.
+She sends both of these messages to the Delivery Services, which is responsible
+for sending them to the appropriate people. Note that the security of MLS
+does not depend on the DS forwarding the Welcome message only to Bob, as it
+is encrypted for him; it is simply not necessary for other group members
+to receive it.
+
+## Step 4: Adding Charlie to the Group
+
+If Alice then wants to add Charlie to the group, she follows a similar procedure
+as with Bob: she first uses the AS to look
+up his initial keying material and then generates two messages:
+
+* A message to the entire group (consisting of her, Bob, and Charlie) adding
+  Charlie to the group.
+
+* A _Welcome_ message just to Charlie encrypted with his initial keying material that
+  includes the secret keying information necessary to join the group.
+
+At the completion of this process, we have a group with Alice, Bob, and Charlie,
+which means that they share a single encryption key which can be used to
+send messages or to key other protocols.
+
+## Other Group Operations
+
+Once the group has been created, clients can perform other actions,
+such as:
+
+ -  sending a message to everyone in the group
+
+ -  receiving a message from someone in the group
+
+ -  adding one or more clients to an existing group
+
+ -  remove one or more members from an existing group
+
+ -  updating their own key material
+
+ -  leave a group (by asking to be removed)
+
+Importantly, MLS does not itself enforce any access control on group
+operations. For instance, any member of the group can send a message
+to add a new member or to evict an existing member.
+This is in contrast to some designs in which there is a single group
+controller who can modify the group. MLS-using applications are
+responsible for setting their own access control policies. For instance,
+if only the group administrator is allowed to change group members,
+then it is the responsibility of the application to inform members
+of this policy and who the administrator is.
+
+## Users, Clients, and Groups
+
+While it's natural to think of a messaging system as consisting of groups
+of users, possibly using different devices, in MLS the basic unit of
+operation is not the user but rathr the "client".
+Formally, a client is a set of cryptographic objects composed of
+public values such as a name (an identity), a public encryption key,
+and a public signature key. As usual, a user demonstrates ownership of
+the client by demonstrating knowledge of the associated secret
+values.
+
+In some messaging systems, clients belonging to the same user
+must all share the same signature key pair, but MLS does not assume
+this; instead a user may have multiple clients with the same identity
+and different keys. In this case, each client will have its own
+cryptographic state, and it is up to the application to determine
+how to present this situation to users. For instance, it may render
+messages to and from a given user identically regardless of which
+client they are associated with, or may choose to distinguish them.
+
+When a client is part of a Group, it is called a Member.  A group in
+MLS is defined as the set of clients that have knowledge of the shared
+group secret established in the group key establishment phase of the
+protocol and have contributed to it.
+
+Until a client has been added to the group and contributed to the group
+secret in a manner verifiable by other members of the group, other members
+cannot assume that the client is a member of the group.
+
 
 # Authentication Service
 
@@ -1783,8 +1868,9 @@ analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
 Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models, for example, {{BBR18}},
 {{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the
-ratcheting tree as the sub-protocol of MLS that facilitates key agreement, while
-{{BCK21}} analyzes the key derivation paths in the ratchet tree and key
+ratcheting tree as the sub-protocol of MLS that facilitates key agreement,
+{{WPBB22}} analyzes the sub-protocol of MLS for group state agreement and authentication,
+while {{BCK21}} analyzes the key derivation paths in the ratchet tree and key
 schedule. Finally, {{CHK21}} analyzes the authentication and cross-group healing
 guarantees provided by MLS.
 
