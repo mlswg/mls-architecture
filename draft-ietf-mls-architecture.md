@@ -462,7 +462,7 @@ if only the group administrator is allowed to change group members,
 then it is the responsibility of the application to inform members
 of this policy and who the administrator is.
 
-## Users, Clients, and Groups
+## Users, Clients, and Groups {#group-members}
 
 While it's natural to think of a messaging system as consisting of groups
 of users, possibly using different devices, in MLS the basic unit of
@@ -621,8 +621,6 @@ KeyPackage that is specially designated by the client to be used
 multiple times. Clients are responsible for providing new
 KeyPackages as necessary in order to minimize the chance that
 the "last resort" KeyPackage will be used.
-
-
 
 ## Delivery of Messages {#delivery-guarantees}
 
