@@ -462,6 +462,33 @@ if only the group administrator is allowed to change group members,
 then it is the responsibility of the application to inform members
 of this policy and who the administrator is.
 
+## Proposals and Commits
+
+The general pattern for any change in the group state (e.g., to add or remove
+a user) is that it consists of two messages:
+
+Proposal
+: This message describes the change to be made (e.g., add Bob to the group)
+but does not effect a change.
+
+Commit
+: This message changes the group state to include the changes described in
+a set of proposals.
+
+The simplest pattern is for a client to just send a single Proposal/Commit
+pair, for instance Alice could send the pair Add(Bob), Commit to add
+Bob to the group. However, there are situations in which one client
+might send a proposal and another might send the commit. For instance,
+Bob might wish to join the group and send a Proposal to do so (see
+{{Section 12.1.6 of ?RFC9420}}). Because Bob is not already a group member
+he cannot send the Commit and an existing member must do so.
+Commits can apply to multiple Proposals, in which case all the listed
+changes are applied.
+
+It is also possible for a Commit to apply to an empty set of Proposals
+in which case it just updates the cryptographic state of the group
+without changing it's membership.
+
 ## Users, Clients, and Groups {#group-members}
 
 While it's natural to think of a messaging system as consisting of groups
