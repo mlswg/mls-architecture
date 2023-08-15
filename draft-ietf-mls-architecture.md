@@ -1046,13 +1046,13 @@ interoperate.
 
 - Additional services may or may not be required depending on the application
   design:
-  - If assisted joining is desired (meaning that the ratchet tree is not
+  - If assisted joining is desired (meaning that the group state is not
     provided in Welcome messages), there must be a method to download the
-    ratchet tree corresponding to a group.
+    group state corresponding to a group.
   - If assisted joining is desired and the Delivery Service is not able to
-    compute the ratchet tree itself (because some proposals or commits are sent
+    compute the group state itself (because some proposals or commits are sent
     encrypted), there must be a method for group members to publish the updated
-    ratchet tree after each commit.
+    group state after each commit.
   - If external joiners are allowed, there must be a method to publish a
     serialized `GroupInfo` object (with an `external_pub` extension) that
     corresponds to a specific group and epoch, and keep that object in sync with
@@ -1095,7 +1095,8 @@ deployments to interoperate:
 
 - Group IDs, as decided by group creators and used to uniquely identify a group.
 
-- The `application_id` extension of a LeafNode.
+- Associated with the per-user group state (specifically in
+  the `application_id` extension as defined in {{Section 5.3.3 of ?RFC9420}}).
 
 MLS requires the following policies to be defined, which restrict the set of
 acceptable behavior in a group. These policies must be consistent between
@@ -1426,8 +1427,8 @@ the following compromise scenarios:
 The MLS protocol provides per-sender chains of AEAD keys that are generated from
 Group Secrets. These keys are used to protect MLS Plaintext messages which can
 be Group Operation or Application messages. The Group Operation messages offer
-an additional protection as the secret exchanged within the TreeKEM group key
-agreement are public-key encrypted to subgroups with HPKE.
+an additional protection as the secrets exchanged within them
+are public-key encrypted to subgroups with HPKE.
 
 ### Compromise of AEAD key material
 
@@ -1601,8 +1602,7 @@ be a priority.
 Overall there is no way to detect or prevent these compromises, as discussed in
 the previous sections, performing separation of the application secret states
 can help recovery after compromise, this is the case for signature keys but
-similar concern exists for the encryption private key used in the TreeKEM Group
-Key Agreement.
+similar concern exists for client's encryption private keys.
 
 > **RECOMMENDATION:** The secret keys used for public key encryption should be
 > stored similarly to the way the signature keys are stored, as keys can be used
@@ -1896,7 +1896,7 @@ analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
 Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models, for example, {{BBR18}},
 {{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the
-ratcheting tree as the sub-protocol of MLS that facilitates key agreement,
+ratcheting tree sub-protocol of MLS that facilitates key agreement,
 {{WPBB22}} analyzes the sub-protocol of MLS for group state agreement and authentication,
 while {{BCK21}} analyzes the key derivation paths in the ratchet tree and key
 schedule. Finally, {{CHK21}} analyzes the authentication and cross-group healing
