@@ -481,7 +481,7 @@ might send a proposal and another might send the commit. For instance,
 Bob might wish to remove himself the group and send a Remove Proposal to do so (see
 {{Section 12.1.3 of ?RFC9420}}). Because Bob
 cannot send the Commit, an existing member must do so.
-Commits can apply to multiple Proposals, in which case all the listed
+Commits can apply to multiple valid Proposals, in which case all the listed
 changes are applied.
 
 It is also possible for a Commit to apply to an empty set of Proposals
