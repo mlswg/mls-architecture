@@ -475,8 +475,7 @@ Commit
 : This message changes the group state to include the changes described in
 a set of proposals.
 
-The simplest pattern is for a client to just send a single Proposal/Commit
-pair, for instance Alice could send the pair Add(Bob), Commit to add
+The simplest pattern is for a client to just send a Commit which contains one or more Proposals, for instance Alice could send the a Commit with the Proposal Add(Bob) embedded to add
 Bob to the group. However, there are situations in which one client
 might send a proposal and another might send the commit. For instance,
 Bob might wish to join the group and send a Proposal to do so (see
