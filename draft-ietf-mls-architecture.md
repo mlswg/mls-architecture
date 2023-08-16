@@ -478,9 +478,9 @@ a set of proposals.
 The simplest pattern is for a client to just send a Commit which contains one or more Proposals, for instance Alice could send the a Commit with the Proposal Add(Bob) embedded to add
 Bob to the group. However, there are situations in which one client
 might send a proposal and another might send the commit. For instance,
-Bob might wish to join the group and send a Proposal to do so (see
-{{Section 12.1.6 of ?RFC9420}}). Because Bob is not already a group member
-he cannot send the Commit and an existing member must do so.
+Bob might wish to remove himself the group and send a Remove Proposal to do so (see
+{{Section 12.1.3 of ?RFC9420}}). Because Bob
+cannot send the Commit, an existing member must do so.
 Commits can apply to multiple Proposals, in which case all the listed
 changes are applied.
 
