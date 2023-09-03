@@ -466,7 +466,7 @@ of this policy and who the administrator is.
 
 While it's natural to think of a messaging system as consisting of groups
 of users, possibly using different devices, in MLS the basic unit of
-operation is not the user but rathr the "client".
+operation is not the user but rather the "client".
 Formally, a client is a set of cryptographic objects composed of
 public values such as a name (an identity), a public encryption key,
 and a public signature key. As usual, a user demonstrates ownership of
