@@ -404,7 +404,7 @@ sender can use a new key.
 
 ## Step 3: Adding Bob go the Group
 
-When Alice wants to create a group including Bob, she first uses the AS to look
+When Alice wants to create a group including Bob, she first uses the DS to look
 up his initial keying material. She then generates two messages:
 
 * A message to the entire group (which at this point is just her and Bob)
@@ -422,7 +422,7 @@ to receive it.
 ## Step 4: Adding Charlie to the Group
 
 If Alice then wants to add Charlie to the group, she follows a similar procedure
-as with Bob: she first uses the AS to look
+as with Bob: she first uses the DS to look
 up his initial keying material and then generates two messages:
 
 * A message to the entire group (consisting of her, Bob, and Charlie) adding
