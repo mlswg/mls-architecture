@@ -402,7 +402,7 @@ can be reused for multiple senders, in order to provide forward secrecy
 it is better for this material to be regularly refreshed so that each
 sender can use a new key.
 
-## Step 3: Adding Bob go the Group
+## Step 3: Adding Bob to the Group
 
 When Alice wants to create a group including Bob, she first uses the DS to look
 up his initial keying material. She then generates two messages:
