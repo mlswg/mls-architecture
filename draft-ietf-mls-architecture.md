@@ -304,7 +304,7 @@ An _application message_ is an MLS message with an arbitrary application payload
 
 Finally, a _PublicMessage_ contains an integrity-protected MLS Handshake message,
 while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
-or Application message.
+or application message.
 
 For a more
 detailed explanation of these terms, please consult the MLS protocol specification {{RFC9420}}.
