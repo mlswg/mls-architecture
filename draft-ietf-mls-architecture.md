@@ -307,7 +307,7 @@ while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
 or application message.
 
 For a more
-detailed explanation of these terms, please consult the MLS protocol specification {{RFC9420}}.
+detailed explanation of these terms, please consult the MLS protocol specification {{?RFC9420}}.
 
 ## Abstract Services
 
