@@ -1019,13 +1019,16 @@ interoperate.
 
 - Additional services may or may not be required depending on the application
   design:
-  - If assisted joining is desired (meaning that the group state is not
-    provided in Welcome messages), there must be a method to download the
-    group state corresponding to a group.
-  - If assisted joining is desired and the Delivery Service is not able to
-    compute the group state itself (because some proposals or commits are sent
-    encrypted), there must be a method for group members to publish the updated
-    group state after each commit.
+
+   - Instead of distributing group information to a new members
+     entirely within a Welcome messages, an application may rely on
+     servers to store public information about the group, such as
+     group members' credentials and related public keys, and provide
+     this information to new members. (In such a system, Welcome
+     messages are still necessary to convey confidential information
+     about the group.) Such an application will require mechanisms for
+     new members to download the current information for a group, and
+     for members to update the information as the group evolves.
   - If external joiners are allowed, there must be a method to publish a
     serialized `GroupInfo` object (with an `external_pub` extension) that
     corresponds to a specific group and epoch, and keep that object in sync with
