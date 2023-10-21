@@ -992,12 +992,13 @@ to potentially interoperate.
 The protocol has a built-in ability to negotiate protocol versions,
 ciphersuites, extensions, credential types, and additional proposal types. For
 two deployments to interoperate, they must have overlapping support in each of
-these categories. A `required_capabilities` extension can help maintain
+these categories. The `required_capabilities` extension
+(Section 7.2 of {{!RFC9420}}) can promote
 interoperability with a wider set of clients by ensuring that certain
 functionality continues to be supported by a group, even if the clients in the
 group aren't currently relying on it.
 
-MLS relies on the following network services. These network services would need
+MLS relies on the following network services, that need
 to be compatible in order for two different deployments based on them to
 interoperate.
 
