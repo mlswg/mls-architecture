@@ -552,7 +552,7 @@ unable to decrypt it for some reason.
 
 # Authentication Service
 
-The Authentication Service (AS) has to provide three functionalities:
+The Authentication Service (AS) has to provide three services:
 
 1. Issue credentials to clients that attest to bindings between identities and
    signature key pairs
@@ -579,7 +579,7 @@ breadth of this concept:
   key fingerprints for authentication.  In this scenario, the issuance function
   is simply the generation of a key pair (i.e., a credential is just an
   identifier and public key, with no information to assist in verification).
-  The verification function is the application functionality that enables users
+  The verification function is the application function that enables users
   to verify keys.
 
 * In a system based on {{CONIKS}} end user Key Transparency (KT), the issuance
@@ -590,10 +590,10 @@ breadth of this concept:
   their identity.
 
 By the nature of its roles in MLS authentication, the AS is invested with a
-large amount of trust and the compromise of one of its functionalities could
+large amount of trust and the compromise of one the AS could
 allow an adversary to, among other things, impersonate group members. We discuss
 security considerations regarding the compromise of the different AS
-functionalities in detail in {{as-compromise}}.
+functions in detail in {{as-compromise}}.
 
 The association between members' identities and signature keys is fairly
 flexible in MLS.  As noted above, there is no requirement that all clients
@@ -810,8 +810,9 @@ all other members.
 
 Membership of an MLS group is managed at the level of individual clients.  In
 most cases, a client corresponds to a specific device used by a user. If a user
-has multiple devices, the user will be represented in a group by multiple
-clients.  If an application wishes to implement operations at the level of
+has multiple devices, the user will generally be represented in a group by multiple
+clients (although applications could choose to have devices share keying material).
+If an application wishes to implement operations at the level of
 users, it is up to the application to track which clients belong to a given user
 and ensure that they are added / removed consistently.
 
@@ -836,8 +837,8 @@ them.
 
 Application setup may also determine other criteria for membership validity. For
 example, per-device signature keys can be signed by an identity key recognized
-by other participants. If a certificate chain is used to sign off on device
-signature keys, then revocation by the owner adds an alternative flag to prompt
+by other participants. If a certificate chain is used to authenticate device
+signature keys, then revocation by the owner adds an alternative mechanism to prompt
 membership removal.
 
 An MLS group's secrets change on every change of membership, so each client only
@@ -857,17 +858,17 @@ set of members of any group may or may not form a subset of the members of
 another group. MLS guarantees that the FS and PCS goals within a given group are
 maintained and not weakened by user membership in multiple groups. However,
 actions in other groups likewise do not strengthen the FS and PCS guarantees
-within a given group, e.g. key updates within a given group following a device
+within a given group, e.g., key updates within a given group following a device
 compromise does not provide PCS healing in other groups; each group must be
-updated separately to achieve internal goals.  This also applies to future
-groups that a member has yet to join, that are likewise unaffected by updates
+updated separately to achieve these security objectives.  This also applies to future
+groups that a member has yet to join, which are likewise unaffected by updates
 performed in current groups.
 
-Applications may strengthen connectivity among parallel groups by requiring
+Applications can strengthen connectivity among parallel groups by requiring
 periodic key updates from a user across all groups in which they have
 membership.
 
-Applications may use the PSK mechanism to link healing properties among parallel
+Applications can use the PSK mechanism to link healing properties among parallel
 groups.  For example, suppose a common member M of two groups A and B has
 performed a key update in group A but not in group B.  The key update provides
 PCS with regard to M in group A.  If a PSK is exported from group A and injected
@@ -887,9 +888,10 @@ delivering messages asynchronously and reliably.
 
 ## Access Control
 
-The MLS protocol allows each member of the messaging group to perform operations
-equally. This is because all clients within a group (members) have access to the
-shared cryptographic material. However, every service/infrastructure has control
+Tecause all clients within a group (members) have access to the shared
+cryptographic material, MLS protocol allows each member of the
+messaging group to perform operations,
+However, every service/infrastructure has control
 over policies applied to its own clients. Applications managing MLS clients can
 be configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -907,8 +909,8 @@ collect the signatures on the handshake messages and use them for tracking.
 > **RECOMMENDATION:** Prefer using encrypted group operation messages to avoid
 > privacy issues related to non-encrypted signatures.
 
-Note that in the default case of encrypted handshake messages, any access
-control policies will be applied at the client, so the application must ensure
+If handshake messages are encrypted, any access
+control policies must be applied at the client, so the application must ensure
 that the access control policies are consistent across all clients to make sure
 that they remain in sync.  If two different policies were applied, the clients
 might not accept or reject a group operation and end-up in different
@@ -977,7 +979,7 @@ It is typically expected for users within a group to own various devices. A new
 device can be added to a group and be considered as a new client by the
 protocol. This client will not gain access to the history even if it is owned by
 someone who owns another member of the group.
-Restoring history is typically not allowed at the protocol level but
+MLS does not provide support for restoring history in this case, but
 applications can elect to provide such a mechanism outside of MLS.  Such
 mechanisms, if used, may reduce the FS and PCS guarantees provided by MLS.
 
