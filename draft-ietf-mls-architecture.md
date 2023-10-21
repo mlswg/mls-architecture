@@ -1068,7 +1068,7 @@ deployments to interoperate:
 
 - Group IDs, as decided by group creators and used to uniquely identify a group.
 
-- Associated with the per-user group state (specifically in
+- Application-level identifiers of public key material (specifically
   the `application_id` extension as defined in {{Section 5.3.3 of ?RFC9420}}).
 
 MLS requires the following policies to be defined, which restrict the set of
