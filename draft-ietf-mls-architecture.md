@@ -272,7 +272,7 @@ all users, for all group sizes, including groups of only two clients.
 
 # General Setting
 
-## Terminology
+## Protocol Overview
 
 MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
@@ -283,7 +283,7 @@ group. As groups change membership and group or member properties, they
 advance from one _epoch_ to another and the cryptographic state of the
 group evolves.
 
-The group is represented using a _ratchet tree_, which represents the members
+The group is represented as a tree, which represents the members
 as the leaves of a tree. It is used to efficiently encrypt to subsets of the
 members. Each member has a _LeafNode_ object in the tree holding the client's
 identity, credentials, and capabilities.
