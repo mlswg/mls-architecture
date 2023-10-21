@@ -643,7 +643,7 @@ must agree on a single MLS Commit message that ends each epoch and begins the
 next one.
 
 In practice, there's a realistic risk of two members generating Commit messages
-at the same time, based on the same counter, and both attempting to send them to
+at the same time, based on the same epoch, and both attempting to send them to
 the group at the same time. The extent to which this is a problem, and the
 appropriate solution, depends on the design of the Delivery Service. Per the CAP
 theorem {{CAPBR}}, there are two general classes of distributed system that the
@@ -662,11 +662,12 @@ are described in the next two subsections.
 However, note that a malicious Delivery Service could also reorder messages or
 provide an inconsistent view to different users.  The "generation" counter in
 MLS messages provides per-sender loss detection and ordering that cannot be
-manipulated by the DS.  A mechanism for more robust protections is discussed in
-{{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
+manipulated by the DS, but this does not provide complete protection against
+partitioning.  A DS can cause a partition in the group by
 partitioning key exchange messages; this can be detected only by out-of-band
 comparison (e.g., confirming that all clients have the same
-`epoch_authenticator` value`).
+`epoch_authenticator` value`). A mechanism for more robust protections is discussed in
+{{?I-D.ietf-mls-extensions}}.
 
 Other forms of Delivery Service misbehavior are still possible that are not easy
 to detect. For instance, a Delivery Service can simply refuse to relay messages
