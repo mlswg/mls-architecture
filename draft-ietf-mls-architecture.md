@@ -484,12 +484,12 @@ client they are associated with, or may choose to distinguish them.
 
 When a client is part of a Group, it is called a Member.  A group in
 MLS is defined as the set of clients that have knowledge of the shared
-group secret established in the group key establishment phase of the
-protocol and have contributed to it.
-
-Until a client has been added to the group and contributed to the group
+group secret established in the group key establishment phase.
+Note that until a client has been added to the group and contributed to the group
 secret in a manner verifiable by other members of the group, other members
-cannot assume that the client is a member of the group.
+cannot assume that the client is a member of the group; for instance, the
+newly added member might not have received the Welcome message or been
+unable to decrypt it for some reason.
 
 
 # Authentication Service
