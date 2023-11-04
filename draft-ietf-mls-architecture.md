@@ -888,7 +888,7 @@ delivering messages asynchronously and reliably.
 
 ## Access Control
 
-Tecause all clients within a group (members) have access to the shared
+Because all clients within a group (members) have access to the shared
 cryptographic material, MLS protocol allows each member of the
 messaging group to perform operations,
 However, every service/infrastructure has control
