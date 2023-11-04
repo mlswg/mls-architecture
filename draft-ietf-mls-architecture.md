@@ -487,7 +487,7 @@ changes are applied.
 
 It is also possible for a Commit to apply to an empty set of Proposals
 in which case it just updates the cryptographic state of the group
-without changing it's membership.
+without changing its membership.
 
 ## Users, Clients, and Groups {#group-members}
 
