@@ -1405,26 +1405,6 @@ the scope of this document.
 
 ### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
-MLS messages are signed, preventing a group member from sending a
-message that appears to be from another group member.  Additionally,
-some services require that a recipient be able to prove to the service
-provider that a message was sent by a given client, in order to report
-abuse. MLS supports both of these use cases. In some deployments,
-these services are provided by mechanisms which allow the receiver to
-prove a message's origin to a third party. This is often called
-"non-repudiation".
-
-Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
-property that it is impossible to prove to a third party that a message was sent
-by a given sender.  MLS does not make any claims with regard to deniability.  It
-may be possible to operate MLS in ways that provide certain deniability
-properties, but defining the specific requirements and resulting notions of
-deniability requires further analysis.
-
-### Associating a User's Clients
-
-When the same user uses multiple clients, it may be possible for other members
-of a group to recognize all of those clients as belonging to the same user.  For
 example, all of a user's clients might present credentials authenticating the
 user's identity.  This association among devices might be considered a leak of
 private information.  The remainder of this section describes several approaches
@@ -1474,14 +1454,17 @@ the following compromise scenarios:
 
 The MLS protocol provides per-sender chains of symmetric authenticated
 encryption with additional data (AEAD) {{!RFC5116}} keys that are
-generated from Group Secrets. These keys are used to protect MLS
-Plaintext messages which can be Group Operation or Application
-messages. The Group Operation messages offer an additional protection
-as the secret exchanged within the TreeKEM group key agreement are
-public-key encrypted to subgroups with HPKE.
+generated from Group Secrets. Specifically, each epoch establishes
+a per-sender "Ratchet Secret", which is then used to generate an
+AEAD key, which is used to protect MLS Plaintext messages.
+Each time a message is sent, the Ratchet Secret is used
+to create a new Ratchet Secret and a new corresponding AEAD key.
+Because of the properties of the key derivation function, it is
+not possible to compute a Ratchet Secret from its corresponding
+AEAD key or compute Ratchet Secret n-1 from Ratchet Secret n.
+
 
 ### Compromise of Application Ratchet Key material
-
 In some circumstances, adversaries may have access to specific AEAD keys and
 nonces which protect an Application or a Group Operation message. While this is
 a limited kind of compromise, it can be realistic in cases of implementation
@@ -1541,26 +1524,28 @@ compromised, which can occur if the attacker has access to part of the
 memory containing the group secrets but not to the signature keys
 which might be stored in a secure enclave.
 
-In this scenario, the adversary gains the ability to compute any number of AEAD
-encryption keys for any AEAD chains and can encrypt and decrypt all messages for
-the compromised epochs.
+In this scenario, the adversary gains the ability to compute any
+number of Ratchet Secrets for the epoch and their corresponding AEAD
+encryption keys and thus can encrypt and decrypt all messages for the
+compromised epochs.
 
 If the adversary is passive, it is expected from the PCS properties of the MLS
 protocol that, as soon as the compromised party remediates the compromise and
 sends an honest Commit message, the next epochs will provide message secrecy.
 
-If the adversary is active, the adversary can follow the protocol and perform
-updates on behalf of the compromised party with no ability for an honest group
-to recover message secrecy. However, MLS provides PCS against active adaptive
-attackers through its Remove group operation. This means that, as long as other
-members of the group are honest, the protocol will guarantee message secrecy for
-all messages exchanged in the epochs after the compromised party has been
+If the adversary is active, the adversary can engage in the protocol
+itself and perform updates on behalf of the compromised party with no
+ability for an honest group to recover message secrecy. However, MLS
+provides PCS against active adaptive attackers through its Remove
+group operation. This means that, as long as other members of the
+group are honest, the protocol will guarantee message secrecy for all
+messages exchanged in the epochs after the compromised party has been
 removed.
 
 ### Compromise by an active adversary with the ability to sign messages
 
-Under such a scenario, where an active adversary has compromised an MLS client,
-two different settings emerge. In the strongest compromise scenario, the
+If an active adversary has compromised an MLS client and can sign
+messages, two different settings emerge. In the strongest compromise scenario, the
 attacker has access to the signing key and can forge authenticated messages. In
 a weaker, yet realistic scenario, the attacker has compromised a client but the
 client signature keys are protected with dedicated hardware features which do
@@ -1595,18 +1580,19 @@ client in both cases.
 There is a significant difference, however in terms of recovery after a
 compromise.
 
-Because of the PCS guarantees provided by the MLS protocol, when a previously
-compromised client performs an honest Commit which is not under the control of
-the adversary, both secrecy and authentication of messages can be recovered in
-the case where the attacker didn't get access to the key. Because the adversary
-doesn't have the key and has lost the ability to sign messages, they cannot
-authenticate messages on behalf of the compromised party, even if they still
-have control over some group keys by colluding with other members of the group.
+Because of the PCS guarantees provided by the MLS protocol, when a
+previously compromised client recovers from compromise and performs an
+honest Commit, both secrecy and authentication of future messages can
+be recovered as long as the attacker doesn't otherwise get access to
+the key. Because the adversary doesn't have the signing key, they
+cannot authenticate messages on behalf of the compromised party, even
+if they still have control over some group keys by colluding with
+other members of the group.
 
-This is in contrast with the case where the signature key is leaked.  In that
-case PCS of the MLS protocol will eventually allow recovery of the
-authentication of messages for future epochs but only after compromised parties
-refresh their credentials securely.
+This is in contrast with the case where the signature key is leaked. In that
+case the compromised endpoint needs to refresh its credentials and invalidate
+the old credentials before the attacker will be unable to authenticate
+messages.
 
 Beware that in both oracle and private key access, an active adaptive attacker
 can follow the protocol and request to update its own credential. This in turn
@@ -1636,12 +1622,7 @@ application to instruct the protocol implementation.
 
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
 > which can access the messages on the device without even needing to attack
-> MLS, the application should delete plaintext messages and ciphertexts
-> as soon as practical after encryption or decryption.
-
-Even though, from the strict point of view of the security formalization, a
-ciphertext is always public and will forever be, there is no loss in trying to
-erase ciphertexts as much as possible.
+> MLS, the application should delete plaintext messages.
 
 Note that this document makes a clear distinction between the way signature keys
 and other group shared secrets must be handled.  In particular, a large set of
