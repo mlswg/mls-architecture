@@ -1199,44 +1199,42 @@ interoperability:
 
 # Security and Privacy Considerations
 
-MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes that the
-attacker has complete control of the network. It is intended to provide the
-security services described in the face of such attackers.
+MLS adopts the Internet threat model {{?RFC3552}} and therefore
+assumes that the attacker has complete control of the network. It is
+intended to provide the security services described in
+{{intended-security-guarantees}} in the face of attackers who can:
 
-- The attacker can monitor the entire network.
+- Monitor the entire network.
 
-- The attacker can read unprotected messages.
+- Read unprotected messages.
 
-- The attacker can generate, inject and delete any message in the unprotected
+- Can generate, inject and delete any message in the unprotected
   transport layer.
+
+While MLS should be run over a secure transport such as QUIC
+{{?RFC9000}} or TLS {{?RFC8446}}, the security guarantees of MLS do
+not depend on the transport. This departs from the usual design
+practice of trusting the transport because MLS is designed to
+provide security even in the face of compromised network
+elements, especially the DS.
+
+Generally, MLS is designed under the
+assumption that the transport layer is present to keep metadata
+private from network observers, while the MLS protocol provides
+confidentiality, integrity, and authentication guarantees for the
+application data (which could pass through multiple
+systems). Additional properties such as partial anonymity or
+deniability could also be achieved in specific architecture designs.
 
 In addition, these guarantees are intended to degrade gracefully in the presence
 of compromise of the transport security links as well as of both clients and
 elements of the messaging system, as described in the remainder of this section.
 
-Generally, MLS is designed under the assumption that the transport layer is
-present to keep metadata private from network observers, while the MLS protocol provides confidentiality,
-integrity, and authentication guarantees for the application data (which could pass
-through multiple systems). Additional properties such as partial anonymity or deniability could also be
-achieved in specific architecture designs.
 
 ## Assumptions on Transport Security Links
 
 As discussed above, MLS provides the highest level of security when its messages
-are delivered over an encrypted transport.  Any secure channel,
-such as QUIC {{?RFC9000}}, TLS {{?RFC8446}}, can be used to
-transport MLS messages.
-However, the MLS protocol is designed to consider the following
-threat-model:
-
-- The attacker can read, write, and delete arbitrary messages inside the secure
-  transport channel.
-
-This departs from most threat models where we consider that the secure channel
-used for transport always provides secrecy. The reason for this consideration is
-that in the group setting, active malicious insiders or adversarial services are
-to be considered.
-
+are delivered over an encrypted transport.
 The main use of the secure transport layer for MLS is to protect the already
 limited amount of metadata. Very little information is contained in the
 unencrypted header of the MLS protocol message format for group operation
@@ -1261,8 +1259,9 @@ metadata if it cannot compromise the secure channel.
 
 ### Integrity and Authentication of Custom Metadata
 
-The MLS protocol provides an authenticated "Additional Authenticated Data" field
-for applications to make data available outside a PrivateMessage.
+MLS provides an authenticated "Additional Authenticated Data" (AAD) field
+for applications to make data available outside a PrivateMessage, while
+cryptographically binding it to the message.
 
 > **RECOMMENDATION:** Use the "Additional Authenticated Data" field of the
 > PrivateMessage instead of using other unauthenticated means of sending
@@ -1406,13 +1405,14 @@ the scope of this document.
 
 ### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
-MLS provides strong authentication within a group, such that a group member
-cannot send a message that appears to be from another group member.
-Additionally, some services require that a recipient be able to prove to the
-service provider that a message was sent by a given client, in order to report
-abuse. MLS supports both of these use cases. In some deployments, these services
-are provided by mechanisms which allow the receiver to prove a message's origin
-to a third party. This is often called "non-repudiation".
+MLS messages are signed, preventing a group member from sending a
+message that appears to be from another group member.  Additionally,
+some services require that a recipient be able to prove to the service
+provider that a message was sent by a given client, in order to report
+abuse. MLS supports both of these use cases. In some deployments,
+these services are provided by mechanisms which allow the receiver to
+prove a message's origin to a third party. This is often called
+"non-repudiation".
 
 Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
 property that it is impossible to prove to a third party that a message was sent
