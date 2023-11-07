@@ -1460,7 +1460,9 @@ protocol.
 In this section we will explore the consequences and recommendations regarding
 the following compromise scenarios:
 
-- The attacker has access to a specific symmetric encryption key
+- The attacker has access to a symmetric encryption key
+
+- The attacker has access to a application ratchet secret
 
 - The attacker has access to the group secrets for one group
 
@@ -1479,26 +1481,31 @@ messages. The Group Operation messages offer an additional protection
 as the secret exchanged within the TreeKEM group key agreement are
 public-key encrypted to subgroups with HPKE.
 
-### Compromise of AEAD key material
+### Compromise of Application Ratchet Key material
 
 In some circumstances, adversaries may have access to specific AEAD keys and
 nonces which protect an Application or a Group Operation message. While this is
 a limited kind of compromise, it can be realistic in cases of implementation
-vulnerabilities where only part of the memory leaks to the adversary.
+vulnerabilities where only part of the memory leaks to the adversary. As the
+application AEAD keys are derived from the application ratchet secret, compromise
+of a single application ratchet key does not imply compromise of any other AEAD
+key or nonce.
 
-When an AEAD key is compromised, the adversary has access to a set of AEAD keys
+### Compromise of Ratchet Secret material
+
+When an Ratchet Secret is compromised, the adversary has access to a set of AEAD keys
 for the same chain and the same epoch, hence can decrypt messages sent using
 keys of this chain. An adversary cannot send a message to a group which appears
 to be from any valid client since they cannot forge the signature.
 
-The MLS protocol will ensure that an adversary cannot compute any previous AEAD
-keys for the same epoch, or any other epochs.  Because of its Forward Secrecy
-guarantees, MLS will also retain secrecy of all other AEAD keys generated for
-*other* MLS clients, outside this dedicated chain of AEAD keys and nonces, even
-within the epoch of the compromise. However the MLS protocol does not provide
-Post Compromise Secrecy for AEAD encryption within an epoch. This means that if
-the AEAD key of a chain is compromised, the adversary can compute an arbitrary
-number of subsequent AEAD keys for that chain.
+The MLS protocol will ensure that an adversary cannot compute any secret
+anterior for the same epoch, or for any other epochs.  Because of its Forward
+Secrecy guarantees, MLS will also retain secrecy of all other AEAD keys
+generated for *other* MLS clients, outside this dedicated chain of AEAD keys and
+nonces, even within the epoch of the compromise. However the MLS protocol does
+not provide Post Compromise Secrecy for AEAD encryption within an epoch. This
+means that if the AEAD key of a chain is compromised, the adversary can compute
+an arbitrary number of subsequent AEAD keys for that chain.
 
 These guarantees are ensured by the structure of the MLS key schedule which
 provides Forward Secrecy for these AEAD encryptions, across the messages within
