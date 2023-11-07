@@ -1096,11 +1096,14 @@ deployments for them to interoperate:
 - A policy of how to protect and share the GroupInfo objects needed for
   external joins.
 
-- A policy for when two credentials represent the same client. Note that many
-  credentials may be issued authenticating the same identity but for different
-  signature keys, because each credential corresponds to a different device
-  (client) owned by the same application user. However, one device may control
-  many signature keys but should still only be considered a single client.
+- A policy for when two credentials represent the same client. Note
+  that many credentials may be issued authenticating the same identity
+  but for different signature keys, because each credential
+  corresponds to a different device (client) owned by the same
+  application user. However, one device may control multiple signature
+  keys -- for instance if they have keys corresponding to multiple
+  overlapping time periods -- but should still only be considered a
+  single client.
 
 - A policy on how long to allow a member to stay in a group without updating its
   leaf keys before removing them.
