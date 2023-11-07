@@ -1084,15 +1084,14 @@ interoperate.
 - Additional services may or may not be required depending on the application
   design:
 
-   - Instead of distributing group information to a new members
-     entirely within a Welcome messages, an application may rely on
-     servers to store public information about the group, such as
-     group members' credentials and related public keys, and provide
-     this information to new members. (In such a system, Welcome
-     messages are still necessary to convey confidential information
-     about the group.) Such an application will require mechanisms for
-     new members to download the current information for a group, and
-     for members to update the information as the group evolves.
+  - In cases where group operations are not encrypted, the DS has the ability to
+    observe and maintain a copy of the public group state. In particular, this
+    is useful for clients that do not have the ability to send the full public
+    state in a Welcome message when inviting auser or for client that need to
+    recover from a loss of their state. Such public state can contain privacy
+    sensitive information such as group members' credentials and related public
+    keys, hence services need to be carefully evaluate the privacy impact of
+    storing this data on the DS.
   - If external joiners are allowed, there must be a method to publish a
     serialized `GroupInfo` object (with an `external_pub` extension) that
     corresponds to a specific group and epoch, and keep that object in sync with
