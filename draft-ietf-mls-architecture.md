@@ -272,13 +272,44 @@ all users, for all group sizes, including groups of only two clients.
 
 # General Setting
 
+## Protocol Overview
+
 MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
 large as tens of thousands.  A client that is part of a group is a _member_ of that
-group. A user might have multiple MLS clients associated with the
-same identity, for instance if they have different devices.
+group. As groups change membership and group or member properties, they
+advance from one _epoch_ to another and the cryptographic state of the
+group evolves.
+
+The group is represented as a tree, which represents the members
+as the leaves of a tree. It is used to efficiently encrypt to subsets of the
+members. Each member has a _LeafNode_ object in the tree holding the client's
+identity, credentials, and capabilities.
+
+Various messages are used in the evolution from epoch to epoch.
+A _Proposal_ message proposes
+a change to be made in the next epoch, such as adding or removing a member.
+A _Commit_ message initiates a new epoch by instructing members of the group to
+implement a collection of proposals. Proposals and Commits are collectively
+called _Handshake messages_.
+A _KeyPackage_ provides keys that can be used to add the client to a group,
+including its LeafNode, and _Signature Key_.
+A _Welcome_ message provides a new member to the group with the information to
+initialize their state for the epoch in which they were added.
+
+Of course most (but not all) applications use MLS to send encrypted group messages.
+An _application message_ is an MLS message with an arbitrary application payload.
+
+Finally, a _PublicMessage_ contains an integrity-protected MLS Handshake message,
+while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
+or application message.
+
+For a more
+detailed explanation of these terms, please consult the MLS protocol specification {{?RFC9420}}.
+
+## Abstract Services
 
 MLS is designed to operate within the context of a messaging service, which
 may be a single service provider, a federated system, or some kind of
@@ -462,6 +493,33 @@ if only the group administrator is allowed to change group members,
 then it is the responsibility of the application to inform members
 of this policy and who the administrator is.
 
+## Proposals and Commits
+
+The general pattern for any change in the group state (e.g., to add or remove
+a user) is that it consists of two messages:
+
+Proposal
+: This message describes the change to be made (e.g., add Bob to the group)
+but does not effect a change.
+
+Commit
+: This message changes the group state to include the changes described in
+a set of proposals.
+
+The simplest pattern is for a client to just send a Commit which contains one or more Proposals,
+for instance Alice could send a Commit with the Proposal Add(Bob) embedded to add
+Bob to the group. However, there are situations in which one client
+might send a proposal and another might send the commit. For instance,
+Bob might wish to remove himself from the group and send a Remove Proposal to do so (see
+{{Section 12.1.3 of ?RFC9420}}). Because Bob
+cannot send the Commit, an existing member must do so.
+Commits can apply to multiple valid Proposals, in which case all the listed
+changes are applied.
+
+It is also possible for a Commit to apply to an empty set of Proposals
+in which case it just updates the cryptographic state of the group
+without changing its membership.
+
 ## Users, Clients, and Groups {#group-members}
 
 While it's natural to think of a messaging system as consisting of groups
@@ -484,17 +542,17 @@ client they are associated with, or may choose to distinguish them.
 
 When a client is part of a Group, it is called a Member.  A group in
 MLS is defined as the set of clients that have knowledge of the shared
-group secret established in the group key establishment phase of the
-protocol and have contributed to it.
-
-Until a client has been added to the group and contributed to the group
+group secret established in the group key establishment phase.
+Note that until a client has been added to the group and contributed to the group
 secret in a manner verifiable by other members of the group, other members
-cannot assume that the client is a member of the group.
+cannot assume that the client is a member of the group; for instance, the
+newly added member might not have received the Welcome message or been
+unable to decrypt it for some reason.
 
 
 # Authentication Service
 
-The Authentication Service (AS) has to provide three functionalities:
+The Authentication Service (AS) has to provide three services:
 
 1. Issue credentials to clients that attest to bindings between identities and
    signature key pairs
@@ -521,7 +579,7 @@ breadth of this concept:
   key fingerprints for authentication.  In this scenario, the issuance function
   is simply the generation of a key pair (i.e., a credential is just an
   identifier and public key, with no information to assist in verification).
-  The verification function is the application functionality that enables users
+  The verification function is the application function that enables users
   to verify keys.
 
 * In a system based on {{CONIKS}} end user Key Transparency (KT), the issuance
@@ -532,10 +590,10 @@ breadth of this concept:
   their identity.
 
 By the nature of its roles in MLS authentication, the AS is invested with a
-large amount of trust and the compromise of one of its functionalities could
+large amount of trust and the compromise of one the AS could
 allow an adversary to, among other things, impersonate group members. We discuss
 security considerations regarding the compromise of the different AS
-functionalities in detail in {{as-compromise}}.
+functions in detail in {{as-compromise}}.
 
 The association between members' identities and signature keys is fairly
 flexible in MLS.  As noted above, there is no requirement that all clients
@@ -643,7 +701,7 @@ must agree on a single MLS Commit message that ends each epoch and begins the
 next one.
 
 In practice, there's a realistic risk of two members generating Commit messages
-at the same time, based on the same counter, and both attempting to send them to
+at the same time, based on the same epoch, and both attempting to send them to
 the group at the same time. The extent to which this is a problem, and the
 appropriate solution, depends on the design of the Delivery Service. Per the CAP
 theorem {{CAPBR}}, there are two general classes of distributed system that the
@@ -662,11 +720,12 @@ are described in the next two subsections.
 However, note that a malicious Delivery Service could also reorder messages or
 provide an inconsistent view to different users.  The "generation" counter in
 MLS messages provides per-sender loss detection and ordering that cannot be
-manipulated by the DS.  A mechanism for more robust protections is discussed in
-{{?I-D.ietf-mls-extensions}}.  A DS can cause a partition in the group by
+manipulated by the DS, but this does not provide complete protection against
+partitioning.  A DS can cause a partition in the group by
 partitioning key exchange messages; this can be detected only by out-of-band
 comparison (e.g., confirming that all clients have the same
-`epoch_authenticator` value`).
+`epoch_authenticator` value`). A mechanism for more robust protections is discussed in
+{{?I-D.ietf-mls-extensions}}.
 
 Other forms of Delivery Service misbehavior are still possible that are not easy
 to detect. For instance, a Delivery Service can simply refuse to relay messages
@@ -751,8 +810,9 @@ all other members.
 
 Membership of an MLS group is managed at the level of individual clients.  In
 most cases, a client corresponds to a specific device used by a user. If a user
-has multiple devices, the user will be represented in a group by multiple
-clients.  If an application wishes to implement operations at the level of
+has multiple devices, the user will generally be represented in a group by multiple
+clients (although applications could choose to have devices share keying material).
+If an application wishes to implement operations at the level of
 users, it is up to the application to track which clients belong to a given user
 and ensure that they are added / removed consistently.
 
@@ -777,8 +837,8 @@ them.
 
 Application setup may also determine other criteria for membership validity. For
 example, per-device signature keys can be signed by an identity key recognized
-by other participants. If a certificate chain is used to sign off on device
-signature keys, then revocation by the owner adds an alternative flag to prompt
+by other participants. If a certificate chain is used to authenticate device
+signature keys, then revocation by the owner adds an alternative mechanism to prompt
 membership removal.
 
 An MLS group's secrets change on every change of membership, so each client only
@@ -798,13 +858,13 @@ set of members of any group may or may not form a subset of the members of
 another group. MLS guarantees that the FS and PCS goals within a given group are
 maintained and not weakened by user membership in multiple groups. However,
 actions in other groups likewise do not strengthen the FS and PCS guarantees
-within a given group, e.g. key updates within a given group following a device
+within a given group, e.g., key updates within a given group following a device
 compromise does not provide PCS healing in other groups; each group must be
-updated separately to achieve internal goals.  This also applies to future
-groups that a member has yet to join, that are likewise unaffected by updates
+updated separately to achieve these security objectives.  This also applies to future
+groups that a member has yet to join, which are likewise unaffected by updates
 performed in current groups.
 
-Applications may strengthen connectivity among parallel groups by requiring
+Applications can strengthen connectivity among parallel groups by requiring
 periodic key updates from a user across all groups in which they have
 membership.
 
@@ -829,9 +889,10 @@ delivering messages asynchronously and reliably.
 
 ## Access Control
 
-The MLS protocol allows each member of the messaging group to perform operations
-equally. This is because all clients within a group (members) have access to the
-shared cryptographic material. However, every service/infrastructure has control
+Because all clients within a group (members) have access to the shared
+cryptographic material, MLS protocol allows each member of the
+messaging group to perform operations,
+However, every service/infrastructure has control
 over policies applied to its own clients. Applications managing MLS clients can
 be configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -849,8 +910,8 @@ collect the signatures on the handshake messages and use them for tracking.
 > **RECOMMENDATION:** Prefer using encrypted group operation messages to avoid
 > privacy issues related to non-encrypted signatures.
 
-Note that in the default case of encrypted handshake messages, any access
-control policies will be applied at the client, so the application must ensure
+If handshake messages are encrypted, any access
+control policies must be applied at the client, so the application must ensure
 that the access control policies are consistent across all clients to make sure
 that they remain in sync.  If two different policies were applied, the clients
 might not accept or reject a group operation and end-up in different
@@ -920,7 +981,7 @@ It is typically expected for users within a group to own various devices. A new
 device can be added to a group and be considered as a new client by the
 protocol. This client will not gain access to the history even if it is owned by
 someone who owns another member of the group.
-Restoring history is typically not allowed at the protocol level but
+MLS does not provide support for restoring history in this case, but
 applications can elect to provide such a mechanism outside of MLS.  Such
 mechanisms, if used, may reduce the FS and PCS guarantees provided by MLS.
 
@@ -1022,13 +1083,16 @@ interoperate.
 
 - Additional services may or may not be required depending on the application
   design:
-  - If assisted joining is desired (meaning that the ratchet tree is not
-    provided in Welcome messages), there must be a method to download the
-    ratchet tree corresponding to a group.
-  - If assisted joining is desired and the Delivery Service is not able to
-    compute the ratchet tree itself (because some proposals or commits are sent
-    encrypted), there must be a method for group members to publish the updated
-    ratchet tree after each commit.
+
+   - Instead of distributing group information to a new members
+     entirely within a Welcome messages, an application may rely on
+     servers to store public information about the group, such as
+     group members' credentials and related public keys, and provide
+     this information to new members. (In such a system, Welcome
+     messages are still necessary to convey confidential information
+     about the group.) Such an application will require mechanisms for
+     new members to download the current information for a group, and
+     for members to update the information as the group evolves.
   - If external joiners are allowed, there must be a method to publish a
     serialized `GroupInfo` object (with an `external_pub` extension) that
     corresponds to a specific group and epoch, and keep that object in sync with
@@ -1078,7 +1142,8 @@ deployments to interoperate:
 
 - Group IDs, as decided by group creators and used to uniquely identify a group.
 
-- The `application_id` extension of a LeafNode.
+- Application-level identifiers of public key material (specifically
+  the `application_id` extension as defined in {{Section 5.3.3 of ?RFC9420}}).
 
 MLS requires the following policies to be defined, which restrict the set of
 acceptable behavior in a group. These policies must be consistent between
@@ -1106,11 +1171,14 @@ deployments for them to interoperate:
 - A policy of how to protect and share the GroupInfo objects needed for
   external joins.
 
-- A policy for when two credentials represent the same client. Note that many
-  credentials may be issued attesting to the same identity but for different
-  signature keys, because each credential corresponds to a different device
-  (client) owned by the same application user. However, one device may control
-  many signature keys but should still only be considered a single client.
+- A policy for when two credentials represent the same client. Note
+  that many credentials may be issued attesting the same identity
+  but for different signature keys, because each credential
+  corresponds to a different client owned by the same
+  application user. However, one device may control multiple signature
+  keys -- for instance if they have keys corresponding to multiple
+  overlapping time periods -- but should still only be considered a
+  single client.
 
 - A policy on how long to allow a member to stay in a group without updating its
   leaf keys before removing them.
@@ -1583,8 +1651,7 @@ be a priority.
 Overall there is no way to detect or prevent these compromises, as discussed in
 the previous sections, performing separation of the application secret states
 can help recovery after compromise, this is the case for signature keys but
-similar concern exists for the encryption private key used in the TreeKEM Group
-Key Agreement.
+similar concern exists for client's encryption private keys.
 
 > **RECOMMENDATION:** The secret keys used for public key encryption should be
 > stored similarly to the way the signature keys are stored, as keys can be used
@@ -1878,7 +1945,7 @@ analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
 Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models, for example, {{BBR18}},
 {{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the
-ratcheting tree as the sub-protocol of MLS that facilitates key agreement,
+ratcheting tree sub-protocol of MLS that facilitates key agreement,
 {{WPBB22}} analyzes the sub-protocol of MLS for group state agreement and authentication,
 while {{BCK21}} analyzes the key derivation paths in the ratchet tree and key
 schedule. Finally, {{CHK21}} analyzes the authentication and cross-group healing
