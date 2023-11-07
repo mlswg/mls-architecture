@@ -868,13 +868,14 @@ Applications can strengthen connectivity among parallel groups by requiring
 periodic key updates from a user across all groups in which they have
 membership.
 
-Applications can use the PSK mechanism to link healing properties among parallel
-groups.  For example, suppose a common member M of two groups A and B has
-performed a key update in group A but not in group B.  The key update provides
-PCS with regard to M in group A.  If a PSK is exported from group A and injected
-into group B, then some of these PCS properties carry over to group B, since the
-PSK and secrets derived from it are only known to the new, updated version of M,
-not to the old, possibly compromised version of M.
+MLS provides a pre-shared key (PSK) that can be used to link healing
+properties among parallel groups.  For example, suppose a common
+member M of two groups A and B has performed a key update in group A
+but not in group B.  The key update provides PCS with regard to M in
+group A.  If a PSK is exported from group A and injected into group B,
+then some of these PCS properties carry over to group B, since the PSK
+and secrets derived from it are only known to the new, updated version
+of M, not to the old, possibly compromised version of M.
 
 ## Asynchronous Usage
 
@@ -954,12 +955,13 @@ before the old credential becomes invalid.
 > **RECOMMENDATION:** Proactively rotate credentials, especially if a credential
 > is about to become invalid.
 
-## Recovery After State Loss
+## Recovery After State Loss {#state-loss}
 
 Group members whose local MLS state is lost or corrupted can reinitialize their
 state by re-joining the group as a new member and removing the member
 representing their earlier state.  An application can require that a client
-performing such a reinitialization prove its prior membership with a PSK.
+performing such a reinitialization prove its prior membership with a PSK
+that was exported from the prevoius state.
 
 There are a few practical challenges to this approach.  For example, the
 application will need to ensure that all members have the required PSK,
@@ -1053,12 +1055,13 @@ to potentially interoperate.
 The protocol has a built-in ability to negotiate protocol versions,
 ciphersuites, extensions, credential types, and additional proposal types. For
 two deployments to interoperate, they must have overlapping support in each of
-these categories. A `required_capabilities` extension can help maintain
+these categories. The `required_capabilities` extension
+(Section 7.2 of {{!RFC9420}}) can promote
 interoperability with a wider set of clients by ensuring that certain
 functionality continues to be supported by a group, even if the clients in the
 group aren't currently relying on it.
 
-MLS relies on the following network services. These network services would need
+MLS relies on the following network services, that need
 to be compatible in order for two different deployments based on them to
 interoperate.
 
@@ -1097,9 +1100,12 @@ interoperate.
   - If an application chooses not to allow assisted or external joining, it may
     instead provide a method for external users to solicit group members (or a
     designated service) to add them to a group.
-  - If the application uses external PSKs, or uses resumption PSKs that all
-    members of a group may not have access to, there must be a method for
-    distributing these PSKs to group members.
+  - If the application uses PSKs that members of a group may not have
+    access to (e.g., to control entry into the group or to prove
+    membership in the group in the past, as in {{state-loss}}) there
+    must be a method for distributing these PSKs to group members who
+    might not have them, for instance if they joined the group
+    after the PSK was generated.
   - If an application wishes to detect and possibly discipline members that send
     malformed commits with the intention of corrupting a group's state, there
     must be a method for reporting and validating malformed commits.
@@ -1109,7 +1115,7 @@ two implementations to interoperate:
 
 - The maximum total lifetime that is acceptable for a KeyPackage.
 
-- How long to store the resumption secret for past epochs of a group.
+- How long to store the resumption PSK for past epochs of a group.
 
 - The degree of tolerance that's allowed for out-of-order message delivery:
   - How long to keep unused nonce and key pairs for a sender
@@ -1120,6 +1126,10 @@ two implementations to interoperate:
     other messages not arriving first, and if so, how many and for how long. For
     example, Commit messages that arrive before a proposal they reference, or
     application messages that arrive before the Commit starting an epoch.
+
+If implementations differ in these parameters, they will interoperate
+to some extent but may experience unexpected failures in certain situations,
+such as extensive message reordering.
 
 MLS provides the following locations where an application may store arbitrary
 data. The format and intention of any data in these locations must align for two
@@ -1162,9 +1172,9 @@ deployments for them to interoperate:
   external joins.
 
 - A policy for when two credentials represent the same client. Note
-  that many credentials may be issued authenticating the same identity
+  that many credentials may be issued attesting the same identity
   but for different signature keys, because each credential
-  corresponds to a different device (client) owned by the same
+  corresponds to a different client owned by the same
   application user. However, one device may control multiple signature
   keys -- for instance if they have keys corresponding to multiple
   overlapping time periods -- but should still only be considered a
@@ -1177,9 +1187,9 @@ Finally, there are some additional application-defined behaviors that are
 partially an individual application's decision but may overlap with
 interoperability:
 
-- If there's any policy on how or when to pad messages.
+- When and how to pad messages.
 
-- If there is any policy for when to send a reinitialization proposal.
+- When to send a reinitialization proposal.
 
 - How often clients should update their leaf keys.
 
@@ -1461,11 +1471,13 @@ the following compromise scenarios:
 - The attacker has access to all secrets of a user for all groups (full state
   compromise)
 
-The MLS protocol provides per-sender chains of AEAD keys that are generated from
-Group Secrets. These keys are used to protect MLS Plaintext messages which can
-be Group Operation or Application messages. The Group Operation messages offer
-an additional protection as the secrets exchanged within them
-are public-key encrypted to subgroups with HPKE.
+The MLS protocol provides per-sender chains of symmetric authenticated
+encryption with additional data (AEAD) {{!RFC5116}} keys that are
+generated from Group Secrets. These keys are used to protect MLS
+Plaintext messages which can be Group Operation or Application
+messages. The Group Operation messages offer an additional protection
+as the secret exchanged within the TreeKEM group key agreement are
+public-key encrypted to subgroups with HPKE.
 
 ### Compromise of AEAD key material
 
@@ -1512,16 +1524,16 @@ either of these cases.  As every member of the group can compute the AEAD keys
 for all the chains (they have access to the Group Secrets) in order to send and
 receive messages, the authentication provided by the AEAD encryption layer of
 the common framing mechanism is weak. Successful decryption of an AEAD
-encrypted message only guarantees that a member of the group sent the message.
+encrypted message only guarantees that some member of the group sent the message.
 
 ### Compromise of the Group Secrets of a single group for one or more group epochs
 
-The attack scenario considering an adversary gaining access to a set of Group
-secrets is significantly stronger. This can typically be the case when a member
-of the group is compromised.  For this scenario, we consider that the signature
-keys are not compromised. This can be the case for instance if the adversary has
-access to part of the memory containing the group secrets but not to the
-signature keys which might be stored in a secure enclave.
+An adversary who gains access to a set Group secrets--as when a member
+of the group is compromised--is significantly more powerful. In this
+section, we consider the case where the signature keys are not
+compromised, which can occur if the attacker has access to part of the
+memory containing the group secrets but not to the signature keys
+which might be stored in a secure enclave.
 
 In this scenario, the adversary gains the ability to compute any number of AEAD
 encryption keys for any AEAD chains and can encrypt and decrypt all messages for
