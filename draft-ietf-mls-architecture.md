@@ -1089,7 +1089,7 @@ interoperate.
     is useful for clients that do not have the ability to send the full public
     state in a Welcome message when inviting auser or for client that need to
     recover from a loss of their state. Such public state can contain privacy
-    sensitive information such as group members' credentials and related public
+    sensitive information such as group members' credentrials and related public
     keys, hence services need to be carefully evaluate the privacy impact of
     storing this data on the DS.
   - If external joiners are allowed, there must be a method to publish a
@@ -1452,54 +1452,34 @@ the following compromise scenarios:
 - The attacker has access to all secrets of a user for all groups (full state
   compromise)
 
-The MLS protocol provides per-sender chains of symmetric authenticated
-encryption with additional data (AEAD) {{!RFC5116}} keys that are
-generated from Group Secrets. Specifically, each epoch establishes
-a per-sender "Ratchet Secret", which is then used to generate an
-AEAD key, which is used to protect MLS Plaintext messages.
-Each time a message is sent, the Ratchet Secret is used
-to create a new Ratchet Secret and a new corresponding AEAD key.
-Because of the properties of the key derivation function, it is
-not possible to compute a Ratchet Secret from its corresponding
-AEAD key or compute Ratchet Secret n-1 from Ratchet Secret n.
 
+### Compromise of Symmetric Keying Material {#symmetric-key-compromise}
 
-### Compromise of Application Ratchet Key material
+As described above, each MLS epoch creates a new Group Secret.
+
+These group secrets are then used to create a per-sender Ratchet
+Secret, which in turn is used to create a per-sender with additional
+data (AEAD) {{!RFC5116}} key that is then used to encrypt MLS
+Plaintext messages.  Each time a message is sent, the Ratchet Secret
+is used to create a new Ratchet Secret and a new corresponding AEAD
+key.  Because of the properties of the key derivation function, it is
+not possible to compute a Ratchet Secret from its corresponding AEAD
+key or compute Ratchet Secret n-1 from Ratchet Secret n.
+
+Below, we consider the compromise of each of these pieces of keying
+material in turn, in ascending order of severity.  While this is a
+limited kind of compromise, it can be realistic in cases of
+implementation vulnerabilities where only part of the memory leaks to
+the adversary.
+
+#### Compromise of AEAD Keys
+
 In some circumstances, adversaries may have access to specific AEAD keys and
-nonces which protect an Application or a Group Operation message. While this is
-a limited kind of compromise, it can be realistic in cases of implementation
-vulnerabilities where only part of the memory leaks to the adversary. As the
-application AEAD keys are derived from the application ratchet secret, compromise
-of a single application ratchet key does not imply compromise of any other AEAD
-key or nonce.
-
-### Compromise of Ratchet Secret material
-
-When an Ratchet Secret is compromised, the adversary has access to a set of AEAD keys
-for the same chain and the same epoch, hence can decrypt messages sent using
-keys of this chain. An adversary cannot send a message to a group which appears
-to be from any valid client since they cannot forge the signature.
-
-The MLS protocol will ensure that an adversary cannot compute any secret
-anterior for the same epoch, or for any other epochs.  Because of its Forward
-Secrecy guarantees, MLS will also retain secrecy of all other AEAD keys
-generated for *other* MLS clients, outside this dedicated chain of AEAD keys and
-nonces, even within the epoch of the compromise. However the MLS protocol does
-not provide Post Compromise Secrecy for AEAD encryption within an epoch. This
-means that if the AEAD key of a chain is compromised, the adversary can compute
-an arbitrary number of subsequent AEAD keys for that chain.
-
-These guarantees are ensured by the structure of the MLS key schedule which
-provides Forward Secrecy for these AEAD encryptions, across the messages within
-the epoch and also across previous epochs.  Those chains are completely disjoint
-and compromising keys across the chains would mean that some Group Secrets have
-been compromised, which is not the case in this attack scenario (we explore
-stronger compromise scenarios as part of the following sections).
-
-MLS provides Post-Compromise Security against an active adaptive attacker across
-epochs for AEAD encryption, which means that as soon as the epoch is changed, if
-the attacker does not have access to more secret material they won't be able to
-access any protected messages from future epochs.
+nonces which protect an Application or a Group Operation message. Compromise
+of these keys allows the attacker to decrypt the specific message encrypted with
+that key but no other; because the AEAD keys are derived from the Ratchet
+Secret, it cannot generate the next Ratchet Secret and hence not the next AEAD
+key.
 
 In the case of an Application message, an AEAD key compromise means that the
 encrypted application message will be leaked as well as the signature over that
@@ -1507,7 +1487,6 @@ message. This means that the compromise has both confidentiality and privacy
 implications on the future AEAD encryptions of that chain.  In the case of a
 Group Operation message, only the privacy is affected, as the signature is
 revealed, because the secrets themselves are protected by HPKE encryption.
-
 Note that under that compromise scenario, authentication is not affected in
 either of these cases.  As every member of the group can compute the AEAD keys
 for all the chains (they have access to the Group Secrets) in order to send and
@@ -1515,9 +1494,35 @@ receive messages, the authentication provided by the AEAD encryption layer of
 the common framing mechanism is weak. Successful decryption of an AEAD
 encrypted message only guarantees that some member of the group sent the message.
 
-### Compromise of the Group Secrets of a single group for one or more group epochs
+Compromise of the AEAD keys allows the attacker to send an encrypted message
+using that key, but cannot send a message to a group which appears
+to be from any valid client since they cannot forge the signature. This
+applies to all the forms of symmetric key compromise described in
+{{symmetric-key-compromise}}.
 
-An adversary who gains access to a set Group secrets--as when a member
+
+#### Compromise of Ratchet Secret material
+
+When a Ratchet Secret is compromised, the adversary can compute both the
+current AEAD keys for a given sender as well as any future keys for that
+sender in this epoch. Thus, it can decrypt current and future messages
+by the corresponding sender. However, because it does not have previous
+Ratchet Secrets, it cannot decrypt past messages as long as those secrets
+and keys have been deleted.
+
+Because of its Forward Secrecy guarantees, MLS will also retain
+secrecy of all other AEAD keys generated for *other* MLS clients,
+outside this dedicated chain of AEAD keys and nonces, even within the
+epoch of the compromise.  MLS provides Post-Compromise Security
+against an active adaptive attacker across epochs for AEAD encryption,
+which means that as soon as the epoch is changed, if the attacker does
+not have access to more secret material they won't be able to access
+any protected messages from future epochs.
+
+
+#### Compromise of the Group Secrets of a single group for one or more group epochs
+
+An adversary who gains access to a set of Group secrets--as when a member
 of the group is compromised--is significantly more powerful. In this
 section, we consider the case where the signature keys are not
 compromised, which can occur if the attacker has access to part of the
