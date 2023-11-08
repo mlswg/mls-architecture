@@ -1478,9 +1478,8 @@ encryption with additional data (AEAD) {{!RFC5116}} keys that are
 generated from Group Secrets. Specifically, each epoch establishes
 a per-sender "Ratchet Secret", which is then used to generate an
 AEAD key, which is used to protect MLS Plaintext messages.
-Each time a message is sent, the Ratchet Secret is used
-to create a new Ratchet Secret and a new corresponding AEAD key.
-Because of the properties of the key derivation function, it is
+A new Ratchet Secret generated and is used to generate the AEAD keys for each
+message. Because of the properties of the key derivation function, it is
 not possible to compute a Ratchet Secret from its corresponding
 AEAD key or compute Ratchet Secret n-1 from Ratchet Secret n.
 
@@ -1643,7 +1642,7 @@ application to instruct the protocol implementation.
 
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
 > which can access the messages on the device without even needing to attack
-> MLS, the application should delete plaintext messages.
+> MLS, the application should delete plaintext and ciphertext messages.
 
 Note that this document makes a clear distinction between the way signature keys
 and other group shared secrets must be handled.  In particular, a large set of
