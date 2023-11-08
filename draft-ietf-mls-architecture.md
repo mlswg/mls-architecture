@@ -1405,6 +1405,27 @@ the scope of this document.
 
 ### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
+
+MLS provides strong authentication within a group, such that a group member
+cannot send a message that appears to be from another group member.
+Additionally, some services require that a recipient be able to prove to the
+service provider that a message was sent by a given client, in order to report
+abuse. MLS supports both of these use cases. In some deployments, these services
+are provided by mechanisms which allow the receiver to prove a message's origin
+to a third party. This is often called "non-repudiation".
+
+Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
+property that it is impossible to prove to a third party that a message was sent
+by a given sender.  MLS does not make any claims with regard to deniability.  It
+may be possible to operate MLS in ways that provide certain deniability
+properties, but defining the specific requirements and resulting notions of
+deniability requires further analysis.
+
+
+### Associating a User's Clients
+
+When the same user uses multiple clients, it may be possible for other members
+of a group to recognize all of those clients as belonging to the same user.  For
 example, all of a user's clients might present credentials authenticating the
 user's identity.  This association among devices might be considered a leak of
 private information.  The remainder of this section describes several approaches
