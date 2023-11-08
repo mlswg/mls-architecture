@@ -1812,7 +1812,7 @@ type.
 In contrast, when MLS clients use the `basic` Credential type, then some
 other mechanism must be used to verify identities. For instance the Authentication
 Service could operate some sort of directory server to provide keys,
-or users could potentially verify keys via some out-of-band mechanism.
+or users could verify keys via an out-of-band mechanism.
 
 > **RECOMMENDATION:** Select the strongest MLS Credential type available among
 > the target members of an MLS group.
