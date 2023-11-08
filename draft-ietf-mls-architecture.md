@@ -1797,45 +1797,45 @@ emitted credentials might be compromised.
 
 #### Authentication compromise: Ghost users and impersonations
 
-One important feature of MLS is that all Members know which other members are in
+One important property of MLS is that all Members know which other members are in
 the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.
 
+This guarentee applies to the the cryptographic identities of the members,
+but these identities need to be bound to people in the physical world.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
-be largely performed autonomously (e.g. without user interaction) by
+be largely performed autonomously (e.g., without user interaction) by
 the clients themselves for the `x509` Credential
-type. In contrast, when MLS clients use the `basic` Credential type, a larger
-degree of trust must be placed in a (likely) centralized authentication
-resource, or on out-of-band processes such as manual verification.
+type.
+
+In contrast, when MLS clients use the `basic` Credential type, then some
+other mechanism must be used to verify identities. For instance the Authentication
+Service could operate some sort of directory server to provide keys,
+or users could potentially verify keys via some out-of-band mechanism.
 
 > **RECOMMENDATION:** Select the strongest MLS Credential type available among
 > the target members of an MLS group.
 
-If the AS is compromised, it could validate a (or generate a new) signature
-keypair for an attacker. Because a user can have many MLS clients running the
-MLS protocol, it possibly has many signature keypairs for multiple
-devices. These attacks could be very difficult to detect.
+If the AS is compromised, it could validate a (or generate a new)
+signature keypair for an attacker. Because a user can have many MLS
+clients running the MLS protocol, it possibly has many signature
+keypairs for multiple devices. These attacks could be very difficult
+to detect, especially in large groups where the UI might not reflect
+all the changes back to the users. If the application participates in
+a key transparency mechanism in which it is possible to determine
+every key for a given user, then this then this would allow for the
+detection of surreptitiously created false credentials.
+
+> **RECOMMENDATION:** Make sure that MLS clients reflect all the membership
+> changes to the users as they happen. If a choice has to be made because the
+> number of notifications is too high, the client should provide a log of
+> state of the device so that the user can examine it.
 
 > **RECOMMENDATION:** Provide a key transparency mechanism for the
 > Authentication Services to allow public verification of the credentials
 > authenticated by this service.
-
-Note that when a `basic` Credential is used, the Authentication Service also
-needs an out-of-band mechanism to verify the identity asserted in the
-Credential.
-
-In the case where an adversarial keypair is generated for a specific identity,
-an infrastructure without any transparency mechanism or out-of-band
-authentication mechanism could inject a malicious client into a group by
-impersonating a user. This is especially the case in large groups where the UI
-might not reflect all the changes back to the users.
-
-> **RECOMMENDATION:** Make sure that MLS clients reflect all the membership
-> changes to the users as they happen. If a choice has to be made because the
-> number of notifications is too high, a public log should be maintained of the
-> state of the device so that the user can examine it.
 
 While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
@@ -1844,13 +1844,6 @@ can be used to provide out-of-band authentication to users. The
 one-time, per client, authentication secret which can be exchanged between users
 to prove their identity to each other. This can be done for instance using a QR
 code that can be scanned by the other parties.
-
-Another way to improve the security for the users is to provide a transparency
-mechanism which allows each user to check if credentials used in groups have
-been published in the transparency log. Another benefit of this mechanism is for
-revocation. The users of a group could check for revoked keys (in case of
-compromise detection) using a mechanism such as CRLite or some more advanced
-privacy preserving technology.
 
 > **RECOMMENDATION:** Provide one or more out-of-band authentication
 > mechanisms to limit the impact of an Authentication Service compromise.
