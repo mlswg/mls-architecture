@@ -1829,7 +1829,7 @@ type. In contrast, when MLS clients use the `basic` Credential type, a larger
 degree of trust must be placed in a (likely) centralized authentication
 resource, or on out-of-band processes such as manual verification.
 
-> **RECOMMENDATION:** Select the strongest MLS Credential type which is
+> **RECOMMENDATION:** Select the MLS Credential type with the strongest security which is
 > supported by all target members of an MLS group.
 
 If the AS is compromised, it could validate a (or generate a new) signature
