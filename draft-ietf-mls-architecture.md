@@ -1829,8 +1829,8 @@ type. In contrast, when MLS clients use the `basic` Credential type, a larger
 degree of trust must be placed in a (likely) centralized authentication
 resource, or on out-of-band processes such as manual verification.
 
-> **RECOMMENDATION:** Select the strongest MLS Credential type available among
-> the target members of an MLS group.
+> **RECOMMENDATION:** Select the strongest MLS Credential type which is
+> supported by all target members of an MLS group.
 
 If the AS is compromised, it could validate a (or generate a new) signature
 keypair for an attacker. Because a user can have many MLS clients running the
