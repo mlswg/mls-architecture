@@ -1707,8 +1707,10 @@ the IP address and depending on the protocol the MAC address of the device.
 
 Similar concerns exist in the peer-to-peer use cases of MLS.
 
-> **RECOMMENDATION:** In the case where privacy or anonymity is important, using
-> adequate protection such as MASQUE, ToR, or a VPN can improve metadata protection.
+> **RECOMMENDATION:** In the case where privacy or anonymity is
+> important, using adequate protection such as MASQUE
+> {{?I-D.schinazi-masque-proxy}}, ToR, or a VPN can improve metadata
+> protection.
 
 More generally, using anonymous credentials in an MLS based architecture might
 not be enough to provide strong privacy or anonymity properties.
