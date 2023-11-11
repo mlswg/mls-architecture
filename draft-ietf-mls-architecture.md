@@ -1823,7 +1823,7 @@ the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.
 
-This guarentee applies to the the cryptographic identities of the members.
+This guarantee applies to the the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
 be largely performed autonomously (e.g., without user interaction) by
