@@ -1589,6 +1589,9 @@ generate messages which look valid to other members of the group and to the
 infrastructure as they need to have access to group secrets to compute the
 encryption keys or the membership tag.
 
+
+
+
 ### Compromise of the authentication with access to a signature key
 
 The difference between having access to the value of the signature key and only
@@ -1624,6 +1627,9 @@ provider.
 > other secrets and preferably protected by an HSM or dedicated hardware
 > features to allow recovery of the authentication for future messages after a
 > compromise.
+
+> **RECOMMENDATION:** When the credential type supports revocation,
+> the users of a group should check for revoked keys.
 
 ### Security consideration in the context of a full state compromise
 
@@ -1839,7 +1845,9 @@ or users could verify keys via an out-of-band mechanism.
 > the target members of an MLS group.
 
 If the AS is compromised, it could validate a (or generate a new)
-signature keypair for an attacker. Because a user can have many MLS
+signature keypair for an attacker. The attacker could then use this
+keypair to join a group as if it were another of the user's clients.
+Because a user can have many MLS
 clients running the MLS protocol, it possibly has many signature
 keypairs for multiple devices. These attacks could be very difficult
 to detect, especially in large groups where the UI might not reflect
