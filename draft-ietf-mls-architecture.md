@@ -1799,6 +1799,13 @@ emitted credentials might be compromised.
 > ability of an adversary with no physical access to extract the top-level
 > signature private key.
 
+Note that historically some systems generate signature keys on the
+Authentication Service and distribute the private keys to clients
+along with their credential. This is a dangerous practice because it
+allows the AS or an attacker who has compromised the AS to silently
+impersonate the client.
+
+
 #### Authentication compromise: Ghost users and impersonations
 
 One important feature of MLS is that all Members know which other members are in
