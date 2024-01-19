@@ -1202,44 +1202,42 @@ interoperability:
 
 # Security and Privacy Considerations
 
-MLS adopts the Internet threat model {{?RFC3552}} and therefore assumes that the
-attacker has complete control of the network. It is intended to provide the
-security services described in the face of such attackers.
+MLS adopts the Internet threat model {{?RFC3552}} and therefore
+assumes that the attacker has complete control of the network. It is
+intended to provide the security services described in
+{{intended-security-guarantees}} in the face of attackers who can:
 
-- The attacker can monitor the entire network.
+- Monitor the entire network.
 
-- The attacker can read unprotected messages.
+- Read unprotected messages.
 
-- The attacker can generate, inject and delete any message in the unprotected
+- Can generate, inject and delete any message in the unprotected
   transport layer.
+
+While MLS should be run over a secure transport such as QUIC
+{{?RFC9000}} or TLS {{?RFC8446}}, the security guarantees of MLS do
+not depend on the transport. This departs from the usual design
+practice of trusting the transport because MLS is designed to
+provide security even in the face of compromised network
+elements, especially the DS.
+
+Generally, MLS is designed under the
+assumption that the transport layer is present to keep metadata
+private from network observers, while the MLS protocol provides
+confidentiality, integrity, and authentication guarantees for the
+application data (which could pass through multiple
+systems). Additional properties such as partial anonymity or
+deniability could also be achieved in specific architecture designs.
 
 In addition, these guarantees are intended to degrade gracefully in the presence
 of compromise of the transport security links as well as of both clients and
 elements of the messaging system, as described in the remainder of this section.
 
-Generally, MLS is designed under the assumption that the transport layer is
-present to keep metadata private from network observers, while the MLS protocol provides confidentiality,
-integrity, and authentication guarantees for the application data (which could pass
-through multiple systems). Additional properties such as partial anonymity or deniability could also be
-achieved in specific architecture designs.
 
 ## Assumptions on Transport Security Links
 
 As discussed above, MLS provides the highest level of security when its messages
-are delivered over an encrypted transport.  Any secure channel,
-such as QUIC {{?RFC9000}}, TLS {{?RFC8446}}, can be used to
-transport MLS messages.
-However, the MLS protocol is designed to consider the following
-threat-model:
-
-- The attacker can read, write, and delete arbitrary messages inside the secure
-  transport channel.
-
-This departs from most threat models where we consider that the secure channel
-used for transport always provides secrecy. The reason for this consideration is
-that in the group setting, active malicious insiders or adversarial services are
-to be considered.
-
+are delivered over an encrypted transport.
 The main use of the secure transport layer for MLS is to protect the already
 limited amount of metadata. Very little information is contained in the
 unencrypted header of the MLS protocol message format for group operation
@@ -1264,8 +1262,9 @@ metadata if it cannot compromise the secure channel.
 
 ### Integrity and Authentication of Custom Metadata
 
-The MLS protocol provides an authenticated "Additional Authenticated Data" field
-for applications to make data available outside a PrivateMessage.
+MLS provides an authenticated "Additional Authenticated Data" (AAD) field
+for applications to make data available outside a PrivateMessage, while
+cryptographically binding it to the message.
 
 > **RECOMMENDATION:** Use the "Additional Authenticated Data" field of the
 > PrivateMessage instead of using other unauthenticated means of sending
@@ -1409,6 +1408,7 @@ the scope of this document.
 
 ### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
+
 MLS provides strong authentication within a group, such that a group member
 cannot send a message that appears to be from another group member.
 Additionally, some services require that a recipient be able to prove to the
@@ -1423,6 +1423,7 @@ by a given sender.  MLS does not make any claims with regard to deniability.  It
 may be possible to operate MLS in ways that provide certain deniability
 properties, but defining the specific requirements and resulting notions of
 deniability requires further analysis.
+
 
 ### Associating a User's Clients
 
@@ -1477,14 +1478,16 @@ the following compromise scenarios:
 
 The MLS protocol provides per-sender chains of symmetric authenticated
 encryption with additional data (AEAD) {{!RFC5116}} keys that are
-generated from Group Secrets. These keys are used to protect MLS
-Plaintext messages which can be Group Operation or Application
-messages. The Group Operation messages offer an additional protection
-as the secret exchanged within the TreeKEM group key agreement are
-public-key encrypted to subgroups with HPKE.
+generated from Group Secrets. Specifically, each epoch establishes
+a per-sender "Ratchet Secret", which is then used to generate an
+AEAD key, which is used to protect MLS Plaintext messages.
+A new Ratchet Secret is generated and is used to generate the AEAD keys for each
+message. Because of the properties of the key derivation function, it is
+not possible to compute a Ratchet Secret from its corresponding
+AEAD key or compute Ratchet Secret n-1 from Ratchet Secret n.
+
 
 ### Compromise of Application Ratchet Key material
-
 In some circumstances, adversaries may have access to specific AEAD keys and
 nonces which protect an Application or a Group Operation message. While this is
 a limited kind of compromise, it can be realistic in cases of implementation
@@ -1544,26 +1547,28 @@ compromised, which can occur if the attacker has access to part of the
 memory containing the group secrets but not to the signature keys
 which might be stored in a secure enclave.
 
-In this scenario, the adversary gains the ability to compute any number of AEAD
-encryption keys for any AEAD chains and can encrypt and decrypt all messages for
-the compromised epochs.
+In this scenario, the adversary gains the ability to compute any
+number of Ratchet Secrets for the epoch and their corresponding AEAD
+encryption keys and thus can encrypt and decrypt all messages for the
+compromised epochs.
 
 If the adversary is passive, it is expected from the PCS properties of the MLS
 protocol that, as soon as the compromised party remediates the compromise and
 sends an honest Commit message, the next epochs will provide message secrecy.
 
-If the adversary is active, the adversary can follow the protocol and perform
-updates on behalf of the compromised party with no ability for an honest group
-to recover message secrecy. However, MLS provides PCS against active adaptive
-attackers through its Remove group operation. This means that, as long as other
-members of the group are honest, the protocol will guarantee message secrecy for
-all messages exchanged in the epochs after the compromised party has been
+If the adversary is active, the adversary can engage in the protocol
+itself and perform updates on behalf of the compromised party with no
+ability for an honest group to recover message secrecy. However, MLS
+provides PCS against active adaptive attackers through its Remove
+group operation. This means that, as long as other members of the
+group are honest, the protocol will guarantee message secrecy for all
+messages exchanged in the epochs after the compromised party has been
 removed.
 
 ### Compromise by an active adversary with the ability to sign messages
 
-Under such a scenario, where an active adversary has compromised an MLS client,
-two different settings emerge. In the strongest compromise scenario, the
+If an active adversary has compromised an MLS client and can sign
+messages, two different settings emerge. In the strongest compromise scenario, the
 attacker has access to the signing key and can forge authenticated messages. In
 a weaker, yet realistic scenario, the attacker has compromised a client but the
 client signature keys are protected with dedicated hardware features which do
@@ -1587,6 +1592,9 @@ generate messages which look valid to other members of the group and to the
 infrastructure as they need to have access to group secrets to compute the
 encryption keys or the membership tag.
 
+
+
+
 ### Compromise of the authentication with access to a signature key
 
 The difference between having access to the value of the signature key and only
@@ -1598,18 +1606,19 @@ client in both cases.
 There is a significant difference, however in terms of recovery after a
 compromise.
 
-Because of the PCS guarantees provided by the MLS protocol, when a previously
-compromised client performs an honest Commit which is not under the control of
-the adversary, both secrecy and authentication of messages can be recovered in
-the case where the attacker didn't get access to the key. Because the adversary
-doesn't have the key and has lost the ability to sign messages, they cannot
-authenticate messages on behalf of the compromised party, even if they still
-have control over some group keys by colluding with other members of the group.
+Because of the PCS guarantees provided by the MLS protocol, when a
+previously compromised client recovers from compromise and performs an
+honest Commit, both secrecy and authentication of future messages can
+be recovered as long as the attacker doesn't otherwise get access to
+the key. Because the adversary doesn't have the signing key, they
+cannot authenticate messages on behalf of the compromised party, even
+if they still have control over some group keys by colluding with
+other members of the group.
 
-This is in contrast with the case where the signature key is leaked.  In that
-case PCS of the MLS protocol will eventually allow recovery of the
-authentication of messages for future epochs but only after compromised parties
-refresh their credentials securely.
+This is in contrast with the case where the signature key is leaked. In that
+case the compromised endpoint needs to refresh its credentials and invalidate
+the old credentials before the attacker will be unable to authenticate
+messages.
 
 Beware that in both oracle and private key access, an active adaptive attacker
 can follow the protocol and request to update its own credential. This in turn
@@ -1621,6 +1630,9 @@ provider.
 > other secrets and preferably protected by an HSM or dedicated hardware
 > features to allow recovery of the authentication for future messages after a
 > compromise.
+
+> **RECOMMENDATION:** When the credential type supports revocation,
+> the users of a group should check for revoked keys.
 
 ### Security consideration in the context of a full state compromise
 
@@ -1639,12 +1651,8 @@ application to instruct the protocol implementation.
 
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
 > which can access the messages on the device without even needing to attack
-> MLS, the application should delete plaintext messages and ciphertexts
+> MLS, the application should delete plaintext and ciphertext messages
 > as soon as practical after encryption or decryption.
-
-Even though, from the strict point of view of the security formalization, a
-ciphertext is always public and will forever be, there is no loss in trying to
-erase ciphertexts as much as possible.
 
 Note that this document makes a clear distinction between the way signature keys
 and other group shared secrets must be handled.  In particular, a large set of
@@ -1702,8 +1710,10 @@ the IP address and depending on the protocol the MAC address of the device.
 
 Similar concerns exist in the peer-to-peer use cases of MLS.
 
-> **RECOMMENDATION:** In the case where privacy or anonymity is important, using
-> adequate protection such as TOR or a VPN can improve metadata protection.
+> **RECOMMENDATION:** In the case where privacy or anonymity is
+> important, using adequate protection such as MASQUE
+> {{?I-D.schinazi-masque-proxy}}, ToR, or a VPN can improve metadata
+> protection.
 
 More generally, using anonymous credentials in an MLS based architecture might
 not be enough to provide strong privacy or anonymity properties.
@@ -1811,45 +1821,46 @@ impersonate the client.
 
 #### Authentication compromise: Ghost users and impersonations
 
-One important feature of MLS is that all Members know which other members are in
+One important property of MLS is that all Members know which other members are in
 the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.
 
+This guarantee applies to the the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
-be largely performed autonomously (e.g. without user interaction) by
+be largely performed autonomously (e.g., without user interaction) by
 the clients themselves for the `x509` Credential
-type. In contrast, when MLS clients use the `basic` Credential type, a larger
-degree of trust must be placed in a (likely) centralized authentication
-resource, or on out-of-band processes such as manual verification.
+type.
+
+In contrast, when MLS clients use the `basic` Credential type, then some
+other mechanism must be used to verify identities. For instance the Authentication
+Service could operate some sort of directory server to provide keys,
+or users could verify keys via an out-of-band mechanism.
 
 > **RECOMMENDATION:** Select the strongest MLS Credential type available among
 > the target members of an MLS group.
 
-If the AS is compromised, it could validate a (or generate a new) signature
-keypair for an attacker. Because a user can have many MLS clients running the
-MLS protocol, it possibly has many signature keypairs for multiple
-devices. These attacks could be very difficult to detect.
+If the AS is compromised, it could validate a (or generate a new)
+signature keypair for an attacker. The attacker could then use this
+keypair to join a group as if it were another of the user's clients.
+Because a user can have many MLS
+clients running the MLS protocol, it possibly has many signature
+keypairs for multiple devices. These attacks could be very difficult
+to detect, especially in large groups where the UI might not reflect
+all the changes back to the users. If the application participates in
+a key transparency mechanism in which it is possible to determine
+every key for a given user, then this then this would allow for the
+detection of surreptitiously created false credentials.
+
+> **RECOMMENDATION:** Make sure that MLS clients reflect all the membership
+> changes to the users as they happen. If a choice has to be made because the
+> number of notifications is too high, the client should provide a log of
+> state of the device so that the user can examine it.
 
 > **RECOMMENDATION:** Provide a key transparency mechanism for the
 > Authentication Services to allow public verification of the credentials
 > authenticated by this service.
-
-Note that when a `basic` Credential is used, the Authentication Service also
-needs an out-of-band mechanism to verify the identity asserted in the
-Credential.
-
-In the case where an adversarial keypair is generated for a specific identity,
-an infrastructure without any transparency mechanism or out-of-band
-authentication mechanism could inject a malicious client into a group by
-impersonating a user. This is especially the case in large groups where the UI
-might not reflect all the changes back to the users.
-
-> **RECOMMENDATION:** Make sure that MLS clients reflect all the membership
-> changes to the users as they happen. If a choice has to be made because the
-> number of notifications is too high, a public log should be maintained of the
-> state of the device so that the user can examine it.
 
 While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
@@ -1858,13 +1869,6 @@ can be used to provide out-of-band authentication to users. The
 one-time, per client, authentication secret which can be exchanged between users
 to prove their identity to each other. This can be done for instance using a QR
 code that can be scanned by the other parties.
-
-Another way to improve the security for the users is to provide a transparency
-mechanism which allows each user to check if credentials used in groups have
-been published in the transparency log. Another benefit of this mechanism is for
-revocation. The users of a group could check for revoked keys (in case of
-compromise detection) using a mechanism such as CRLite or some more advanced
-privacy preserving technology.
 
 > **RECOMMENDATION:** Provide one or more out-of-band authentication
 > mechanisms to limit the impact of an Authentication Service compromise.
