@@ -666,15 +666,14 @@ DS might provide one KeyPackage per supported ciphersuite, even if it has
 multiple such KeyPackages to enable the corresponding client to be added to
 multiple groups before needing to upload more fresh KeyPackages.
 
-In order to avoid replay attacks and provide forward secrecy for
-messages sent using the initial keying material, KeyPackages are
-intended to be used only once. The Delivery Service is responsible for
-ensuring that each KeyPackage is only used to add its client to a
-single group, with the possible exception of a "last resort"
-KeyPackage that is specially designated by the client to be used
-multiple times. Clients are responsible for providing new
-KeyPackages as necessary in order to minimize the chance that
-the "last resort" KeyPackage will be used.
+In order to avoid replay attacks and provide forward secrecy for messages sent
+using the initial keying material, KeyPackages are intended to be used only
+once. The Delivery Service is responsible for ensuring that each KeyPackage is
+only used to add its client to a single group, with the possible exception of a
+"last resort" KeyPackage that is specially designated by the client to be used
+multiple times. Clients are responsible for providing new KeyPackages as
+necessary in order to minimize the chance that the "last resort" KeyPackage will
+be used.
 
 ## Delivery of Messages {#delivery-guarantees}
 
