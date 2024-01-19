@@ -1838,8 +1838,8 @@ other mechanism must be used to verify identities. For instance the Authenticati
 Service could operate some sort of directory server to provide keys,
 or users could verify keys via an out-of-band mechanism.
 
-> **RECOMMENDATION:** Select the strongest MLS Credential type available among
-> the target members of an MLS group.
+> **RECOMMENDATION:** Select the MLS Credential type with the strongest security which is
+> supported by all target members of an MLS group.
 
 If the AS is compromised, it could validate a (or generate a new)
 signature keypair for an attacker. The attacker could then use this
