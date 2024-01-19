@@ -787,11 +787,6 @@ Upon receiving a Commit from the Delivery Service, clients can either:
    deleted within a reasonable amount of time to ensure the protocol provides
    forward-secrecy.
 
-In the event of a network partition, a subset of members may be isolated from
-the rest of the group long enough that the mechanisms above no longer work. This
-can only be solved by sending a ReInit proposal to both groups, possibly with an
-external sender type, and recreating the group to contain all members again.
-
 If the Commit references an unknown proposal, group members may need to solicit
 the Delivery Service or other group members individually for the contents of the
 proposal.
