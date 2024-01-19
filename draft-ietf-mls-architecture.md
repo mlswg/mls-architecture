@@ -675,6 +675,12 @@ multiple times. Clients are responsible for providing new KeyPackages as
 necessary in order to minimize the chance that the "last resort" KeyPackage will
 be used.
 
+> **RECOMMENDATION:** Ensure that "last resort" key packages don't get used by
+> provisionning enough standard key packages.
+
+> **RECOMMENDATION:** Rotate "last resort" key packages as soon as possible
+> after being used or if they have been stored for a prolonged period of time.
+
 ## Delivery of Messages {#delivery-guarantees}
 
 The main responsibility of the Delivery Service is to ensure delivery of
