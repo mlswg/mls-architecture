@@ -716,14 +716,16 @@ theorem {{CAPBR}}, there are two general classes of distributed system that the
 Delivery Service might fall into:
 
 * Consistent and Partition-tolerant, or Strongly Consistent, systems can provide
-  a globally consistent view of data but may stop working if there are network
-  issues;
+  a globally consistent view of data but has the inconvenient of clients needing
+  to handle rejected messages;
 * Available and Partition-tolerant, or Eventually Consistent, systems continue
   working despite network issues but may return different views of data to
   different users.
 
 Strategies for sequencing messages in strongly and eventually consistent systems
-are described in the next two subsections.
+are described in the next two subsections. Most Delivery Service will use the
+Strongly Consistent paradigm but this remains a choice that can be handled in
+coordination with the client and advertized in the KeyPackages.
 
 However, note that a malicious Delivery Service could also reorder messages or
 provide an inconsistent view to different users.  The "generation" counter in
