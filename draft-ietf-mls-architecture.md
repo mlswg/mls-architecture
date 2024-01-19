@@ -828,7 +828,10 @@ With both mechanisms, changes to the membership are initiated from inside the
 group.  When members perform changes directly, this is clearly the case.
 External joins are authorized indirectly, in the sense that a member publishing
 a GroupInfo object authorizes anyone to join who has access to the GroupInfo
-object. Both types of joins are done via a Commit message, which could be
+object, subject to whatever access control policies the application applies
+for external joins.
+
+Both types of joins are done via a Commit message, which could be
 blocked by the DS or rejected by clients if the join is not authorized.  The
 former approach requires that Commits be visible to the DS; the latter approach
 requires that clients all share a consistent policy. In the unfortunate event
@@ -1405,6 +1408,27 @@ the scope of this document.
 
 ### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
 
+
+MLS provides strong authentication within a group, such that a group member
+cannot send a message that appears to be from another group member.
+Additionally, some services require that a recipient be able to prove to the
+service provider that a message was sent by a given client, in order to report
+abuse. MLS supports both of these use cases. In some deployments, these services
+are provided by mechanisms which allow the receiver to prove a message's origin
+to a third party. This is often called "non-repudiation".
+
+Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
+property that it is impossible to prove to a third party that a message was sent
+by a given sender.  MLS does not make any claims with regard to deniability.  It
+may be possible to operate MLS in ways that provide certain deniability
+properties, but defining the specific requirements and resulting notions of
+deniability requires further analysis.
+
+
+### Associating a User's Clients
+
+When the same user uses multiple clients, it may be possible for other members
+of a group to recognize all of those clients as belonging to the same user.  For
 example, all of a user's clients might present credentials authenticating the
 user's identity.  This association among devices might be considered a leak of
 private information.  The remainder of this section describes several approaches
@@ -1451,7 +1475,6 @@ the following compromise scenarios:
 
 - The attacker has access to all secrets of a user for all groups (full state
   compromise)
-
 
 ### Compromise of Symmetric Keying Material {#symmetric-key-compromise}
 
@@ -1500,7 +1523,6 @@ to be from any valid client since they cannot forge the signature. This
 applies to all the forms of symmetric key compromise described in
 {{symmetric-key-compromise}}.
 
-
 #### Compromise of Ratchet Secret material
 
 When a Ratchet Secret is compromised, the adversary can compute both the
@@ -1518,7 +1540,6 @@ against an active adaptive attacker across epochs for AEAD encryption,
 which means that as soon as the epoch is changed, if the attacker does
 not have access to more secret material they won't be able to access
 any protected messages from future epochs.
-
 
 #### Compromise of the Group Secrets of a single group for one or more group epochs
 
@@ -1610,6 +1631,9 @@ provider.
 > features to allow recovery of the authentication for future messages after a
 > compromise.
 
+> **RECOMMENDATION:** When the credential type supports revocation,
+> the users of a group should check for revoked keys.
+
 ### Security consideration in the context of a full state compromise
 
 In real-world compromise scenarios, it is often the case that adversaries target
@@ -1627,7 +1651,8 @@ application to instruct the protocol implementation.
 
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
 > which can access the messages on the device without even needing to attack
-> MLS, the application should delete plaintext messages.
+> MLS, the application should delete plaintext and ciphertext messages
+> as soon as practical after encryption or decryption.
 
 Note that this document makes a clear distinction between the way signature keys
 and other group shared secrets must be handled.  In particular, a large set of
@@ -1685,8 +1710,10 @@ the IP address and depending on the protocol the MAC address of the device.
 
 Similar concerns exist in the peer-to-peer use cases of MLS.
 
-> **RECOMMENDATION:** In the case where privacy or anonymity is important, using
-> adequate protection such as MASQUE, ToR, or a VPN can improve metadata protection.
+> **RECOMMENDATION:** In the case where privacy or anonymity is
+> important, using adequate protection such as MASQUE
+> {{?I-D.schinazi-masque-proxy}}, ToR, or a VPN can improve metadata
+> protection.
 
 More generally, using anonymous credentials in an MLS based architecture might
 not be enough to provide strong privacy or anonymity properties.
@@ -1776,21 +1803,6 @@ incorrect or attacker-provided identities to clients.
 
 - The attacker can publish or distribute credentials
 
-It is possible for a system to have a centralized server generate signature key
-pairs and distribute them to clients. This is strongly discouraged. In such cases, the centralized server is
-a point of compromise, since it stores signature private keys that can be used
-to impersonate clients.  A better approach is instead to generate signature key
-pairs in clients and have them "blessed" by the centralized service, e.g., by
-having the service issue a credential binding the key pair to the client's
-identity.  In this approach, there is still a risk that the centralized service
-will authorize additional key pairs, but it will not be able to use existing,
-client-generated private keys.
-
-> **RECOMMENDATION:** Make clients submit signature public keys to the AS, this
-> is usually better than the AS generating public key pairs because the AS
-> cannot sign on behalf of the client. This is a benefit of a Public Key
-> Infrastructure in the style of the Internet PKI.
-
 An attacker that can generate or sign new credentials may or may not have access
 to the underlying cryptographic material necessary to perform such
 operations. In that last case, it results in windows of time for which all
@@ -1800,6 +1812,13 @@ emitted credentials might be compromised.
 > ability of an adversary with no physical access to extract the top-level
 > signature private key.
 
+Note that historically some systems generate signature keys on the
+Authentication Service and distribute the private keys to clients
+along with their credential. This is a dangerous practice because it
+allows the AS or an attacker who has compromised the AS to silently
+impersonate the client.
+
+
 #### Authentication compromise: Ghost users and impersonations
 
 One important property of MLS is that all Members know which other members are in
@@ -1807,8 +1826,7 @@ the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.
 
-This guarentee applies to the the cryptographic identities of the members,
-but these identities need to be bound to people in the physical world.
+This guarantee applies to the the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
 be largely performed autonomously (e.g., without user interaction) by
@@ -1818,13 +1836,15 @@ type.
 In contrast, when MLS clients use the `basic` Credential type, then some
 other mechanism must be used to verify identities. For instance the Authentication
 Service could operate some sort of directory server to provide keys,
-or users could potentially verify keys via some out-of-band mechanism.
+or users could verify keys via an out-of-band mechanism.
 
 > **RECOMMENDATION:** Select the strongest MLS Credential type available among
 > the target members of an MLS group.
 
 If the AS is compromised, it could validate a (or generate a new)
-signature keypair for an attacker. Because a user can have many MLS
+signature keypair for an attacker. The attacker could then use this
+keypair to join a group as if it were another of the user's clients.
+Because a user can have many MLS
 clients running the MLS protocol, it possibly has many signature
 keypairs for multiple devices. These attacks could be very difficult
 to detect, especially in large groups where the UI might not reflect
