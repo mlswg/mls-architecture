@@ -1375,7 +1375,8 @@ keys and all shared group keys, but Alice performs a key update at time t2, then
 the attacker is unable to violate any of the MLS security properties after the
 updates have been processed.
 
-Both of these properties are satisfied even against compromised DSs and ASs.
+Both of these properties are satisfied even against compromised DSs and ASs
+in the case where a Key Transparency mechanism is in use.
 
 Confidentiality is mainly ensured on the client side.  Because Forward Secrecy
 (FS) and Post-Compromise Security (PCS) rely on the active deletion and
