@@ -1821,7 +1821,6 @@ Authentication Service and distribute the private keys to clients along with
 their credential. This is a dangerous practice because it allows the AS or an
 attacker who has compromised the AS to silently impersonate the client.
 
-
 #### Authentication compromise: Ghost users and impersonations
 
 One important property of MLS is that all Members know which other members are
@@ -1842,6 +1841,10 @@ could verify keys via an out-of-band mechanism.
 
 > **RECOMMENDATION:** Select the MLS Credential type with the strongest security
 > which is supported by all target members of an MLS group.
+
+> **RECOMMENDATION:** Do not use the same signature keypair across
+> groups. Update all keys for all groups on a regular basis. Do not preserve
+> keys in different groups when suspecting a compromise.
 
 If the AS is compromised, it could validate a (or generate a new) signature
 keypair for an attacker. The attacker could then use this keypair to join a
@@ -1908,11 +1911,7 @@ In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.
 
-> **RECOMMENDATION:** Do not use the same signature keypair across
-> groups. Update all keys for all groups on a regular basis. Do not preserve
-> keys in different groups when suspecting a compromise.
-
-> **RECOMMENDATION:** Separate the service binding the identities and the public
+> **RECOMMENDATION:** Separate the binding the identities and the public
 > keys from the service which generates or validates the credentials or
 > cryptographic material of the Clients.
 
