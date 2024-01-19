@@ -1089,7 +1089,7 @@ interoperate.
     is useful for clients that do not have the ability to send the full public
     state in a Welcome message when inviting auser or for client that need to
     recover from a loss of their state. Such public state can contain privacy
-    sensitive information such as group members' credentrials and related public
+    sensitive information such as group members' credentials and related public
     keys, hence services need to be carefully evaluate the privacy impact of
     storing this data on the DS.
   - If external joiners are allowed, there must be a method to publish a
