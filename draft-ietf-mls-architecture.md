@@ -1793,21 +1793,6 @@ incorrect or attacker-provided identities to clients.
 
 - The attacker can publish or distribute credentials
 
-It is possible for a system to have a centralized server generate signature key
-pairs and distribute them to clients. This is strongly discouraged. In such cases, the centralized server is
-a point of compromise, since it stores signature private keys that can be used
-to impersonate clients.  A better approach is instead to generate signature key
-pairs in clients and have them "blessed" by the centralized service, e.g., by
-having the service issue a credential binding the key pair to the client's
-identity.  In this approach, there is still a risk that the centralized service
-will authorize additional key pairs, but it will not be able to use existing,
-client-generated private keys.
-
-> **RECOMMENDATION:** Make clients submit signature public keys to the AS, this
-> is usually better than the AS generating public key pairs because the AS
-> cannot sign on behalf of the client. This is a benefit of a Public Key
-> Infrastructure in the style of the Internet PKI.
-
 An attacker that can generate or sign new credentials may or may not have access
 to the underlying cryptographic material necessary to perform such
 operations. In that last case, it results in windows of time for which all
@@ -1816,6 +1801,13 @@ emitted credentials might be compromised.
 > **RECOMMENDATION:** Use HSMs to store the root signature keys to limit the
 > ability of an adversary with no physical access to extract the top-level
 > signature private key.
+
+Note that historically some systems generate signature keys on the
+Authentication Service and distribute the private keys to clients
+along with their credential. This is a dangerous practice because it
+allows the AS or an attacker who has compromised the AS to silently
+impersonate the client.
+
 
 #### Authentication compromise: Ghost users and impersonations
 
