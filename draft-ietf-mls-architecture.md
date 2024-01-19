@@ -1906,9 +1906,8 @@ In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.
 
-> **RECOMMENDATION:** Separate the binding the identities and the public
-> keys from the service which generates or validates the credentials or
-> cryptographic material of the Clients.
+> **RECOMMENDATION:** Ensure that the linking between public keys and identities
+> only happen in expected scenarios. Otherwise privilege a stronger separation.
 
 ## Considerations for attacks outside of the threat model
 
