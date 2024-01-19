@@ -1696,6 +1696,27 @@ Similar concerns exist in the peer-to-peer use cases of MLS.
 More generally, using anonymous credentials in an MLS based architecture might
 not be enough to provide strong privacy or anonymity properties.
 
+#### Storage of Metadata and Ecryption at rest on the Servers
+
+In the case where private data or metadata has to be persisted on the servers
+for functionality (mappings between identities and push tokens, group
+metadata...), it should be stored encrypted at rest and only decrypted upon need
+during the execution. Honest Service Providers can rely on such encryption at
+rest mechanism to be able to prevent access to the data when not using it.
+
+> **RECOMMENDATION:** Store cryptographic material used for server-side
+> decryption of sensitive meta-data on the clients and only send it when needed.
+> The server can use the secret to open and update encrypted data containers
+> after which they can delete these keys until the next time they need it, in
+> which case those can be provided by the client.
+
+> **RECOMMENDATION:** Rely on group secrets exported from the MLS session for
+> server-side encryption at rest and update the key after each removal from the
+> group. Rotate those keys on a regular basis otherwise.
+
+In the future, it is expected that servers can rely on fully homomorphic
+encryption to rotate the ciphertexts without opening these encrypted containers.
+
 ### Delivery Service Compromise
 
 MLS is intended to provide strong guarantees in the face of compromise of the
@@ -1765,6 +1786,9 @@ account, a credit card or other information.
 > the push notification provider, the client can choose to periodically connect
 > to the Delivery Service without the need of a dedicated push notification
 > infrastructure.
+
+Applications can also consider anonymous systems for server fanout (for
+example {{Loopix}}).
 
 ### Authentication Service Compromise {#as-compromise}
 
@@ -1869,12 +1893,7 @@ membership list is stored on some server associated with the Delivery Service.
 While this knowledge is not a breach of the protocol's authentication or
 confidentiality guarantees, it is a serious issue for privacy.
 
-> **RECOMMENDATION:** In the case where metadata has to be persisted for
-> functionality, it should be stored encrypted at rest and then decrypted during
-> the execution. Applications should also consider anonymous systems for server
-> fanout (for example {{Loopix}}).
-
-Some infrastructure keeps a mapping between keys used in the MLS protocol and
+Some infrastructure keep a mapping between keys used in the MLS protocol and
 user identities. An attacker with access to this information due to compromise
 or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.
