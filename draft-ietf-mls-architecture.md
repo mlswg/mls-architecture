@@ -1573,11 +1573,6 @@ Note that under this compromise scenario, the attacker can perform all
 operations which are available to a legitimate client even without access to the
 actual value of the signature key.
 
-Without access to the group secrets, the adversary will not have the ability to
-generate messages which look valid to other members of the group and to the
-infrastructure as they need to have access to group secrets to compute the
-encryption keys or the membership tag.
-
 ### Compromise of the authentication with access to a signature key
 
 The difference between having access to the value of the signature key and only
