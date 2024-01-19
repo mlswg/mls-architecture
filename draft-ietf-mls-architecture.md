@@ -828,7 +828,10 @@ With both mechanisms, changes to the membership are initiated from inside the
 group.  When members perform changes directly, this is clearly the case.
 External joins are authorized indirectly, in the sense that a member publishing
 a GroupInfo object authorizes anyone to join who has access to the GroupInfo
-object. Both types of joins are done via a Commit message, which could be
+object, subject to whatever access control policies the application applies
+for external joins.
+
+Both types of joins are done via a Commit message, which could be
 blocked by the DS or rejected by clients if the join is not authorized.  The
 former approach requires that Commits be visible to the DS; the latter approach
 requires that clients all share a consistent policy. In the unfortunate event
