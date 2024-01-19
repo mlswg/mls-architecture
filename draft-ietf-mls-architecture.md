@@ -278,15 +278,15 @@ MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
 be as small as two clients (e.g., for simple person to person messaging) or as
-large as tens of thousands.  A client that is part of a group is a _member_ of that
-group. As groups change membership and group or member properties, they
-advance from one _epoch_ to another and the cryptographic state of the
-group evolves.
+large as hundreds of thousands.  A client that is part of a group is a _member_
+of that group. As groups change membership and group or member properties, they
+advance from one _epoch_ to another and the cryptographic state of the group
+evolves.
 
-The group is represented as a tree, which represents the members
-as the leaves of a tree. It is used to efficiently encrypt to subsets of the
-members. Each member has a _LeafNode_ object in the tree holding the client's
-identity, credentials, and capabilities.
+The group is represented as a tree, which represents the members as the leaves
+of a tree. It is used to efficiently encrypt to subsets of the members. Each
+member has a state called a _LeafNode_ object holding the client's identity,
+credentials, and capabilities.
 
 Various messages are used in the evolution from epoch to epoch.
 A _Proposal_ message proposes
