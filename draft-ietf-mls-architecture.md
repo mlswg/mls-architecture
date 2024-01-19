@@ -1317,10 +1317,6 @@ protocol but does affect the reliability of the service. In that case specific
 measures can be taken to ensure the appropriate level of redundancy and quality
 of service for MLS.
 
-> **RECOMMENDATION:** If unidirectional transport is used for the secure
-> transport channel, prefer using a transport protocol which provides Forward
-> Error Correction.
-
 ## Intended Security Guarantees
 
 MLS aims to provide a number of security guarantees, covering authentication, as
