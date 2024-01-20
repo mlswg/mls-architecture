@@ -71,6 +71,9 @@ contributor:
   email: ietf@raphaelrobert.com
 
 informative:
+
+  KT: I-D.draft-ietf-keytrans-architecture
+
   CONIKS:
        target: https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-melara.pdf
        title: "CONIKS: Bringing Key Transparency to End Users"
@@ -306,8 +309,8 @@ Finally, a _PublicMessage_ contains an integrity-protected MLS Handshake message
 while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
 or application message.
 
-For a more
-detailed explanation of these terms, please consult the MLS protocol specification {{?RFC9420}}.
+For a more detailed explanation of these terms, please consult the MLS protocol
+specification {{?RFC9420}}.
 
 ## Abstract Services
 
@@ -578,10 +581,10 @@ breadth of this concept:
   The verification function is the application function that enables users
   to verify keys.
 
-* In a system based on {{CONIKS}} end user Key Transparency (KT), the issuance
-  function would correspond to the insertion of a key in a KT log under a user's
-  identity. The verification function would correspond to verifying a key's
-  inclusion in the log for a claimed identity, together with the KT log's
+* In a system based on {{CONIKS}} end user Key Transparency (KT) {{KT}}, the
+  issuance function would correspond to the insertion of a key in a KT log under
+  a user's identity. The verification function would correspond to verifying a
+  key's inclusion in the log for a claimed identity, together with the KT log's
   mechanisms for a user to monitor and control which keys are associated with
   their identity.
 
@@ -1377,8 +1380,9 @@ keys and all shared group keys, but Alice performs a key update at time t2, then
 the attacker is unable to violate any of the MLS security properties after the
 updates have been processed.
 
-Both of these properties are satisfied even against compromised DSs and ASs
-in the case where a Key Transparency mechanism is in use.
+Both of these properties are satisfied even against compromised DSs and ASs in
+the case where some other mechanism for verifying keys is in use, such as Key
+Transparency {{KT}}.
 
 Confidentiality is mainly ensured on the client side.  Because Forward Secrecy
 (FS) and Post-Compromise Security (PCS) rely on the active deletion and
