@@ -25,7 +25,6 @@ author:
  -
     ins: E. Omara
     name: Emad Omara
-    organization: Google
     email: emad.omara@gmail.com
  -
     ins: S. Inguva
