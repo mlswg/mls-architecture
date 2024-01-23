@@ -1718,9 +1718,6 @@ rest mechanism to be able to prevent access to the data when not using it.
 > server-side encryption at rest and update the key after each removal from the
 > group. Rotate those keys on a regular basis otherwise.
 
-In the future, it is expected that servers can rely on fully homomorphic
-encryption to rotate the ciphertexts without opening these encrypted containers.
-
 ### Delivery Service Compromise
 
 MLS is intended to provide strong guarantees in the face of compromise of the
