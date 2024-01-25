@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 25 July 2024                                            Mozilla
+Expires: 28 July 2024                                            Mozilla
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                         22 January 2024
+                                                         25 January 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 July 2024.
+   This Internet-Draft will expire on 28 July 2024.
 
 Copyright Notice
 
@@ -1776,10 +1776,6 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
       session for server-side encryption at rest and update the key
       after each removal from the group.  Rotate those keys on a regular
       basis otherwise.
-
-   In the future, it is expected that servers can rely on fully
-   homomorphic encryption to rotate the ciphertexts without opening
-   these encrypted containers.
 
 8.4.2.  Delivery Service Compromise
 
