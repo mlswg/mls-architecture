@@ -1102,7 +1102,7 @@ order for two different deployments based on them to interoperate.
     serialized `GroupInfo` object (with an `external_pub` extension) that
     corresponds to a specific group and epoch, and keep that object in sync with
     the state of the group.
-  - If an application chooses not to allow assisted or external joining, it may
+  - If an application chooses not to allow external joining, it may
     instead provide a method for external users to solicit group members (or a
     designated service) to add them to a group.
   - If the application uses PSKs that members of a group may not have access to
