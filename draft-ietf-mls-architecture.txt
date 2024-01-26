@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 28 July 2024                                            Mozilla
+Expires: 29 July 2024                                            Mozilla
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                         25 January 2024
+                                                         26 January 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 July 2024.
+   This Internet-Draft will expire on 29 July 2024.
 
 Copyright Notice
 
@@ -1087,10 +1087,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
          extension) that corresponds to a specific group and epoch, and
          keep that object in sync with the state of the group.
 
-      -  If an application chooses not to allow assisted or external
-         joining, it may instead provide a method for external users to
-         solicit group members (or a designated service) to add them to
-         a group.
+      -  If an application chooses not to allow external joining, it may
+         instead provide a method for external users to solicit group
+         members (or a designated service) to add them to a group.
 
       -  If the application uses PSKs that members of a group may not
          have access to (e.g., to control entry into the group or to
