@@ -911,8 +911,8 @@ While MLS Application messages are always encrypted,
 MLS handshake messages can be sent encrypted (in an MLS
 PrivateMessage) or unencrypted (in an MLS PublicMessage). Applications
 may be designed such that intermediaries need to see handshake
-messages in order to enforce policy on which commits are allowed,
-and/or to provide MLS GroupInfo messages in a central location. If
+messages, for example to enforce policy on which commits are allowed,
+or to provide MLS ratchet tree data in a central location. If
 handshake messages are unencrypted, it is especially important that
 they be sent over a channel with strong transport encryption
 (see {{security-and-privacy-considerations}} in order to prevent external
