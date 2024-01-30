@@ -908,7 +908,7 @@ perform add and remove operations. On the other hand, in many settings such as
 open discussion forums, joining can be allowed for anyone.
 
 While MLS Application messages are always encrypted,
-MLS handshake messages can be sent encrypted (in an MLS
+MLS handshake messages can be sent either encrypted (in an MLS
 PrivateMessage) or unencrypted (in an MLS PublicMessage). Applications
 may be designed such that intermediaries need to see handshake
 messages, for example to enforce policy on which commits are allowed,
