@@ -899,8 +899,8 @@ delivering messages asynchronously and reliably.
 ## Access Control
 
 Because all clients within a group (members) have access to the shared
-cryptographic material, MLS protocol allows each member of the messaging group
-to perform operations, However, every service/infrastructure has control over
+cryptographic material, the MLS protocol allows each member of the messaging group
+to perform operations. However, every service/infrastructure has control over
 policies applied to its own clients. Applications managing MLS clients can be
 configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -915,8 +915,10 @@ While the Application messages will always be encrypted, having the handshake
 messages in plaintext has privacy consequences as someone could
 collect the signatures on the handshake messages and use them for tracking.
 
-> **RECOMMENDATION:** Prefer using encrypted group operation messages to avoid
-> privacy issues related to non-encrypted signatures.
+> **RECOMMENDATION:** Prefer using encrypted group operation messages unless a
+> Delivery Service explicitly needs plaintext group operations to provide
+> additional features. In this case, ensure that transport-layer encryption is
+> always used.
 
 If handshake messages are encrypted, any access
 control policies must be applied at the client, so the application must ensure
