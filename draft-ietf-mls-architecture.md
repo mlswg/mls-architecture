@@ -907,16 +907,21 @@ application could decide that a group administrator will be the only member to
 perform add and remove operations. On the other hand, in many settings such as
 open discussion forums, joining can be allowed for anyone.
 
-The MLS protocol can, in certain modes, exchange unencrypted group operation
-messages. This flexibility is to allow services to perform access control tasks
-on behalf of the group.
-
-While the Application messages will always be encrypted, having the handshake
-messages in plaintext has privacy consequences as someone could
-collect the signatures on the handshake messages and use them for tracking.
-
-> **RECOMMENDATION:** Prefer using encrypted group operation messages to avoid
-> privacy issues related to non-encrypted signatures.
+MLS handshake messages can be sent encrypted (in an MLS
+PrivateMessage) or unencrypted (in an MLS PublicMessage). Applications
+may be designed such that intermediaries need to see handshake
+messages in order to enforce policy on which commits are allowed,
+and/or to provide MLS GroupInfo messages in a central location. If
+handshake messages are unencrypted, it is especially important that
+they be sent over a channel with strong transport encryption
+(see {{security-and-privacy-considerations}} in order to prevent external
+attackers from monitoring the status of the group. Applications that
+use unencrypted handshake messages may take additional steps to reduce
+the amount of metadata that is exposed to the intermediary. Everything
+else being equal, using encrypted handshake messages provides stronger
+privacy properties than using unencrypted handshake messages,
+as it prevents intermediaries from learning about the structure
+of the group.
 
 If handshake messages are encrypted, any access
 control policies must be applied at the client, so the application must ensure
