@@ -907,6 +907,7 @@ application could decide that a group administrator will be the only member to
 perform add and remove operations. On the other hand, in many settings such as
 open discussion forums, joining can be allowed for anyone.
 
+While MLS Application messages are always encrypted,
 MLS handshake messages can be sent encrypted (in an MLS
 PrivateMessage) or unencrypted (in an MLS PublicMessage). Applications
 may be designed such that intermediaries need to see handshake
