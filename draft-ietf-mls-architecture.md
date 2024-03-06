@@ -916,7 +916,7 @@ messages in plaintext has privacy consequences as someone could
 collect the signatures on the handshake messages and use them for tracking.
 
 > **RECOMMENDATION:** Prefer using encrypted group operation messages unless a
-> Delivery Service explicitly needs plaintext group operations to provide
+> Delivery Service explicitly needs plaintext handshake messages to provide
 > additional features. In this case, ensure that transport-layer encryption is
 > always used.
 
