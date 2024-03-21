@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 8 September 2024                                        Mozilla
+Expires: 22 September 2024                                       Mozilla
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                            7 March 2024
+                                                           21 March 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 September 2024.
+   This Internet-Draft will expire on 22 September 2024.
 
 Copyright Notice
 
@@ -859,17 +859,21 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    add and remove operations.  On the other hand, in many settings such
    as open discussion forums, joining can be allowed for anyone.
 
-   The MLS protocol can, in certain modes, exchange unencrypted group
-   operation messages.  This flexibility is to allow services to perform
-   access control tasks on behalf of the group.
-
-   While the Application messages will always be encrypted, having the
-   handshake messages in plaintext has privacy consequences as someone
-   could collect the signatures on the handshake messages and use them
-   for tracking.
-
-      *RECOMMENDATION:* Prefer using encrypted group operation messages
-      to avoid privacy issues related to non-encrypted signatures.
+   While MLS Application messages are always encrypted, MLS handshake
+   messages can be sent either encrypted (in an MLS PrivateMessage) or
+   unencrypted (in an MLS PublicMessage).  Applications may be designed
+   such that intermediaries need to see handshake messages, for example
+   to enforce policy on which commits are allowed, or to provide MLS
+   ratchet tree data in a central location.  If handshake messages are
+   unencrypted, it is especially important that they be sent over a
+   channel with strong transport encryption (see Section 8) in order to
+   prevent external attackers from monitoring the status of the group.
+   Applications that use unencrypted handshake messages may take
+   additional steps to reduce the amount of metadata that is exposed to
+   the intermediary.  Everything else being equal, using encrypted
+   handshake messages provides stronger privacy properties than using
+   unencrypted handshake messages, as it prevents intermediaries from
+   learning about the structure of the group.
 
    If handshake messages are encrypted, any access control policies must
    be applied at the client, so the application must ensure that the
