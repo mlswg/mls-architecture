@@ -915,7 +915,7 @@ messages, for example to enforce policy on which commits are allowed,
 or to provide MLS ratchet tree data in a central location. If
 handshake messages are unencrypted, it is especially important that
 they be sent over a channel with strong transport encryption
-(see {{security-and-privacy-considerations}} in order to prevent external
+(see {{security-and-privacy-considerations}}) in order to prevent external
 attackers from monitoring the status of the group. Applications that
 use unencrypted handshake messages may take additional steps to reduce
 the amount of metadata that is exposed to the intermediary. Everything
