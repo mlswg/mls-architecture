@@ -87,7 +87,7 @@ informative:
   CAPBR: DOI.10.1145/343477.343502
 
   ACCKKMPPWY19:
-    title: "Security Analysis and Improvements for the IETF MLS Standard for Group Messaging"
+    title: "Keep the Dirt: Tainted TreeKEM, Adaptively and Actively Secure Continuous Group Key Agreement"
     date: 2019
     author:
       - name: Joel Alwen
@@ -158,7 +158,7 @@ informative:
       - name: Karthikeyan Bhargavan
       - name: Benjamin Beurdouche
       - name: Prasad Naldurg
-    target: https://hal.laas.fr/INRIA/hal-02425229v1/file/mls-treekem.pdf
+    target: https://inria.hal.science/hal-02425229/document
 
   BBR18:
     title: "TreeKEM: Asynchronous Decentralized Key Management for Large Dynamic Groups A protocol proposal for Messaging Layer Security (MLS)"
