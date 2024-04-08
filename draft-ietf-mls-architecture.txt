@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 22 September 2024                                       Mozilla
+Expires: 10 October 2024                                         Mozilla
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                           21 March 2024
+                                                            8 April 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 September 2024.
+   This Internet-Draft will expire on 10 October 2024.
 
 Copyright Notice
 
@@ -2071,8 +2071,8 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    [ACCKKMPPWY19]
               Alwen, J., Capretto, M., Cueto, M., Kamath, C., Klein, K.,
               Markov, I., Pascual-Perez, G., Pietrzak, K., Walter, M.,
-              and M. Yeo, "Security Analysis and Improvements for the
-              IETF MLS Standard for Group Messaging", 2019,
+              and M. Yeo, "Keep the Dirt: Tainted TreeKEM, Adaptively
+              and Actively Secure Continuous Group Key Agreement", 2019,
               <https://eprint.iacr.org/2019/1489>.
 
    [ACDT19]   Alwen, J., Coretti, S., Dodis, Y., and Y. Tselekounis,
@@ -2100,8 +2100,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    [BBN19]    Bhargavan, K., Beurdouche, B., and P. Naldurg, "Formal
               Models and Verified Protocols for Group Messaging: Attacks
               and Proofs for IETF MLS", 2019,
-              <https://hal.laas.fr/INRIA/hal-02425229v1/file/mls-
-              treekem.pdf>.
+              <https://inria.hal.science/hal-02425229/document>.
 
    [BBR18]    Bhargavan, K., Barnes, R., and E. Rescorla, "TreeKEM:
               Asynchronous Decentralized Key Management for Large
