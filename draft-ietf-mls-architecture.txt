@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 10 October 2024                                         Mozilla
+Expires: 25 November 2024                                        Mozilla
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                            8 April 2024
+                                                             24 May 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 October 2024.
+   This Internet-Draft will expire on 25 November 2024.
 
 Copyright Notice
 
@@ -159,13 +159,12 @@ Table of Contents
    changes can be managed in GitHub, but any substantive change should
    be discussed on the MLS mailing list.
 
-   End-to-end security is a used in the vast majority of instant
-   messaging systems, and also deployed in systems for other purposes
-   such as calling and conferencing.  In this context, "end-to-end"
-   captures the notion that users of the system enjoy some level of
-   security -- with the precise level depending on the system design --
-   even in the face of malicious actions by the operator of the
-   messaging system.
+   End-to-end security is used in the vast majority of instant messaging
+   systems, and also deployed in systems for other purposes such as
+   calling and conferencing.  In this context, "end-to-end" captures the
+   notion that users of the system enjoy some level of security -- with
+   the precise level depending on the system design -- even in the face
+   of malicious actions by the operator of the messaging system.
 
    Messaging Layer Security (MLS) specifies an architecture (this
    document) and a protocol [I-D.ietf-mls-protocol] for providing end-
@@ -604,7 +603,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    "last resort" KeyPackage will be used.
 
       *RECOMMENDATION:* Ensure that "last resort" KeyPackages don't get
-      used by provisionning enough standard KeyPackages.
+      used by provisioning enough standard KeyPackages.
 
       *RECOMMENDATION:* Rotate "last resort" KeyPackages as soon as
       possible after being used or if they have been stored for a
@@ -650,7 +649,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    *  Consistent and Partition-tolerant, or Strongly Consistent, systems
       can provide a globally consistent view of data but has the
-      inconvenient of clients needing to handle rejected messages;
+      inconvenience of clients needing to handle rejected messages;
 
    *  Available and Partition-tolerant, or Eventually Consistent,
       systems continue working despite network issues but may return
@@ -658,7 +657,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    Strategies for sequencing messages in strongly and eventually
    consistent systems are described in the next two subsections.  Most
-   Delivery Service will use the Strongly Consistent paradigm but this
+   Delivery Services will use the Strongly Consistent paradigm but this
    remains a choice that can be handled in coordination with the client
    and advertized in the KeyPackages.
 
@@ -669,7 +668,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    does not provide complete protection against partitioning.  A DS can
    cause a partition in the group by partitioning key exchange messages;
    this can be detected only by out-of-band comparison (e.g., confirming
-   that all clients have the same epoch_authenticator value`).  A
+   that all clients have the same epoch_authenticator value).  A
    mechanism for more robust protections is discussed in
    [I-D.ietf-mls-extensions].
 
@@ -2132,9 +2131,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    [I-D.ietf-mls-extensions]
               Robert, R., "The Messaging Layer Security (MLS)
               Extensions", Work in Progress, Internet-Draft, draft-ietf-
-              mls-extensions-03, 23 October 2023,
+              mls-extensions-04, 24 April 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-mls-
-              extensions-03>.
+              extensions-04>.
 
    [I-D.ietf-mls-federation]
               Omara, E. and R. Robert, "The Messaging Layer Security
