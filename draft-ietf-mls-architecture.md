@@ -254,7 +254,7 @@ Instructions are on that page as well.  Editorial changes can be
 managed in GitHub, but any substantive change should be discussed on
 the MLS mailing list.
 
-End-to-end security is a used in the vast majority of instant messaging systems,
+End-to-end security is used in the vast majority of instant messaging systems,
 and also deployed in systems for other purposes such as calling and conferencing.
 In this context, "end-to-end" captures
 the notion that users of the system enjoy some level of security -- with the
@@ -678,7 +678,7 @@ necessary in order to minimize the chance that the "last resort" KeyPackage will
 be used.
 
 > **RECOMMENDATION:** Ensure that "last resort" KeyPackages don't get used by
-> provisionning enough standard KeyPackages.
+> provisioning enough standard KeyPackages.
 
 > **RECOMMENDATION:** Rotate "last resort" KeyPackages as soon as possible
 > after being used or if they have been stored for a prolonged period of time.
@@ -718,14 +718,14 @@ theorem {{CAPBR}}, there are two general classes of distributed system that the
 Delivery Service might fall into:
 
 * Consistent and Partition-tolerant, or Strongly Consistent, systems can provide
-  a globally consistent view of data but has the inconvenient of clients needing
+  a globally consistent view of data but has the inconvenience of clients needing
   to handle rejected messages;
 * Available and Partition-tolerant, or Eventually Consistent, systems continue
   working despite network issues but may return different views of data to
   different users.
 
 Strategies for sequencing messages in strongly and eventually consistent systems
-are described in the next two subsections. Most Delivery Service will use the
+are described in the next two subsections. Most Delivery Services will use the
 Strongly Consistent paradigm but this remains a choice that can be handled in
 coordination with the client and advertized in the KeyPackages.
 
@@ -735,7 +735,7 @@ MLS messages provides per-sender loss detection and ordering that cannot be
 manipulated by the DS, but this does not provide complete protection against
 partitioning.  A DS can cause a partition in the group by partitioning key
 exchange messages; this can be detected only by out-of-band comparison (e.g.,
-confirming that all clients have the same `epoch_authenticator` value`). A
+confirming that all clients have the same `epoch_authenticator` value). A
 mechanism for more robust protections is discussed in
 {{?I-D.ietf-mls-extensions}}.
 
