@@ -760,8 +760,10 @@ they don't receive another Commit first.
 The Delivery Service can rely on the `epoch` and `content_type` fields of an
 MLSMessage for providing an order only to handshake messages, and possibly even
 filter or reject redundant Commit messages proactively to prevent them from
-being broadcast. Alternatively, the Delivery Service could simply apply an order
-to all messages and rely on clients to ignore redundant Commits.
+being broadcast. However, this is not to say that the Delivery Service should
+enforce an absolutist view of the current group `epoch` and reject all messages
+that do not match it. Delivery Services have a significantly limited view of the
+group state, and of which messages will be acceptable to clients.
 
 ### Eventually Consistent
 
