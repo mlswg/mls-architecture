@@ -1430,11 +1430,11 @@ deniability requires further analysis.
 
 ### Associating a User's Clients
 
-When a user has multiple devices, the base MLS protocol requires each device to
-be represented by a distinct client in the MLS groups that the user is a member
-of. As a result, the other members of the group will be able to identify which
-of a user's devices sent each message, and therefore which device the user is
-currently using. For some applications, this may be an unacceptable breach of
+When a user has multiple devices, the base MLS protocol only describes how to
+operate each device as a distinct client in the MLS groups that the user is a
+member of. As a result, the other members of the group will be able to identify
+which of a user's devices sent each message, and therefore which device the user
+is currently using. For some applications, this may be an unacceptable breach of
 the user's privacy.
 
 This risk only arises when the leaf nodes for the clients in question provide
