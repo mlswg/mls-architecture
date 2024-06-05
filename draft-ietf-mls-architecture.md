@@ -763,7 +763,11 @@ filter or reject redundant Commit messages proactively to prevent them from
 being broadcast. However, this is not to say that the Delivery Service should
 enforce an absolutist view of the current group `epoch` and reject all messages
 that do not match it. Delivery Services have a significantly limited view of the
-group state, and of which messages will be acceptable to clients.
+group state, and of which messages will be acceptable to clients. Once a
+Delivery Service is confident that a given commit was processed by a client, if
+the client continues to send messages in the previous epoch, the Delivery
+Service should assume the commit was silently rejected and stop
+blocking/filtering.
 
 ### Eventually Consistent
 
