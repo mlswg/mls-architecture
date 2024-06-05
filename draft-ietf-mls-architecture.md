@@ -588,15 +588,15 @@ breadth of this concept:
   their identity.
 
 By the nature of its roles in MLS authentication, the AS is invested with a
-large amount of trust and the compromise of one the AS could
+large amount of trust and the compromise of the AS could
 allow an adversary to, among other things, impersonate group members. We discuss
 security considerations regarding the compromise of the different AS
 functions in detail in {{as-compromise}}.
 
-The association between members' identities and signature keys is fairly
+The association between members' identities and their signature keys is fairly
 flexible in MLS.  As noted above, there is no requirement that all clients
-belonging to a given user use the same key pair (in fact, such key reuse is
-forbidden to ensure clients have independent cryptographic state).  A member can
+belonging to a given user have the same signature key (in fact, having duplicate
+signature keys in a group is forbidden). A member can
 also rotate the signature key they use within a group.  These mechanisms allow
 clients to use different signature keys in different contexts and at different
 points in time, providing unlinkability and post-compromise security benefits.
@@ -1430,14 +1430,14 @@ deniability requires further analysis.
 
 ### Associating a User's Clients
 
-When the same user uses multiple clients, it may be possible for other members
-of a group to recognize all of those clients as belonging to the same user.  For
-example, all of a user's clients might present credentials authenticating the
-user's identity.  This association among devices might be considered a leak of
-private information.  The remainder of this section describes several approaches
-for addressing this.
+When a user has multiple devices, the base MLS protocol requires each device to
+be represented by a distinct client in the MLS groups that the user is a member
+of. As a result, the other members of the group will be able to identify which
+of a user's devices sent each message, and therefore which device the user is
+currently using. For some applications, this may be an unacceptable breach of
+the user's privacy.
 
-This risk only arises when the leaf nodes for the clients in question provide
+Note that this risk only arises when the leaf nodes for the clients in question provide
 data that can be used to correlate the clients.  So one way to mitigate this
 risk is by only doing client-level authentication within MLS. If user-level
 authentication is still desirable, the application would have to provide it
@@ -1450,10 +1450,10 @@ the MLS group.  The application would need to provide a synchronization
 mechanism so that the clients' state remained consistent across changes to the
 MLS group.
 
->**RECOMMENDATION:** Avoid sharing cryptographic state between clients to
-> improve resilience against compromises.  An attacker could use one compromised
-> device to establish ownership of a state across other devices and reduce the
-> ability of the user to recover.
+>**RECOMMENDATION:** Only use secret state synchronization mechanisms that have
+> been widely reviewed and are known not to impair the security guarantees of
+> MLS. When this is not possible, avoid trying to synchronize state between
+> devices, and instead represent each device as its own MLS client.
 
 ## Endpoint Compromise
 
