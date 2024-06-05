@@ -1437,7 +1437,7 @@ of a user's devices sent each message, and therefore which device the user is
 currently using. For some applications, this may be an unacceptable breach of
 the user's privacy.
 
-Note that this risk only arises when the leaf nodes for the clients in question provide
+This risk only arises when the leaf nodes for the clients in question provide
 data that can be used to correlate the clients.  So one way to mitigate this
 risk is by only doing client-level authentication within MLS. If user-level
 authentication is still desirable, the application would have to provide it
