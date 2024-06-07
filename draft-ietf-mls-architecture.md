@@ -1453,7 +1453,9 @@ leaking the user's authorized devices. However, the application would need to
 provide a synchronization mechanism so that the clients' state remain consistent
 across changes to the MLS group. Flaws in this synchronization mechanism may
 impair the ability of the user to recover from a compromise of one of their
-devices.
+devices. In particular, state synchronization may make it easier for an attacker
+to use one compromised device to establish exclusive control of a user's
+account, locking them out entirely and preventing them from recovering.
 
 ## Endpoint Compromise
 
