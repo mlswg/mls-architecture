@@ -1434,8 +1434,9 @@ When a user has multiple devices, the base MLS protocol only describes how to
 operate each device as a distinct client in the MLS groups that the user is a
 member of. As a result, the other members of the group will be able to identify
 which of a user's devices sent each message, and therefore which device the user
-is currently using. For some applications, this may be an unacceptable breach of
-the user's privacy.
+was using at the time. Group members would also be able to detect when the user
+adds or removes authorized devices from their account. For some applications,
+this may be an unacceptable breach of the user's privacy.
 
 This risk only arises when the leaf nodes for the clients in question provide
 data that can be used to correlate the clients.  So one way to mitigate this
@@ -1446,14 +1447,13 @@ through some other mechanism.
 It is also possible to maintain user-level authentication while hiding
 information about the clients that a user owns.  This can be done by having the
 clients share cryptographic state, so that they appear as a single client within
-the MLS group.  The application would need to provide a synchronization
-mechanism so that the clients' state remained consistent across changes to the
-MLS group.
-
->**RECOMMENDATION:** Only use secret state synchronization mechanisms that have
-> been widely reviewed and are known not to impair the security guarantees of
-> MLS. When this is not possible, avoid trying to synchronize state between
-> devices, and instead represent each device as its own MLS client.
+the MLS group. Appearing as a single client has the privacy benefits of no
+longer leaking which device was used to send a particular message, and no longer
+leaking the user's authorized devices. However, the application would need to
+provide a synchronization mechanism so that the clients' state remain consistent
+across changes to the MLS group. Flaws in this synchronization mechanism may
+impair the ability of the user to recover from a compromise of one of their
+devices.
 
 ## Endpoint Compromise
 
