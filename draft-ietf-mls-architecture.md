@@ -778,12 +778,9 @@ epoch is `n`, and as a result, the group is stuck -- no member can send a Commit
 that the DS will accept.
 
 Given these risks, it is effectively impossible for a strongly consistent DS to
-know with absolute certainty when it is safe to update its internal state.
-Nonetheless, there are some simple mechanisms that can mitigate these risks.
-For example, having the DS wait to update its state until it gets confirmation
-of acceptance from a quorum of members provides some protection against buggy
-clients.  It is up to the designers and operators of a DS to ensure that
-sufficient mechanisms are in place to address these risks.
+know with absolute certainty when it is safe to update its internal state.  It
+is up to the designers and operators of a DS to ensure that sufficient
+mechanisms are in place to address these risks.
 
 ### Eventually Consistent
 
