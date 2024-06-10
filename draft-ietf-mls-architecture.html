@@ -1046,11 +1046,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">MLS Architecture</td>
-<td class="right">May 2024</td>
+<td class="right">June 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Beurdouche, et al.</td>
-<td class="center">Expires 25 November 2024</td>
+<td class="center">Expires 12 December 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1063,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-mls-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-05-24" class="published">24 May 2024</time>
+<time datetime="2024-06-10" class="published">10 June 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-11-25">25 November 2024</time></dd>
+<dd class="expires"><time datetime="2024-12-12">12 December 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ delivery service, or the authentication service.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2144,6 +2144,22 @@ MLSMessage for providing an order only to handshake messages, and possibly even
 filter or reject redundant Commit messages proactively to prevent them from
 being broadcast. Alternatively, the Delivery Service could simply apply an order
 to all messages and rely on clients to ignore redundant Commits.<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-4">There is some risk associated with filtering.  Situations can arise where a
+malicious or buggy client sends a Commit that is not accepted by some members of
+the group, and the DS is not able to detect this and reject the Commit.  For
+example, a buggy client might send a encrypted Commit with an invalid set of
+proposals.  Or a malicious client might send a malformed Commit of the form
+described in <span><a href="https://rfc-editor.org/rfc/rfc9420#section-16.12" class="relref">Section 16.12</a> of [<a href="#RFC9420" class="cite xref">RFC9420</a>]</span>.<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-5">In such situations, the DS might update its internal state under the assumption
+that the Commit has succeeded and thus end up in a state inconsistent with the
+members of the group.  For example, the DS might think that the current epoch is
+now <code>n+1</code> and reject any commits from other epochs, while the members think the
+epoch is <code>n</code>, and as a result, the group is stuck -- no member can send a Commit
+that the DS will accept.<a href="#section-5.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-6">Given these risks, it is effectively impossible for a strongly consistent DS to
+know with absolute certainty when it is safe to update its internal state.  It
+is up to the designers and operators of a DS to ensure that sufficient
+mechanisms are in place to address these risks.<a href="#section-5.2.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="eventually-consistent">
