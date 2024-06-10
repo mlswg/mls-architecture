@@ -763,6 +763,25 @@ filter or reject redundant Commit messages proactively to prevent them from
 being broadcast. Alternatively, the Delivery Service could simply apply an order
 to all messages and rely on clients to ignore redundant Commits.
 
+There is some risk associated with filtering.  Situations can arise where a
+malicious or buggy client sends a Commit that is not accepted by some members of
+the group, and the DS is not able to detect this and reject the Commit.  For
+example, a buggy client might send a encrypted Commit with an invalid set of
+proposals.  Or a malicious client might send a malformed Commit of the form
+described in {{Section 16.12 of RFC9420}}.
+
+In such situations, the DS might update its internal state under the assumption
+that the Commit has succeeded and thus end up in a state inconsistent with the
+members of the group.  For example, the DS might think that the current epoch is
+now `n+1` and reject any commits from other epochs, while the members think the
+epoch is `n`, and as a result, the group is stuck -- no member can send a Commit
+that the DS will accept.
+
+Given these risks, it is effectively impossible for a strongly consistent DS to
+know with absolute certainty when it is safe to update its internal state.  It
+is up to the designers and operators of a DS to ensure that sufficient
+mechanisms are in place to address these risks.
+
 ### Eventually Consistent
 
 With this approach, the Delivery Service is built in a way that may be
