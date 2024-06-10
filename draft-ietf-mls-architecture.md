@@ -815,7 +815,7 @@ Ideally, the new group would be created by the same member that committed the
 `ReInit` proposal (including sending Welcome messages for the new group to all
 of the previous group's members). However this operation is not always atomic,
 so it's possible for a member to go offline after committing a ReInit proposal
-but before creating the new group. When this happens, it's necessary for another
+but before creating the new group. If this happens, it's necessary for another
 member to continue the reinitialization by creating the new group and sending
 out Welcome messages.
 
