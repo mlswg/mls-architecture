@@ -814,6 +814,36 @@ If the Commit references an unknown proposal, group members may need to solicit
 the Delivery Service or other group members individually for the contents of the
 proposal.
 
+### Welcome Messages
+
+Whenever a commit adds new members to a group, MLS requires the committer to
+send a Welcome message to the new members. Applications should ensure that
+Welcome messages are coupled with the tie-breaking logic for commits, discussed
+in {{strongly-consistent}} and {{eventually-consistent}}. That is, when multiple
+commits are sent for the same epoch, applications need to ensure that only
+Welcome messages corresponding to the commit that "succeeded" are processed by
+new members.
+
+This is particularly important when groups are being reinitialized. When a group
+is reinitialized, it is restarted with a different protocol version and/or
+ciphersuite but identical membership. Whenever an authorized member sends and
+commits a ReInit proposal, this immediately freezes the existing group and
+triggers the creation of a new group with a new `group_id`.
+
+Ideally, the new group would be created by the same member that committed the
+`ReInit` proposal (including sending Welcome messages for the new group to all
+of the previous group's members). However this operation is not always atomic,
+so it's possible for a member to go offline after committing a ReInit proposal
+but before creating the new group. If this happens, it's necessary for another
+member to continue the reinitialization by creating the new group and sending
+out Welcome messages.
+
+This has the potential to create a race condition, where multiple members try to
+continue the reinitialization at the same time, and members receive multiple
+Welcome messages for each attempt at reinitializing the same group. Ensuring
+that all members agree on which reinitialization attempt is "correct" is key to
+prevent this from causing forks.
+
 # Functional Requirements
 
 MLS is designed as a large-scale group messaging protocol and hence aims to
@@ -1118,8 +1148,8 @@ order for two different deployments based on them to interoperate.
   - In cases where group operations are not encrypted, the DS has the ability to
     observe and maintain a copy of the public group state. In particular, this
     is useful for clients that do not have the ability to send the full public
-    state in a Welcome message when inviting auser or for client that need to
-    recover from a loss of their state. Such public state can contain privacy
+    state in a Welcome message when inviting a user, or for a client that needs to
+    recover from losing their state. Such public state can contain privacy
     sensitive information such as group members' credentials and related public
     keys, hence services need to be carefully evaluate the privacy impact of
     storing this data on the DS.
