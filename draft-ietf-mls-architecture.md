@@ -401,15 +401,15 @@ Initial Keying Material ----------------------------------->     |
           Initial Keying Material ------------------------->     | Step 2
                     Initial Keying Material --------------->     |
 
-Get Bob Initial Keying Material ---------------->                |
-<-------------------- Bob Initial Keying Material                |
+Get Bob Initial Keying Material --------------------------->     |
+<------------------------------- Bob Initial Keying Material     |
 Add Bob to Group ------------------------------------------>     | Step 3
 Welcome (Bob)---------------------------------------------->     |
           <-------------------------------- Add Bob to Group     |
           <----------------------------------- Welcome (Bob)     |
 
-Get Charlie Initial Keying Material ------------>                |
-<---------------- Charlie Initial Keying Material                |
+Get Charlie Initial Keying Material ----------------------->     |
+<--------------------------- Charlie Initial Keying Material     |
 Add Charlie to Group -------------------------------------->     |
 Welcome (Charlie) ----------------------------------------->     | Step 4
           <---------------------------- Add Charlie to Group     |
