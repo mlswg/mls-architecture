@@ -753,34 +753,16 @@ same time.
 
 As an example, there could be an "ordering server" Delivery Service that
 broadcasts all messages received to all users and ensures that all clients see
-handshake messages in the same order. Clients that send a Commit would then wait
-to apply it until it's broadcast back to them by the Delivery Service, assuming
-they don't receive another Commit first.
+messages in the same order. This would allow clients to only apply the first
+valid Commit for an epoch and ignore subsequent ones. Clients that send a Commit
+would then wait to apply it until it's broadcast back to them by the Delivery
+Service, assuming they don't receive another Commit first.
 
-The Delivery Service can rely on the `epoch` and `content_type` fields of an
-MLSMessage for providing an order only to handshake messages, and possibly even
-filter or reject redundant Commit messages proactively to prevent them from
-being broadcast. Alternatively, the Delivery Service could simply apply an order
-to all messages and rely on clients to ignore redundant Commits.
-
-There is some risk associated with filtering.  Situations can arise where a
-malicious or buggy client sends a Commit that is not accepted by some members of
-the group, and the DS is not able to detect this and reject the Commit.  For
-example, a buggy client might send a encrypted Commit with an invalid set of
-proposals.  Or a malicious client might send a malformed Commit of the form
-described in {{Section 16.12 of RFC9420}}.
-
-In such situations, the DS might update its internal state under the assumption
-that the Commit has succeeded and thus end up in a state inconsistent with the
-members of the group.  For example, the DS might think that the current epoch is
-now `n+1` and reject any commits from other epochs, while the members think the
-epoch is `n`, and as a result, the group is stuck -- no member can send a Commit
-that the DS will accept.
-
-Given these risks, it is effectively impossible for a strongly consistent DS to
-know with absolute certainty when it is safe to update its internal state.  It
-is up to the designers and operators of a DS to ensure that sufficient
-mechanisms are in place to address these risks.
+Alternatively, the Delivery Service can rely on the `epoch` and `content_type`
+fields of an MLSMessage to provide an order only to handshake messages, and
+possibly even filter or reject redundant Commit messages proactively to prevent
+them from being broadcast. There is some risk associated with filtering, which
+is discussed further in {{invalid-commits}}.
 
 ### Eventually Consistent
 
@@ -843,6 +825,95 @@ continue the reinitialization at the same time, and members receive multiple
 Welcome messages for each attempt at reinitializing the same group. Ensuring
 that all members agree on which reinitialization attempt is "correct" is key to
 prevent this from causing forks.
+
+## Invalid Commits
+
+Situations can arise where a malicious or buggy client sends a Commit that is
+not accepted by all members of the group, and the DS is not able to detect this
+and reject the Commit.  For example, a buggy client might send a encrypted
+Commit with an invalid set of proposals, or a malicious client might send a
+malformed Commit of the form described in {{Section 16.12 of RFC9420}}.
+
+In situations where the DS is attempting to filter redundant Commits, the DS
+might update its internal state under the assumption that a Commit has succeeded
+and thus end up in a state inconsistent with the members of the group.  For
+example, the DS might think that the current epoch is now `n+1` and reject any
+commits from other epochs, while the members think the epoch is `n`, and as a
+result, the group is stuck -- no member can send a Commit that the DS will
+accept.
+
+One solution to this problem might be to require group consensus on a Commit,
+meaning all the members of a group would need to vote in favor of a Commit
+before it is applied. This would hamper many of the security properties of MLS,
+which is otherwise a completely asynchronous protocol. Users would ideally be
+able to send a Commit, quickly see the Commit sequenced by the Delivery Service,
+and then apply it to their group state. As part of applying the Commit, many
+asymmetric encryption keys (some or all of which may be compromised) are
+rotated, restoring the user to a secure state. Blocking the acceptance of a
+Commit on a consensus vote risks forcing the user to stay in a compromised state
+for a prolonged period of time. Trying to speed up the consensus vote with a
+timeout, or by reducing the number of favorable votes a Commit needs to receive,
+immediately reintroduces the risk of an undetected invalid commit breaking the
+group.
+
+Alternatively, the DS might assume that whichever Commit arrives first is the
+one that should succeed. In the event that a Commit can't be processed by some
+members of the group, those members will perform an external join to rejoin the
+group. Notably, this approach negates the PCS guarantees of MLS by requiring
+users to discard their secret state and rejoin a group with whatever state the
+DS provides to them. In particular, if any past epoch of a group is ever
+compromised, the DS can insert an unprocessable Commit message to trigger group
+members to rejoin using the compromised group state. This allows the DS to undo
+any PCS-achieving updates group members may have done since the compromise and
+revert to a compromised state.
+
+For both of the approaches discussed above, even if the DS is honest, a
+malicious group member can still cause the group to become stuck. With the first
+approach, a malicious member can vote against valid Commits. With the second
+approach, a malicious member that's capable of sending invalid Commits is also
+capable of corrupting the state that other users need to perform an external
+join, thereby preventing successful external joins.
+
+Instead of the above approaches, it is generally simpler for the Delivery
+Service take no stance on which Commit is "correct" for an epoch. The DS can
+enable clients to choose between Commits, for example by providing Commits in
+the order received when there are multiple, and allow clients to reject any
+Commits that violate their view of the group's policies. As such, all honest and
+correctly-implemented clients will arrive at the same "first valid Commit" and
+choose to process it. Malicious or buggy clients that process a different Commit
+will end up in a forked view of the group, isolated from the honest members.
+
+The only instance where not all group members will agree on the validity of a
+Commit, is when the Commit is invalid in the form described in {{Section 16.12
+of RFC9420}}. This creates a subset of members that are unable to process the
+Commit. When a user discovers that they're in such a subset, they can request a
+re-encryption of `path_secret[n]` from another honest member. In the interest of
+efficiency, the DS can collect these re-encryptions proactively. Alternatively,
+if no other honest users have processed the Commit, the user can request that
+the DS suppress it (potentially after cryptographically proving that it's
+malformed).
+
+## Access Control
+
+Service providers often wish to restrict users who are not a member of a group
+from sending messages to the group or receiving the group's messages. This can
+be complicated by the discussion in {{invalid-commits}} and by the use of
+encrypted handshake messages. In particular, when handshake messages are
+encrypted, changes to group membership are intentionally encrypted and hidden
+from the service provider.
+
+When a group's handshake messages are unencrypted, the service provider can
+build the group's ratchet tree (keeping in mind the potential for forks, as
+discussed in {{invalid-commits}}). The group's ratchet tree can then be used to
+prevent non-members from accessing the group.
+
+However, when a group's handshake messages are encrypted, direct inspection of
+the ratchet tree is no longer an option. An alternative solution would be for
+the service provider to restrict access to individual epochs of the group with a
+bearer token, which is computed as the output of `MLS-Exporter` in the epoch.
+Only users who are a member of the group in that specific epoch would be able to
+compute the exported secret, and therefore only they would be able to access the
+group's messages.
 
 # Functional Requirements
 
