@@ -949,7 +949,7 @@ delivering messages asynchronously and reliably.
 
 Because all clients within a group (members) have access to the shared
 cryptographic material, MLS protocol allows each member of the messaging group
-to perform operations, However, every service/infrastructure has control over
+to perform operations. However, every service/infrastructure has control over
 policies applied to its own clients. Applications managing MLS clients can be
 configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -1066,7 +1066,7 @@ managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.
 
 > **RECOMMENDATION:** Use the default content mechanism defined in
-> {{Section 2.3 of I-D.ietf-mls-extensions}}, unless the specific application defines another
+> {{Section 3.3 of I-D.ietf-mls-extensions}}, unless the specific application defines another
 > mechanism which more appropriately addresses the same requirements for that
 > application of MLS.
 
@@ -1151,7 +1151,7 @@ order for two different deployments based on them to interoperate.
     state in a Welcome message when inviting a user, or for a client that needs to
     recover from losing their state. Such public state can contain privacy
     sensitive information such as group members' credentials and related public
-    keys, hence services need to be carefully evaluate the privacy impact of
+    keys, hence services need to carefully evaluate the privacy impact of
     storing this data on the DS.
   - If external joiners are allowed, there must be a method to publish a
     serialized `GroupInfo` object (with an `external_pub` extension) that
@@ -1883,7 +1883,7 @@ in the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.
 
-This guarantee applies to the the cryptographic identities of the members.
+This guarantee applies to the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
 be largely performed autonomously (e.g., without user interaction) by the
@@ -1908,8 +1908,8 @@ MLS clients running the MLS protocol, it possibly has many signature keypairs
 for multiple devices. These attacks could be very difficult to detect,
 especially in large groups where the UI might not reflect all the changes back
 to the users. If the application participates in a key transparency mechanism in
-which it is possible to determine every key for a given user, then this then
-this would allow for the detection of surreptitiously created false credentials.
+which it is possible to determine every key for a given user, then this
+would allow for detection of surreptitiously created false credentials.
 
 > **RECOMMENDATION:** Make sure that MLS clients reflect all the membership
 > changes to the users as they happen. If a choice has to be made because the
@@ -1966,8 +1966,8 @@ In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.
 
-> **RECOMMENDATION:** Ensure that the linking between public keys and identities
-> only happen in expected scenarios. Otherwise privilege a stronger separation.
+> **RECOMMENDATION:** Ensure that linking between public keys and identities
+> only happens in expected scenarios. Otherwise privilege a stronger separation.
 
 ## Considerations for attacks outside of the threat model
 
