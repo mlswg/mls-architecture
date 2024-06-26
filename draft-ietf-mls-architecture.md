@@ -1931,10 +1931,10 @@ code that can be scanned by the other parties.
 > **RECOMMENDATION:** Provide one or more out-of-band authentication mechanisms
 > to limit the impact of an Authentication Service compromise.
 
-We note, again, that as described prior to that section, the Authentication
-Service may not be a centralized system, and could be realized by many
-mechanisms such as establishing prior one-to-one deniable channels, gossiping,
-or using trust on first use (TOFU) for credentials used by the MLS Protocol.
+We note, again, that the Authentication Service may not be a centralized
+system, and could be realized by many mechanisms such as establishing prior
+one-to-one deniable channels, gossiping, or using trust on first use (TOFU) for
+credentials used by the MLS Protocol.
 
 Another important consideration is the ease of redistributing new keys on client
 compromise, which helps recovering security faster in various cases.
