@@ -30,11 +30,11 @@ guarantees that are achieved by a messaging application. This is especially true
 in the case of active adversaries that are able to compromise clients, the
 delivery service, or the authentication service. 
     " name="description">
-<meta content="xml2rfc 3.21.0" name="generator">
+<meta content="xml2rfc 3.22.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-mls-architecture-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.21.0
+  xml2rfc 3.22.0
     Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
@@ -44,9 +44,8 @@ delivery service, or the authentication service.
     platformdirs 4.2.2
     pycountry 22.3.5
     PyYAML 6.0.1
-    requests 2.31.0
+    requests 2.32.3
     setuptools 69.5.1
-    six 1.16.0
     wcwidth 0.2.13
 -->
 <link href="draft-ietf-mls-architecture.xml" rel="alternate" type="application/rfc+xml">
@@ -1046,11 +1045,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">MLS Architecture</td>
-<td class="right">June 2024</td>
+<td class="right">July 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Beurdouche, et al.</td>
-<td class="center">Expires 15 December 2024</td>
+<td class="center">Expires 6 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1063,12 +1062,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-mls-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-06-13" class="published">13 June 2024</time>
+<time datetime="2024-07-05" class="published">5 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-12-15">15 December 2024</time></dd>
+<dd class="expires"><time datetime="2025-01-06">6 January 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1143,7 @@ delivery service, or the authentication service.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2349,7 +2348,7 @@ delivering messages asynchronously and reliably.<a href="#section-6.3-2" class="
         </h3>
 <p id="section-6.4-1">Because all clients within a group (members) have access to the shared
 cryptographic material, MLS protocol allows each member of the messaging group
-to perform operations, However, every service/infrastructure has control over
+to perform operations. However, every service/infrastructure has control over
 policies applied to its own clients. Applications managing MLS clients can be
 configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
@@ -2496,7 +2495,7 @@ offline at unpredictable times.<a href="#section-6.9-1" class="pilcrow">¶</a></
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.9-2.1">
             <p id="section-6.9-2.1.1"><strong>RECOMMENDATION:</strong> Use the default content mechanism defined in
-<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-mls-extensions-04#section-2.3" class="relref">Section 2.3</a> of [<a href="#I-D.ietf-mls-extensions" class="cite xref">I-D.ietf-mls-extensions</a>]</span>, unless the specific application defines another
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-mls-extensions-04#section-3.3" class="relref">Section 3.3</a> of [<a href="#I-D.ietf-mls-extensions" class="cite xref">I-D.ietf-mls-extensions</a>]</span>, unless the specific application defines another
 mechanism which more appropriately addresses the same requirements for that
 application of MLS.<a href="#section-6.9-2.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -2616,7 +2615,7 @@ is useful for clients that do not have the ability to send the full public
 state in a Welcome message when inviting a user, or for a client that needs to
 recover from losing their state. Such public state can contain privacy
 sensitive information such as group members' credentials and related public
-keys, hence services need to be carefully evaluate the privacy impact of
+keys, hence services need to carefully evaluate the privacy impact of
 storing this data on the DS.<a href="#section-7-4.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7-4.3.2.2">
@@ -3523,7 +3522,7 @@ attacker who has compromised the AS to silently impersonate the client.<a href="
 in the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.<a href="#section-8.4.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-8.4.3.1-2">This guarantee applies to the the cryptographic identities of the members.
+<p id="section-8.4.3.1-2">This guarantee applies to the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
 Credential type used. For example, cryptographic verification of credentials can
 be largely performed autonomously (e.g., without user interaction) by the
@@ -3552,8 +3551,8 @@ MLS clients running the MLS protocol, it possibly has many signature keypairs
 for multiple devices. These attacks could be very difficult to detect,
 especially in large groups where the UI might not reflect all the changes back
 to the users. If the application participates in a key transparency mechanism in
-which it is possible to determine every key for a given user, then this then
-this would allow for the detection of surreptitiously created false credentials.<a href="#section-8.4.3.1-6" class="pilcrow">¶</a></p>
+which it is possible to determine every key for a given user, then this
+would allow for detection of surreptitiously created false credentials.<a href="#section-8.4.3.1-6" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.1-7.1">
                 <p id="section-8.4.3.1-7.1.1"><strong>RECOMMENDATION:</strong> Make sure that MLS clients reflect all the membership
@@ -3582,10 +3581,10 @@ code that can be scanned by the other parties.<a href="#section-8.4.3.1-9" class
 to limit the impact of an Authentication Service compromise.<a href="#section-8.4.3.1-10.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-8.4.3.1-11">We note, again, that as described prior to that section, the Authentication
-Service may not be a centralized system, and could be realized by many
-mechanisms such as establishing prior one-to-one deniable channels, gossiping,
-or using trust on first use (TOFU) for credentials used by the MLS Protocol.<a href="#section-8.4.3.1-11" class="pilcrow">¶</a></p>
+<p id="section-8.4.3.1-11">We note, again, that the Authentication Service may not be a centralized
+system, and could be realized by many mechanisms such as establishing prior
+one-to-one deniable channels, gossiping, or using trust on first use (TOFU) for
+credentials used by the MLS Protocol.<a href="#section-8.4.3.1-11" class="pilcrow">¶</a></p>
 <p id="section-8.4.3.1-12">Another important consideration is the ease of redistributing new keys on client
 compromise, which helps recovering security faster in various cases.<a href="#section-8.4.3.1-12" class="pilcrow">¶</a></p>
 </section>
@@ -3621,8 +3620,8 @@ and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.<a href="#section-8.4.3.2-5" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.2-6.1">
-                <p id="section-8.4.3.2-6.1.1"><strong>RECOMMENDATION:</strong> Ensure that the linking between public keys and identities
-only happen in expected scenarios. Otherwise privilege a stronger separation.<a href="#section-8.4.3.2-6.1.1" class="pilcrow">¶</a></p>
+                <p id="section-8.4.3.2-6.1.1"><strong>RECOMMENDATION:</strong> Ensure that linking between public keys and identities
+only happens in expected scenarios. Otherwise privilege a stronger separation.<a href="#section-8.4.3.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>

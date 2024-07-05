@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 15 December 2024                                        Mozilla
+Expires: 6 January 2025                                          Mozilla
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                            13 June 2024
+                                                             5 July 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 December 2024.
+   This Internet-Draft will expire on 6 January 2025.
 
 Copyright Notice
 
@@ -906,7 +906,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    Because all clients within a group (members) have access to the
    shared cryptographic material, MLS protocol allows each member of the
-   messaging group to perform operations, However, every service/
+   messaging group to perform operations.  However, every service/
    infrastructure has control over policies applied to its own clients.
    Applications managing MLS clients can be configured to allow for
    specific group operations.  On the one hand, an application could
@@ -1034,7 +1034,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    unpredictable times.
 
       *RECOMMENDATION:* Use the default content mechanism defined in
-      Section 2.3 of [I-D.ietf-mls-extensions], unless the specific
+      Section 3.3 of [I-D.ietf-mls-extensions], unless the specific
       application defines another mechanism which more appropriately
       addresses the same requirements for that application of MLS.
 
@@ -1137,7 +1137,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
          message when inviting a user, or for a client that needs to
          recover from losing their state.  Such public state can contain
          privacy sensitive information such as group members'
-         credentials and related public keys, hence services need to be
+         credentials and related public keys, hence services need to
          carefully evaluate the privacy impact of storing this data on
          the DS.
 
@@ -1960,7 +1960,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    members of the current group can read and write messages protected by
    the protocol for that Group.
 
-   This guarantee applies to the the cryptographic identities of the
+   This guarantee applies to the cryptographic identities of the
    members.  Details about how to verify the identity of a client depend
    on the MLS Credential type used.  For example, cryptographic
    verification of credentials can be largely performed autonomously
@@ -1991,8 +1991,8 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    where the UI might not reflect all the changes back to the users.  If
    the application participates in a key transparency mechanism in which
    it is possible to determine every key for a given user, then this
-   then this would allow for the detection of surreptitiously created
-   false credentials.
+   would allow for detection of surreptitiously created false
+   credentials.
 
       *RECOMMENDATION:* Make sure that MLS clients reflect all the
       membership changes to the users as they happen.  If a choice has
@@ -2017,11 +2017,10 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
       mechanisms to limit the impact of an Authentication Service
       compromise.
 
-   We note, again, that as described prior to that section, the
-   Authentication Service may not be a centralized system, and could be
-   realized by many mechanisms such as establishing prior one-to-one
-   deniable channels, gossiping, or using trust on first use (TOFU) for
-   credentials used by the MLS Protocol.
+   We note, again, that the Authentication Service may not be a
+   centralized system, and could be realized by many mechanisms such as
+   establishing prior one-to-one deniable channels, gossiping, or using
+   trust on first use (TOFU) for credentials used by the MLS Protocol.
 
    Another important consideration is the ease of redistributing new
    keys on client compromise, which helps recovering security faster in
@@ -2058,9 +2057,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    groups, the adversary can get more information about the targeted
    user.
 
-      *RECOMMENDATION:* Ensure that the linking between public keys and
-      identities only happen in expected scenarios.  Otherwise privilege
-      a stronger separation.
+      *RECOMMENDATION:* Ensure that linking between public keys and
+      identities only happens in expected scenarios.  Otherwise
+      privilege a stronger separation.
 
 8.5.  Considerations for attacks outside of the threat model
 
