@@ -874,16 +874,18 @@ approach, a malicious member that's capable of sending invalid Commits is also
 capable of corrupting the state that other users need to perform an external
 join, thereby preventing successful external joins.
 
-Instead of the above approaches, it is generally simpler for the Delivery
-Service take no stance on which Commit is "correct" for an epoch. The DS can
-enable clients to choose between Commits, for example by providing Commits in
-the order received when there are multiple, and allow clients to reject any
-Commits that violate their view of the group's policies. As such, all honest and
-correctly-implemented clients will arrive at the same "first valid Commit" and
-choose to process it. Malicious or buggy clients that process a different Commit
-will end up in a forked view of the group, isolated from the honest members.
+An alternative approach is for the Delivery Service take no stance on which
+Commit is "correct" for an epoch. The DS can enable clients to choose between
+Commits, for example by providing Commits in the order received when there are
+multiple, and allow clients to reject any Commits that violate their view of the
+group's policies. As such, all honest and correctly-implemented clients will
+arrive at the same "first valid Commit" and choose to process it. Malicious or
+buggy clients that process a different Commit will end up in a forked view of
+the group. While allowing a group's state to fork has fewer security
+implications than the above approaches, it can complicate some operational
+aspects of MLS for the DS, such as how to support external joins.
 
-The only instance where not all group members will agree on the validity of a
+The only instance where not all honest group members will agree on the validity of a
 Commit, is when the Commit is invalid in the form described in {{Section 16.12
 of RFC9420}}. This creates a subset of members that are unable to process the
 Commit. When a user discovers that they're in such a subset, they can request a
