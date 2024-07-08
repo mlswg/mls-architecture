@@ -5,14 +5,14 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 6 January 2025                                          Mozilla
+Expires: 9 January 2025                          Windy Hill Systems, LLC
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
                                                                     Wire
-                                                             5 July 2024
+                                                             8 July 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2025.
+   This Internet-Draft will expire on 9 January 2025.
 
 Copyright Notice
 
@@ -2309,7 +2309,7 @@ Authors' Addresses
 
 
    Eric Rescorla
-   Mozilla
+   Windy Hill Systems, LLC
    Email: ekr@rtfm.com
 
 
