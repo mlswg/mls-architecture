@@ -830,7 +830,7 @@ prevent this from causing forks.
 
 Situations can arise where a malicious or buggy client sends a Commit that is
 not accepted by all members of the group, and the DS is not able to detect this
-and reject the Commit.  For example, a buggy client might send a encrypted
+and reject the Commit.  For example, a buggy client might send an encrypted
 Commit with an invalid set of proposals, or a malicious client might send a
 malformed Commit of the form described in {{Section 16.12 of RFC9420}}.
 
@@ -842,80 +842,33 @@ commits from other epochs, while the members think the epoch is `n`, and as a
 result, the group is stuck -- no member can send a Commit that the DS will
 accept.
 
-One solution to this problem might be to require group consensus on a Commit,
-meaning all the members of a group would need to vote in favor of a Commit
-before it is applied. This would hamper many of the security properties of MLS,
-which is otherwise a completely asynchronous protocol. Users would ideally be
-able to send a Commit, quickly see the Commit sequenced by the Delivery Service,
-and then apply it to their group state. As part of applying the Commit, many
-asymmetric encryption keys (some or all of which may be compromised) are
-rotated, restoring the user to a secure state. Blocking the acceptance of a
-Commit on a consensus vote risks forcing the user to stay in a compromised state
-for a prolonged period of time. Trying to speed up the consensus vote with a
-timeout, or by reducing the number of favorable votes a Commit needs to receive,
-immediately reintroduces the risk of an undetected invalid commit breaking the
-group.
+Such “desynchronization” problems can arise even when the Delivery Service takes
+no stance on which Commit is "correct" for an epoch. The DS can enable clients
+to choose between Commits, for example by providing Commits in the order
+received when there are multiple, and allow clients to reject any Commits that
+violate their view of the group's policies. As such, all honest and
+correctly-implemented clients will arrive at the same "first valid Commit" and
+choose to process it. Malicious or buggy clients that process a different Commit
+will end up in a forked view of the group.
 
-Alternatively, the DS might assume that whichever Commit arrives first is the
-one that should succeed. In the event that a Commit can't be processed by some
-members of the group, those members will perform an external join to rejoin the
-group. Notably, this approach negates the PCS guarantees of MLS by requiring
-users to discard their secret state and rejoin a group with whatever state the
-DS provides to them. In particular, if any past epoch of a group is ever
-compromised, the DS can insert an unprocessable Commit message to trigger group
-members to rejoin using the compromised group state. This allows the DS to undo
-any PCS-achieving updates group members may have done since the compromise and
-revert to a compromised state.
+When these desynchronizations happen, the application may choose to take action
+to restore the functionality of the group.  These actions themselves can have
+security implications.  For example, a client developer might have a client
+automatically rejoin a group, using an external join, when it processes an
+invalid Commit.  In this operation, however, the client trusts that the
+GroupInfo provided by the DS faithfully represents the state of the group, and
+not, say, an earlier state containing a compromised leaf node. Even worse, the
+DS may be able to trigger this condition by deliberately sending the victim an
+invalid Commit. In certain scenarios, this trust can enable the DS or a
+malicious insider to undermine the post-compromise security guarantees provided
+by MLS.
 
-For both of the approaches discussed above, even if the DS is honest, a
-malicious group member can still cause the group to become stuck. With the first
-approach, a malicious member can vote against valid Commits. With the second
-approach, a malicious member that's capable of sending invalid Commits is also
-capable of corrupting the state that other users need to perform an external
-join, thereby preventing successful external joins.
-
-An alternative approach is for the Delivery Service take no stance on which
-Commit is "correct" for an epoch. The DS can enable clients to choose between
-Commits, for example by providing Commits in the order received when there are
-multiple, and allow clients to reject any Commits that violate their view of the
-group's policies. As such, all honest and correctly-implemented clients will
-arrive at the same "first valid Commit" and choose to process it. Malicious or
-buggy clients that process a different Commit will end up in a forked view of
-the group. While allowing a group's state to fork has fewer security
-implications than the above approaches, it can complicate some operational
-aspects of MLS for the DS, such as how to support external joins.
-
-The only instance where not all honest group members will agree on the validity of a
-Commit, is when the Commit is invalid in the form described in {{Section 16.12
-of RFC9420}}. This creates a subset of members that are unable to process the
-Commit. When a user discovers that they're in such a subset, they can request a
-re-encryption of `path_secret[n]` from another honest member. In the interest of
-efficiency, the DS can collect these re-encryptions proactively. Alternatively,
-if no other honest users have processed the Commit, the user can request that
-the DS suppress it (potentially after cryptographically proving that it's
-malformed).
-
-## Access Control
-
-Service providers often wish to restrict users who are not a member of a group
-from sending messages to the group or receiving the group's messages. This can
-be complicated by the discussion in {{invalid-commits}} and by the use of
-encrypted handshake messages. In particular, when handshake messages are
-encrypted, changes to group membership are intentionally encrypted and hidden
-from the service provider.
-
-When a group's handshake messages are unencrypted, the service provider can
-build the group's ratchet tree (keeping in mind the potential for forks, as
-discussed in {{invalid-commits}}). The group's ratchet tree can then be used to
-prevent non-members from accessing the group.
-
-However, when a group's handshake messages are encrypted, direct inspection of
-the ratchet tree is no longer an option. An alternative solution would be for
-the service provider to restrict access to individual epochs of the group with a
-bearer token, which is computed as the output of `MLS-Exporter` in the epoch.
-Only users who are a member of the group in that specific epoch would be able to
-compute the exported secret, and therefore only they would be able to access the
-group's messages.
+Actions to recover from desynchronization can also have availability and DoS
+implications.  For example, if a recovery mechanism relies on external joins, a
+malicious member that deliberately posts an invalid Commit could also post a
+corrupted GroupInfo object in order to prevent victims from rejoining the group.
+Thus, careful analysis of security implications should be made for any system
+for recovering from desynchronization.
 
 # Functional Requirements
 
