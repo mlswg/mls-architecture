@@ -1421,7 +1421,7 @@ Post-Compromise Security (PCS).
 FS means that access to all encrypted traffic history combined with
 access to all current keying material on clients will not defeat the
 secrecy properties of messages older than the oldest key of the
-compromised client.  Note that this means that clients the appropriate
+compromised client.  Note that this means that clients have to delete the appropriate
 keys as soon as they have been used with the expected message,
 otherwise the secrecy of the messages and the security for MLS is
 considerably weakened.
