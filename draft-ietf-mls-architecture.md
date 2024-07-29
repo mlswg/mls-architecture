@@ -755,8 +755,8 @@ As an example, there could be an "ordering server" Delivery Service that
 broadcasts all messages received to all users and ensures that all clients see
 messages in the same order. This would allow clients to only apply the first
 valid Commit for an epoch and ignore subsequent ones. Clients that send a Commit
-would then wait to apply it until it's broadcast back to them by the Delivery
-Service, assuming they don't receive another Commit first.
+would then wait to apply it until it is broadcast back to them by the Delivery
+Service, assuming they do not receive another Commit first.
 
 Alternatively, the Delivery Service can rely on the `epoch` and `content_type`
 fields of an MLSMessage to provide an order only to handshake messages, and
@@ -845,7 +845,7 @@ accept.
 Such “desynchronization” problems can arise even when the Delivery Service takes
 no stance on which Commit is "correct" for an epoch. The DS can enable clients
 to choose between Commits, for example by providing Commits in the order
-received when there are multiple, and allow clients to reject any Commits that
+received and allow clients to reject any Commits that
 violate their view of the group's policies. As such, all honest and
 correctly-implemented clients will arrive at the same "first valid Commit" and
 choose to process it. Malicious or buggy clients that process a different Commit
@@ -857,7 +857,7 @@ security implications.  For example, a client developer might have a client
 automatically rejoin a group, using an external join, when it processes an
 invalid Commit.  In this operation, however, the client trusts that the
 GroupInfo provided by the DS faithfully represents the state of the group, and
-not, say, an earlier state containing a compromised leaf node. Even worse, the
+not, say, an earlier state containing a compromised leaf node. In addition, the
 DS may be able to trigger this condition by deliberately sending the victim an
 invalid Commit. In certain scenarios, this trust can enable the DS or a
 malicious insider to undermine the post-compromise security guarantees provided
