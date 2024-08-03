@@ -753,34 +753,16 @@ same time.
 
 As an example, there could be an "ordering server" Delivery Service that
 broadcasts all messages received to all users and ensures that all clients see
-handshake messages in the same order. Clients that send a Commit would then wait
-to apply it until it's broadcast back to them by the Delivery Service, assuming
-they don't receive another Commit first.
+messages in the same order. This would allow clients to only apply the first
+valid Commit for an epoch and ignore subsequent ones. Clients that send a Commit
+would then wait to apply it until it is broadcast back to them by the Delivery
+Service, assuming they do not receive another Commit first.
 
-The Delivery Service can rely on the `epoch` and `content_type` fields of an
-MLSMessage for providing an order only to handshake messages, and possibly even
-filter or reject redundant Commit messages proactively to prevent them from
-being broadcast. Alternatively, the Delivery Service could simply apply an order
-to all messages and rely on clients to ignore redundant Commits.
-
-There is some risk associated with filtering.  Situations can arise where a
-malicious or buggy client sends a Commit that is not accepted by some members of
-the group, and the DS is not able to detect this and reject the Commit.  For
-example, a buggy client might send a encrypted Commit with an invalid set of
-proposals.  Or a malicious client might send a malformed Commit of the form
-described in {{Section 16.12 of RFC9420}}.
-
-In such situations, the DS might update its internal state under the assumption
-that the Commit has succeeded and thus end up in a state inconsistent with the
-members of the group.  For example, the DS might think that the current epoch is
-now `n+1` and reject any commits from other epochs, while the members think the
-epoch is `n`, and as a result, the group is stuck -- no member can send a Commit
-that the DS will accept.
-
-Given these risks, it is effectively impossible for a strongly consistent DS to
-know with absolute certainty when it is safe to update its internal state.  It
-is up to the designers and operators of a DS to ensure that sufficient
-mechanisms are in place to address these risks.
+Alternatively, the Delivery Service can rely on the `epoch` and `content_type`
+fields of an MLSMessage to provide an order only to handshake messages, and
+possibly even filter or reject redundant Commit messages proactively to prevent
+them from being broadcast. There is some risk associated with filtering, which
+is discussed further in {{invalid-commits}}.
 
 ### Eventually Consistent
 
@@ -843,6 +825,50 @@ continue the reinitialization at the same time, and members receive multiple
 Welcome messages for each attempt at reinitializing the same group. Ensuring
 that all members agree on which reinitialization attempt is "correct" is key to
 prevent this from causing forks.
+
+## Invalid Commits
+
+Situations can arise where a malicious or buggy client sends a Commit that is
+not accepted by all members of the group, and the DS is not able to detect this
+and reject the Commit.  For example, a buggy client might send an encrypted
+Commit with an invalid set of proposals, or a malicious client might send a
+malformed Commit of the form described in {{Section 16.12 of RFC9420}}.
+
+In situations where the DS is attempting to filter redundant Commits, the DS
+might update its internal state under the assumption that a Commit has succeeded
+and thus end up in a state inconsistent with the members of the group.  For
+example, the DS might think that the current epoch is now `n+1` and reject any
+commits from other epochs, while the members think the epoch is `n`, and as a
+result, the group is stuck -- no member can send a Commit that the DS will
+accept.
+
+Such “desynchronization” problems can arise even when the Delivery Service takes
+no stance on which Commit is "correct" for an epoch. The DS can enable clients
+to choose between Commits, for example by providing Commits in the order
+received and allow clients to reject any Commits that
+violate their view of the group's policies. As such, all honest and
+correctly-implemented clients will arrive at the same "first valid Commit" and
+choose to process it. Malicious or buggy clients that process a different Commit
+will end up in a forked view of the group.
+
+When these desynchronizations happen, the application may choose to take action
+to restore the functionality of the group.  These actions themselves can have
+security implications.  For example, a client developer might have a client
+automatically rejoin a group, using an external join, when it processes an
+invalid Commit.  In this operation, however, the client trusts that the
+GroupInfo provided by the DS faithfully represents the state of the group, and
+not, say, an earlier state containing a compromised leaf node. In addition, the
+DS may be able to trigger this condition by deliberately sending the victim an
+invalid Commit. In certain scenarios, this trust can enable the DS or a
+malicious insider to undermine the post-compromise security guarantees provided
+by MLS.
+
+Actions to recover from desynchronization can also have availability and DoS
+implications.  For example, if a recovery mechanism relies on external joins, a
+malicious member that deliberately posts an invalid Commit could also post a
+corrupted GroupInfo object in order to prevent victims from rejoining the group.
+Thus, careful analysis of security implications should be made for any system
+for recovering from desynchronization.
 
 # Functional Requirements
 
