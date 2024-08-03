@@ -1418,12 +1418,13 @@ MLS provides additional protection regarding secrecy of past messages and future
 messages. These cryptographic security properties are Forward Secrecy (FS) and
 Post-Compromise Security (PCS).
 
-FS means that access to all encrypted traffic history combined with access to
-all current keying material on clients will not defeat the secrecy properties of
-messages older than the oldest key of the compromised client.  Note that this
-means that clients have the extremely important role of deleting appropriate
-keys as soon as they have been used with the expected message, otherwise the
-secrecy of the messages and the security for MLS is considerably weakened.
+FS means that access to all encrypted traffic history combined with
+access to all current keying material on clients will not defeat the
+secrecy properties of messages older than the oldest key of the
+compromised client.  Note that this means that clients have to delete the appropriate
+keys as soon as they have been used with the expected message,
+otherwise the secrecy of the messages and the security for MLS is
+considerably weakened.
 
 PCS means that if a group member's state is compromised at some time t1 but the
 group member subsequently performs an update at some time t2, then all MLS
@@ -1967,7 +1968,7 @@ and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.
 
 > **RECOMMENDATION:** Ensure that linking between public keys and identities
-> only happens in expected scenarios. Otherwise privilege a stronger separation.
+> only happens in expected scenarios.
 
 ## Considerations for attacks outside of the threat model
 
