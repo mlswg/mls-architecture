@@ -20,7 +20,7 @@ author:
  -
     ins: E. Rescorla
     name: Eric Rescorla
-    organization: Windy Hill Systems, LLC
+    organization: Independent
     email: ekr@rtfm.com
  -
     ins: E. Omara
