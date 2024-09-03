@@ -33,8 +33,7 @@ author:
  -
     ins: A. Duric
     name: Alan Duric
-    organization: Wire
-    email: alan@wire.com
+    email: alan@duric.net
 
 contributor:
 - name: Richard Barnes
