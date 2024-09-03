@@ -5,14 +5,13 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 4 February 2025                                     Independent
+Expires: 7 March 2025                                        Independent
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
-                                                                    Wire
-                                                           3 August 2024
+                                                        3 September 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -68,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 February 2025.
+   This Internet-Draft will expire on 7 March 2025.
 
 Copyright Notice
 
@@ -2231,15 +2230,15 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    [I-D.schinazi-masque-proxy]
               Schinazi, D., "The MASQUE Proxy", Work in Progress,
-              Internet-Draft, draft-schinazi-masque-proxy-02, 28
-              February 2024, <https://datatracker.ietf.org/doc/html/
-              draft-schinazi-masque-proxy-02>.
+              Internet-Draft, draft-schinazi-masque-proxy-04, 28 August
+              2024, <https://datatracker.ietf.org/doc/html/draft-
+              schinazi-masque-proxy-04>.
 
    [KT]       McMillion, B., "Key Transparency Architecture", Work in
               Progress, Internet-Draft, draft-ietf-keytrans-
-              architecture-01, 4 March 2024,
+              architecture-02, 26 August 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-
-              keytrans-architecture-01>.
+              keytrans-architecture-02>.
 
    [Loopix]   Piotrowska, A. M., Hayes, J., Elahi, T., Meiser, S., and
               G. Danezis, "The Loopix Anonymity System", 2017.
@@ -2349,5 +2348,4 @@ Authors' Addresses
 
 
    Alan Duric
-   Wire
-   Email: alan@wire.com
+   Email: alan@duric.net
