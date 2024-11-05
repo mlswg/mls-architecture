@@ -5,13 +5,13 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 7 March 2025                                        Independent
+Expires: 9 May 2025                                          Independent
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
-                                                        3 September 2024
+                                                         5 November 2024
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 March 2025.
+   This Internet-Draft will expire on 9 May 2025.
 
 Copyright Notice
 
@@ -2217,9 +2217,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    [I-D.ietf-mls-extensions]
               Robert, R., "The Messaging Layer Security (MLS)
               Extensions", Work in Progress, Internet-Draft, draft-ietf-
-              mls-extensions-04, 24 April 2024,
+              mls-extensions-05, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-mls-
-              extensions-04>.
+              extensions-05>.
 
    [I-D.ietf-mls-federation]
               Omara, E. and R. Robert, "The Messaging Layer Security
