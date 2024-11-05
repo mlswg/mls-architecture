@@ -1783,7 +1783,7 @@ Similar concerns exist in the peer-to-peer use cases of MLS.
 More generally, using anonymous credentials in an MLS based architecture might
 not be enough to provide strong privacy or anonymity properties.
 
-#### Storage of Metadata and Ecryption at rest on the Servers
+#### Storage of Metadata and Encryption at rest on the Servers
 
 In the case where private data or metadata has to be persisted on the servers
 for functionality (mappings between identities and push tokens, group
