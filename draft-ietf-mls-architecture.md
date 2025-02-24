@@ -2060,7 +2060,7 @@ in PrivateMessage.
 
 Applications can detect replay by including a unique identifier for the message 
 (e.g., a counter) in either the message payload or the `authenticated_data` 
-field, both of which are included in the signed message content in both 
+field, both of which are included in the signatures for
 PublicMessage and PrivateMessage.
 
 ## Cryptographic Analysis of the MLS Protocol
