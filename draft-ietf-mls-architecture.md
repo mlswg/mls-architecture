@@ -2041,6 +2041,28 @@ the protocol to securely implement the specification, which remains non-trivial.
 > the MLS clients from physical compromise. In such settings, HSMs and secure
 > enclaves can be used to protect signature keys.
 
+# No Protection against Replay by Insiders
+
+MLS does not provide protections against replay of group messages by members 
+of the group.  Applications for whom replay is an important risk should apply 
+mitigations at the application layer, as discussed below.
+
+In addition to the risks discussed in {{symmetric-key-compromise}}, an attacker 
+with access to the Ratchet Secrets for an endpoint can replay PrivateMessage 
+objects sent by other members of the group by taking the signed content of the 
+message and re-encrypting it with a new generation of the original sender's 
+ratchet.  If the other members of the group interpret a message with a new 
+generation as a fresh message, then this message will appear fresh.  (This is 
+possible because the message signature does not cover the `generation` field 
+of the message.)  Messages sent as PublicMessages objects similarly lack replay 
+protections.  There is no message counter comparable to the `generation` field 
+in PrivateMessage.
+
+Applications can detect replay by including a unique identifier for the message 
+(e.g., a counter) in either the message payload or the `authenticated_data` 
+field, both of which are included in the signed message content in both 
+PublicMessage and PrivateMessage.
+
 ## Cryptographic Analysis of the MLS Protocol
 
 Various academic works have analyzed MLS and the different security guarantees
