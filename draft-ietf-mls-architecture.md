@@ -220,10 +220,10 @@ informative:
 
 --- abstract
 
-The Messaging Layer Security (MLS) protocol (I-D.ietf-mls-protocol)
+The Messaging Layer Security (MLS) protocol (RFC9420)
 provides a Group Key Agreement protocol for messaging applications.
-MLS is meant to protect against eavesdropping, tampering, message
-forgery, and provide Forward Secrecy (FS) and Post-Compromise Security
+MLS is meant to protect against eavesdropping, tampering, and message
+forgery, and to provide Forward Secrecy (FS) and Post-Compromise Security
 (PCS).
 
 This document describes the architecture for using MLS in a general
@@ -245,25 +245,17 @@ delivery service, or the authentication service.
 
 # Introduction
 
-RFC EDITOR: PLEASE REMOVE THE FOLLOWING PARAGRAPH
-
-The source for this draft is maintained in GitHub.  Suggested changes should
-be submitted as pull requests at https://github.com/mlswg/mls-architecture.
-Instructions are on that page as well.  Editorial changes can be
-managed in GitHub, but any substantive change should be discussed on
-the MLS mailing list.
-
 End-to-end security is used in the vast majority of instant messaging systems,
-and also deployed in systems for other purposes such as calling and conferencing.
+and is also deployed in systems for other purposes such as calling and conferencing.
 In this context, "end-to-end" captures
 the notion that users of the system enjoy some level of security -- with the
 precise level depending on the system design -- even in the face of malicious
 actions by the operator of the messaging system.
 
 Messaging Layer Security (MLS) specifies an architecture (this document) and a
-protocol {{!I-D.ietf-mls-protocol}} for providing end-to-end security in this
+protocol {{RFC9420}} for providing end-to-end security in this
 setting. MLS is not intended as a full instant messaging protocol but rather is
-intended to be embedded in concrete protocols, such as XMPP {{?RFC6120}}.
+intended to be embedded in concrete protocols, such as the Extensible Messaging and Presence Protocol (XMPP) {{?RFC6120}}.
 Implementations of the MLS protocol will interoperate at the cryptographic
 level, though they may have incompatibilities in terms of how protected messages
 are delivered, contents of protected messages, and identity/authentication
@@ -278,7 +270,7 @@ all users, for all group sizes, including groups of only two clients.
 MLS provides a way for _clients_ to form _groups_ within which they can
 communicate securely.  For example, a set of users might use clients on their
 phones or laptops to join a group and communicate with each other. A group may
-be as small as two clients (e.g., for simple person to person messaging) or as
+be as small as two clients (e.g., for simple person-to-person messaging) or as
 large as hundreds of thousands.  A client that is part of a group is a _member_
 of that group. As groups change membership and group or member properties, they
 advance from one _epoch_ to another and the cryptographic state of the group
@@ -332,12 +324,12 @@ facilitate client communication using MLS:
   secret key establishment that is part of the MLS protocol.
 
 For presentation purposes, this document treats the AS and DS as conventional
-network services, however MLS does not require a specific implementation
+network services. However, MLS does not require a specific implementation
 for the AS or DS. These services may reside on the same server or different
 servers, they may be distributed between server and client components, and they
 may even involve some action by users.  For example:
 
-* Several secure messaging services today provide a centralized DS, and rely on
+* Several secure messaging services today provide a centralized DS and rely on
   manual comparison of clients' public keys as the AS.
 
 * MLS clients connected to a peer-to-peer network could instantiate a
@@ -346,7 +338,7 @@ may even involve some action by users.  For example:
 * In an MLS group using a Public Key Infrastructure (PKI) for authentication,
   the AS would comprise the certificate issuance and validation processes,
   both of which involve logic inside MLS clients as well as various
-  existing PKI roles (ex: Certification Authorities).
+  existing PKI roles (e.g., Certification Authorities).
 
 It is important to note that the Authentication Service can be
 completely abstract in the case of a Service Provider which allows MLS
@@ -357,6 +349,10 @@ on a central Delivery Service (as in a peer-to-peer system).  Note,
 though, that in such scenarios, clients will need to implement logic
 that assures the delivery properties required of the DS (see
 {{delivery-guarantees}}).
+
+{{fig-mls-overview}} shows the relationship of these concepts,
+with three clients and one group, and clients 2 and 3 being
+part of the group and client 1 not being part of any group.
 
 ~~~ aasvg
      +----------------+    +--------------+
@@ -375,9 +371,6 @@ that assures the delivery properties required of the DS (see
 ~~~
 {: #fig-mls-overview title="A Simplified Messaging System"}
 
-{{fig-mls-overview}} shows the relationship of these concepts,
-with three clients and one group, and clients 2 and 3 being
-part of the group and client 1 not being part of any group.
 
 
 # Overview of Operation
@@ -403,7 +396,7 @@ Initial Keying Material ----------------------------------->     |
 Get Bob Initial Keying Material --------------------------->     |
 <------------------------------- Bob Initial Keying Material     |
 Add Bob to Group ------------------------------------------>     | Step 3
-Welcome (Bob)---------------------------------------------->     |
+Welcome (Bob) --------------------------------------------->     |
           <-------------------------------- Add Bob to Group     |
           <----------------------------------- Welcome (Bob)     |
 
@@ -445,7 +438,7 @@ up his initial keying material. She then generates two messages:
 * A _Welcome_ message just to Bob encrypted with his initial keying material that
   includes the secret keying information necessary to join the group.
 
-She sends both of these messages to the Delivery Services, which is responsible
+She sends both of these messages to the Delivery Service, which is responsible
 for sending them to the appropriate people. Note that the security of MLS
 does not depend on the DS forwarding the Welcome message only to Bob, as it
 is encrypted for him; it is simply not necessary for other group members
@@ -454,7 +447,7 @@ to receive it.
 ## Step 4: Adding Charlie to the Group
 
 If Alice then wants to add Charlie to the group, she follows a similar procedure
-as with Bob: she first uses the DS to look
+as with Bob. She first uses the DS to look
 up his initial keying material and then generates two messages:
 
 * A message to the entire group (consisting of her, Bob, and Charlie) adding
@@ -478,11 +471,11 @@ such as:
 
  -  adding one or more clients to an existing group
 
- -  remove one or more members from an existing group
+ -  removing one or more members from an existing group
 
  -  updating their own key material
 
- -  leave a group (by asking to be removed)
+ -  leaving a group (by asking to be removed)
 
 Importantly, MLS does not itself enforce any access control on group
 operations. For instance, any member of the group can send a message
@@ -499,16 +492,16 @@ of this policy and who the administrator is.
 The general pattern for any change in the group state (e.g., to add or remove
 a user) is that it consists of two messages:
 
-Proposal
+Proposal:
 : This message describes the change to be made (e.g., add Bob to the group)
 but does not effect a change.
 
-Commit
+Commit:
 : This message changes the group state to include the changes described in
 a set of proposals.
 
 The simplest pattern is for a client to just send a Commit which contains one or
-more Proposals, for instance Alice could send a Commit with the Proposal
+more Proposals. For instance Alice could send a Commit with the Proposal
 Add(Bob) embedded to add Bob to the group. However, there are situations in
 which one client might send a proposal and another might send the commit. For
 instance, Bob might wish to remove himself from the group and send a Remove
@@ -516,7 +509,7 @@ Proposal to do so (see {{Section 12.1.3 of ?RFC9420}}). Because Bob cannot send
 the Commit, an existing member must do so.  Commits can apply to multiple valid
 Proposals, in which case all the listed changes are applied.
 
-It is also possible for a Commit to apply to an empty set of Proposals
+It is also possible for a Commit to apply to an empty set of Proposals,
 in which case it just updates the cryptographic state of the group
 without changing its membership.
 
@@ -531,12 +524,12 @@ ownership of the client by demonstrating knowledge of the associated secret
 values.
 
 In some messaging systems, clients belonging to the same user must all share the
-same signature key pair, but MLS does not assume this; instead a user may have
+same signature key pair, but MLS does not assume this; instead, a user may have
 multiple clients with the same identity and different keys. In this case, each
 client will have its own cryptographic state, and it is up to the application to
 determine how to present this situation to users. For instance, it may render
 messages to and from a given user identically regardless of which client they
-are associated with, or may choose to distinguish them.
+are associated with, or it may choose to distinguish them.
 
 When a client is part of a Group, it is called a Member.  A group in MLS is
 defined as the set of clients that have knowledge of the shared group secret
@@ -563,7 +556,7 @@ The Authentication Service (AS) has to provide three services:
 A member with a valid credential authenticates its MLS messages by signing them
 with the private key corresponding to the public key bound by its credential.
 
-The AS is considered an abstract layer by the MLS specification and part of this
+The AS is considered an abstract layer by the MLS specification; part of this
 service could be, for instance, running on the members' devices, while another
 part is a separate entity entirely.  The following examples illustrate the
 breadth of this concept:
@@ -579,7 +572,7 @@ breadth of this concept:
   The verification function is the application function that enables users
   to verify keys.
 
-* In a system based on {{CONIKS}} end user Key Transparency (KT) {{KT}}, the
+* In a system based on end user Key Transparency (KT) {{KT}}, the
   issuance function would correspond to the insertion of a key in a KT log under
   a user's identity. The verification function would correspond to verifying a
   key's inclusion in the log for a claimed identity, together with the KT log's
@@ -663,7 +656,7 @@ ephemeral key with the `init_key` from each KeyPackage.
 When a client requests a KeyPackage in order to add a user to a group, the
 Delivery Service should provide the minimum number of KeyPackages necessary to
 satisfy the request.  For example, if the request specifies the MLS version, the
-DS might provide one KeyPackage per supported ciphersuite, even if it has
+<DS might provide one KeyPackage per supported ciphersuite, even if it has
 multiple such KeyPackages to enable the corresponding client to be added to
 multiple groups before needing to upload more fresh KeyPackages.
 

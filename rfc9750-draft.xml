@@ -19,7 +19,6 @@
       </address>
     </author>
     <author initials="E." surname="Rescorla" fullname="Eric Rescorla">
-      <organization>Windy Hill Systems, LLC</organization>
       <address>
         <email>ekr@rtfm.com</email>
       </address>
@@ -37,9 +36,8 @@
       </address>
     </author>
     <author initials="A." surname="Duric" fullname="Alan Duric">
-      <organization>Wire</organization>
       <address>
-        <email>alan@wire.com</email>
+        <email>alan@duric.net</email>
       </address>
     </author>
     <date year="2025" month="February"/>
@@ -59,7 +57,7 @@ forgery and to provide Forward Secrecy (FS) and Post-Compromise Security
 (PCS).
 
 <!-- [rfced] Abstract:  We do not see "Group Key Agreement protocol"
-in the text of any published RFC.  Should this term be lowercased or perhaps explained in the body of the document?  
+in the text of any published RFC.  Should this term be lowercased or perhaps explained in the body of the document?
 
 Original:
  The Messaging Layer Security (MLS) protocol (I-D.ietf-mls-protocol)
@@ -206,7 +204,7 @@ secret key establishment that is part of the MLS protocol.</t>
 	</ul>
 
 <!-- [rfced] Sections 2.2 and subsequent:  We found the use of
-"which" in this document confusing at times.  Please review and let us know how we may update the document. 
+"which" in this document confusing at times.  Please review and let us know how we may update the document.
 
 We found the following confusing:
 
@@ -271,7 +269,7 @@ existing PKI roles (e.g., Certification Authorities).</t>
           </li>
         </ul>
         <t>It is important to note that the Authentication Service can be
-completely abstract in the case of a Service Provider that allows MLS
+completely abstract in the case of a Service Provider which allows MLS
 clients to generate, distribute, and validate credentials themselves.
 As with the AS, the Delivery Service can be completely abstract if
 users are able to distribute credentials and messages without relying
@@ -576,7 +574,7 @@ to receive it.</t>
       <section anchor="step-4-adding-charlie-to-the-group">
         <name>Step 4: Adding Charlie to the Group</name>
         <t>If Alice then wants to add Charlie to the group, she follows a similar procedure
-as with Bob: She first uses the DS to look
+as with Bob. She first uses the DS to look
 up his initial keying material and then generates two messages:</t>
         <ul spacing="normal">
           <li>
@@ -654,7 +652,7 @@ a set of proposals.</t>
           </dd>
         </dl>
         <t>The simplest pattern is for a client to just send a Commit which contains one or
-more Proposals; for instance, Alice could send a Commit with the Proposal
+more Proposals. For instance, Alice could send a Commit with the Proposal
 Add(Bob) embedded to add Bob to the group. However, there are situations in
 which one client might send a proposal and another might send the commit. For
 instance, Bob might wish to remove himself from the group and send a Remove
@@ -687,7 +685,7 @@ established in the group key establishment phase.  Note that until a client has
 been added to the group and contributed to the group secret in a manner
 verifiable by other members of the group, other members cannot assume that the
 client is a member of the group; for instance, the newly added member might not
-have received the Welcome message or might not have been able to decrypt it for some reason.</t>
+have received the Welcome message or been unable to decrypt it for some reason.</t>
       </section>
     </section>
     <section anchor="authentication-service">
@@ -727,7 +725,7 @@ The verification function is the application function that enables users
 to verify keys.</t>
         </li>
         <li>
-          <t>In a system based on end-user Key Transparency (KT) <xref target="CONIKS"/> <xref target="I-D.ietf-keytrans-architecture"/>, the
+          <t>In a system based on end-user Key Transparency (KT) <xref target="I-D.ietf-keytrans-architecture"/>, the
 issuance function would correspond to the insertion of a key in a KT log under
 a user's identity. The verification function would correspond to verifying a
 key's inclusion in the log for a claimed identity, together with the KT log's
@@ -876,9 +874,9 @@ Overall, avoid reusing "last resort" KeyPackages as much as possible.</t>
             <t indent="3"><strong>RECOMMENDATION:</strong> Ensure that the client for which a "last resort" KeyPackage
 has been used is updating leaf keys as early as possible.</t>
 
-<!-- [rfced] Sections 5.1 and subsequent:  Do you think other documents may want to refer to specific recommendations in this document?  We wonder whether it would be helpful to number the recommendations (e.g., Recommendation 1, or Req 1).  
+<!-- [rfced] Sections 5.1 and subsequent:  Do you think other documents may want to refer to specific recommendations in this document?  We wonder whether it would be helpful to number the recommendations (e.g., Recommendation 1, or Req 1).
 
-In addition, as <strong> is used for RECOMMENDATION, may we change this to Recommendation?  The use of capitalization seems unnecessary since it's already bold. 
+In addition, as <strong> is used for RECOMMENDATION, may we change this to Recommendation?  The use of capitalization seems unnecessary since it's already bold.
 -->
 
         <t>Overall, it needs to be noted that key packages need to be updated when
@@ -2613,29 +2611,6 @@ guarantees provided by MLS.</t>
 
 <!-- draft-ietf-keytrans-architecture (I-D Exists) -->
         <xi:include href="https://datatracker.ietf.org/doc/bibxml3/reference.I-D.ietf-keytrans-architecture.xml"/>
-
-        <reference anchor="CONIKS" target="https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-melara.pdf">
-          <front>
-            <title>CONIKS: Bringing Key Transparency to End Users</title>
-            <author initials="M. S." surname="Melara" fullname="Marcela S. Melara">
-              <organization/>
-            </author>
-            <author initials="A." surname="Blankstein" fullname="Aaron Blankstein">
-              <organization/>
-            </author>
-            <author initials="J." surname="Bonneau" fullname="Joseph Bonneau">
-              <organization/>
-            </author>
-            <author initials="E. W." surname="Felten" fullname="Edward W. Felten">
-              <organization/>
-            </author>
-            <author initials="M. J." surname="Freedman" fullname="Michael J. Freedman">
-              <organization/>
-            </author>
-            <date month="August" year="2015"/>
-          </front>
-          <refcontent>Proceedings of the 24th USENIX Security Symposium</refcontent>
-        </reference>
 
         <reference anchor="CAPBR" target="https://dl.acm.org/doi/10.1145/343477.343502">
           <front>
