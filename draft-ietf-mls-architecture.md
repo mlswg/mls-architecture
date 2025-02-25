@@ -1831,19 +1831,24 @@ client.
 
 #### Privacy of Delivery and Push Notifications
 
+
+> care to verify the identity (typically out-of-band).
+
+#### Privacy of delivery and push notifications
+
 An important mechanism that is often ignored from the privacy considerations are
 the push-tokens. In many modern messaging architectures, applications are using
 push notification mechanisms typically provided by OS vendors. This is to make
 sure that when messages are available at the Delivery Service (or by other
 mechanisms if the DS is not a central server), the recipient application on a
 device knows about it. Sometimes the push notification can contain the
-application message itself which saves a round trip with the DS.
+application message itself, which saves a round trip with the DS.
 
 To "push" this information to the device, the service provider and the OS
 infrastructures use unique per-device, per-application identifiers called
 push-tokens. This means that the push notification provider and the service
 provider have information on which devices receive information and at which
-point in time. Alternatively, non-mobile applications could use a websocket or
+point in time. Alternatively, non-mobile applications could use a WebSocket or
 persistent connection for notifications directly from the DS.
 
 Even though they can't necessarily access the content, which is typically
@@ -1851,10 +1856,10 @@ encrypted MLS messages, the service provider and the push notification provider
 have to be trusted to avoid making correlation on which devices are recipients
 of the same message.
 
-For secure messaging systems, push notifications are often sent real-time as it
+For secure messaging systems, push notifications are often sent inreal time as it
 is not acceptable to create artificial delays for message retrieval.
 
-> **RECOMMENDATION:** If real time notifications are not necessary, one can
+> **RECOMMENDATION:** If real-time notifications are not necessary, one can
 > delay notifications randomly across recipient devices using a mixnet or other
 > techniques.
 
@@ -1870,7 +1875,7 @@ account, a credit card or other information.
 > infrastructure.
 
 Applications can also consider anonymous systems for server fanout (for
-example {{Loopix}}).
+example, {{Loopix}}).
 
 ### Authentication Service Compromise {#as-compromise}
 
@@ -1878,13 +1883,13 @@ The Authentication Service design is left to the infrastructure designers. In
 most designs, a compromised AS is a serious matter, as the AS can serve
 incorrect or attacker-provided identities to clients.
 
-- The attacker can link an identity to a credential
+- The attacker can link an identity to a credential.
 
-- The attacker can generate new credentials
+- The attacker can generate new credentials.
 
-- The attacker can sign new credentials
+- The attacker can sign new credentials.
 
-- The attacker can publish or distribute credentials
+- The attacker can publish or distribute credentials.
 
 An attacker that can generate or sign new credentials may or may not have access
 to the underlying cryptographic material necessary to perform such
@@ -1900,7 +1905,7 @@ Authentication Service and distribute the private keys to clients along with
 their credential. This is a dangerous practice because it allows the AS or an
 attacker who has compromised the AS to silently impersonate the client.
 
-#### Authentication compromise: Ghost users and impersonations
+#### Authentication compromise: Ghost Users and Impersonation
 
 One important property of MLS is that all Members know which other members are
 in the group at all times. If all Members of the group and the Authentication
@@ -1913,8 +1918,8 @@ Credential type used. For example, cryptographic verification of credentials can
 be largely performed autonomously (e.g., without user interaction) by the
 clients themselves for the `x509` Credential type.
 
-In contrast, when MLS clients use the `basic` Credential type, then some other
-mechanism must be used to verify identities. For instance the Authentication
+In contrast, when MLS clients use the `basic` Credential type, some other
+mechanism must be used to verify identities. For instance, the Authentication
 Service could operate some sort of directory server to provide keys, or users
 could verify keys via an out-of-band mechanism.
 
@@ -1925,8 +1930,8 @@ could verify keys via an out-of-band mechanism.
 > groups. Update all keys for all groups on a regular basis. Do not preserve
 > keys in different groups when suspecting a compromise.
 
-If the AS is compromised, it could validate a (or generate a new) signature
-keypair for an attacker. The attacker could then use this keypair to join a
+If the AS is compromised, it could validate a signature
+keypair (or generate a new one) for an attacker. The attacker could then use this keypair to join a
 group as if it were another of the user's clients.  Because a user can have many
 MLS clients running the MLS protocol, it possibly has many signature keypairs
 for multiple devices. These attacks could be very difficult to detect,
@@ -1941,22 +1946,22 @@ would allow for detection of surreptitiously created false credentials.
 > of the device so that the user can examine it.
 
 > **RECOMMENDATION:** Provide a key transparency mechanism for the
-> Authentication Services to allow public verification of the credentials
+> Authentication Service to allow public verification of the credentials
 > authenticated by this service.
 
 While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
 can be used to provide out-of-band authentication to users. The
 "authentication_secret" generated for each user at each epoch of the group is a
-one-time, per client, authentication secret which can be exchanged between users
-to prove their identity to each other. This can be done for instance using a QR
+one-time, per-client, authentication secret which can be exchanged between users
+to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.
 
 > **RECOMMENDATION:** Provide one or more out-of-band authentication mechanisms
 > to limit the impact of an Authentication Service compromise.
 
 We note, again, that the Authentication Service may not be a centralized
-system, and could be realized by many mechanisms such as establishing prior
+syste, and could be realized by many mechanisms such as establishing prior
 one-to-one deniable channels, gossiping, or using trust on first use (TOFU) for
 credentials used by the MLS Protocol.
 
@@ -1965,10 +1970,10 @@ compromise, which helps recovering security faster in various cases.
 
 #### Privacy of the Group Membership
 
-Group membership is itself sensitive information and MLS is designed to limit
+Group membership is itself sensitive information, and MLS is designed to limit
 the amount of persistent metadata. However, large groups often require an
-infrastructure which provides server fanout.  In the case of client fanout, the
-destination of a message is known by all clients, hence the server usually does
+infrastructuree that provides server fanout.  In the case of client fanout, the
+destination of a message is known by all clients; hence, the server usually does
 not need this information.  However, they may learn this information through
 traffic analysis.  Unfortunately, in a server-side fanout model, the Delivery
 Service can learn that a given client is sending the same message to a set of
@@ -1978,7 +1983,7 @@ membership list is stored on some server associated with the Delivery Service.
 While this knowledge is not a breach of the protocol's authentication or
 confidentiality guarantees, it is a serious issue for privacy.
 
-Some infrastructure keep a mapping between keys used in the MLS protocol and
+Some infrastructures keep a mapping between keys used in the MLS protocol and
 user identities. An attacker with access to this information due to compromise
 or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.
@@ -1993,7 +1998,7 @@ can get more information about the targeted user.
 > **RECOMMENDATION:** Ensure that linking between public keys and identities
 > only happens in expected scenarios.
 
-## Considerations for attacks outside of the threat model
+## Considerations for Attacks Outside of the Threat Model
 
 Physical attacks on devices storing and executing MLS principals are not
 considered in depth in the threat model of the MLS protocol.  While
@@ -2016,17 +2021,17 @@ the protocol to securely implement the specification, which remains non-trivial.
 
 Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
-analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
+analyzed by {{BBN19}} (for draft 7), {{ACDT21}} (for draft 11) and {{AJM20}} (for draft 12).
 
 Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models, for example, {{BBR18}},
 {{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the
-ratcheting tree sub-protocol of MLS that facilitates key agreement, {{WPBB22}}
-analyzes the sub-protocol of MLS for group state agreement and authentication,
-while {{BCK21}} analyzes the key derivation paths in the ratchet tree and key
+ratcheting tree sub-protocol of MLS that facilitates key agreement; {{WPBB22}}
+analyzes the sub-protocol of MLS for group state agreement and authentication;
+and {{BCK21}} analyzes the key derivation paths in the ratchet tree and key
 schedule. Finally, {{CHK21}} analyzes the authentication and cross-group healing
 guarantees provided by MLS.
 
 # IANA Considerations
 
-This document makes no requests of IANA.
+This document has no IANA actions.

@@ -2369,11 +2369,11 @@ care to verify the identity (typically out of band).</t>
           <section anchor="privacy-of-delivery-and-push-notifications">
             <name>Privacy of Delivery and Push Notifications</name>
             <t>Push-tokens provide an important mechanism that is often ignored from the standpoint of privacy considerations. In many modern messaging architectures, applications are using
-push notification mechanisms typically provided by OS vendors. This is to make
+push notification mechanisms typically provided by OS vendors. wThis is to make
 sure that when messages are available at the Delivery Service (or via other
 mechanisms if the DS is not a central server), the recipient application on a
 device knows about it. Sometimes the push notification can contain the
-application message itself; this saves a round trip with the DS.</t>
+application message itself, which saves a round trip with the DS.</t>
             <t>To "push" this information to the device, the service provider and the OS
 infrastructures use unique per-device, per-application identifiers called
 push-tokens. This means that the push notification provider and the service
@@ -2452,7 +2452,7 @@ Authentication Service and distribute the private keys to clients along with
 their credential. This is a dangerous practice because it allows the AS or an
 attacker who has compromised the AS to silently impersonate the client.</t>
           <section anchor="authentication-compromise-ghost-users-and-impersonations">
-            <name>Authentication Compromise: Ghost Users and Impersonations</name>
+            <name>Authentication Compromise: Ghost Users and Impersonation</name>
             <t>One important property of MLS is that all Members know which other members are
 in the group at all times. If all Members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
@@ -2467,7 +2467,7 @@ mechanism must be used to verify identities. For instance, the Authentication
 Service could operate some sort of directory server to provide keys, or users
 could verify keys via an out-of-band mechanism.</t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> Select the MLS Credential type with the strongest security
-that is supported by all target members of an MLS group.</t>
+which is supported by all target members of an MLS group.</t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> Do not use the same signature keypair across
 groups. Update all keys for all groups on a regular basis. Do not preserve
 keys in different groups when suspecting a compromise.</t>
@@ -2491,7 +2491,7 @@ authenticated by this service.</t>
 architecture documents, the MLS protocol has been designed with a mechanism that
 can be used to provide out-of-band authentication to users. The
 "authentication_secret" generated for each user at each epoch of the group is a
-one-time, per-client authentication secret that can be exchanged between users
+one-time, per-client authentication secret which can be exchanged between users
 to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.
 
@@ -2575,7 +2575,7 @@ enclaves can be used to protect signature keys.</t>
         <name>Cryptographic Analysis of the MLS Protocol</name>
         <t>Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
-analyzed by <xref target="BBN19"/> (regarding MLS Draft 7), <xref target="ACDT21"/> (regarding MLS Draft 11), and <xref target="AJM20"/> (regarding MLS Draft 12).</t>
+analyzed by <xref target="BBN19"/> (for MLS Draft 7), <xref target="ACDT21"/> (for MLS Draft 11), and <xref target="AJM20"/> (for MLS Draft 12).</t>
         <t>Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models. For example, <xref target="BBR18"/>,
 <xref target="ACDT19"/>, <xref target="ACCKKMPPWY19"/>, <xref target="AJM20"/>, <xref target="ACJM20"/>, and <xref target="AHKM21"/> analyze the
