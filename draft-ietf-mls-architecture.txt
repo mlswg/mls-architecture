@@ -5,13 +5,13 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 9 May 2025                                          Independent
+Expires: 29 August 2025                                      Independent
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
-                                                         5 November 2024
+                                                        25 February 2025
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -67,11 +67,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 May 2025.
+   This Internet-Draft will expire on 29 August 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -2217,9 +2217,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    [I-D.ietf-mls-extensions]
               Robert, R., "The Messaging Layer Security (MLS)
               Extensions", Work in Progress, Internet-Draft, draft-ietf-
-              mls-extensions-05, 21 October 2024,
+              mls-extensions-06, 19 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-mls-
-              extensions-05>.
+              extensions-06>.
 
    [I-D.ietf-mls-federation]
               Omara, E. and R. Robert, "The Messaging Layer Security
@@ -2230,15 +2230,15 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    [I-D.schinazi-masque-proxy]
               Schinazi, D., "The MASQUE Proxy", Work in Progress,
-              Internet-Draft, draft-schinazi-masque-proxy-04, 28 August
-              2024, <https://datatracker.ietf.org/doc/html/draft-
-              schinazi-masque-proxy-04>.
+              Internet-Draft, draft-schinazi-masque-proxy-05, 18
+              February 2025, <https://datatracker.ietf.org/doc/html/
+              draft-schinazi-masque-proxy-05>.
 
    [KT]       McMillion, B., "Key Transparency Architecture", Work in
               Progress, Internet-Draft, draft-ietf-keytrans-
-              architecture-02, 26 August 2024,
+              architecture-03, 25 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-
-              keytrans-architecture-02>.
+              keytrans-architecture-03>.
 
    [Loopix]   Piotrowska, A. M., Hayes, J., Elahi, T., Meiser, S., and
               G. Danezis, "The Loopix Anonymity System", 2017.
