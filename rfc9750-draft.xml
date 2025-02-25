@@ -1874,7 +1874,7 @@ otherwise, the secrecy of the messages and the security of MLS are
 considerably weakened.</t>
           <t>PCS means that if a group member's state is compromised at some time t1 but the
 group member subsequently performs an update at some time t2, then all MLS
-guarantees apply to messages sent by the member after time t2 and sent by other
+guarantees apply to messages sent by the member after time t2 and to messages sent by other
 members after they have processed the update. For example, if an attacker learns
 all secrets known to Alice at time t1, including both Alice's long-term secret
 keys and all shared group keys, but Alice performs a key update at time t2, then
@@ -1884,7 +1884,7 @@ updates have been processed.</t>
 the case where some other mechanism for verifying keys is in use, such as Key
 Transparency <xref target="I-D.ietf-keytrans-architecture"/>.</t>
           <t>Confidentiality is mainly ensured on the client side.  Because FS and PCS rely on the active deletion and
-replacement of keying material, any client that is persistently offline may
+replacement of keying material, any client which is persistently offline may
 still be holding old keying material and thus be a threat to both FS and PCS if
 it is later compromised.</t>
           <t>MLS partially defends against this problem by active members including
@@ -1932,7 +1932,7 @@ cannot send a message that appears to be from another group member.
 Additionally, some services require that a recipient be able to prove to the
 service provider that a message was sent by a given client, in order to report
 abuse. MLS supports both of these use cases. In some deployments, these services
-are provided by mechanisms that allow the receiver to prove a message's origin
+are provided by mechanisms which allow the receiver to prove a message's origin
 to a third party. This is often called "non-repudiation".</t>
           <t>Roughly speaking, "deniability" is the opposite of "non-repudiation", i.e., the
 property that it is impossible to prove to a third party that a message was sent
@@ -1951,7 +1951,7 @@ was using at the time. Group members would also be able to detect when the user
 adds or removes authorized devices from their account. For some applications,
 this may be an unacceptable breach of the user's privacy.</t>
           <t>This risk only arises when the leaf nodes for the clients in question provide
-data that can be used to correlate the clients.  So, one way to mitigate this
+data that can be used to correlate the clients.  One way to mitigate this
 risk is by only doing client-level authentication within MLS. If user-level
 authentication is still desirable, the application would have to provide it
 through some other mechanism.</t>
@@ -1981,12 +1981,12 @@ Original:
       </section>
       <section anchor="endpoint-compromise">
         <name>Endpoint Compromise</name>
-        <t>The MLS protocol adopts a threat model that includes multiple forms of
+        <t>The MLS protocol adopts a threat model which includes multiple forms of
 endpoint/client compromise. While adversaries are in a strong position if
 they have compromised an MLS client, there are still situations where security
 guarantees can be recovered thanks to the PCS properties achieved by the MLS
 protocol.</t>
-        <t>In this section, we will explore the consequences and recommendations regarding
+        <t>In this section we will explore the consequences and recommendations regarding
 the following compromise scenarios:</t>
         <ul spacing="normal">
           <li>
@@ -2046,7 +2046,7 @@ only part of the memory leaks to the adversary.</t>
           <section anchor="compromise-of-aead-keys">
             <name>Compromise of AEAD Keys</name>
             <t>In some circumstances, adversaries may have access to specific AEAD keys and
-nonces that protect an Application message or a Group Operation message. Compromise of
+nonces which protect an Application message or a Group Operation message. Compromise of
 these keys allows the attacker to decrypt the specific message encrypted with
 that key but no other; because the AEAD keys are derived from the Ratchet
 Secret, it cannot generate the next Ratchet Secret and hence not the next AEAD
@@ -2134,7 +2134,7 @@ access any protected messages from future epochs.</t>
           </section>
           <section anchor="compromise-of-the-group-secrets-of-a-single-group-for-one-or-more-group-epochs">
             <name>Compromise of the Group Secrets of a Single Group for One or More Group Epochs</name>
-            <t>An adversary who gains access to a set of Group secrets -- for example, when a member of the
+            <t>An adversary who gains access to a set of Group secrets -- as when a member of the
 group is compromised -- is significantly more powerful. In this section, we
 consider the case where the signature keys are not compromised, which can occur
 if the attacker has access to part of the memory containing the group secrets
@@ -2158,9 +2158,9 @@ been removed.</t>
           <name>Compromise by an Active Adversary with the Ability to Sign Messages</name>
           <t>If an active adversary has compromised an MLS client and can sign messages, two
 different scenarios emerge. In the strongest compromise scenario, the attacker
-has access to the signing key and can forge authenticated messages. In a weaker
-but realistic scenario, the attacker has compromised a client but the client
-signature keys are protected with dedicated hardware features that do not allow
+has access to the signing key and can forge authenticated messages. In a weaker,
+yet realistic scenario, the attacker has compromised a client but the client
+signature keys are protected with dedicated hardware features which do not allow
 direct access to the value of the private key and instead provide a signature
 API.</t>
           <t>When considering an active adaptive attacker with access to a signature oracle,
@@ -2171,11 +2171,11 @@ broken.  The attacker can generate any message, for the current and future
 epochs, until the compromise is remediated and the formerly compromised client
 sends an honest update.</t>
           <t>Note that under this compromise scenario, the attacker can perform all
-operations that are available to a legitimate client even without access to the
+operations which are available to a legitimate client even without access to the
 actual value of the signature key.</t>
         </section>
         <section anchor="compromise-of-the-authentication-with-access-to-a-signature-key">
-          <name>Compromise of the Authentication with Access to a Signature Key</name>
+          <name>Compromise of Authentication with Access to a Signature Key</name>
           <t>The difference between having access to the value of the signature key and only
 having access to a signing oracle is not about the ability of an active adaptive
 network attacker to perform different operations during the time of the
@@ -2273,7 +2273,7 @@ ACLs and hence be beyond the capabilities of the attacker.</t>
           <section anchor="privacy-of-the-network-connections">
             <name>Privacy of the Network Connections</name>
             <t>There are many scenarios leading to communication between the application on a
-device and the Delivery Service or the Authentication Service -- in particular,
+device and the Delivery Service or the Authentication Service. In particular,
 when:</t>
             <ul spacing="normal">
               <li>
@@ -2294,12 +2294,12 @@ Service.</t>
               </li>
             </ul>
             <t>In all these cases, the application will often connect to the device via a
-secure transport that leaks information about the origin of the request, such as
-the IP address and -- depending on the protocol -- the Media Access Control (MAC) address of the device.</t>
+secure transport which leaks information about the origin of the request, such as
+the IP address and -- depending on the protocol -- MAC address of the device.</t>
             <t>Similar concerns exist in the peer-to-peer use cases for MLS.</t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> In the case where privacy or anonymity is
 important, using adequate protection such as Multiplexed Application Substrate over QUIC Encryption (MASQUE)
-<xref target="I-D.schinazi-masque-proxy"/>, Top-of-Rack (ToR) switches, or a VPN can improve metadata
+<xref target="I-D.schinazi-masque-proxy"/>, Tor proxies, or a VPN can improve metadata
 protection.
 
 <!-- [rfced] Section 8.4.1.1:  For ease of the reader, we expanded
@@ -2329,8 +2329,8 @@ not be enough to provide strong privacy or anonymity properties.</t>
             <t>In the case where private data or metadata has to be persisted on the servers
 for functionality (mappings between identities and push tokens, group
 metadata, etc.), it should be stored encrypted at rest and only decrypted upon need
-during the execution. Honest Service Providers can rely on such an "encryption at
-rest" mechanism to be able to prevent access to the data when not using it.</t>
+during the execution. Honest Service Providers can rely on such "encryption at
+rest" mechanisms to be able to prevent access to the data when not using it.</t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> Store cryptographic material used for server-side
 decryption of sensitive metadata on the clients and only send it when needed.
 The server can use the secret to open and update encrypted data containers
@@ -2356,13 +2356,13 @@ failure of the DS to provide reasonable service must be dealt with as a customer
 service matter, not via technology.</t>
           <t>Because the DS is responsible for providing the initial keying material to
 clients, it can provide stale keys. This does not inherently lead to compromise
-of the message stream, but it does allow it to attack forward security to a limited
+of the message stream, it does allow it to attack forward security to a limited
 extent. This threat can be mitigated by having initial keys expire.</t>
           <t>Initial keying material (KeyPackages) using the <tt>basic</tt> Credential type is more
 vulnerable to replacement by a malicious or compromised DS, as there is no
 built-in cryptographic binding between the identity and the public key of the
 client.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Prefer a Credential type in KeyPackages that includes a
+              <t indent="3"><strong>RECOMMENDATION:</strong> Prefer a Credential type in KeyPackages which includes a
 strong cryptographic binding between the identity and its key (for example, the
 <tt>x509</tt> Credential type). When using the <tt>basic</tt> Credential type, take extra
 care to verify the identity (typically out of band).</t>

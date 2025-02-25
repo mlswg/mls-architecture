@@ -1441,39 +1441,39 @@ FS means that access to all encrypted traffic history combined with
 access to all current keying material on clients will not defeat the
 secrecy properties of messages older than the oldest key of the
 compromised client.  Note that this means that clients have to delete the appropriate
-keys as soon as they have been used with the expected message,
-otherwise the secrecy of the messages and the security for MLS is
+keys as soon as they have been used with the expected message;
+otherwise the secrecy of the messages and the security of MLS are
 considerably weakened.
 
 PCS means that if a group member's state is compromised at some time t1 but the
 group member subsequently performs an update at some time t2, then all MLS
-guarantees apply to messages sent by the member after time t2, and by other
-members after they have processed the update. For example, if an attacker learns
+guarantees apply to messages sent by the member after time t2 and to messages
+sent by other members after they have processed the update. For example, if an attacker learns
 all secrets known to Alice at time t1, including both Alice's long-term secret
 keys and all shared group keys, but Alice performs a key update at time t2, then
 the attacker is unable to violate any of the MLS security properties after the
 updates have been processed.
 
-Both of these properties are satisfied even against compromised DSs and ASs in
+Both of these properties are satisfied even against compromised DSs and ASes in
 the case where some other mechanism for verifying keys is in use, such as Key
 Transparency {{KT}}.
 
-Confidentiality is mainly ensured on the client side.  Because Forward Secrecy
-(FS) and Post-Compromise Security (PCS) rely on the active deletion and
+Confidentiality is mainly ensured on the client side.  Because FS
+and PCS rely on the active deletion and
 replacement of keying material, any client which is persistently offline may
 still be holding old keying material and thus be a threat to both FS and PCS if
 it is later compromised.
 
 MLS partially defends against this problem by active members including
-freshness, however not much can be done on the inactive side especially in the
+freshness. However, not much can be done on the inactive side especially in the
 case where the client has not processed messages.
 
 > **RECOMMENDATION:** Mandate key updates from clients that are not otherwise
-> sending messages and evict clients which are idle for too long.
+> sending messages and evict clients that are idle for too long.
 
 These recommendations will reduce the ability of idle compromised clients to
-decrypt a potentially long set of messages that might have followed the point of
-the compromise.
+decrypt a potentially long set of messages that might have been sent
+after the point of the compromise.
 
 The precise details of such mechanisms are a matter of local policy and beyond
 the scope of this document.
@@ -1502,13 +1502,13 @@ deniability requires further analysis.
 When a user has multiple devices, the base MLS protocol only describes how to
 operate each device as a distinct client in the MLS groups that the user is a
 member of. As a result, the other members of the group will be able to identify
-which of a user's devices sent each message, and therefore which device the user
+which of a user's devices sent each message and, therefore, which device the user
 was using at the time. Group members would also be able to detect when the user
 adds or removes authorized devices from their account. For some applications,
 this may be an unacceptable breach of the user's privacy.
 
 This risk only arises when the leaf nodes for the clients in question provide
-data that can be used to correlate the clients.  So one way to mitigate this
+data that can be used to correlate the clients.  One way to mitigate this
 risk is by only doing client-level authentication within MLS. If user-level
 authentication is still desirable, the application would have to provide it
 through some other mechanism.
@@ -1537,25 +1537,26 @@ protocol.
 In this section we will explore the consequences and recommendations regarding
 the following compromise scenarios:
 
-- The attacker has access to a symmetric encryption key
+- The attacker has access to a symmetric encryption key.
 
-- The attacker has access to a application ratchet secret
+- The attacker has access to a application ratchet secret.
 
-- The attacker has access to the group secrets for one group
+- The attacker has access to the group secrets for one group.
 
-- The attacker has access to a signature oracle for any group
+- The attacker has access to a signature oracle for any group.
 
-- The attacker has access to the signature key for one group
+- The attacker has access to the signature key for one group.
 
 - The attacker has access to all secrets of a user for all groups (full state
-  compromise)
+  compromise).
 
 ### Compromise of Symmetric Keying Material {#symmetric-key-compromise}
 
 As described above, each MLS epoch creates a new Group Secret.
 
 These group secrets are then used to create a per-sender Ratchet Secret, which
-in turn is used to create a per-sender with additional data (AEAD) {{!RFC5116}}
+in turn is used to create a per-sender with an
+Authenticated Encryption with Associated Data (AEAD) {{!RFC5116}}
 key that is then used to encrypt MLS Plaintext messages.  Each time a message is
 sent, the Ratchet Secret is used to create a new Ratchet Secret and a new
 corresponding AEAD key.  Because of the properties of the key derivation
@@ -1570,7 +1571,7 @@ only part of the memory leaks to the adversary.
 #### Compromise of AEAD Keys
 
 In some circumstances, adversaries may have access to specific AEAD keys and
-nonces which protect an Application or a Group Operation message. Compromise of
+nonces which protect an Application message or a Group Operation message. Compromise of
 these keys allows the attacker to decrypt the specific message encrypted with
 that key but no other; because the AEAD keys are derived from the Ratchet
 Secret, it cannot generate the next Ratchet Secret and hence not the next AEAD
@@ -1581,7 +1582,8 @@ encrypted application message will be leaked as well as the signature over that
 message. This means that the compromise has both confidentiality and privacy
 implications on the future AEAD encryptions of that chain.  In the case of a
 Group Operation message, only the privacy is affected, as the signature is
-revealed, because the secrets themselves are protected by HPKE encryption.  Note
+revealed, because the secrets themselves are protected by Hybrid Public Key Encryption
+(HPKE).  Note
 that under that compromise scenario, authentication is not affected in either of
 these cases.  As every member of the group can compute the AEAD keys for all the
 chains (they have access to the Group Secrets) in order to send and receive
@@ -1590,7 +1592,7 @@ framing mechanism is weak. Successful decryption of an AEAD encrypted message
 only guarantees that some member of the group sent the message.
 
 Compromise of the AEAD keys allows the attacker to send an encrypted message
-using that key, but cannot send a message to a group which appears to be from
+using that key, but the attacker cannot send a message to a group that appears to be from
 any valid client since they cannot forge the signature. This applies to all the
 forms of symmetric key compromise described in {{symmetric-key-compromise}}.
 
@@ -1610,10 +1612,10 @@ AEAD encryption, which means that as soon as the epoch is changed, if the
 attacker does not have access to more secret material they won't be able to
 access any protected messages from future epochs.
 
-#### Compromise of the Group Secrets of a single group for one or more group epochs
+#### Compromise of the Group Secrets of a Single Group for One or More Group Epochs
 
-An adversary who gains access to a set of Group secrets--as when a member of the
-group is compromised--is significantly more powerful. In this section, we
+An adversary who gains access to a set of Group secrets -- as when a member of the
+group is compromised -- is significantly more powerful. In this section, we
 consider the case where the signature keys are not compromised, which can occur
 if the attacker has access to part of the memory containing the group secrets
 but not to the signature keys which might be stored in a secure enclave.
@@ -1634,10 +1636,10 @@ as other members of the group are honest, the protocol will guarantee message
 secrecy for all messages exchanged in the epochs after the compromised party has
 been removed.
 
-### Compromise by an active adversary with the ability to sign messages
+### Compromise by an Active Adversary with the Ability to Sign Messages
 
 If an active adversary has compromised an MLS client and can sign messages, two
-different settings emerge. In the strongest compromise scenario, the attacker
+different scenarioss emerge. In the strongest compromise scenario, the attacker
 has access to the signing key and can forge authenticated messages. In a weaker,
 yet realistic scenario, the attacker has compromised a client but the client
 signature keys are protected with dedicated hardware features which do not allow
@@ -1656,7 +1658,7 @@ Note that under this compromise scenario, the attacker can perform all
 operations which are available to a legitimate client even without access to the
 actual value of the signature key.
 
-### Compromise of the authentication with access to a signature key
+### Compromise of Authentication with Access to a Signature Kxoey
 
 The difference between having access to the value of the signature key and only
 having access to a signing oracle is not about the ability of an active adaptive
@@ -1664,7 +1666,7 @@ network attacker to perform different operations during the time of the
 compromise, the attacker can perform every operation available to a legitimate
 client in both cases.
 
-There is a significant difference, however in terms of recovery after a
+There is a significant difference, howeverm in terms of recovery after a
 compromise.
 
 Because of the PCS guarantees provided by the MLS protocol, when a previously
@@ -1676,7 +1678,7 @@ compromised party, even if they still have control over some group keys by
 colluding with other members of the group.
 
 This is in contrast with the case where the signature key is leaked. In that
-case the compromised endpoint needs to refresh its credentials and invalidate
+case, the compromised endpoint needs to refresh its credentials and invalidate
 the old credentials before the attacker will be unable to authenticate messages.
 
 Beware that in both oracle and private key access, an active adaptive attacker
@@ -1686,14 +1688,14 @@ the full value of the private key depending on the architecture of the service
 provider.
 
 > **RECOMMENDATION:** Signature private keys should be compartmentalized from
-> other secrets and preferably protected by an HSM or dedicated hardware
+> other secrets and preferably protected by a Hardware Security Module(HSM) or dedicated hardware
 > features to allow recovery of the authentication for future messages after a
 > compromise.
 
 > **RECOMMENDATION:** When the credential type supports revocation, the users of
 > a group should check for revoked keys.
 
-### Security consideration in the context of a full state compromise
+### Security Considerations in the Context of a Full State Compromise
 
 In real-world compromise scenarios, it is often the case that adversaries target
 specific devices to obtain parts of the memory or even the ability to execute
@@ -1709,7 +1711,7 @@ application to instruct the protocol implementation.
 > securely using dedicated mechanisms on the device.
 
 > **RECOMMENDATION:** If the threat model of the system is against an adversary
-> which can access the messages on the device without even needing to attack
+> that can access the messages on the device without even needing to attack
 > MLS, the application should delete plaintext and ciphertext messages as soon
 > as practical after encryption or decryption.
 
@@ -1720,32 +1722,32 @@ enclave features. This is especially true because these keys are frequently used
 and changed with each message received by a client.
 
 However, the signature private keys are mostly used by clients to send a
-message. They also provide strong authentication guarantees to other clients,
-hence we consider that their protection by additional security mechanisms should
+message. They also provide strong authentication guarantees to other clients;
+hence, we consider that their protection by additional security mechanisms should
 be a priority.
 
-Overall there is no way to detect or prevent these compromises, as discussed in
-the previous sections, performing separation of the application secret states
-can help recovery after compromise, this is the case for signature keys but
-similar concern exists for client's encryption private keys.
+Overall, there is no way to detect or prevent these compromises, as discussed in
+the previous sections: Performing separation of the application secret states
+can help recovery after compromise; this is the case for signature keys, but
+similar concerns exist for a client's encryption private keys.
 
 > **RECOMMENDATION:** The secret keys used for public key encryption should be
 > stored similarly to the way the signature keys are stored, as keys can be used
 > to decrypt the group operation messages and contain the secret material used
 > to compute all the group secrets.
 
-Even if secure enclaves are not perfectly secure, or even completely broken,
+Even if secure enclaves are not perfectly secure or are even completely broken,
 adopting additional protections for these keys can ease recovery of the secrecy
 and authentication guarantees after a compromise where, for instance, an
 attacker can sign messages without having access to the key. In certain
 contexts, the rotation of credentials might only be triggered by the AS through
-ACLs, hence be outside of the capabilities of the attacker.
+ACLs and hence be beyond the capabilities of the attacker.
 
 ## Service Node Compromise
 
 ### General considerations
 
-#### Privacy of the network connections
+#### Privacy of the Network Connections
 
 There are many scenarios leading to communication between the application on a
 device and the Delivery Service or the Authentication Service. In particular
@@ -1765,42 +1767,44 @@ when:
 
 In all these cases, the application will often connect to the device via a
 secure transport which leaks information about the origin of the request such as
-the IP address and depending on the protocol the MAC address of the device.
+the IP address and -- depending on the protocol -- the MAC address of the device.
 
-Similar concerns exist in the peer-to-peer use cases of MLS.
+Similar concerns exist in the peer-to-peer use cases for MLS.
 
 > **RECOMMENDATION:** In the case where privacy or anonymity is
-> important, using adequate protection such as MASQUE
-> {{?I-D.schinazi-masque-proxy}}, ToR, or a VPN can improve metadata
+> important, using adequate protection such as Multiplexed
+> Application Substrate over QUIC Encryption
+> {{?I-D.schinazi-masque-proxy}}, Tor proxies,
+> or a VPN can improve metadata
 > protection.
 
-More generally, using anonymous credentials in an MLS based architecture might
+More generally, using anonymous credentials in an MLS-based architecture might
 not be enough to provide strong privacy or anonymity properties.
 
-#### Storage of Metadata and Encryption at rest on the Servers
+#### Storage of Metadata and Encryption at Rest on the Servers
 
 In the case where private data or metadata has to be persisted on the servers
 for functionality (mappings between identities and push tokens, group
-metadata...), it should be stored encrypted at rest and only decrypted upon need
-during the execution. Honest Service Providers can rely on such encryption at
-rest mechanism to be able to prevent access to the data when not using it.
+metadata, etc.), it should be stored encrypted at rest and only decrypted upon need
+during the execution. Honest Service Providers can rely on such "encryption at
+rest" mechanisms to be able to prevent access to the data when not using it.
 
 > **RECOMMENDATION:** Store cryptographic material used for server-side
-> decryption of sensitive meta-data on the clients and only send it when needed.
+> decryption of sensitive metadata on the clients and only send it when needed.
 > The server can use the secret to open and update encrypted data containers
 > after which they can delete these keys until the next time they need it, in
 > which case those can be provided by the client.
 
 > **RECOMMENDATION:** Rely on group secrets exported from the MLS session for
 > server-side encryption at rest and update the key after each removal from the
-> group. Rotate those keys on a regular basis otherwise.
+> group. Otherwise, rotate those keys on a regular basis.
 
 ### Delivery Service Compromise
 
 MLS is intended to provide strong guarantees in the face of compromise of the
 DS. Even a totally compromised DS should not be able to read messages or inject
 messages that will be acceptable to legitimate clients. It should also not be
-able to undetectably remove, reorder or replay messages.
+able to undetectably remove, reorder, or replay messages.
 
 However, a malicious DS can mount a variety of DoS attacks on the system,
 including total DoS attacks (where it simply refuses to forward any messages)
@@ -1821,11 +1825,11 @@ built-in cryptographic binding between the identity and the public key of the
 client.
 
 > **RECOMMENDATION:** Prefer a Credential type in KeyPackages which includes a
-> strong cryptographic binding between the identity and its key (for example the
-> `x509` Credential type). When using the `basic` Credential type take extra
-> care to verify the identity (typically out-of-band).
+> strong cryptographic binding between the identity and its key (for example, the
+> `x509` Credential type). When using the `basic` Credential type, take extra
+> care to verify the identity (typically out of band).
 
-#### Privacy of delivery and push notifications
+#### Privacy of Delivery and Push Notifications
 
 An important mechanism that is often ignored from the privacy considerations are
 the push-tokens. In many modern messaging architectures, applications are using
