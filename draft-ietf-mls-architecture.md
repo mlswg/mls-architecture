@@ -20,7 +20,6 @@ author:
  -
     ins: E. Rescorla
     name: Eric Rescorla
-    organization: Independent
     email: ekr@rtfm.com
  -
     ins: E. Omara
@@ -216,7 +215,9 @@ informative:
         ins: G. Danezis
         name: George Danezis
 
-
+  Tor:
+    title: "The Tor Project"
+    target: https://torproject.org/
 
 --- abstract
 
@@ -245,7 +246,7 @@ delivery service, or the authentication service.
 
 # Introduction
 
-End-to-end security is used in the vast majority of instant messaging systems,
+End-to-end security is used in the vast majority of instant messaging systems
 and is also deployed in systems for other purposes such as calling and conferencing.
 In this context, "end-to-end" captures
 the notion that users of the system enjoy some level of security -- with the
@@ -705,8 +706,8 @@ next one.
 In practice, there's a realistic risk of two members generating Commit messages
 at the same time, based on the same epoch, and both attempting to send them to
 the group at the same time. The extent to which this is a problem, and the
-appropriate solution, depends on the design of the Delivery Service. Per the CAP
-theorem {{CAPBR}}, there are two general classes of distributed systemsthat the
+appropriate solution, depend on the design of the Delivery Service. Per the CAP
+theorem {{CAPBR}}, there are two general classes of distributed systems that the
 Delivery Service might fall into:
 
 * Consistent and Partition-tolerant, or Strongly Consistent, systems, which can provide
@@ -793,7 +794,7 @@ proposal.
 
 Whenever a commit adds new members to a group, MLS requires the committer to
 send a Welcome message to the new members. Applications should ensure that
-Welcome messages are coupled with the tie-breaking logic for commits (See
+Welcome messages are coupled with the tie-breaking logic for commits (see
 {{strongly-consistent}} and {{eventually-consistent}}). That is, when multiple
 commits are sent for the same epoch, applications need to ensure that only
 Welcome messages corresponding to the commit that "succeeded" are processed by
@@ -876,7 +877,7 @@ tens of thousands of members, typically including many users using multiple devi
 MLS aims to provide agreement on group membership, meaning that all group
 members have agreed on the list of current group members.
 
-Some applications may wish to enforce Access Control List (ACLs) to limit addition or removal of group
+Some applications may wish to enforce Access Control Lists (ACLs) to limit addition or removal of group
 members, to privileged clients or users. Others may wish to require
 authorization from the current group members or a subset thereof.  Such policies
 can be implemented at the application layer, on top of MLS. Regardless, MLS does
@@ -1161,16 +1162,16 @@ order for two different deployments based on them to interoperate.
   4. Downloading KeyPackages for specific clients. Typically, KeyPackages are
      used once and consumed.
 
-- Additional services may or may not be required,n depending on the application
+- Additional services may or may not be required, depending on the application
   design:
 
   - In cases where group operations are not encrypted, the DS has the ability to
     observe and maintain a copy of the public group state. In particular, this
     is useful for either (1) clients that do not have the ability to send the full public
-    state in a Welcome message when inviting a user, or (2) clients that need to
+    state in a Welcome message when inviting a user or (2) clients that need to
     recover from losing their state. Such public state can contain privacy-sensitive
     information such as group members' credentials and related public
-    keys; hence services need to carefully evaluate the privacy impact of
+    keys; hence, services need to carefully evaluate the privacy impact of
     storing this data on the DS.
   - If external joiners are allowed, there must be a method for publishing a
     serialized `GroupInfo` object (with an `external_pub` extension) that
@@ -1181,8 +1182,8 @@ order for two different deployments based on them to interoperate.
     designated service) to add them to a group.
   - If the application uses PSKs that members of a group may not have access to
     (e.g., to control entry into the group or to prove membership in the group
-    in the past, as discussed in {{state-loss}}) there must be a method for distributing
-    these PSKs to group members who might not have them -- for instance if they
+    in the past, as discussed in {{state-loss}}), there must be a method for distributing
+    these PSKs to group members who might not have them -- for instance, if they
     joined the group after the PSK was generated.
   - If an application wishes to detect and possibly discipline members that send
     malformed commits with the intention of corrupting a group's state, there
@@ -1253,7 +1254,7 @@ deployments for them to interoperate:
   credentials may be issued attesting the same identity but for different
   signature keys, because each credential corresponds to a different client
   owned by the same application user. However, one device may control multiple
-  signature keys -- for instance if the device has keys corresponding to multiple
+  signature keys -- for instance, if the device has keys corresponding to multiple
   overlapping time periods -- but should still only be considered a single
   client.
 
@@ -1356,7 +1357,7 @@ extract information about the group membership.
 
 ### DoS Protection
 
-In general we do not consider DoS resistance to be the
+In general, we do not consider DoS resistance to be the
 responsibility of the protocol. However, it should not be possible for anyone
 aside from the Delivery Service to perform a trivial DoS attack from which it is
 hard to recover. This can be achieved through the secure transport layer.
@@ -1442,7 +1443,7 @@ access to all current keying material on clients will not defeat the
 secrecy properties of messages older than the oldest key of the
 compromised client.  Note that this means that clients have to delete the appropriate
 keys as soon as they have been used with the expected message;
-otherwise the secrecy of the messages and the security of MLS are
+otherwise, the secrecy of the messages and the security of MLS are
 considerably weakened.
 
 PCS means that if a group member's state is compromised at some time t1 but the
@@ -1473,12 +1474,12 @@ case where the client has not processed messages.
 
 These recommendations will reduce the ability of idle compromised clients to
 decrypt a potentially long set of messages that might have been sent
-after the point of the compromise.
+after the point of compromise.
 
 The precise details of such mechanisms are a matter of local policy and beyond
 the scope of this document.
 
-### Non-Repudiation vs Deniability {#Non-Repudiation-vs-Deniability}
+### Non-Repudiation vs. Deniability {#Non-Repudiation-vs-Deniability}
 
 
 MLS provides strong authentication within a group, such that a group member
@@ -1517,7 +1518,7 @@ It is also possible to maintain user-level authentication while hiding
 information about the clients that a user owns.  This can be done by having the
 clients share cryptographic state, so that they appear as a single client within
 the MLS group. Appearing as a single client has the privacy benefits of no
-longer leaking which device was used to send a particular message, and no longer
+longer leaking which device was used to send a particular message and no longer
 leaking the user's authorized devices. However, the application would need to
 provide a synchronization mechanism so that the clients' state remain consistent
 across changes to the MLS group. Flaws in this synchronization mechanism may
@@ -1539,7 +1540,7 @@ the following compromise scenarios:
 
 - The attacker has access to a symmetric encryption key.
 
-- The attacker has access to a application ratchet secret.
+- The attacker has access to an application ratchet secret.
 
 - The attacker has access to the group secrets for one group.
 
@@ -1593,10 +1594,10 @@ only guarantees that some member of the group sent the message.
 
 Compromise of the AEAD keys allows the attacker to send an encrypted message
 using that key, but the attacker cannot send a message to a group that appears to be from
-any valid client since they cannot forge the signature. This applies to all the
+any valid client because the attacker cannot forge the signature. This applies to all the
 forms of symmetric key compromise described in {{symmetric-key-compromise}}.
 
-#### Compromise of Ratchet Secret material
+#### Compromise of Ratchet Secret Material
 
 When a Ratchet Secret is compromised, the adversary can compute both the current
 AEAD keys for a given sender as well as any future keys for that sender in this
@@ -1625,13 +1626,13 @@ Ratchet Secrets for the epoch and their corresponding AEAD encryption keys and
 thus can encrypt and decrypt all messages for the compromised epochs.
 
 If the adversary is passive, it is expected from the PCS properties of the MLS
-protocol that, as soon as the compromised party remediates the compromise and
+protocol that as soon as the compromised party remediates the compromise and
 sends an honest Commit message, the next epochs will provide message secrecy.
 
 If the adversary is active, the adversary can engage in the protocol itself and
 perform updates on behalf of the compromised party with no ability for an honest
 group to recover message secrecy. However, MLS provides PCS against active
-adaptive attackers through its Remove group operation. This means that, as long
+adaptive attackers through its Remove group operation. This means that as long
 as other members of the group are honest, the protocol will guarantee message
 secrecy for all messages exchanged in the epochs after the compromised party has
 been removed.
@@ -1639,7 +1640,7 @@ been removed.
 ### Compromise by an Active Adversary with the Ability to Sign Messages
 
 If an active adversary has compromised an MLS client and can sign messages, two
-different scenarioss emerge. In the strongest compromise scenario, the attacker
+different scenarios emerge. In the strongest compromise scenario, the attacker
 has access to the signing key and can forge authenticated messages. In a weaker,
 yet realistic scenario, the attacker has compromised a client but the client
 signature keys are protected with dedicated hardware features which do not allow
@@ -1649,7 +1650,7 @@ API.
 When considering an active adaptive attacker with access to a signature oracle,
 the compromise scenario implies a significant impact on both the secrecy and
 authentication guarantees of the protocol, especially if the attacker also has
-access to the group secrets. In that case both secrecy and authentication are
+access to the group secrets. In that case, both secrecy and authentication are
 broken.  The attacker can generate any message, for the current and future
 epochs, until the compromise is remediated and the formerly compromised client
 sends an honest update.
@@ -1658,15 +1659,15 @@ Note that under this compromise scenario, the attacker can perform all
 operations which are available to a legitimate client even without access to the
 actual value of the signature key.
 
-### Compromise of Authentication with Access to a Signature Kxoey
+### Compromise of Authentication with Access to a Signature Key
 
 The difference between having access to the value of the signature key and only
 having access to a signing oracle is not about the ability of an active adaptive
 network attacker to perform different operations during the time of the
-compromise, the attacker can perform every operation available to a legitimate
+compromise; the attacker can perform every operation available to a legitimate
 client in both cases.
 
-There is a significant difference, howeverm in terms of recovery after a
+There is a significant difference, however, in terms of recovery after a
 compromise.
 
 Because of the PCS guarantees provided by the MLS protocol, when a previously
@@ -1684,11 +1685,11 @@ the old credentials before the attacker will be unable to authenticate messages.
 Beware that in both oracle and private key access, an active adaptive attacker
 can follow the protocol and request to update its own credential. This in turn
 induces a signature key rotation which could provide the attacker with part or
-the full value of the private key depending on the architecture of the service
+the full value of the private key, depending on the architecture of the service
 provider.
 
 > **RECOMMENDATION:** Signature private keys should be compartmentalized from
-> other secrets and preferably protected by a Hardware Security Module(HSM) or dedicated hardware
+> other secrets and preferably protected by a Hardware Security Module (HSM) or dedicated hardware
 > features to allow recovery of the authentication for future messages after a
 > compromise.
 
@@ -1745,12 +1746,12 @@ ACLs and hence be beyond the capabilities of the attacker.
 
 ## Service Node Compromise
 
-### General considerations
+### General Considerations
 
 #### Privacy of the Network Connections
 
 There are many scenarios leading to communication between the application on a
-device and the Delivery Service or the Authentication Service. In particular
+device and the Delivery Service or the Authentication Service. In particular,
 when:
 
 - The application connects to the Authentication Service to generate or validate
@@ -1766,15 +1767,15 @@ when:
   Service.
 
 In all these cases, the application will often connect to the device via a
-secure transport which leaks information about the origin of the request such as
+secure transport which leaks information about the origin of the request, such as
 the IP address and -- depending on the protocol -- the MAC address of the device.
 
 Similar concerns exist in the peer-to-peer use cases for MLS.
 
 > **RECOMMENDATION:** In the case where privacy or anonymity is
 > important, using adequate protection such as Multiplexed
-> Application Substrate over QUIC Encryption
-> {{?I-D.schinazi-masque-proxy}}, Tor proxies,
+> Application Substrate over QUIC Encryption (MASQUE)
+> {{?MASQUE-PROXY=I-D.schinazi-masque-proxy}}, Tor {{Tor}},
 > or a VPN can improve metadata
 > protection.
 
@@ -1816,7 +1817,7 @@ service matter, not via technology.
 
 Because the DS is responsible for providing the initial keying material to
 clients, it can provide stale keys. This does not inherently lead to compromise
-of the message stream, but does allow it to attack forward security to a limited
+of the message stream, but does allow the DS to attack forward security to a limited
 extent. This threat can be mitigated by having initial keys expire.
 
 Initial keying material (KeyPackages) using the `basic` Credential type is more
@@ -1829,20 +1830,18 @@ client.
 > `x509` Credential type). When using the `basic` Credential type, take extra
 > care to verify the identity (typically out of band).
 
+
 #### Privacy of Delivery and Push Notifications
 
-
-> care to verify the identity (typically out-of-band).
-
-#### Privacy of delivery and push notifications
-
-An important mechanism that is often ignored from the privacy considerations are
-the push-tokens. In many modern messaging architectures, applications are using
-push notification mechanisms typically provided by OS vendors. This is to make
-sure that when messages are available at the Delivery Service (or by other
-mechanisms if the DS is not a central server), the recipient application on a
-device knows about it. Sometimes the push notification can contain the
-application message itself, which saves a round trip with the DS.
+Push-tokens provide an important mechanism that is often ignored from
+the standpoint of privacy considerations. In many modern messaging
+architectures, applications are using push notification mechanisms
+typically provided by OS vendors. This is to make sure that when
+messages are available at the Delivery Service (or via other
+mechanisms if the DS is not a central server), the recipient
+application on a device knows about it. Sometimes the push
+notification can contain the application message itself, which saves a
+round trip with the DS.
 
 To "push" this information to the device, the service provider and the OS
 infrastructures use unique per-device, per-application identifiers called
@@ -1856,7 +1855,7 @@ encrypted MLS messages, the service provider and the push notification provider
 have to be trusted to avoid making correlation on which devices are recipients
 of the same message.
 
-For secure messaging systems, push notifications are often sent inreal time as it
+For secure messaging systems, push notifications are often sent in real time, as it
 is not acceptable to create artificial delays for message retrieval.
 
 > **RECOMMENDATION:** If real-time notifications are not necessary, one can
@@ -1867,7 +1866,7 @@ Note that with a legal request to ask the service provider for the push-token
 associated with an identifier, it is easy to correlate the token with a second
 request to the company operating the push-notification system to get information
 about the device, which is often linked with a real identity via a cloud
-account, a credit card or other information.
+account, a credit card, or other information.
 
 > **RECOMMENDATION:** If stronger privacy guarantees are needed with regard to
 > the push notification provider, the client can choose to periodically connect
@@ -1905,7 +1904,7 @@ Authentication Service and distribute the private keys to clients along with
 their credential. This is a dangerous practice because it allows the AS or an
 attacker who has compromised the AS to silently impersonate the client.
 
-#### Authentication compromise: Ghost Users and Impersonation
+#### Authentication Compromise: Ghost Users and Impersonation
 
 One important property of MLS is that all Members know which other members are
 in the group at all times. If all Members of the group and the Authentication
@@ -1953,7 +1952,7 @@ While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
 can be used to provide out-of-band authentication to users. The
 "authentication_secret" generated for each user at each epoch of the group is a
-one-time, per-client, authentication secret which can be exchanged between users
+one-time, per-client authentication secret which can be exchanged between users
 to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.
 
@@ -1961,9 +1960,9 @@ code that can be scanned by the other parties.
 > to limit the impact of an Authentication Service compromise.
 
 We note, again, that the Authentication Service may not be a centralized
-syste, and could be realized by many mechanisms such as establishing prior
+system and could be realized by many mechanisms such as establishing prior
 one-to-one deniable channels, gossiping, or using trust on first use (TOFU) for
-credentials used by the MLS Protocol.
+credentials used by the MLS protocol.
 
 Another important consideration is the ease of redistributing new keys on client
 compromise, which helps recovering security faster in various cases.
@@ -1972,7 +1971,7 @@ compromise, which helps recovering security faster in various cases.
 
 Group membership is itself sensitive information, and MLS is designed to limit
 the amount of persistent metadata. However, large groups often require an
-infrastructuree that provides server fanout.  In the case of client fanout, the
+infrastructure that provides server fanout.  In the case of client fanout, the
 destination of a message is known by all clients; hence, the server usually does
 not need this information.  However, they may learn this information through
 traffic analysis.  Unfortunately, in a server-side fanout model, the Delivery
@@ -2021,10 +2020,11 @@ the protocol to securely implement the specification, which remains non-trivial.
 
 Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
-analyzed by {{BBN19}} (for draft 7), {{ACDT21}} (for draft 11) and {{AJM20}} (for draft 12).
+analyzed by {{BBN19}} (for MLS Draft 7), {{ACDT21}} (for MLS Draft 11), and {{AJM20}} (for MLS
+Draft 12).
 
 Individual components of various drafts of the MLS protocol have been analyzed
-in isolation and with differing adversarial models, for example, {{BBR18}},
+in isolation and with differing adversarial models. For example, {{BBR18}},
 {{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, and {{AHKM21}} analyze the
 ratcheting tree sub-protocol of MLS that facilitates key agreement; {{WPBB22}}
 analyzes the sub-protocol of MLS for group state agreement and authentication;

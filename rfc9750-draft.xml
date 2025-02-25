@@ -1516,7 +1516,7 @@ design:  </t>
             <li>
               <t>In cases where group operations are not encrypted, the DS has the ability to
 observe and maintain a copy of the public group state. In particular, this
-is useful for (1)&nbsp;clients that do not have the ability to send the full public
+is useful for either (1)&nbsp;clients that do not have the ability to send the full public
 state in a Welcome message when inviting a user or (2)&nbsp;clients that need to
 recover from losing their state. Such public state can contain privacy-sensitive information such as group members' credentials and related public
 keys; hence, services need to carefully evaluate the privacy impact of
@@ -2013,8 +2013,8 @@ compromise).</t>
           <name>Compromise of Symmetric Keying Material</name>
           <t>As described above, each MLS epoch creates a new Group Secret.</t>
           <t>These group secrets are then used to create a per-sender Ratchet Secret, which
-in turn is used to create a per-sender with an additional data (Authenticated Encryption with
-   Associated Data (AEAD)) key <xref target="RFC5116"/>
+in turn is used to create a per-sender with an Authenticated Encryption with
+   Associated Data (AEAD) <xref target="RFC5116"/> key
 that is then used to encrypt MLS Plaintext messages.  Each time a message is
 sent, the Ratchet Secret is used to create a new Ratchet Secret and a new
 corresponding AEAD key.  Because of the properties of the key derivation
@@ -2295,11 +2295,11 @@ Service.</t>
             </ul>
             <t>In all these cases, the application will often connect to the device via a
 secure transport which leaks information about the origin of the request, such as
-the IP address and -- depending on the protocol -- MAC address of the device.</t>
+the IP address and -- depending on the protocol -- the MAC address of the device.</t>
             <t>Similar concerns exist in the peer-to-peer use cases for MLS.</t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> In the case where privacy or anonymity is
 important, using adequate protection such as Multiplexed Application Substrate over QUIC Encryption (MASQUE)
-<xref target="I-D.schinazi-masque-proxy"/>, Tor proxies, or a VPN can improve metadata
+<xref target="I-D.schinazi-masque-proxy"/>, Tor [TODO], or a VPN can improve metadata
 protection.
 
 <!-- [rfced] Section 8.4.1.1:  For ease of the reader, we expanded
@@ -2356,7 +2356,7 @@ failure of the DS to provide reasonable service must be dealt with as a customer
 service matter, not via technology.</t>
           <t>Because the DS is responsible for providing the initial keying material to
 clients, it can provide stale keys. This does not inherently lead to compromise
-of the message stream, it does allow it to attack forward security to a limited
+of the message stream, but does allow the DS to attack forward security to a limited
 extent. This threat can be mitigated by having initial keys expire.</t>
           <t>Initial keying material (KeyPackages) using the <tt>basic</tt> Credential type is more
 vulnerable to replacement by a malicious or compromised DS, as there is no
@@ -2369,7 +2369,7 @@ care to verify the identity (typically out of band).</t>
           <section anchor="privacy-of-delivery-and-push-notifications">
             <name>Privacy of Delivery and Push Notifications</name>
             <t>Push-tokens provide an important mechanism that is often ignored from the standpoint of privacy considerations. In many modern messaging architectures, applications are using
-push notification mechanisms typically provided by OS vendors. wThis is to make
+push notification mechanisms typically provided by OS vendors. This is to make
 sure that when messages are available at the Delivery Service (or via other
 mechanisms if the DS is not a central server), the recipient application on a
 device knows about it. Sometimes the push notification can contain the
@@ -2885,6 +2885,7 @@ Currently:
           </front>
          <refcontent>Proceedings of the 26th USENIX Security Symposium</refcontent>
         </reference>
+
 
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6120.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml"/>
