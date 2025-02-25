@@ -2299,7 +2299,7 @@ the IP address and -- depending on the protocol -- the MAC address of the device
             <t>Similar concerns exist in the peer-to-peer use cases for MLS.</t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> In the case where privacy or anonymity is
 important, using adequate protection such as Multiplexed Application Substrate over QUIC Encryption (MASQUE)
-<xref target="I-D.schinazi-masque-proxy"/>, Tor [TODO], or a VPN can improve metadata
+<xref target="I-D.schinazi-masque-proxy"/>, Tor <xref target="Tor"/>, or a VPN can improve metadata
 protection.
 
 <!-- [rfced] Section 8.4.1.1:  For ease of the reader, we expanded
@@ -2345,7 +2345,7 @@ group. Otherwise, rotate those keys on a regular basis.</t>
           <name>Delivery Service Compromise</name>
           <t>MLS is intended to provide strong guarantees in the face of compromise of the
 DS. Even a totally compromised DS should not be able to read messages or inject
-messages that will be acceptable to legitimate clients. It should also not be
+    messages that will be acceptable to legitimate clients. It should also not be
 able to undetectably remove, reorder, or replay messages.</t>
           <t>However, a malicious DS can mount a variety of DoS attacks on the system,
 including total DoS attacks (where it simply refuses to forward any messages)
@@ -2886,7 +2886,16 @@ Currently:
          <refcontent>Proceedings of the 26th USENIX Security Symposium</refcontent>
         </reference>
 
-
+        <reference anchor="Tor" target="https://torproject.org/">
+          <front>
+            <title>The Tor Project</title>
+            <author>
+              <organization/>
+            </author>
+            <date>n.d.</date>
+          </front>
+        </reference>
+        
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6120.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml"/>
 
