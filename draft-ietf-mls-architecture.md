@@ -676,11 +676,6 @@ multiple times. Clients are responsible for providing new KeyPackages as
 necessary in order to minimize the chance that the "last resort" KeyPackage will
 be used.
 
-To provide post-compromise security for messages sent using the initial keying
-material, KeyPackages are intended to be rotated regularly, and expire using
-the `lifetime` field of the enclosed LeafNode, thereby ensuring old KeyPackages
-are not used to join a group.
-
 > **RECOMMENDATION:** Ensure that "last resort" KeyPackages don't get used by
 > provisioning enough standard KeyPackages.
 
@@ -690,8 +685,6 @@ are not used to join a group.
 
 > **RECOMMENDATION:** Ensure that the client for which a last resort KeyPackage
 > has been used is updating leaf keys as early as possible.
-
-> **RECOMMENDATION:** Enforce KeyPackage expiration using the `lifetime` field.
 
 Overall, it needs to be noted that key packages need to be updated when
 signature keys are changed.
