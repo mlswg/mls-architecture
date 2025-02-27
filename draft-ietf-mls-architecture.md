@@ -676,6 +676,11 @@ multiple times. Clients are responsible for providing new KeyPackages as
 necessary in order to minimize the chance that the "last resort" KeyPackage will
 be used.
 
+To provide post-compromise security for messages sent using the initial keying
+material, KeyPackages are intended to be rotated regularly, and expire using
+the `lifetime` field of the enclosed LeafNode, thereby ensuring old KeyPackages
+are not used to join a group.
+
 > **RECOMMENDATION:** Ensure that "last resort" KeyPackages don't get used by
 > provisioning enough standard KeyPackages.
 
@@ -685,6 +690,8 @@ be used.
 
 > **RECOMMENDATION:** Ensure that the client for which a last resort KeyPackage
 > has been used is updating leaf keys as early as possible.
+
+> **RECOMMENDATION:** Enforce KeyPackage expiration using the `lifetime` field.
 
 Overall, it needs to be noted that key packages need to be updated when
 signature keys are changed.
@@ -1818,8 +1825,8 @@ service matter, not via technology.
 
 Because the DS is responsible for providing the initial keying material to
 clients, it can provide stale keys. This does not inherently lead to compromise
-of the message stream, but does allow it to attack forward security to a limited
-extent. This threat can be mitigated by having initial keys expire.
+of the message stream, but does allow it to attack post-compromise security to
+a limited extent. This threat can be mitigated by having initial keys expire.
 
 Initial keying material (KeyPackages) using the `basic` Credential type is more
 vulnerable to replacement by a malicious or compromised DS, as there is no
