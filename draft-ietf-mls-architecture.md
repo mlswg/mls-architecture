@@ -196,15 +196,6 @@ informative:
       - name: Karthikeyan Bhargavan
     target: https://eprint.iacr.org/2022/1732.pdf
 
-  WPB25:
-    title: "TreeKEM: A Modular Machine-Checked Symbolic Security Analysis of Group Key Agreement in Messaging Layer Security"
-    date: 2025
-    author:
-      - name: Théophile Wallez
-      - name: Jonathan Protzenko
-      - name: Karthikeyan Bhargavan
-    target: https://eprint.iacr.org/2025/410.pdf
-
   CGWZ25:
     title: "ETK: External-Operations TreeKEM and the Security of MLS in RFC 9420"
     date: 2025
@@ -214,6 +205,15 @@ informative:
       - name: Vera Wesselkamp
       - name: Mang Zhao
     target: https://eprint.iacr.org/2025/229.pdf
+
+  WPB25:
+    title: "TreeKEM: A Modular Machine-Checked Symbolic Security Analysis of Group Key Agreement in Messaging Layer Security"
+    date: 2025
+    author:
+      - name: Théophile Wallez
+      - name: Jonathan Protzenko
+      - name: Karthikeyan Bhargavan
+    target: https://eprint.iacr.org/2025/410.pdf
 
   Loopix:
     title: "The Loopix Anonymity System"
@@ -2041,8 +2041,8 @@ analyzed by {{BBN19}} (draft 7), {{ACDT21}} (draft 11) and {{AJM20}} (draft 12).
 
 Individual components of various drafts of the MLS protocol have been analyzed
 in isolation and with differing adversarial models, for example, {{BBR18}},
-{{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, {{AHKM21}}, {{WPB25}}, and
-{{CGWZ25}} analyze the ratcheting tree sub-protocol of MLS that facilitates key
+{{ACDT19}}, {{ACCKKMPPWY19}}, {{AJM20}}, {{ACJM20}}, {{AHKM21}}, {{CGWZ25}}, and
+{{WPB25}} analyze the ratcheting tree sub-protocol of MLS that facilitates key
 agreement, {{WPBB22}} analyzes the sub-protocol of MLS for group state
 agreement and authentication, while {{BCK21}} analyzes the key derivation paths
 in the ratchet tree and key schedule. Finally, {{CHK21}} analyzes the
