@@ -1477,6 +1477,13 @@ case where the client has not processed messages.
 > **RECOMMENDATION:** Mandate key updates from clients that are not otherwise
 > sending messages and evict clients which are idle for too long.
 
+KeyPackages are another source of keying material that must be replaced,
+because using old KeyPackages is a threat to PCS. MLS defends against this
+problem by having KeyPackages expire, however long KeyPackage lifetime gives
+poor PCS guarantees.
+
+> **RECOMMENDATION:** Use a short maximum lifetime for KeyPackages.
+
 These recommendations will reduce the ability of idle compromised clients to
 decrypt a potentially long set of messages that might have followed the point of
 the compromise.
@@ -1818,8 +1825,8 @@ service matter, not via technology.
 
 Because the DS is responsible for providing the initial keying material to
 clients, it can provide stale keys. This does not inherently lead to compromise
-of the message stream, but does allow it to attack forward security to a limited
-extent. This threat can be mitigated by having initial keys expire.
+of the message stream, but does allow it to attack post-compromise security to
+a limited extent. This threat can be mitigated by having initial keys expire.
 
 Initial keying material (KeyPackages) using the `basic` Credential type is more
 vulnerable to replacement by a malicious or compromised DS, as there is no
