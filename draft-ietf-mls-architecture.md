@@ -1477,6 +1477,13 @@ case where the client has not processed messages.
 > **RECOMMENDATION:** Mandate key updates from clients that are not otherwise
 > sending messages and evict clients which are idle for too long.
 
+KeyPackages are another source of keying material that must be replaced,
+because using old KeyPackages is a threat to PCS. MLS defends against this
+problem by having KeyPackages expire, however long KeyPackage lifetime gives
+poor PCS guarantees.
+
+> **RECOMMENDATION:** Use a short maximum lifetime for KeyPackages.
+
 These recommendations will reduce the ability of idle compromised clients to
 decrypt a potentially long set of messages that might have followed the point of
 the compromise.
