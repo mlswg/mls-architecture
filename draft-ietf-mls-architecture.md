@@ -1480,9 +1480,9 @@ case where the client has not processed messages.
 KeyPackages are another source of keying material that must be replaced,
 because using old KeyPackages is a threat to PCS. MLS defends against this
 problem by having KeyPackages expire, however long KeyPackage lifetime gives
-poor PCS guarantees.
+weaker PCS guarantees.
 
-> **RECOMMENDATION:** Use a short maximum lifetime for KeyPackages.
+> **RECOMMENDATION:** Minimize lifetime for KeyPackages.
 
 These recommendations will reduce the ability of idle compromised clients to
 decrypt a potentially long set of messages that might have followed the point of
