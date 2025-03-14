@@ -1556,7 +1556,7 @@ the following compromise scenarios:
 As described above, each MLS epoch creates a new Group Secret.
 
 These group secrets are then used to create a per-sender Ratchet Secret, which
-in turn is used to create a per-sender with an
+in turn is used to create a per-sender
 Authenticated Encryption with Associated Data (AEAD) {{!RFC5116}}
 key that is then used to encrypt MLS Plaintext messages.  Each time a message is
 sent, the Ratchet Secret is used to create a new Ratchet Secret and a new
