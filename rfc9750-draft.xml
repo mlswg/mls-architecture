@@ -1130,19 +1130,11 @@ tens of thousands of members, typically including many users using multiple devi
         <t>MLS aims to provide agreement on group membership, meaning that all group
 members have agreed on the list of current group members.</t>
         <t>Some applications may wish to enforce Access Control Lists (ACLs) to limit addition or removal of group
-members, to privileged clients or users. Others may wish to require
+members to privileged clients or users. Others may wish to require
 authorization from the current group members or a subset thereof.  Such policies
 can be implemented at the application layer, on top of MLS. Regardless, MLS does
 not allow for or support addition or removal of group members without informing
 all other members.
-
-<!-- [rfced] Section 6.1:  The comma in this sentence makes it
-difficult to parse.  Is the comma necessary?
-
-Original:
- Some applications may wish to enforce ACLs to limit addition or
- removal of group members, to privileged clients or users. -->
-
 </t>
         <t>Membership of an MLS group is managed at the level of individual clients.  In
 most cases, a client corresponds to a specific device used by a user. If a user
