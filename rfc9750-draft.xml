@@ -44,10 +44,9 @@
 
     <area>SEC</area>
     <workgroup>mls</workgroup>
-
-<!-- [rfced] Please insert any keywords (beyond those that appear in the
-title) for use on <https://www.rfc-editor.org/search>. -->
-
+    <keyword>security</keyword>
+    <keyword>authenticated key exchange</keyword>
+    <keyword>end-to-end encryption</keyword>
     <abstract>
 
 <t>The Messaging Layer Security (MLS) protocol (RFC 9420)
