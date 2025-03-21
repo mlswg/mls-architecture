@@ -2362,7 +2362,7 @@ failure of the DS to provide reasonable service must be dealt with as a customer
 service matter, not via technology.</t>
           <t>Because the DS is responsible for providing the initial keying material to
 clients, it can provide stale keys. This does not inherently lead to compromise
-of the message stream, but does allow the DS to attack forward security to a limited
+of the message stream, but does allow the DS to attack post-compromise security to a limited
 extent. This threat can be mitigated by having initial keys expire.</t>
           <t>Initial keying material (KeyPackages) using the <tt>basic</tt> Credential type is more
 vulnerable to replacement by a malicious or compromised DS, as there is no
