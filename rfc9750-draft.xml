@@ -2165,25 +2165,6 @@ provider.</t>
 other secrets and preferably protected by a Hardware Security Module (HSM) or dedicated hardware
 features to allow recovery of the authentication for future messages after a
 compromise.
-
-<!-- [rfced] Section 8.3.3:  Given "dedicated hardware features" in
-this sentence, we expanded "HSM" as "Hardware Security Module" for
-ease of the reader.  If this is incorrect, please provide the correct
-definition.
-
-Original:
- *RECOMMENDATION:* Signature private keys should be
- compartmentalized from other secrets and preferably protected by
- an HSM or dedicated hardware features to allow recovery of the
- authentication for future messages after a compromise.
-
-Currently:
- *RECOMMENDATION:* Signature private keys should be
- compartmentalized from other secrets and preferably protected by a
- Hardware Security Module (HSM) or dedicated hardware features to
- allow recovery of the authentication for future messages after a
- compromise. -->
-
 </t>
               <t indent="3"><strong>RECOMMENDATION:</strong> When the credential type supports revocation, the users of
 a group should check for revoked keys.</t>
