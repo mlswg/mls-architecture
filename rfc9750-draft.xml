@@ -1895,7 +1895,7 @@ clients share cryptographic state, so that they appear as a single client within
 the MLS group. Appearing as a single client has the privacy benefits of no
 longer leaking which device was used to send a particular message and no longer
 leaking the user's authorized devices. However, the application would need to
-provide a synchronization mechanism so that the clients' state remain consistent
+provide a synchronization mechanism so that the state of each client remains consistent
 across changes to the MLS group. Flaws in this synchronization mechanism may
 impair the ability of the user to recover from a compromise of one of their
 devices. In particular, state synchronization may make it easier for an attacker
