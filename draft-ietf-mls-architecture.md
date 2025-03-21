@@ -2016,9 +2016,12 @@ the protocol to securely implement the specification, which remains non-trivial.
 
 # No Protection against Replay by Insiders
 
-MLS does not provide protections against replay of group messages by members 
-of the group.  Applications for whom replay is an important risk should apply 
-mitigations at the application layer, as discussed below.
+MLS does not protect against one group member replaying a PrivateMessage sent by another
+group member within the same epoch that the message was originally sent. Similarly, MLS
+does not protect against the replay (by a group member or otherwise) of a PublicMessage
+within the same epoch that the message was originally sent. Applications for
+whom replay is an important risk should apply mitigations at the application layer, as
+discussed below.
 
 In addition to the risks discussed in {{symmetric-key-compromise}}, an attacker 
 with access to the Ratchet Secrets for an endpoint can replay PrivateMessage 
@@ -2027,7 +2030,7 @@ message and re-encrypting it with a new generation of the original sender's
 ratchet.  If the other members of the group interpret a message with a new 
 generation as a fresh message, then this message will appear fresh.  (This is 
 possible because the message signature does not cover the `generation` field 
-of the message.)  Messages sent as PublicMessages objects similarly lack replay 
+of the message.)  Messages sent as PublicMessage objects similarly lack replay 
 protections.  There is no message counter comparable to the `generation` field 
 in PrivateMessage.
 
