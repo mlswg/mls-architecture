@@ -1995,24 +1995,6 @@ sent, the Ratchet Secret is used to create a new Ratchet Secret and a new
 corresponding AEAD key.  Because of the properties of the key derivation
 function, it is not possible to compute a Ratchet Secret from its corresponding
 AEAD key or compute Ratchet Secret n-1 from Ratchet Secret n.
-
-<!-- [rfced] Section 8.3.1:  "a per-sender with" in this sentence is
-difficult to follow.  If the suggested text is not correct, please
-clarify.
-
-Original:
- These group secrets are then used to create a per-sender Ratchet
- Secret, which in turn is used to create a per-sender with additional
- data (AEAD) [RFC5116] key that is then used to encrypt MLS Plaintext
- messages.
-
-Suggested:
- These group secrets are then used to create a per-sender Ratchet
- Secret, which in turn is used to create a per-sender key with
- additional data (Authenticated Encryption with Associated Data
- (AEAD); see [RFC5116]) that is then used to encrypt MLS Plaintext
- messages. -->
-
 </t>
           <t>Below, we consider the compromise of each of these pieces of keying material in
 turn, in ascending order of severity.  While this is a limited kind of
