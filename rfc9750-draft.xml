@@ -2059,24 +2059,6 @@ Currently:
 using that key, but the attacker cannot send a message to a group that appears to be from
 any valid client because the attacker cannot forge the signature. This applies to all the
 forms of symmetric key compromise described in <xref target="symmetric-key-compromise"/>.
-
-<!-- [rfced] Section 8.3.1.1:  This sentence as written appeared to
-say that the compromise cannot forge the signature.  We updated it to
-indicate that the attacker cannot forge the signature.  If this is
-incorrect, please provide clarifying text.
-
-Original:
- Compromise of the AEAD keys allows the attacker to send an encrypted
- message using that key, but cannot send a message to a group which
- appears to be from any valid client since they cannot forge the
- signature.
-
-Currently:
- Compromise of the AEAD keys allows the attacker to send an encrypted
- message using that key, but the attacker cannot send a message to a
- group that appears to be from any valid client because the attacker
- cannot forge the signature. -->
-
 </t>
           </section>
           <section anchor="compromise-of-ratchet-secret-material">
