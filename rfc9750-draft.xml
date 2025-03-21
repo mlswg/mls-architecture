@@ -51,17 +51,10 @@ title) for use on <https://www.rfc-editor.org/search>. -->
     <abstract>
 
 <t>The Messaging Layer Security (MLS) protocol (RFC 9420)
-provides a Group Key Agreement protocol for messaging applications.
+provides a group key agreement protocol for messaging applications.
 MLS is meant to protect against eavesdropping, tampering, and message
 forgery, and to provide Forward Secrecy (FS) and Post-Compromise Security
 (PCS).
-
-<!-- [rfced] Abstract:  We do not see "Group Key Agreement protocol"
-in the text of any published RFC.  Should this term be lowercased or perhaps explained in the body of the document?
-
-Original:
- The Messaging Layer Security (MLS) protocol (I-D.ietf-mls-protocol)
- provides a Group Key Agreement protocol for messaging applications. -->
 
 </t>
       <t>This document describes the architecture for using MLS in a general
@@ -590,15 +583,6 @@ includes the secret keying information necessary to join the group.</t>
 which means that they share a single encryption key which can be used to
 send messages or to key other protocols.
 
-<!-- [rfced] Section 3.4:  "or to key other protocols" reads oddly.
-Are some words missing, or does the text indicate that other
-protocols are keyed?  In other words, is "key" used as a verb here?
-
-Original:
- At the completion of this process, we have a group with Alice, Bob,
- and Charlie, which means that they share a single encryption key
- which can be used to send messages or to key other protocols. -->
-
 </t>
       </section>
       <section anchor="other-group-operations">
@@ -947,29 +931,6 @@ messages in the same order. This would allow clients to only apply the first
 valid Commit for an epoch and ignore subsequent Commits. Clients that send a Commit
 would then wait to apply it until it is broadcast back to them by the Delivery
 Service, assuming that they do not receive another Commit first.
-
-<!-- [rfced] Sections 5.2.1 and 8.1.4:  As it appears that "ones" in
-these sentences refers to Commits, we changed "ones" to "Commits".
-If this is incorrect, please clarify the text.
-
-Original:
- This would allow clients
- to only apply the first valid Commit for an epoch and ignore
- subsequent ones.
-...
- As discussed in Section 5, the Delivery Service is trusted to select
- the single Commit message that is applied in each epoch from among
- the ones sent by group members.
-
-Currently:
- This would allow clients
- to only apply the first valid Commit for an epoch and ignore
- subsequent Commits.
-...
- As discussed in Section 5, the Delivery Service is trusted to select
- the single Commit message that is applied in each epoch from among
- the Commits sent by group members. -->
-
 </t>
           <t>Alternatively, the Delivery Service can rely on the <tt>epoch</tt> and <tt>content_type</tt>
 fields of an MLSMessage to provide an order only to handshake messages, and
@@ -981,28 +942,9 @@ is discussed further in <xref target="invalid-commits"/>.</t>
           <name>Eventually Consistent</name>
           <t>With this approach, the Delivery Service is built in a way that may be
 significantly more available or performant than a strongly consistent system,
-but offers weaker consistency guarantees. Messages may arrive to different
+but where it offers weaker consistency guarantees. Messages may arrive to different
 clients in different orders and with varying amounts of latency, which means
 clients are responsible for reconciliation.
-
-<!-- [rfced] Section 5.2.2:  Does "offers" refer to the Delivery
-Service or the way?
-
-Original:
- With this approach, the Delivery Service is built in a way that may
- be significantly more available or performant than a strongly
- consistent system, but offers weaker consistency guarantees.
-
-Perhaps (the Delivery Service):
- With this approach, the Delivery Service is built in a way that may
- be significantly more available or performant than a strongly
- consistent system, but it offers weaker consistency guarantees.
-
-Or possibly (the way):
- With this approach, the Delivery Service is built in a way that may
- be significantly more available or performant than a strongly
- consistent system but that offers weaker consistency guarantees. -->
-
 </t>
           <t>This type of Delivery Service might arise, for example, when group members are
 sending each message to each other member individually or when a distributed
