@@ -39,7 +39,7 @@ delivery service, or the authentication service.
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
+    Jinja2 3.1.6
     lxml 5.3.0
     platformdirs 4.3.6
     pycountry 24.6.1
@@ -1069,7 +1069,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Beurdouche, et al.</td>
-<td class="center">Expires 15 September 2025</td>
+<td class="center">Expires 22 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1082,12 +1082,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-mls-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-14" class="published">14 March 2025</time>
+<time datetime="2025-03-21" class="published">21 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-15">15 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-22">22 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1161,7 +1161,7 @@ delivery service, or the authentication service.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2057,12 +2057,13 @@ multiple such KeyPackages to enable the corresponding client to be added to
 multiple groups before needing to upload more fresh KeyPackages.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <p id="section-5.1-5">In order to avoid replay attacks and provide forward secrecy for messages sent
 using the initial keying material, KeyPackages are intended to be used only
-once. The Delivery Service is responsible for ensuring that each KeyPackage is
-only used to add its client to a single group, with the possible exception of a
-"last resort" KeyPackage that is specially designated by the client to be used
-multiple times. Clients are responsible for providing new KeyPackages as
-necessary in order to minimize the chance that the "last resort" KeyPackage will
-be used.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+once, and <code>init_key</code> is intended to be deleted by the client after decryption
+of the Welcome message. The Delivery Service is responsible for ensuring that
+each KeyPackage is only used to add its client to a single group, with the
+possible exception of a "last resort" KeyPackage that is specially designated
+by the client to be used multiple times. Clients are responsible for providing
+new KeyPackages as necessary in order to minimize the chance that the "last
+resort" KeyPackage will be used.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1-6.1">
             <p id="section-5.1-6.1.1"><strong>RECOMMENDATION:</strong> Ensure that "last resort" KeyPackages don't get used by
@@ -2082,8 +2083,15 @@ Overall, avoid reusing "last resort" KeyPackages as much as possible.<a href="#s
 has been used is updating leaf keys as early as possible.<a href="#section-5.1-8.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-5.1-9">Overall, it needs to be noted that key packages need to be updated when
-signature keys are changed.<a href="#section-5.1-9" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-5.1-9.1">
+            <p id="section-5.1-9.1.1"><strong>RECOMMENDATION:</strong> Ensure that clients delete the private component
+of their <code>init_key</code> after processing a Welcome message, or after the
+rotation of "last resort" KeyPackage.<a href="#section-5.1-9.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.1-10">Overall, it needs to be noted that key packages need to be updated when
+signature keys are changed.<a href="#section-5.1-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="delivery-guarantees">
