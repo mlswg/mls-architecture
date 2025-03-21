@@ -2485,22 +2485,11 @@ compromise, which helps recovering security faster in various cases.</t>
 the amount of persistent metadata. However, large groups often require an
 infrastructure that provides server fanout.  In the case of client fanout, the
 destination of a message is known by all clients; hence, the server usually does
-not need this information.  However, they may learn this information through
+not need this information.  However, servers learn this information through
 traffic analysis.  Unfortunately, in a server-side fanout model, the Delivery
 Service can learn that a given client is sending the same message to a set of
 other clients. In addition, there may be applications of MLS in which the group
 membership list is stored on some server associated with the Delivery Service.
-
-<!-- [rfced] Section 8.4.3.2:  It is not clear to us whether "they"
-in the second sentence refers to "all clients" or "the server" in the
-first sentence.  Please clarify.
-
-Original (the run-on sentence has been fixed):
- In the
- case of client fanout, the destination of a message is known by all
- clients, hence the server usually does not need this information.
- However, they may learn this information through traffic analysis. -->
-
 </t>
             <t>While this knowledge is not a breach of the protocol's authentication or
 confidentiality guarantees, it is a serious issue for privacy.</t>
