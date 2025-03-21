@@ -864,7 +864,7 @@ accept.
 Such "desynchronization" problems can arise even when the Delivery Service takes
 no stance on which Commit is "correct" for an epoch. The DS can enable clients
 to choose between Commits, for example by providing Commits in the order
-received and allow clients to reject any Commits that
+received and allowing clients to reject any Commits that
 violate their view of the group's policies. As such, all honest and
 correctly implemented clients will arrive at the same "first valid Commit" and
 choose to process it. Malicious or buggy clients that process a different Commit
