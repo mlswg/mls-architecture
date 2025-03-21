@@ -681,9 +681,9 @@ resort" KeyPackage will be used.
 > **RECOMMENDATION:** Ensure that the client for which a "last resort" KeyPackage
 > has been used is updating leaf keys as early as possible.
 
-> **RECOMMENDATION:** Ensure that clients delete their private `init_key` key
-> after processing a Welcome message, or after the rotation of "last resort"
-> KeyPackage.
+> **RECOMMENDATION:** Ensure that clients delete the private component
+> of their `init_key` after processing a Welcome message, or after the
+> rotation of "last resort" KeyPackage.
 
 Overall, it needs to be noted that key packages need to be updated when
 signature keys are changed.
