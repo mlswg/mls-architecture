@@ -1629,23 +1629,6 @@ owned by the same application user. However, one device may control multiple
 signature keys -- for instance, if the device has keys corresponding to multiple
 overlapping time periods -- but should still only be considered a single
 client.
-
-<!-- [rfced] Section 7:  As it appears that "they have" refers to
-"one device", we changed "they have" to "the device has".  If this is
-incorrect, please clarify the text.
-
-Original:
- However, one device may control multiple signature keys -
- for instance if they have keys corresponding to multiple
- overlapping time periods - but should still only be considered a
- single client.
-
-Currently:
- However, one device may control multiple signature keys -
- for instance, if the device has keys corresponding to multiple
- overlapping time periods - but should still only be considered a
- single client. -->
-
 </t>
         </li>
         <li>
