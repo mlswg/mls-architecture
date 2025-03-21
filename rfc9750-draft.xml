@@ -1872,21 +1872,6 @@ Original:
 sending messages and evict clients that are idle for too long.</t>
           <t>These recommendations will reduce the ability of idle compromised clients to
 decrypt a potentially long set of messages that might have been sent after the point of compromise.
-
-<!-- [rfced] Section 8.2.2:  "followed" read oddly in this sentence.
-We updated the text.  If this is incorrect, please clarify the
-meaning of "followed".
-
-Original:
- These recommendations will reduce the ability of idle compromised
- clients to decrypt a potentially long set of messages that might have
- followed the point of the compromise.
-
-Currently:
- These recommendations will reduce the ability of idle compromised
- clients to decrypt a potentially long set of messages that might have
- been sent after the point of compromise. -->
-
 </t>
           <t>The precise details of such mechanisms are a matter of local policy and beyond
 the scope of this document.</t>
