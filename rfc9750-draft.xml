@@ -877,8 +877,8 @@ Overall, avoid reusing "last resort" KeyPackages as much as possible.</t>
 has been used is updating leaf keys as early as possible.</t>
 
             <t indent="3"><strong>RECOMMENDATION:</strong> Ensure that clients delete the private component
-> of their <tt>init_key</tt> after processing a Welcome message, or after the
-> rotation of "last resort" KeyPackage.</t>
+of their <tt>init_key</tt> after processing a Welcome message, or after the
+rotation of "last resort" KeyPackage.</t>
 
 <!-- [rfced] Sections 5.1 and subsequent:  Do you think other documents may want to refer to specific recommendations in this document?  We wonder whether it would be helpful to number the recommendations (e.g., Recommendation 1, or Req 1).
 
@@ -2581,15 +2581,16 @@ enclaves can be used to protect signature keys.</t>
         <name>Cryptographic Analysis of the MLS Protocol</name>
         <t>Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
-analyzed by <xref target="BBN19"/> (for MLS Draft 7), <xref target="ACDT21"/> (for MLS Draft 11), and <xref target="AJM20"/> (for MLS Draft 12).</t>
-        <t>Individual components of various drafts of the MLS protocol have been analyzed
-in isolation and with differing adversarial models. For example, <xref target="BBR18"/>,
-<xref target="ACDT19"/>, <xref target="ACCKKMPPWY19"/>, <xref target="AJM20"/>, <xref target="ACJM20"/>, and <xref target="AHKM21"/> analyze the
-ratcheting tree sub-protocol of MLS that facilitates key agreement; <xref target="WPBB22"/>
-analyzes the sub-protocol of MLS for group state agreement and authentication;
-and <xref target="BCK21"/> analyzes the key derivation paths in the ratchet tree and key
-schedule. Finally, <xref target="CHK21"/> analyzes the authentication and cross-group healing
-guarantees provided by MLS.</t>
+        analyzed by <xref target="BBN19"/> (for MLS Draft 7), <xref target="ACDT21"/> (for MLS Draft 11), and <xref target="AJM20"/> (for MLS Draft 12).</t>
+        <t>Individual components of various drafts of the MLS protocol have been
+analyzed in isolation and with differing adversarial models. For
+example, <xref target="BBR18"/>, <xref target="ACDT19"/>, <xref target="ACCKKMPPWY19"/>, <xref target="AJM20"/>,
+<xref target="ACJM20"/>, <xref target="AHKM21"/>, <xref target="CGWZ25"/>, and <xref target="WPB25"/> analyze the
+ratcheting tree sub-protocol of MLS that facilitates key agreement;
+<xref target="WPBB22"/> analyzes the sub-protocol of MLS for group state agreement
+and authentication; and <xref target="BCK21"/> analyzes the key derivation paths in
+the ratchet tree and key schedule. Finally, <xref target="CHK21"/> analyzes the
+authentication and cross-group healing guarantees provided by MLS.</t>
       </section>
     </section>
     <section anchor="iana-considerations">
@@ -2867,6 +2868,41 @@ Currently:
             <date year="2022"/>
           </front>
           <refcontent>Cryptology ePrint Archive</refcontent>
+        </reference>
+
+        <reference anchor="CGWZ25" target="https://eprint.iacr.org/2025/229.pdf">
+          <front>
+            <title>ETK: External-Operations TreeKEM and the Security of MLS in RFC 9420</title>
+            <author initials="C." surname="Cremers" fullname="Cas Cremers">
+              <organization/>
+            </author>
+            <author initials="E." surname="Günsay" fullname="Esra Günsay">
+              <organization/>
+            </author>
+            <author initials="V." surname="Wesselkamp" fullname="Vera Wesselkamp">
+              <organization/>
+            </author>
+            <author initials="M." surname="Zhao" fullname="Mang Zhao">
+              <organization/>
+            </author>
+            <date year="2025"/>
+          </front>
+        </reference>
+        
+        <reference anchor="WPB25" target="https://eprint.iacr.org/2025/410.pdf">
+          <front>
+            <title>TreeKEM: A Modular Machine-Checked Symbolic Security Analysis of Group Key Agreement in Messaging Layer Security</title>
+            <author initials="T." surname="Wallez" fullname="Théophile Wallez">
+              <organization/>
+            </author>
+            <author initials="J." surname="Protzenko" fullname="Jonathan Protzenko">
+              <organization/>
+            </author>
+            <author initials="K." surname="Bhargavan" fullname="Karthikeyan Bhargavan">
+              <organization/>
+            </author>
+            <date year="2025"/>
+          </front>
         </reference>
 
         <reference anchor="Loopix" target="">
