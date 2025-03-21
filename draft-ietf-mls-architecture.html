@@ -1371,7 +1371,10 @@ delivery service, or the authentication service.<a href="#section-abstract-3" cl
                 <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="auto internal xref">8.5</a>.  <a href="#name-considerations-for-attacks-" class="internal xref">Considerations for Attacks Outside of the Threat Model</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.6">
-                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="auto internal xref">8.6</a>.  <a href="#name-cryptographic-analysis-of-t" class="internal xref">Cryptographic Analysis of the MLS Protocol</a></p>
+                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="auto internal xref">8.6</a>.  <a href="#name-no-protection-against-repla" class="internal xref">No Protection against Replay by Insiders</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.7">
+                <p id="section-toc.1-1.8.2.7.1"><a href="#section-8.7" class="auto internal xref">8.7</a>.  <a href="#name-cryptographic-analysis-of-t" class="internal xref">Cryptographic Analysis of the MLS Protocol</a></p>
 </li>
             </ul>
 </li>
@@ -3713,16 +3716,43 @@ enclaves can be used to protect signature keys.<a href="#section-8.5-4.1.1" clas
         </ul>
 </section>
 </div>
-<div id="cryptographic-analysis-of-the-mls-protocol">
+<div id="no-protection-against-replay-by-insiders">
 <section id="section-8.6">
-        <h3 id="name-cryptographic-analysis-of-t">
-<a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-cryptographic-analysis-of-t" class="section-name selfRef">Cryptographic Analysis of the MLS Protocol</a>
+        <h3 id="name-no-protection-against-repla">
+<a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-no-protection-against-repla" class="section-name selfRef">No Protection against Replay by Insiders</a>
         </h3>
-<p id="section-8.6-1">Various academic works have analyzed MLS and the different security guarantees
+<p id="section-8.6-1">MLS does not protect against one group member replaying a PrivateMessage sent by another
+group member within the same epoch that the message was originally sent. Similarly, MLS
+does not protect against the replay (by a group member or otherwise) of a PublicMessage
+within the same epoch that the message was originally sent. Applications for
+whom replay is an important risk should apply mitigations at the application layer, as
+discussed below.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
+<p id="section-8.6-2">In addition to the risks discussed in <a href="#symmetric-key-compromise" class="auto internal xref">Section 8.3.1</a>, an attacker
+with access to the Ratchet Secrets for an endpoint can replay PrivateMessage
+objects sent by other members of the group by taking the signed content of the
+message and re-encrypting it with a new generation of the original sender's
+ratchet.  If the other members of the group interpret a message with a new
+generation as a fresh message, then this message will appear fresh.  (This is
+possible because the message signature does not cover the <code>generation</code> field
+of the message.)  Messages sent as PublicMessage objects similarly lack replay
+protections.  There is no message counter comparable to the <code>generation</code> field
+in PrivateMessage.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
+<p id="section-8.6-3">Applications can detect replay by including a unique identifier for the message
+(e.g., a counter) in either the message payload or the <code>authenticated_data</code>
+field, both of which are included in the signatures for
+PublicMessage and PrivateMessage.<a href="#section-8.6-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="cryptographic-analysis-of-the-mls-protocol">
+<section id="section-8.7">
+        <h3 id="name-cryptographic-analysis-of-t">
+<a href="#section-8.7" class="section-number selfRef">8.7. </a><a href="#name-cryptographic-analysis-of-t" class="section-name selfRef">Cryptographic Analysis of the MLS Protocol</a>
+        </h3>
+<p id="section-8.7-1">Various academic works have analyzed MLS and the different security guarantees
 it aims to provide. The security of large parts of the protocol has been
 analyzed by <span>[<a href="#BBN19" class="cite xref">BBN19</a>]</span> (for MLS Draft 7), <span>[<a href="#ACDT21" class="cite xref">ACDT21</a>]</span> (for MLS Draft 11), and <span>[<a href="#AJM20" class="cite xref">AJM20</a>]</span> (for MLS
-Draft 12).<a href="#section-8.6-1" class="pilcrow">¶</a></p>
-<p id="section-8.6-2">Individual components of various drafts of the MLS protocol have been
+Draft 12).<a href="#section-8.7-1" class="pilcrow">¶</a></p>
+<p id="section-8.7-2">Individual components of various drafts of the MLS protocol have been
 analyzed in isolation and with differing adversarial models. For
 example, <span>[<a href="#BBR18" class="cite xref">BBR18</a>]</span>, <span>[<a href="#ACDT19" class="cite xref">ACDT19</a>]</span>, <span>[<a href="#ACCKKMPPWY19" class="cite xref">ACCKKMPPWY19</a>]</span>, <span>[<a href="#AJM20" class="cite xref">AJM20</a>]</span>,
 <span>[<a href="#ACJM20" class="cite xref">ACJM20</a>]</span>, <span>[<a href="#AHKM21" class="cite xref">AHKM21</a>]</span>, <span>[<a href="#CGWZ25" class="cite xref">CGWZ25</a>]</span>, and <span>[<a href="#WPB25" class="cite xref">WPB25</a>]</span> analyze the
@@ -3730,7 +3760,7 @@ ratcheting tree sub-protocol of MLS that facilitates key agreement;
 <span>[<a href="#WPBB22" class="cite xref">WPBB22</a>]</span> analyzes the sub-protocol of MLS for group state agreement
 and authentication; and <span>[<a href="#BCK21" class="cite xref">BCK21</a>]</span> analyzes the key derivation paths in
 the ratchet tree and key schedule. Finally, <span>[<a href="#CHK21" class="cite xref">CHK21</a>]</span> analyzes the
-authentication and cross-group healing guarantees provided by MLS.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
+authentication and cross-group healing guarantees provided by MLS.<a href="#section-8.7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

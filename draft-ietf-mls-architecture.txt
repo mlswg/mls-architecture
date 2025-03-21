@@ -142,7 +142,8 @@ Table of Contents
        8.4.2.  Delivery Service Compromise
        8.4.3.  Authentication Service Compromise
      8.5.  Considerations for Attacks Outside of the Threat Model
-     8.6.  Cryptographic Analysis of the MLS Protocol
+     8.6.  No Protection against Replay by Insiders
+     8.7.  Cryptographic Analysis of the MLS Protocol
    9.  IANA Considerations
    10. References
      10.1.  Normative References
@@ -2110,7 +2111,34 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
       settings, HSMs and secure enclaves can be used to protect
       signature keys.
 
-8.6.  Cryptographic Analysis of the MLS Protocol
+8.6.  No Protection against Replay by Insiders
+
+   MLS does not protect against one group member replaying a
+   PrivateMessage sent by another group member within the same epoch
+   that the message was originally sent.  Similarly, MLS does not
+   protect against the replay (by a group member or otherwise) of a
+   PublicMessage within the same epoch that the message was originally
+   sent.  Applications for whom replay is an important risk should apply
+   mitigations at the application layer, as discussed below.
+
+   In addition to the risks discussed in Section 8.3.1, an attacker with
+   access to the Ratchet Secrets for an endpoint can replay
+   PrivateMessage objects sent by other members of the group by taking
+   the signed content of the message and re-encrypting it with a new
+   generation of the original sender's ratchet.  If the other members of
+   the group interpret a message with a new generation as a fresh
+   message, then this message will appear fresh.  (This is possible
+   because the message signature does not cover the generation field of
+   the message.)  Messages sent as PublicMessage objects similarly lack
+   replay protections.  There is no message counter comparable to the
+   generation field in PrivateMessage.
+
+   Applications can detect replay by including a unique identifier for
+   the message (e.g., a counter) in either the message payload or the
+   authenticated_data field, both of which are included in the
+   signatures for PublicMessage and PrivateMessage.
+
+8.7.  Cryptographic Analysis of the MLS Protocol
 
    Various academic works have analyzed MLS and the different security
    guarantees it aims to provide.  The security of large parts of the
