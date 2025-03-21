@@ -2119,13 +2119,13 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    Individual components of various drafts of the MLS protocol have been
    analyzed in isolation and with differing adversarial models.  For
-   example, [BBR18], [ACDT19], [ACCKKMPPWY19], [AJM20], [ACJM20], and
-   [AHKM21] analyze the ratcheting tree sub-protocol of MLS that
-   facilitates key agreement; [WPBB22] analyzes the sub-protocol of MLS
-   for group state agreement and authentication; and [BCK21] analyzes
-   the key derivation paths in the ratchet tree and key schedule.
-   Finally, [CHK21] analyzes the authentication and cross-group healing
-   guarantees provided by MLS.
+   example, [BBR18], [ACDT19], [ACCKKMPPWY19], [AJM20], [ACJM20],
+   [AHKM21], [CGWZ25], and [WPB25] analyze the ratcheting tree sub-
+   protocol of MLS that facilitates key agreement; [WPBB22] analyzes the
+   sub-protocol of MLS for group state agreement and authentication; and
+   [BCK21] analyzes the key derivation paths in the ratchet tree and key
+   schedule.  Finally, [CHK21] analyzes the authentication and cross-
+   group healing guarantees provided by MLS.
 
 9.  IANA Considerations
 
@@ -2196,6 +2196,11 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
               DOI 10.1145/343477.343502, July 2000,
               <https://doi.org/10.1145/343477.343502>.
 
+   [CGWZ25]   Cremers, C., Günsay, E., Wesselkamp, V., and M. Zhao,
+              "ETK: External-Operations TreeKEM and the Security of MLS
+              in RFC 9420", 2025,
+              <https://eprint.iacr.org/2025/229.pdf>.
+
    [CHK21]    Cremers, C., Hale, B., and K. Kohbrok, "The Complexities
               of Healing in Secure Group Messaging: Why Cross-Group
               Effects Matter", 2021,
@@ -2261,6 +2266,11 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
               <https://www.rfc-editor.org/rfc/rfc9000>.
 
    [Tor]      "The Tor Project", n.d., <https://torproject.org/>.
+
+   [WPB25]    Wallez, T., Protzenko, J., and K. Bhargavan, "TreeKEM: A
+              Modular Machine-Checked Symbolic Security Analysis of
+              Group Key Agreement in Messaging Layer Security", 2025,
+              <https://eprint.iacr.org/2025/410.pdf>.
 
    [WPBB22]   Wallez, T., Protzenko, J., Beurdouche, B., and K.
               Bhargavan, "TreeSync: Authenticated Group Management for

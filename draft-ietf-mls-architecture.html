@@ -3722,14 +3722,15 @@ enclaves can be used to protect signature keys.<a href="#section-8.5-4.1.1" clas
 it aims to provide. The security of large parts of the protocol has been
 analyzed by <span>[<a href="#BBN19" class="cite xref">BBN19</a>]</span> (for MLS Draft 7), <span>[<a href="#ACDT21" class="cite xref">ACDT21</a>]</span> (for MLS Draft 11), and <span>[<a href="#AJM20" class="cite xref">AJM20</a>]</span> (for MLS
 Draft 12).<a href="#section-8.6-1" class="pilcrow">¶</a></p>
-<p id="section-8.6-2">Individual components of various drafts of the MLS protocol have been analyzed
-in isolation and with differing adversarial models. For example, <span>[<a href="#BBR18" class="cite xref">BBR18</a>]</span>,
-<span>[<a href="#ACDT19" class="cite xref">ACDT19</a>]</span>, <span>[<a href="#ACCKKMPPWY19" class="cite xref">ACCKKMPPWY19</a>]</span>, <span>[<a href="#AJM20" class="cite xref">AJM20</a>]</span>, <span>[<a href="#ACJM20" class="cite xref">ACJM20</a>]</span>, and <span>[<a href="#AHKM21" class="cite xref">AHKM21</a>]</span> analyze the
-ratcheting tree sub-protocol of MLS that facilitates key agreement; <span>[<a href="#WPBB22" class="cite xref">WPBB22</a>]</span>
-analyzes the sub-protocol of MLS for group state agreement and authentication;
-and <span>[<a href="#BCK21" class="cite xref">BCK21</a>]</span> analyzes the key derivation paths in the ratchet tree and key
-schedule. Finally, <span>[<a href="#CHK21" class="cite xref">CHK21</a>]</span> analyzes the authentication and cross-group healing
-guarantees provided by MLS.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
+<p id="section-8.6-2">Individual components of various drafts of the MLS protocol have been
+analyzed in isolation and with differing adversarial models. For
+example, <span>[<a href="#BBR18" class="cite xref">BBR18</a>]</span>, <span>[<a href="#ACDT19" class="cite xref">ACDT19</a>]</span>, <span>[<a href="#ACCKKMPPWY19" class="cite xref">ACCKKMPPWY19</a>]</span>, <span>[<a href="#AJM20" class="cite xref">AJM20</a>]</span>,
+<span>[<a href="#ACJM20" class="cite xref">ACJM20</a>]</span>, <span>[<a href="#AHKM21" class="cite xref">AHKM21</a>]</span>, <span>[<a href="#CGWZ25" class="cite xref">CGWZ25</a>]</span>, and <span>[<a href="#WPB25" class="cite xref">WPB25</a>]</span> analyze the
+ratcheting tree sub-protocol of MLS that facilitates key agreement;
+<span>[<a href="#WPBB22" class="cite xref">WPBB22</a>]</span> analyzes the sub-protocol of MLS for group state agreement
+and authentication; and <span>[<a href="#BCK21" class="cite xref">BCK21</a>]</span> analyzes the key derivation paths in
+the ratchet tree and key schedule. Finally, <span>[<a href="#CHK21" class="cite xref">CHK21</a>]</span> analyzes the
+authentication and cross-group healing guarantees provided by MLS.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3810,6 +3811,10 @@ guarantees provided by MLS.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Brewer, E.</span>, <span class="refTitle">"Towards robust distributed systems (abstract)"</span>, <span class="refContent">ACM</span>, <span class="seriesInfo">Proceedings of the nineteenth annual ACM symposium on Principles of distributed computing</span>, <span class="seriesInfo">DOI 10.1145/343477.343502</span>, <time datetime="2000-07" class="refDate">July 2000</time>, <span>&lt;<a href="https://doi.org/10.1145/343477.343502">https://doi.org/10.1145/343477.343502</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="CGWZ25">[CGWZ25]</dt>
+        <dd>
+<span class="refAuthor">Cremers, C.</span>, <span class="refAuthor">Günsay, E.</span>, <span class="refAuthor">Wesselkamp, V.</span>, and <span class="refAuthor">M. Zhao</span>, <span class="refTitle">"ETK: External-Operations TreeKEM and the Security of MLS in RFC 9420"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://eprint.iacr.org/2025/229.pdf">https://eprint.iacr.org/2025/229.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="CHK21">[CHK21]</dt>
         <dd>
 <span class="refAuthor">Cremers, C.</span>, <span class="refAuthor">Hale, B.</span>, and <span class="refAuthor">K. Kohbrok</span>, <span class="refTitle">"The Complexities of Healing in Secure Group Messaging: Why Cross-Group Effects Matter"</span>, <time datetime="2021" class="refDate">2021</time>, <span>&lt;<a href="https://www.usenix.org/system/files/sec21-cremers.pdf">https://www.usenix.org/system/files/sec21-cremers.pdf</a>&gt;</span>. </dd>
@@ -3861,6 +3866,10 @@ guarantees provided by MLS.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
 <dt id="Tor">[Tor]</dt>
         <dd>
 <span class="refTitle">"The Tor Project"</span>, <span>n.d.</span>, <span>&lt;<a href="https://torproject.org/">https://torproject.org/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="WPB25">[WPB25]</dt>
+        <dd>
+<span class="refAuthor">Wallez, T.</span>, <span class="refAuthor">Protzenko, J.</span>, and <span class="refAuthor">K. Bhargavan</span>, <span class="refTitle">"TreeKEM: A Modular Machine-Checked Symbolic Security Analysis of Group Key Agreement in Messaging Layer Security"</span>, <time datetime="2025" class="refDate">2025</time>, <span>&lt;<a href="https://eprint.iacr.org/2025/410.pdf">https://eprint.iacr.org/2025/410.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="WPBB22">[WPBB22]</dt>
       <dd>
