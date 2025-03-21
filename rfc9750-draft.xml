@@ -1749,22 +1749,11 @@ from secure transport links. (See more discussion in the next section.)</t>
         <section anchor="message-suppression-and-error-correction">
           <name>Message Suppression and Error Correction</name>
           <t>As noted above, MLS is designed to provide some robustness in the face of
-tampering within the secure transport, i.e., tampering by the Delivery Service.
+tampering within the secure transport, e.g., tampering by the Delivery Service.
 The confidentiality and authenticity properties of MLS prevent the DS from
 reading or writing messages.  MLS also provides a few tools for detecting
 message suppression, with the caveat that message suppression cannot always be
 distinguished from transport failure.
-
-<!-- [rfced] Section 8.1.4:  Is tampering by the Delivery Service the
-only type of tampering scenario (in which case "i.e.," is correct),
-or is it one example of a tampering scenario (in which case "e.g.,"
-would be correct)?
-
-Original:
- As noted above, MLS is designed to provide some robustness in the
- face of tampering within the secure transport, i.e., tampering by the
- Delivery Service. -->
-
 </t>
           <t>Each encrypted MLS message carries a "generation" number which is a per-sender
 incrementing counter.  If a group member observes a gap in the generation

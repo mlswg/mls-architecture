@@ -1401,7 +1401,7 @@ clients.
 ### Message Suppression and Error Correction
 
 As noted above, MLS is designed to provide some robustness in the face of
-tampering within the secure transport, i.e., tampering by the Delivery Service.
+tampering within the secure transport, e.g., tampering by the Delivery Service.
 The confidentiality and authenticity properties of MLS prevent the DS from
 reading or writing messages.  MLS also provides a few tools for detecting
 message suppression, with the caveat that message suppression cannot always be
