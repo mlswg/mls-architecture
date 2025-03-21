@@ -2276,25 +2276,6 @@ the IP address and -- depending on the protocol -- the MAC address of the device
 important, using adequate protection such as Multiplexed Application Substrate over QUIC Encryption (MASQUE)
 <xref target="I-D.schinazi-masque-proxy"/>, Tor <xref target="Tor"/>, or a VPN can improve metadata
 protection.
-
-<!-- [rfced] Section 8.4.1.1:  For ease of the reader, we expanded
-"MASQUE" and "ToR".  If the definition of "ToR" is incorrect, please
-provide the correct definition. (The definition of "MASQUE" was taken
-from draft-schinazi-masque-proxy.)
-
-Original:
- *RECOMMENDATION:* In the case where privacy or anonymity is
- important, using adequate protection such as MASQUE
- [I-D.schinazi-masque-proxy], ToR, or a VPN can improve metadata
- protection.
-
-Currently:
- *RECOMMENDATION:* In the case where privacy or anonymity is
- important, using adequate protection such as Multiplexed
- Application Substrate over QUIC Encryption (MASQUE)
- [MASQUE-PROXY], Top-of-Rack (ToR) switches, or a VPN can improve
- metadata protection. -->
-
 </t>
             <t>More generally, using anonymous credentials in an MLS-based architecture might
 not be enough to provide strong privacy or anonymity properties.</t>
