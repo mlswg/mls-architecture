@@ -868,15 +868,15 @@ by the client to be used multiple times. Clients are responsible for providing
 new KeyPackages as necessary in order to minimize the chance that the "last
 resort" KeyPackage will be used.</t>
 
-          <t indent="3"><strong>RECOMMENDATION:</strong> Ensure that "last resort" KeyPackages don't get used by
+          <t indent="3"><strong>Recommendation:</strong> Ensure that "last resort" KeyPackages don't get used by
 provisioning enough standard KeyPackages.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Rotate "last resort" KeyPackages as soon as possible
+            <t indent="3"><strong>Recommendation:</strong> Rotate "last resort" KeyPackages as soon as possible
 after being used or if they have been stored for a prolonged period of time.
 Overall, avoid reusing "last resort" KeyPackages as much as possible.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Ensure that the client for which a "last resort" KeyPackage
+            <t indent="3"><strong>Recommendation:</strong> Ensure that the client for which a "last resort" KeyPackage
 has been used is updating leaf keys as early as possible.</t>
 
-            <t indent="3"><strong>RECOMMENDATION:</strong> Ensure that clients delete the private component
+            <t indent="3"><strong>Recommendation:</strong> Ensure that clients delete the private component
 of their <tt>init_key</tt> after processing a Welcome message, or after the
 rotation of "last resort" KeyPackage.</t>
 
@@ -1283,14 +1283,14 @@ that the access control policies are consistent across all clients to make sure
 that they remain in sync.  If two different policies were applied, the clients
 might not accept or reject a group operation and end up in different
 cryptographic states, breaking their ability to communicate.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Avoid using inconsistent access control policies in the
+            <t indent="3"><strong>Recommendation:</strong> Avoid using inconsistent access control policies in the
 case of encrypted group operations.</t>
         <t>MLS allows actors outside the group to influence the group in two ways: External
 signers can submit proposals for changes to the group, and new joiners can use
 an external join to add themselves to the group.  The <tt>external_senders</tt>
 extension ensures that all members agree on which signers are allowed to send
 proposals, but any other policies must be assured to be consistent, as noted above.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Have an explicit group policy setting the conditions under
+            <t indent="3"><strong>Recommendation:</strong> Have an explicit group policy setting the conditions under
 which external joins are allowed.</t>
       </section>
       <section anchor="handling-authentication-failures">
@@ -1303,16 +1303,16 @@ may require such a member to be immediately evicted or may allow some grace
 period for the problem to be remediated. To avoid operational problems, it is
 important for all clients in a group to have a consistent view of which
 credentials in a group are valid, and how to respond to invalid credentials.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Have a uniform credential validation process to ensure
+            <t indent="3"><strong>Recommendation:</strong> Have a uniform credential validation process to ensure
 that all group members evaluate other members' credentials in the same way.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Have a uniform policy for how invalid credentials are
+            <t indent="3"><strong>Recommendation:</strong> Have a uniform policy for how invalid credentials are
 handled.</t>
         <t>In some authentication systems, it is possible for a previously valid credential
 to become invalid over time.  For example, in a system based on X.509
 certificates, credentials can expire or be revoked.  The MLS update mechanisms
 allow a client to replace an old credential with a new one. This is best done
 before the old credential becomes invalid.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Proactively rotate credentials, especially if a credential
+            <t indent="3"><strong>Recommendation:</strong> Proactively rotate credentials, especially if a credential
 is about to become invalid.</t>
       </section>
       <section anchor="state-loss">
@@ -1359,7 +1359,7 @@ its <tt>application_data</tt> and any mechanism necessary to determine the forma
 that content over the lifetime of an MLS group. In many applications, this means
 managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Use the default content mechanism defined in
+            <t indent="3"><strong>Recommendation:</strong> Use the default content mechanism defined in
 <xref section="3.3" sectionFormat="of" target="I-D.ietf-mls-extensions"/>, unless the specific application defines another
 mechanism that more appropriately addresses the same requirements for that
 application of MLS.
@@ -1697,7 +1697,7 @@ layer for MLS is to protect the already limited amount of metadata. Very little
 information is contained in the unencrypted header of the MLS protocol message
 format for group operation messages, and application messages are always
 encrypted in MLS.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Use transports that provide reliability and metadata
+            <t indent="3"><strong>Recommendation:</strong> Use transports that provide reliability and metadata
 confidentiality whenever possible, e.g., by transmitting MLS messages over
 a protocol such as TLS <xref target="RFC8446"/> or QUIC <xref target="RFC9000"/>.</t>
         <t>MLS avoids needing to send the full list of recipients to the server for
@@ -1716,7 +1716,7 @@ metadata if it cannot compromise the secure channel.</t>
           <t>MLS provides an authenticated "Additional Authenticated Data" (AAD) field for
 applications to make data available outside a PrivateMessage, while
 cryptographically binding it to the message.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Use the "Additional Authenticated Data" field of the
+              <t indent="3"><strong>Recommendation:</strong> Use the "Additional Authenticated Data" field of the
 PrivateMessage instead of using other unauthenticated means of sending
 metadata throughout the infrastructure. If the data should be kept private, the
 infrastructure should use encrypted Application messages instead.</t>
@@ -1727,7 +1727,7 @@ infrastructure should use encrypted Application messages instead.</t>
 privacy when transmitting unencrypted group operation messages. Observing the
 contents and signatures of the group operation messages may lead an adversary to
 extract information about the group membership.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Never use the unencrypted mode for group operations
+              <t indent="3"><strong>Recommendation:</strong> Never use the unencrypted mode for group operations
 without using a secure channel for the transport layer.</t>
         </section>
         <section anchor="dos-protection">
@@ -1741,7 +1741,7 @@ tickets or cookies which identify users to a service for a certain number of
 connections. Such a system helps in preventing anonymous clients from sending
 arbitrary numbers of group operation messages to the Delivery Service or the MLS
 clients.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Use credentials uncorrelated with specific users to help
+              <t indent="3"><strong>Recommendation:</strong> Use credentials uncorrelated with specific users to help
 prevent DoS attacks, in a privacy-preserving manner. Note that the privacy of
 these mechanisms has to be adjusted in accordance with the privacy expected
 from secure transport links. (See more discussion in the next section.)</t>
@@ -1851,7 +1851,7 @@ Original:
  messages. -->
 
 </t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Mandate key updates from clients that are not otherwise
+              <t indent="3"><strong>Recommendation:</strong> Mandate key updates from clients that are not otherwise
 sending messages and evict clients that are idle for too long.</t>
           <t>These recommendations will reduce the ability of idle compromised clients to
 decrypt a potentially long set of messages that might have been sent after the point of compromise.
@@ -2068,12 +2068,12 @@ can follow the protocol and request to update its own credential. This in turn
 induces a signature key rotation which could provide the attacker with part or
 the full value of the private key, depending on the architecture of the service
 provider.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Signature private keys should be compartmentalized from
+              <t indent="3"><strong>Recommendation:</strong> Signature private keys should be compartmentalized from
 other secrets and preferably protected by a Hardware Security Module (HSM) or dedicated hardware
 features to allow recovery of the authentication for future messages after a
 compromise.
 </t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> When the credential type supports revocation, the users of
+              <t indent="3"><strong>Recommendation:</strong> When the credential type supports revocation, the users of
 a group should check for revoked keys.</t>
         </section>
         <section anchor="security-considerations-in-the-context-of-a-full-state-compromise">
@@ -2085,10 +2085,10 @@ arbitrary code in the targeted device.</t>
 unencrypted messages. If so, the adversary does not have to break encryption at
 all to access sent and received messages. Messages may also be sent by using the
 application to instruct the protocol implementation.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> If messages are stored on the device, they should be
+              <t indent="3"><strong>Recommendation:</strong> If messages are stored on the device, they should be
 protected using encryption at rest, and the keys used should be stored
 securely using dedicated mechanisms on the device.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> If the threat model of the system is against an adversary
+              <t indent="3"><strong>Recommendation:</strong> If the threat model of the system is against an adversary
 that can access the messages on the device without even needing to attack
 MLS, the application should delete plaintext and ciphertext messages as soon
 as practical after encryption or decryption.</t>
@@ -2105,7 +2105,7 @@ be a priority.</t>
 the previous sections: Performing separation of the application secret states
 can help recovery after compromise; this is the case for signature keys, but
 similar concerns exist for a client's encryption private keys.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> The secret keys used for public key encryption should be
+              <t indent="3"><strong>Recommendation:</strong> The secret keys used for public key encryption should be
 stored similarly to the way the signature keys are stored, as keys can be used
 to decrypt the group operation messages and contain the secret material used
 to compute all the group secrets.</t>
@@ -2148,7 +2148,7 @@ Service.</t>
 secure transport which leaks information about the origin of the request, such as
 the IP address and -- depending on the protocol -- the MAC address of the device.</t>
             <t>Similar concerns exist in the peer-to-peer use cases for MLS.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> In the case where privacy or anonymity is
+                <t indent="3"><strong>Recommendation:</strong> In the case where privacy or anonymity is
 important, using adequate protection such as Multiplexed Application Substrate over QUIC Encryption (MASQUE)
 <xref target="I-D.schinazi-masque-proxy"/>, Tor <xref target="Tor"/>, or a VPN can improve metadata
 protection.
@@ -2163,12 +2163,12 @@ for functionality (mappings between identities and push tokens, group
 metadata, etc.), it should be stored encrypted at rest and only decrypted upon need
 during the execution. Honest Service Providers can rely on such "encryption at
 rest" mechanisms to be able to prevent access to the data when not using it.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Store cryptographic material used for server-side
+                <t indent="3"><strong>Recommendation:</strong> Store cryptographic material used for server-side
 decryption of sensitive metadata on the clients and only send it when needed.
 The server can use the secret to open and update encrypted data containers
 after which they can delete these keys until the next time they need it, in
 which case those can be provided by the client.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Rely on group secrets exported from the MLS session for
+                <t indent="3"><strong>Recommendation:</strong> Rely on group secrets exported from the MLS session for
 server-side encryption at rest and update the key after each removal from the
 group. Otherwise, rotate those keys on a regular basis.</t>
           </section>
@@ -2194,7 +2194,7 @@ extent. This threat can be mitigated by having initial keys expire.</t>
 vulnerable to replacement by a malicious or compromised DS, as there is no
 built-in cryptographic binding between the identity and the public key of the
 client.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Prefer a Credential type in KeyPackages which includes a
+              <t indent="3"><strong>Recommendation:</strong> Prefer a Credential type in KeyPackages which includes a
 strong cryptographic binding between the identity and its key (for example, the
 <tt>x509</tt> Credential type). When using the <tt>basic</tt> Credential type, take extra
 care to verify the identity (typically out of band).</t>
@@ -2237,7 +2237,7 @@ Suggested:
 </t>
             <t>For secure messaging systems, push notifications are often sent in real time, as it
 is not acceptable to create artificial delays for message retrieval.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> If real-time notifications are not necessary, one can
+                <t indent="3"><strong>Recommendation:</strong> If real-time notifications are not necessary, one can
 delay notifications randomly across recipient devices using a mixnet or other
 techniques.</t>
             <t>Note that with a legal request to ask the service provider for the push-token
@@ -2245,7 +2245,7 @@ associated with an identifier, it is easy to correlate the token with a second
 request to the company operating the push-notification system to get information
 about the device, which is often linked with a real identity via a cloud
 account, a credit card, or other information.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> If stronger privacy guarantees are needed with regard to
+                <t indent="3"><strong>Recommendation:</strong> If stronger privacy guarantees are needed with regard to
 the push notification provider, the client can choose to periodically connect
 to the Delivery Service without the need of a dedicated push notification
 infrastructure.</t>
@@ -2276,7 +2276,7 @@ incorrect or attacker-provided identities to clients.</t>
 to the underlying cryptographic material necessary to perform such
 operations. In that last case, it results in windows of time for which all
 emitted credentials might be compromised.</t>
-              <t indent="3"><strong>RECOMMENDATION:</strong> Use HSMs to store the root signature keys to limit the
+              <t indent="3"><strong>Recommendation:</strong> Use HSMs to store the root signature keys to limit the
 ability of an adversary with no physical access to extract the top-level
 signature private key.</t>
           <t>Note that historically some systems generate signature keys on the
@@ -2298,9 +2298,9 @@ clients themselves for the <tt>x509</tt> Credential type.</t>
 mechanism must be used to verify identities. For instance, the Authentication
 Service could operate some sort of directory server to provide keys, or users
 could verify keys via an out-of-band mechanism.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Select the MLS Credential type with the strongest security
+                <t indent="3"><strong>Recommendation:</strong> Select the MLS Credential type with the strongest security
 which is supported by all target members of an MLS group.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Do not use the same signature keypair across
+                <t indent="3"><strong>Recommendation:</strong> Do not use the same signature keypair across
 groups. Update all keys for all groups on a regular basis. Do not preserve
 keys in different groups when suspecting a compromise.</t>
             <t>If the AS is compromised, it could validate a signature
@@ -2312,11 +2312,11 @@ especially in large groups where the UI might not reflect all the changes back
 to the users. If the application participates in a key transparency mechanism in
 which it is possible to determine every key for a given user, then this
 would allow for detection of surreptitiously created false credentials.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Make sure that MLS clients reflect all the membership
+                <t indent="3"><strong>Recommendation:</strong> Make sure that MLS clients reflect all the membership
 changes to the users as they happen. If a choice has to be made because the
 number of notifications is too high, the client should provide a log of state
 of the device so that the user can examine it.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Provide a key transparency mechanism for the
+                <t indent="3"><strong>Recommendation:</strong> Provide a key transparency mechanism for the
 Authentication Service to allow public verification of the credentials
 authenticated by this service.</t>
             <t>While the ways to handle MLS credentials are not defined by the protocol or the
@@ -2327,7 +2327,7 @@ one-time, per-client authentication secret which can be exchanged between users
 to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.
 </t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Provide one or more out-of-band authentication mechanisms
+                <t indent="3"><strong>Recommendation:</strong> Provide one or more out-of-band authentication mechanisms
 to limit the impact of an Authentication Service compromise.</t>
             <t>We note, again, that the Authentication Service may not be a centralized
 system and could be realized by many mechanisms such as establishing prior
@@ -2354,12 +2354,12 @@ confidentiality guarantees, it is a serious issue for privacy.</t>
 user identities. An attacker with access to this information due to compromise
 or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Use encrypted group operation messages to limit privacy
+                <t indent="3"><strong>Recommendation:</strong> Use encrypted group operation messages to limit privacy
 risks whenever possible.</t>
             <t>In certain cases, the adversary can access specific bindings between public keys
 and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.</t>
-                <t indent="3"><strong>RECOMMENDATION:</strong> Ensure that linking between public keys and identities
+                <t indent="3"><strong>Recommendation:</strong> Ensure that linking between public keys and identities
 only happens in expected scenarios.</t>
           </section>
         </section>
@@ -2376,7 +2376,7 @@ client or service.</t>
         <t>On the other hand, security goals consider that honest clients will always run
 the protocol according to its specification. This relies on implementations of
 the protocol to securely implement the specification, which remains non-trivial.</t>
-            <t indent="3"><strong>RECOMMENDATION:</strong> Additional steps should be taken to protect the device and
+            <t indent="3"><strong>Recommendation:</strong> Additional steps should be taken to protect the device and
 the MLS clients from physical compromise. In such settings, HSMs and secure
 enclaves can be used to protect signature keys.</t>
       </section>
