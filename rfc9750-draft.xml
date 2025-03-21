@@ -2082,22 +2082,10 @@ Currently:
           <section anchor="compromise-of-ratchet-secret-material">
             <name>Compromise of Ratchet Secret Material</name>
             <t>When a Ratchet Secret is compromised, the adversary can compute both the current
-AEAD keys for a given sender as well as any future keys for that sender in this
+AEAD keys for a given sender and any future keys for that sender in this
 epoch. Thus, it can decrypt current and future messages by the corresponding
 sender. However, because it does not have previous Ratchet Secrets, it cannot
 decrypt past messages as long as those secrets and keys have been deleted.
-
-<!-- [rfced] Section 8.3.1.2:  Does "both the current AEAD keys for a
-given sender as well as any future keys" mean "both of the current
-AEAD keys for a given sender, as well as any future keys", "both
-(1) the current AEAD keys for a given sender and (2) any future
-keys", or something else?
-
-Original:
- When a Ratchet Secret is compromised, the adversary can compute both
- the current AEAD keys for a given sender as well as any future keys
- for that sender in this epoch. -->
-
 </t>
             <t>Because of its Forward Secrecy guarantees, MLS will also retain secrecy of all
 other AEAD keys generated for <em>other</em> MLS clients, outside this dedicated chain

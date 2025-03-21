@@ -1625,7 +1625,7 @@ forms of symmetric key compromise described in {{symmetric-key-compromise}}.
 #### Compromise of Ratchet Secret Material
 
 When a Ratchet Secret is compromised, the adversary can compute both the current
-AEAD keys for a given sender as well as any future keys for that sender in this
+AEAD keys for a given sender and any future keys for that sender in this
 epoch. Thus, it can decrypt current and future messages by the corresponding
 sender. However, because it does not have previous Ratchet Secrets, it cannot
 decrypt past messages as long as those secrets and keys have been deleted.
