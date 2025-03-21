@@ -1140,23 +1140,11 @@ of users, it is up to the application to track which clients belong to a given
 user and ensure that they are added/removed consistently.</t>
         <t>MLS provides two mechanisms for changing the membership of a group.  The primary
 mechanism is for an authorized member of the group to send a Commit that adds or
-removes other members.  The second mechanism is an "external join": A member of
+removes other members.  A secondary mechanism is an "external join": A member of
 the group publishes certain information about the group, which a new member can
 use to construct an "external" Commit message that adds the new member to the
 group.  (There is no similarly unilateral way for a member to leave the group;
 they must be removed by a remaining member.)
-
-<!-- [rfced] Section 6.1:  Because "primary" is used instead of
-"first", should "second" in the next sentence be "secondary"?
-
-Original:
- The primary mechanism is for an authorized member of the group to
- send a Commit that adds or removes other members.  The second
- mechanism is an "external join": A member of the group publishes
- certain information about the group, which a new member can use to
- construct an "external" Commit message that adds the new member to
- the group. -->
-
 </t>
         <t>With both mechanisms, changes to the membership are initiated from inside the
 group.  When members perform changes directly, this is clearly the case.

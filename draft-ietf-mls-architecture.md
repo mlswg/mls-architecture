@@ -919,7 +919,7 @@ user and ensure that they are added/removed consistently.
 
 MLS provides two mechanisms for changing the membership of a group.  The primary
 mechanism is for an authorized member of the group to send a Commit that adds or
-removes other members.  The second mechanism is an "external join": A member of
+removes other members.  A secondary mechanism is an "external join": A member of
 the group publishes certain information about the group, which a new member can
 use to construct an "external" Commit message that adds the new member to the
 group.  (There is no similarly unilateral way for a member to leave the group;
