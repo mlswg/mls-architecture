@@ -2020,22 +2020,6 @@ chains (they have access to the Group Secrets) in order to send and receive
 messages, the authentication provided by the AEAD encryption layer of the common
 framing mechanism is weak. Successful decryption of an AEAD encrypted message
 only guarantees that some member of the group sent the message.
-
-<!-- [rfced] Section 8.3.1.1:  For ease of the reader, we expanded
-"HPKE" as "Hybrid Public Key Encryption".  If this is incorrect,
-please provide the correct definition.
-
-Original:
- In the case of a Group Operation message,
- only the privacy is affected, as the signature is revealed, because
- the secrets themselves are protected by HPKE encryption.
-
-Currently:
- In the case of a Group Operation message,
- only the privacy is affected, as the signature is revealed, because
- the secrets themselves are protected by Hybrid Public Key Encryption
- (HPKE). -->
-
 </t>
             <t>Compromise of the AEAD keys allows the attacker to send an encrypted message
 using that key, but the attacker cannot send a message to a group that appears to be from
