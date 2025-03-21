@@ -1827,16 +1827,7 @@ of information leaked about the length of the plaintext to an observer on the
 network.</t>
         </section>
         <section anchor="fs-and-pcs">
-          <name>Forward and Post-Compromise Security</name>
-
-<!-- [rfced] Section 8.2.2:  Does "Forward" here refer to Forward
-Secrecy (FS) or forward security as mentioned in Section 8.4.2?
-Please note that we only see one instance of "forward security" in
-this document (Section 8.4.2) and do not see this term used in
-RFC 9420.
-
-Original:
- 8.2.2.  Forward and Post-Compromise Security -->
+          <name>Forward Secrecy and Post-Compromise Security</name>
 
           <t>MLS provides additional protection regarding secrecy of past messages and future
 messages. These cryptographic security properties are Forward Secrecy (FS) and Post-Compromise Security (PCS).</t>
@@ -2020,7 +2011,7 @@ chains (they have access to the Group Secrets) in order to send and receive
 messages, the authentication provided by the AEAD encryption layer of the common
 framing mechanism is weak. Successful decryption of an AEAD encrypted message
 only guarantees that some member of the group sent the message.
-</t>
+            </t>
             <t>Compromise of the AEAD keys allows the attacker to send an encrypted message
 using that key, but the attacker cannot send a message to a group that appears to be from
 any valid client because the attacker cannot forge the signature. This applies to all the

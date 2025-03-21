@@ -1457,7 +1457,7 @@ MLS optionally allows the addition of padding to messages, mitigating the amount
 of information leaked about the length of the plaintext to an observer on the
 network.
 
-### Forward and Post-Compromise Security {#fs-and-pcs}
+### Forward Secrecy and Post-Compromise Security {#fs-and-pcs}
 
 MLS provides additional protection regarding secrecy of past messages and future
 messages. These cryptographic security properties are Forward Secrecy (FS) and
