@@ -2465,22 +2465,10 @@ authenticated by this service.</t>
             <t>While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
 can be used to provide out-of-band authentication to users. The
-"authentication_secret" generated for each user at each epoch of the group is a
+<tt>authentication_secret</tt> generated for each user at each epoch of the group is a
 one-time, per-client authentication secret which can be exchanged between users
 to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.
-
-<!-- [rfced] Section 8.4.3.1:  In this document's XML file, all other
-parameters containing underscores are placed in <tt>s except for
-"authentication_secret".  May we place it in <tt>s and remove the
-quotes?
-
-Original:
- The "authentication_secret" generated for
- each user at each epoch of the group is a one-time, per client,
- authentication secret which can be exchanged between users to prove
- their identity to each other. -->
-
 </t>
                 <t indent="3"><strong>RECOMMENDATION:</strong> Provide one or more out-of-band authentication mechanisms
 to limit the impact of an Authentication Service compromise.</t>

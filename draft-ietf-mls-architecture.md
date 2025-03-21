@@ -1976,7 +1976,7 @@ would allow for detection of surreptitiously created false credentials.
 While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
 can be used to provide out-of-band authentication to users. The
-"authentication_secret" generated for each user at each epoch of the group is a
+`authentication_secret` generated for each user at each epoch of the group is a
 one-time, per-client authentication secret which can be exchanged between users
 to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.
