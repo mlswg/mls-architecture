@@ -12,7 +12,7 @@
 <meta content="Alan Duric" name="author">
 <meta content="
        The Messaging Layer Security (MLS) protocol (RFC 9420)
-provides a Group Key Agreement protocol for messaging applications.
+provides a group key agreement protocol for messaging applications.
 MLS is meant to protect against eavesdropping, tampering, and message
 forgery, and to provide Forward Secrecy (FS) and Post-Compromise Security
 (PCS). 
@@ -1069,7 +1069,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Beurdouche, et al.</td>
-<td class="center">Expires 22 September 2025</td>
+<td class="center">Expires 24 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1082,12 +1082,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-mls-architecture-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-21" class="published">21 March 2025</time>
+<time datetime="2025-03-23" class="published">23 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-22">22 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-24">24 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1113,7 +1113,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">The Messaging Layer Security (MLS) protocol (RFC 9420)
-provides a Group Key Agreement protocol for messaging applications.
+provides a group key agreement protocol for messaging applications.
 MLS is meant to protect against eavesdropping, tampering, and message
 forgery, and to provide Forward Secrecy (FS) and Post-Compromise Security
 (PCS).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
@@ -1161,7 +1161,7 @@ delivery service, or the authentication service.<a href="#section-abstract-3" cl
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1326,7 +1326,7 @@ delivery service, or the authentication service.<a href="#section-abstract-3" cl
                     <p id="section-toc.1-1.8.2.2.2.1.1"><a href="#section-8.2.1" class="auto internal xref">8.2.1</a>.  <a href="#name-message-secrecy-and-authent" class="internal xref">Message Secrecy and Authentication</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.2">
-                    <p id="section-toc.1-1.8.2.2.2.2.1"><a href="#section-8.2.2" class="auto internal xref">8.2.2</a>.  <a href="#name-forward-and-post-compromise" class="internal xref">Forward and Post-Compromise Security</a></p>
+                    <p id="section-toc.1-1.8.2.2.2.2.1"><a href="#section-8.2.2" class="auto internal xref">8.2.2</a>.  <a href="#name-forward-secrecy-and-post-co" class="internal xref">Forward Secrecy and Post-Compromise Security</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2.2.3">
                     <p id="section-toc.1-1.8.2.2.2.3.1"><a href="#section-8.2.3" class="auto internal xref">8.2.3</a>.  <a href="#name-non-repudiation-vs-deniabil" class="internal xref">Non-Repudiation vs. Deniability</a></p>
@@ -2069,26 +2069,26 @@ new KeyPackages as necessary in order to minimize the chance that the "last
 resort" KeyPackage will be used.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1-6.1">
-            <p id="section-5.1-6.1.1"><strong>RECOMMENDATION:</strong> Ensure that "last resort" KeyPackages don't get used by
+            <p id="section-5.1-6.1.1"><strong>Recommendation:</strong> Ensure that "last resort" KeyPackages don't get used by
 provisioning enough standard KeyPackages.<a href="#section-5.1-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1-7.1">
-            <p id="section-5.1-7.1.1"><strong>RECOMMENDATION:</strong> Rotate "last resort" KeyPackages as soon as possible
+            <p id="section-5.1-7.1.1"><strong>Recommendation:</strong> Rotate "last resort" KeyPackages as soon as possible
 after being used or if they have been stored for a prolonged period of time.
 Overall, avoid reusing "last resort" KeyPackages as much as possible.<a href="#section-5.1-7.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1-8.1">
-            <p id="section-5.1-8.1.1"><strong>RECOMMENDATION:</strong> Ensure that the client for which a "last resort" KeyPackage
+            <p id="section-5.1-8.1.1"><strong>Recommendation:</strong> Ensure that the client for which a "last resort" KeyPackage
 has been used is updating leaf keys as early as possible.<a href="#section-5.1-8.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-5.1-9.1">
-            <p id="section-5.1-9.1.1"><strong>RECOMMENDATION:</strong> Ensure that clients delete the private component
+            <p id="section-5.1-9.1.1"><strong>Recommendation:</strong> Ensure that clients delete the private component
 of their <code>init_key</code> after processing a Welcome message, or after the
 rotation of "last resort" KeyPackage.<a href="#section-5.1-9.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -2181,8 +2181,9 @@ is discussed further in <a href="#invalid-commits" class="auto internal xref">Se
 <a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-eventually-consistent" class="section-name selfRef">Eventually Consistent</a>
           </h4>
 <p id="section-5.2.2-1">With this approach, the Delivery Service is built in a way that may be
-significantly more available or performant than a strongly consistent system,
-but offers weaker consistency guarantees. Messages may arrive to different
+significantly more available or performant than a strongly consistent
+system, but where it offers weaker consistency guarantees. Messages
+may arrive to different
 clients in different orders and with varying amounts of latency, which means
 clients are responsible for reconciliation.<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-2">This type of Delivery Service might arise, for example, when group members are
@@ -2265,7 +2266,7 @@ accept.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.3-3">Such "desynchronization" problems can arise even when the Delivery Service takes
 no stance on which Commit is "correct" for an epoch. The DS can enable clients
 to choose between Commits, for example by providing Commits in the order
-received and allow clients to reject any Commits that
+received and allowing clients to reject any Commits that
 violate their view of the group's policies. As such, all honest and
 correctly implemented clients will arrive at the same "first valid Commit" and
 choose to process it. Malicious or buggy clients that process a different Commit
@@ -2323,7 +2324,7 @@ of users, it is up to the application to track which clients belong to a given
 user and ensure that they are added/removed consistently.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 <p id="section-6.1-4">MLS provides two mechanisms for changing the membership of a group.  The primary
 mechanism is for an authorized member of the group to send a Commit that adds or
-removes other members.  The second mechanism is an "external join": A member of
+removes other members.  A secondary mechanism is an "external join": A member of
 the group publishes certain information about the group, which a new member can
 use to construct an "external" Commit message that adds the new member to the
 group.  (There is no similarly unilateral way for a member to leave the group;
@@ -2433,7 +2434,7 @@ might not accept or reject a group operation and end up in different
 cryptographic states, breaking their ability to communicate.<a href="#section-6.4-3" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.4-4.1">
-            <p id="section-6.4-4.1.1"><strong>RECOMMENDATION:</strong> Avoid using inconsistent access control policies in the
+            <p id="section-6.4-4.1.1"><strong>Recommendation:</strong> Avoid using inconsistent access control policies in the
 case of encrypted group operations.<a href="#section-6.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
@@ -2444,7 +2445,7 @@ extension ensures that all members agree on which signers are allowed to send
 proposals, but any other policies must be assured to be consistent, as noted above.<a href="#section-6.4-5" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.4-6.1">
-            <p id="section-6.4-6.1.1"><strong>RECOMMENDATION:</strong> Have an explicit group policy setting the conditions under
+            <p id="section-6.4-6.1.1"><strong>Recommendation:</strong> Have an explicit group policy setting the conditions under
 which external joins are allowed.<a href="#section-6.4-6.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
@@ -2465,13 +2466,13 @@ important for all clients in a group to have a consistent view of which
 credentials in a group are valid, and how to respond to invalid credentials.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.5-2.1">
-            <p id="section-6.5-2.1.1"><strong>RECOMMENDATION:</strong> Have a uniform credential validation process to ensure
+            <p id="section-6.5-2.1.1"><strong>Recommendation:</strong> Have a uniform credential validation process to ensure
 that all group members evaluate other members' credentials in the same way.<a href="#section-6.5-2.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.5-3.1">
-            <p id="section-6.5-3.1.1"><strong>RECOMMENDATION:</strong> Have a uniform policy for how invalid credentials are
+            <p id="section-6.5-3.1.1"><strong>Recommendation:</strong> Have a uniform policy for how invalid credentials are
 handled.<a href="#section-6.5-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
@@ -2482,7 +2483,7 @@ allow a client to replace an old credential with a new one. This is best done
 before the old credential becomes invalid.<a href="#section-6.5-4" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.5-5.1">
-            <p id="section-6.5-5.1.1"><strong>RECOMMENDATION:</strong> Proactively rotate credentials, especially if a credential
+            <p id="section-6.5-5.1.1"><strong>Recommendation:</strong> Proactively rotate credentials, especially if a credential
 is about to become invalid.<a href="#section-6.5-5.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
@@ -2549,7 +2550,7 @@ managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.<a href="#section-6.9-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-6.9-2.1">
-            <p id="section-6.9-2.1.1"><strong>RECOMMENDATION:</strong> Use the default content mechanism defined in
+            <p id="section-6.9-2.1.1"><strong>Recommendation:</strong> Use the default content mechanism defined in
 <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-mls-extensions-06#section-3.3" class="relref">Section 3.3</a> of [<a href="#EXTENSIONS" class="cite xref">EXTENSIONS</a>]</span>, unless the specific application defines another
 mechanism that more appropriately addresses the same requirements for that
 application of MLS.<a href="#section-6.9-2.1.1" class="pilcrow">¶</a></p>
@@ -2880,7 +2881,7 @@ format for group operation messages, and application messages are always
 encrypted in MLS.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.1-2.1">
-            <p id="section-8.1-2.1.1"><strong>RECOMMENDATION:</strong> Use transports that provide reliability and metadata
+            <p id="section-8.1-2.1.1"><strong>Recommendation:</strong> Use transports that provide reliability and metadata
 confidentiality whenever possible, e.g., by transmitting MLS messages over
 a protocol such as TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> or QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>.<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -2906,7 +2907,7 @@ applications to make data available outside a PrivateMessage, while
 cryptographically binding it to the message.<a href="#section-8.1.1-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.1.1-2.1">
-              <p id="section-8.1.1-2.1.1"><strong>RECOMMENDATION:</strong> Use the "Additional Authenticated Data" field of the
+              <p id="section-8.1.1-2.1.1"><strong>Recommendation:</strong> Use the "Additional Authenticated Data" field of the
 PrivateMessage instead of using other unauthenticated means of sending
 metadata throughout the infrastructure. If the data should be kept private, the
 infrastructure should use encrypted Application messages instead.<a href="#section-8.1.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2925,7 +2926,7 @@ contents and signatures of the group operation messages may lead an adversary to
 extract information about the group membership.<a href="#section-8.1.2-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.1.2-2.1">
-              <p id="section-8.1.2-2.1.1"><strong>RECOMMENDATION:</strong> Never use the unencrypted mode for group operations
+              <p id="section-8.1.2-2.1.1"><strong>Recommendation:</strong> Never use the unencrypted mode for group operations
 without using a secure channel for the transport layer.<a href="#section-8.1.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
@@ -2947,7 +2948,7 @@ arbitrary numbers of group operation messages to the Delivery Service or the MLS
 clients.<a href="#section-8.1.3-2" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.1.3-3.1">
-              <p id="section-8.1.3-3.1.1"><strong>RECOMMENDATION:</strong> Use credentials uncorrelated with specific users to help
+              <p id="section-8.1.3-3.1.1"><strong>Recommendation:</strong> Use credentials uncorrelated with specific users to help
 prevent DoS attacks, in a privacy-preserving manner. Note that the privacy of
 these mechanisms has to be adjusted in accordance with the privacy expected
 from secure transport links. (See more discussion in the next section.)<a href="#section-8.1.3-3.1.1" class="pilcrow">¶</a></p>
@@ -2961,7 +2962,7 @@ from secure transport links. (See more discussion in the next section.)<a href="
 <a href="#section-8.1.4" class="section-number selfRef">8.1.4. </a><a href="#name-message-suppression-and-err" class="section-name selfRef">Message Suppression and Error Correction</a>
           </h4>
 <p id="section-8.1.4-1">As noted above, MLS is designed to provide some robustness in the face of
-tampering within the secure transport, i.e., tampering by the Delivery Service.
+tampering within the secure transport, e.g., tampering by the Delivery Service.
 The confidentiality and authenticity properties of MLS prevent the DS from
 reading or writing messages.  MLS also provides a few tools for detecting
 message suppression, with the caveat that message suppression cannot always be
@@ -3020,8 +3021,8 @@ network.<a href="#section-8.2.1-6" class="pilcrow">¶</a></p>
 </div>
 <div id="fs-and-pcs">
 <section id="section-8.2.2">
-          <h4 id="name-forward-and-post-compromise">
-<a href="#section-8.2.2" class="section-number selfRef">8.2.2. </a><a href="#name-forward-and-post-compromise" class="section-name selfRef">Forward and Post-Compromise Security</a>
+          <h4 id="name-forward-secrecy-and-post-co">
+<a href="#section-8.2.2" class="section-number selfRef">8.2.2. </a><a href="#name-forward-secrecy-and-post-co" class="section-name selfRef">Forward Secrecy and Post-Compromise Security</a>
           </h4>
 <p id="section-8.2.2-1">MLS provides additional protection regarding secrecy of past messages and future
 messages. These cryptographic security properties are Forward Secrecy (FS) and
@@ -3054,7 +3055,7 @@ freshness. However, not much can be done on the inactive side especially in the
 case where the client has not processed messages.<a href="#section-8.2.2-6" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.2.2-7.1">
-              <p id="section-8.2.2-7.1.1"><strong>RECOMMENDATION:</strong> Mandate key updates from clients that are not otherwise
+              <p id="section-8.2.2-7.1.1"><strong>Recommendation:</strong> Mandate key updates from clients that are not otherwise
 sending messages and evict clients that are idle for too long.<a href="#section-8.2.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
@@ -3108,7 +3109,7 @@ clients share cryptographic state, so that they appear as a single client within
 the MLS group. Appearing as a single client has the privacy benefits of no
 longer leaking which device was used to send a particular message and no longer
 leaking the user's authorized devices. However, the application would need to
-provide a synchronization mechanism so that the clients' state remain consistent
+provide a synchronization mechanism so that the state of each client remains consistent
 across changes to the MLS group. Flaws in this synchronization mechanism may
 impair the ability of the user to recover from a compromise of one of their
 devices. In particular, state synchronization may make it easier for an attacker
@@ -3205,7 +3206,7 @@ forms of symmetric key compromise described in <a href="#symmetric-key-compromis
 <a href="#section-8.3.1.2" class="section-number selfRef">8.3.1.2. </a><a href="#name-compromise-of-ratchet-secre" class="section-name selfRef">Compromise of Ratchet Secret Material</a>
             </h5>
 <p id="section-8.3.1.2-1">When a Ratchet Secret is compromised, the adversary can compute both the current
-AEAD keys for a given sender as well as any future keys for that sender in this
+AEAD keys for a given sender and any future keys for that sender in this
 epoch. Thus, it can decrypt current and future messages by the corresponding
 sender. However, because it does not have previous Ratchet Secrets, it cannot
 decrypt past messages as long as those secrets and keys have been deleted.<a href="#section-8.3.1.2-1" class="pilcrow">¶</a></p>
@@ -3298,7 +3299,7 @@ the full value of the private key, depending on the architecture of the service
 provider.<a href="#section-8.3.3-5" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.3.3-6.1">
-              <p id="section-8.3.3-6.1.1"><strong>RECOMMENDATION:</strong> Signature private keys should be compartmentalized from
+              <p id="section-8.3.3-6.1.1"><strong>Recommendation:</strong> Signature private keys should be compartmentalized from
 other secrets and preferably protected by a Hardware Security Module (HSM) or dedicated hardware
 features to allow recovery of the authentication for future messages after a
 compromise.<a href="#section-8.3.3-6.1.1" class="pilcrow">¶</a></p>
@@ -3306,7 +3307,7 @@ compromise.<a href="#section-8.3.3-6.1.1" class="pilcrow">¶</a></p>
           </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.3.3-7.1">
-              <p id="section-8.3.3-7.1.1"><strong>RECOMMENDATION:</strong> When the credential type supports revocation, the users of
+              <p id="section-8.3.3-7.1.1"><strong>Recommendation:</strong> When the credential type supports revocation, the users of
 a group should check for revoked keys.<a href="#section-8.3.3-7.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
@@ -3326,14 +3327,14 @@ all to access sent and received messages. Messages may also be sent by using the
 application to instruct the protocol implementation.<a href="#section-8.3.4-2" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.3.4-3.1">
-              <p id="section-8.3.4-3.1.1"><strong>RECOMMENDATION:</strong> If messages are stored on the device, they should be
+              <p id="section-8.3.4-3.1.1"><strong>Recommendation:</strong> If messages are stored on the device, they should be
 protected using encryption at rest, and the keys used should be stored
 securely using dedicated mechanisms on the device.<a href="#section-8.3.4-3.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.3.4-4.1">
-              <p id="section-8.3.4-4.1.1"><strong>RECOMMENDATION:</strong> If the threat model of the system is against an adversary
+              <p id="section-8.3.4-4.1.1"><strong>Recommendation:</strong> If the threat model of the system is against an adversary
 that can access the messages on the device without even needing to attack
 MLS, the application should delete plaintext and ciphertext messages as soon
 as practical after encryption or decryption.<a href="#section-8.3.4-4.1.1" class="pilcrow">¶</a></p>
@@ -3354,7 +3355,7 @@ can help recovery after compromise; this is the case for signature keys, but
 similar concerns exist for a client's encryption private keys.<a href="#section-8.3.4-7" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.3.4-8.1">
-              <p id="section-8.3.4-8.1.1"><strong>RECOMMENDATION:</strong> The secret keys used for public key encryption should be
+              <p id="section-8.3.4-8.1.1"><strong>Recommendation:</strong> The secret keys used for public key encryption should be
 stored similarly to the way the signature keys are stored, as keys can be used
 to decrypt the group operation messages and contain the secret material used
 to compute all the group secrets.<a href="#section-8.3.4-8.1.1" class="pilcrow">¶</a></p>
@@ -3412,7 +3413,7 @@ the IP address and -- depending on the protocol -- the MAC address of the device
 <p id="section-8.4.1.1-4">Similar concerns exist in the peer-to-peer use cases for MLS.<a href="#section-8.4.1.1-4" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.1.1-5.1">
-                <p id="section-8.4.1.1-5.1.1"><strong>RECOMMENDATION:</strong> In the case where privacy or anonymity is
+                <p id="section-8.4.1.1-5.1.1"><strong>Recommendation:</strong> In the case where privacy or anonymity is
 important, using adequate protection such as Multiplexed
 Application Substrate over QUIC Encryption (MASQUE)
 <span>[<a href="#MASQUE-PROXY" class="cite xref">MASQUE-PROXY</a>]</span>, Tor <span>[<a href="#Tor" class="cite xref">Tor</a>]</span>,
@@ -3436,7 +3437,7 @@ during the execution. Honest Service Providers can rely on such "encryption at
 rest" mechanisms to be able to prevent access to the data when not using it.<a href="#section-8.4.1.2-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.1.2-2.1">
-                <p id="section-8.4.1.2-2.1.1"><strong>RECOMMENDATION:</strong> Store cryptographic material used for server-side
+                <p id="section-8.4.1.2-2.1.1"><strong>Recommendation:</strong> Store cryptographic material used for server-side
 decryption of sensitive metadata on the clients and only send it when needed.
 The server can use the secret to open and update encrypted data containers
 after which they can delete these keys until the next time they need it, in
@@ -3445,7 +3446,7 @@ which case those can be provided by the client.<a href="#section-8.4.1.2-2.1.1" 
             </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.1.2-3.1">
-                <p id="section-8.4.1.2-3.1.1"><strong>RECOMMENDATION:</strong> Rely on group secrets exported from the MLS session for
+                <p id="section-8.4.1.2-3.1.1"><strong>Recommendation:</strong> Rely on group secrets exported from the MLS session for
 server-side encryption at rest and update the key after each removal from the
 group. Otherwise, rotate those keys on a regular basis.<a href="#section-8.4.1.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -3480,7 +3481,7 @@ built-in cryptographic binding between the identity and the public key of the
 client.<a href="#section-8.4.2-4" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.2-5.1">
-              <p id="section-8.4.2-5.1.1"><strong>RECOMMENDATION:</strong> Prefer a Credential type in KeyPackages which includes a
+              <p id="section-8.4.2-5.1.1"><strong>Recommendation:</strong> Prefer a Credential type in KeyPackages which includes a
 strong cryptographic binding between the identity and its key (for example, the
 <code>x509</code> Credential type). When using the <code>basic</code> Credential type, take extra
 care to verify the identity (typically out of band).<a href="#section-8.4.2-5.1.1" class="pilcrow">¶</a></p>
@@ -3514,7 +3515,7 @@ of the same message.<a href="#section-8.4.2.1-3" class="pilcrow">¶</a></p>
 is not acceptable to create artificial delays for message retrieval.<a href="#section-8.4.2.1-4" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.2.1-5.1">
-                <p id="section-8.4.2.1-5.1.1"><strong>RECOMMENDATION:</strong> If real-time notifications are not necessary, one can
+                <p id="section-8.4.2.1-5.1.1"><strong>Recommendation:</strong> If real-time notifications are not necessary, one can
 delay notifications randomly across recipient devices using a mixnet or other
 techniques.<a href="#section-8.4.2.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -3526,7 +3527,7 @@ about the device, which is often linked with a real identity via a cloud
 account, a credit card, or other information.<a href="#section-8.4.2.1-6" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.2.1-7.1">
-                <p id="section-8.4.2.1-7.1.1"><strong>RECOMMENDATION:</strong> If stronger privacy guarantees are needed with regard to
+                <p id="section-8.4.2.1-7.1.1"><strong>Recommendation:</strong> If stronger privacy guarantees are needed with regard to
 the push notification provider, the client can choose to periodically connect
 to the Delivery Service without the need of a dedicated push notification
 infrastructure.<a href="#section-8.4.2.1-7.1.1" class="pilcrow">¶</a></p>
@@ -3566,7 +3567,7 @@ operations. In that last case, it results in windows of time for which all
 emitted credentials might be compromised.<a href="#section-8.4.3-3" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3-4.1">
-              <p id="section-8.4.3-4.1.1"><strong>RECOMMENDATION:</strong> Use HSMs to store the root signature keys to limit the
+              <p id="section-8.4.3-4.1.1"><strong>Recommendation:</strong> Use HSMs to store the root signature keys to limit the
 ability of an adversary with no physical access to extract the top-level
 signature private key.<a href="#section-8.4.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -3595,13 +3596,13 @@ Service could operate some sort of directory server to provide keys, or users
 could verify keys via an out-of-band mechanism.<a href="#section-8.4.3.1-3" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.1-4.1">
-                <p id="section-8.4.3.1-4.1.1"><strong>RECOMMENDATION:</strong> Select the MLS Credential type with the strongest security
+                <p id="section-8.4.3.1-4.1.1"><strong>Recommendation:</strong> Select the MLS Credential type with the strongest security
 which is supported by all target members of an MLS group.<a href="#section-8.4.3.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.1-5.1">
-                <p id="section-8.4.3.1-5.1.1"><strong>RECOMMENDATION:</strong> Do not use the same signature keypair across
+                <p id="section-8.4.3.1-5.1.1"><strong>Recommendation:</strong> Do not use the same signature keypair across
 groups. Update all keys for all groups on a regular basis. Do not preserve
 keys in different groups when suspecting a compromise.<a href="#section-8.4.3.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -3617,7 +3618,7 @@ which it is possible to determine every key for a given user, then this
 would allow for detection of surreptitiously created false credentials.<a href="#section-8.4.3.1-6" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.1-7.1">
-                <p id="section-8.4.3.1-7.1.1"><strong>RECOMMENDATION:</strong> Make sure that MLS clients reflect all the membership
+                <p id="section-8.4.3.1-7.1.1"><strong>Recommendation:</strong> Make sure that MLS clients reflect all the membership
 changes to the users as they happen. If a choice has to be made because the
 number of notifications is too high, the client should provide a log of state
 of the device so that the user can examine it.<a href="#section-8.4.3.1-7.1.1" class="pilcrow">¶</a></p>
@@ -3625,7 +3626,7 @@ of the device so that the user can examine it.<a href="#section-8.4.3.1-7.1.1" c
             </ul>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.1-8.1">
-                <p id="section-8.4.3.1-8.1.1"><strong>RECOMMENDATION:</strong> Provide a key transparency mechanism for the
+                <p id="section-8.4.3.1-8.1.1"><strong>Recommendation:</strong> Provide a key transparency mechanism for the
 Authentication Service to allow public verification of the credentials
 authenticated by this service.<a href="#section-8.4.3.1-8.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -3633,13 +3634,13 @@ authenticated by this service.<a href="#section-8.4.3.1-8.1.1" class="pilcrow">�
 <p id="section-8.4.3.1-9">While the ways to handle MLS credentials are not defined by the protocol or the
 architecture documents, the MLS protocol has been designed with a mechanism that
 can be used to provide out-of-band authentication to users. The
-"authentication_secret" generated for each user at each epoch of the group is a
+<code>authentication_secret</code> generated for each user at each epoch of the group is a
 one-time, per-client authentication secret which can be exchanged between users
 to prove their identities to each other. This can be done, for instance, using a QR
 code that can be scanned by the other parties.<a href="#section-8.4.3.1-9" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.1-10.1">
-                <p id="section-8.4.3.1-10.1.1"><strong>RECOMMENDATION:</strong> Provide one or more out-of-band authentication mechanisms
+                <p id="section-8.4.3.1-10.1.1"><strong>Recommendation:</strong> Provide one or more out-of-band authentication mechanisms
 to limit the impact of an Authentication Service compromise.<a href="#section-8.4.3.1-10.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
@@ -3660,7 +3661,7 @@ compromise, which helps recovering security faster in various cases.<a href="#se
 the amount of persistent metadata. However, large groups often require an
 infrastructure that provides server fanout.  In the case of client fanout, the
 destination of a message is known by all clients; hence, the server usually does
-not need this information.  However, they may learn this information through
+not need this information.  However, servers may learn this information through
 traffic analysis.  Unfortunately, in a server-side fanout model, the Delivery
 Service can learn that a given client is sending the same message to a set of
 other clients. In addition, there may be applications of MLS in which the group
@@ -3673,7 +3674,7 @@ or regulation can associate unencrypted group messages (e.g., Commits and
 Proposals) with the corresponding user identity.<a href="#section-8.4.3.2-3" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.2-4.1">
-                <p id="section-8.4.3.2-4.1.1"><strong>RECOMMENDATION:</strong> Use encrypted group operation messages to limit privacy
+                <p id="section-8.4.3.2-4.1.1"><strong>Recommendation:</strong> Use encrypted group operation messages to limit privacy
 risks whenever possible.<a href="#section-8.4.3.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
@@ -3682,7 +3683,7 @@ and identities. If the signature keys are reused across groups, the adversary
 can get more information about the targeted user.<a href="#section-8.4.3.2-5" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.4.3.2-6.1">
-                <p id="section-8.4.3.2-6.1.1"><strong>RECOMMENDATION:</strong> Ensure that linking between public keys and identities
+                <p id="section-8.4.3.2-6.1.1"><strong>Recommendation:</strong> Ensure that linking between public keys and identities
 only happens in expected scenarios.<a href="#section-8.4.3.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
@@ -3709,7 +3710,7 @@ the protocol according to its specification. This relies on implementations of
 the protocol to securely implement the specification, which remains non-trivial.<a href="#section-8.5-3" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.5-4.1">
-            <p id="section-8.5-4.1.1"><strong>RECOMMENDATION:</strong> Additional steps should be taken to protect the device and
+            <p id="section-8.5-4.1.1"><strong>Recommendation:</strong> Additional steps should be taken to protect the device and
 the MLS clients from physical compromise. In such settings, HSMs and secure
 enclaves can be used to protect signature keys.<a href="#section-8.5-4.1.1" class="pilcrow">¶</a></p>
 </li>
