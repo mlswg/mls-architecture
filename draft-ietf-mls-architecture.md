@@ -242,7 +242,7 @@ informative:
 --- abstract
 
 The Messaging Layer Security (MLS) protocol (RFC 9420)
-provides a Group Key Agreement protocol for messaging applications.
+provides a group key agreement protocol for messaging applications.
 MLS is meant to protect against eavesdropping, tampering, and message
 forgery, and to provide Forward Secrecy (FS) and Post-Compromise Security
 (PCS).
@@ -786,8 +786,9 @@ is discussed further in {{invalid-commits}}.
 ### Eventually Consistent
 
 With this approach, the Delivery Service is built in a way that may be
-significantly more available or performant than a strongly consistent system,
-but offers weaker consistency guarantees. Messages may arrive to different
+significantly more available or performant than a strongly consistent
+system, but where it offers weaker consistency guarantees. Messages
+may arrive to different
 clients in different orders and with varying amounts of latency, which means
 clients are responsible for reconciliation.
 
