@@ -904,7 +904,7 @@ MLS aims to provide agreement on group membership, meaning that all group
 members have agreed on the list of current group members.
 
 Some applications may wish to enforce Access Control Lists (ACLs) to limit addition or removal of group
-members, to privileged clients or users. Others may wish to require
+members to privileged clients or users. Others may wish to require
 authorization from the current group members or a subset thereof.  Such policies
 can be implemented at the application layer, on top of MLS. Regardless, MLS does
 not allow for or support addition or removal of group members without informing
