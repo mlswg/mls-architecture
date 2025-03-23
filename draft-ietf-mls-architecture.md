@@ -613,8 +613,8 @@ signature keys in a group is forbidden). A member can
 also rotate the signature key they use within a group.  These mechanisms allow
 clients to use different signature keys in different contexts and at different
 points in time, providing unlinkability and post-compromise security benefits.
-Some security trade-offs related to this flexibility are discussed in the
-security considerations.
+Some security trade-offs related to this flexibility are discussed in
+{{security-and-privacy-considerations}}.
 
 In many applications, there are multiple MLS clients that represent a single
 entity, such as a human user with a mobile and desktop version of an
