@@ -673,7 +673,7 @@ contacts the Delivery Service to request KeyPackages for each other client,
 authenticates the KeyPackages using the signature keys, includes the KeyPackages
 in Add Proposals, and encrypts the information needed to join the group
 (the _GroupInfo_ object) with an ephemeral key; it then separately encrypts the
-ephemeral key with the `init_key` from each KeyPackage.
+ephemeral key with the public encryption key (`init_key`) from each KeyPackage.
 When a client requests a KeyPackage in order to add a user to a group, the
 Delivery Service should provide the minimum number of KeyPackages necessary to
 satisfy the request.  For example, if the request specifies the MLS version, the
