@@ -1579,7 +1579,7 @@ the following compromise scenarios:
 
 ### Compromise of Symmetric Keying Material {#symmetric-key-compromise}
 
-As described above, each MLS epoch creates a new group Secret.
+As described above, each MLS epoch creates a new group secret.
 
 These group secrets are then used to create a per-sender ratchet secret, which
 in turn is used to create a per-sender
@@ -1598,7 +1598,7 @@ only part of the memory leaks to the adversary.
 #### Compromise of AEAD Keys
 
 In some circumstances, adversaries may have access to specific AEAD keys and
-nonces which protect an application message or a group Operation message. Compromise of
+nonces which protect an application message or a group operation message. Compromise of
 these keys allows the attacker to decrypt the specific message encrypted with
 that key but no other; because the AEAD keys are derived from the ratchet
 secret, it cannot generate the next ratchet secret and hence not the next AEAD
@@ -1608,7 +1608,7 @@ In the case of an application message, an AEAD key compromise means that the
 encrypted application message will be leaked as well as the signature over that
 message. This means that the compromise has both confidentiality and privacy
 implications on the future AEAD encryptions of that chain.  In the case of a
-group Operation message, only the privacy is affected, as the signature is
+group operation message, only the privacy is affected, as the signature is
 revealed, because the secrets themselves are protected by Hybrid Public Key Encryption
 (HPKE).  Note
 that under that compromise scenario, authentication is not affected in either of
