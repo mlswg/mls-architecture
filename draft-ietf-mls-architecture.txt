@@ -1496,9 +1496,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    later compromised.
 
    MLS partially defends against this problem by active members
-   including freshness.  However, not much can be done on the inactive
-   side especially in the case where the client has not processed
-   messages.
+   including new keying material.  However, not much can be done on the
+   inactive side especially in the case where the client has not
+   processed messages.
 
       *Recommendation:* Mandate key updates from clients that are not
       otherwise sending messages and evict clients that are idle for too
