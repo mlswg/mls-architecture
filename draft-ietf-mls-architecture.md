@@ -1813,7 +1813,7 @@ not be enough to provide strong privacy or anonymity properties.
 In the case where private data or metadata has to be persisted on the servers
 for functionality (mappings between identities and push tokens, group
 metadata, etc.), it should be stored encrypted at rest and only decrypted upon need
-during the execution. Honest service provideros can rely on such "encryption at
+during the execution. Honest service providers can rely on such "encryption at
 rest" mechanisms to be able to prevent access to the data when not using it.
 
 > **Recommendation:** Store cryptographic material used for server-side
@@ -1935,7 +1935,7 @@ attacker who has compromised the AS to silently impersonate the client.
 One important property of MLS is that all members know which other members are
 in the group at all times. If all members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
-read and write messages protected by the protocol for that Group.
+read and write messages protected by the protocol for that group.
 
 This guarantee applies to the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
