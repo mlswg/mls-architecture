@@ -5,13 +5,13 @@
 Network Working Group                                      B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Informational                               E. Rescorla
-Expires: 24 September 2025                                              
+Expires: 25 September 2025                                              
                                                                 E. Omara
                                                                         
                                                                S. Inguva
                                                                         
                                                                 A. Duric
-                                                           23 March 2025
+                                                           24 March 2025
 
 
             The Messaging Layer Security (MLS) Architecture
@@ -67,7 +67,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 September 2025.
+   This Internet-Draft will expire on 25 September 2025.
 
 Copyright Notice
 
@@ -1923,10 +1923,10 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    Alternatively, non-mobile applications could use a WebSocket or
    persistent connection for notifications directly from the DS.
 
-   Even though they can't necessarily access the content, which is
-   typically encrypted MLS messages, the service provider and the push
-   notification provider have to be trusted to avoid making correlation
-   on which devices are recipients of the same message.
+   Even though the service provider and the push notification provider
+   can't necessarily access the content (typically encrypted MLS
+   messages), no technical mechanism in MLS prevents them from
+   determining which devices are recipients of the same message.
 
    For secure messaging systems, push notifications are often sent in
    real time, as it is not acceptable to create artificial delays for
