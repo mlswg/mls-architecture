@@ -134,7 +134,7 @@ peer-to-peer system. The service needs to provide two services that
 facilitate client communication using MLS:</t>
         <ul spacing="normal">
           <li>
-            <t>An Authentication Service (AS) which is responsible for
+            <t>An Authentication Service (AS), which is responsible for
 attesting to bindings between application-meaningful identifiers and the
 public key material used for authentication in the MLS protocol. The
 AS must also be able to generate credentials that encode these
@@ -185,7 +185,7 @@ A few examples (for "DS" and "AS"; "Delivery Services, which is
 </t>
           </li>
           <li>
-            <t>A Delivery Service (DS) which can receive and distribute
+            <t>A Delivery Service (DS), which can receive and distribute
 messages between group members. In the case of group messaging, the delivery
 service may also be responsible for acting as a "broadcaster" where the sender
 sends a single message which is then forwarded to each recipient in the group
@@ -536,7 +536,7 @@ credentials from the AS. This is a one-time setup phase.</t>
       <section anchor="step-2-initial-keying-material">
         <name>Step 2: Initial Keying Material</name>
         <t>Alice, Bob, and Charlie authenticate to the DS and store some initial
-keying material which can be used to send encrypted messages to them
+keying material which is used to send encrypted messages to them
 for the first time. This keying material is authenticated with their
 long-term credentials. Although in principle this keying material
 can be reused for multiple senders, in order to provide forward secrecy
@@ -1680,8 +1680,8 @@ reading or writing messages.  MLS also provides a few tools for detecting
 message suppression, with the caveat that message suppression cannot always be
 distinguished from transport failure.
 </t>
-          <t>Each encrypted MLS message carries a "generation" number which is a per-sender
-incrementing counter.  If a group member observes a gap in the generation
+<t>Each encrypted MLS message carries a per-sender incrementing "generation" number.
+If a group member observes a gap in the generation
 sequence for a sender, then they know that they have missed a message from that
 sender.  MLS also provides a facility for group members to send authenticated
 acknowledgments of application messages received within a group.</t>
@@ -1920,7 +1920,7 @@ access any protected messages from future epochs.</t>
             <name>Compromise of the Group Secrets of a Single Group for One or More Group Epochs</name>
             <t>An adversary who gains access to a set of Group secrets -- as when a member of the
 group is compromised -- is significantly more powerful. In this section, we
-consider the case where the signature keys are not compromised, which can occur
+consider the case where the signature keys are not compromised. This can occur
 if the attacker has access to part of the memory containing the group secrets
 but not to the signature keys which might be stored in a secure enclave.</t>
             <t>In this scenario, the adversary gains the ability to compute any number of
@@ -1979,7 +1979,7 @@ case, the compromised endpoint needs to refresh its credentials and invalidate
 the old credentials before the attacker will be unable to authenticate messages.</t>
           <t>Beware that in both oracle and private key access, an active adaptive attacker
 can follow the protocol and request to update its own credential. This in turn
-induces a signature key rotation which could provide the attacker with part or
+induces a signature key rotation, which could provide the attacker with part or
 the full value of the private key, depending on the architecture of the service
 provider.</t>
               <t indent="3"><strong>Recommendation:</strong> Signature private keys should be compartmentalized from
@@ -2608,7 +2608,7 @@ Currently:
             <date year="2025"/>
           </front>
         </reference>
-        
+
         <reference anchor="WPB25" target="https://eprint.iacr.org/2025/410.pdf">
           <front>
             <title>TreeKEM: A Modular Machine-Checked Symbolic Security Analysis of Group Key Agreement in Messaging Layer Security</title>
