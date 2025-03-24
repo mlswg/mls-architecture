@@ -2126,29 +2126,10 @@ push-tokens. This means that the push notification provider and the service
 provider have information on which devices receive information and at which
 point in time. Alternatively, non-mobile applications could use a WebSocket or
 persistent connection for notifications directly from the DS.</t>
-            <t>Even though they can't necessarily access the content, which is typically
-encrypted MLS messages, the service provider and the push notification provider
-have to be trusted to avoid making correlation on which devices are recipients
-of the same message.
-
-<!-- [rfced] Section 8.4.2.1:  We had trouble parsing this sentence.
-Are some words missing?  If the suggested text is not correct, please
-clarify "they" and "content, which is typically encrypted MLS
-messages".
-
-Original:
- Even though they can't necessarily access the content, which is
- typically encrypted MLS messages, the service provider and the push
- notification provider have to be trusted to avoid making correlation
- on which devices are recipients of the same message.
-
-Suggested:
- Even though the service provider and the push notification provider
- can't necessarily access the content (typically encrypted MLS
- messages), they have to be trusted to avoid making correlations
- regarding which devices are recipients of the same message. -->
-
-</t>
+            <t>Even though the service provider and the push notification provider
+can't necessarily access the content (typically encrypted MLS
+messages), no technical mechanism in MLS prevents them from determining
+which devices are recipients of the same message.</t>
             <t>For secure messaging systems, push notifications are often sent in real time, as it
 is not acceptable to create artificial delays for message retrieval.</t>
                 <t indent="3"><strong>Recommendation:</strong> If real-time notifications are not necessary, one can
