@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+?xml version='1.0' encoding='UTF-8'?>
 
 <!DOCTYPE rfc [
   <!ENTITY nbsp    "&#160;">
@@ -1751,7 +1751,7 @@ replacement of keying material, any client which is persistently offline may
 still be holding old keying material and thus be a threat to both FS and PCS if
 it is later compromised.</t>
           <t>MLS partially defends against this problem by active members including
-freshness. However, not much can be done on the inactive side especially in the
+new keying material. However, not much can be done on the inactive side especially in the
 case where the client has not processed messages.
 
 <!-- [rfced] Section 8.2.2:  We had trouble following this sentence.
@@ -2627,7 +2627,7 @@ Currently:
             <date year="2025"/>
           </front>
         </reference>
-        
+
         <reference anchor="WPB25" target="https://eprint.iacr.org/2025/410.pdf">
           <front>
             <title>TreeKEM: A Modular Machine-Checked Symbolic Security Analysis of Group Key Agreement in Messaging Layer Security</title>

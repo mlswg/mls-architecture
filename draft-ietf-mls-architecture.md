@@ -1492,7 +1492,7 @@ still be holding old keying material and thus be a threat to both FS and PCS if
 it is later compromised.
 
 MLS partially defends against this problem by active members including
-freshness. However, not much can be done on the inactive side especially in the
+new keying material. However, not much can be done on the inactive side especially in the
 case where the client has not processed messages.
 
 > **Recommendation:** Mandate key updates from clients that are not otherwise
