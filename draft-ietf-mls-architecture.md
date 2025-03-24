@@ -526,7 +526,7 @@ more Proposals. For instance, Alice could send a Commit with the Proposal
 Add(Bob) embedded to add Bob to the group. However, there are situations in
 which one client might send a proposal and another might send the commit. For
 instance, Bob might wish to remove himself from the group and send a Remove
-Proposal to do so (see {{Section 12.1.3 of ?RFC9420}}). Because Bob cannot send
+proposal to do so (see {{Section 12.1.3 of ?RFC9420}}). Because Bob cannot send
 the Commit, an existing member must do so.  Commits can apply to multiple valid
 Proposals, in which case all the listed changes are applied.
 
@@ -671,7 +671,7 @@ each user for a mix of protocol versions, ciphersuites, and end-user devices.
 When a client wishes to establish a group or add clients to a group, it first
 contacts the DS to request KeyPackages for each other client,
 authenticates the KeyPackages using the signature keys, includes the KeyPackages
-in Add Proposals, and encrypts the information needed to join the group
+in Add proposals, and encrypts the information needed to join the group
 (the _GroupInfo_ object) with an ephemeral key; it then separately encrypts the
 ephemeral key with the public encryption key (`init_key`) from each KeyPackage.
 When a client requests a KeyPackage in order to add a user to a group, the
@@ -999,7 +999,7 @@ to perform operations. However, every service/infrastructure has control over
 policies applied to its own clients. Applications managing MLS clients can be
 configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
-perform add and remove operations. On the other hand, in many settings such as
+perform Add and Remove operations. On the other hand, in many settings such as
 open discussion forums, joining can be allowed for anyone.
 
 While MLS Application messages are always encrypted,
