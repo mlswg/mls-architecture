@@ -1284,8 +1284,8 @@ its <tt>application_data</tt> and any mechanism necessary to determine the forma
 that content over the lifetime of an MLS group. In many applications, this means
 managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.</t>
-            <t indent="3"><strong>Recommendation:</strong> Use the default content mechanism defined in
-<xref section="3.3" sectionFormat="of" target="I-D.ietf-mls-extensions"/>, unless the specific application defines another
+            <t indent="3"><strong>Recommendation:</strong> Use the content mechanism defined in
+<xref target="I-D.ietf-mls-extensions"/>, unless the specific application defines another
 mechanism that more appropriately addresses the same requirements for that
 application of MLS.
 
