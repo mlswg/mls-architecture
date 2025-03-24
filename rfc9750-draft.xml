@@ -594,7 +594,7 @@ more Proposals. For instance, Alice could send a Commit with the Proposal
 Add(Bob) embedded to add Bob to the group. However, there are situations in
 which one client might send a proposal and another might send the commit. For
 instance, Bob might wish to remove himself from the group and send a Remove
-Proposal to do so (see <xref section="12.1.3" sectionFormat="of" target="RFC9420"/>). Because Bob cannot send
+proposal to do so (see <xref section="12.1.3" sectionFormat="of" target="RFC9420"/>). Because Bob cannot send
 the Commit, an existing member must do so.  Commits can apply to multiple valid
 Proposals, in which case all the listed changes are applied.</t>
         <t>It is also possible for a Commit to apply to an empty set of Proposals,
@@ -746,7 +746,7 @@ each user for a mix of protocol versions, ciphersuites, and end-user devices.</t
         <t>When a client wishes to establish a group or add clients to a group, it first
 contacts the DS to request KeyPackages for each other client,
 authenticates the KeyPackages using the signature keys, includes the KeyPackages
-in Add Proposals, and encrypts the information needed to join the group
+in Add proposals, and encrypts the information needed to join the group
 (the <em>GroupInfo</em> object) with an ephemeral key; it then separately encrypts the
 ephemeral key with the public encryption key (<tt>init_key</tt>) from each KeyPackage.
 When a client requests a KeyPackage in order to add a user to a group, the
@@ -1103,25 +1103,8 @@ to perform operations. However, every service/infrastructure has control over
 policies applied to its own clients. Applications managing MLS clients can be
 configured to allow for specific group operations. On the one hand, an
 application could decide that a group administrator will be the only member to
-perform add and remove operations. On the other hand, in many settings such as
+perform Add and Remove operations. On the other hand, in many settings such as
 open discussion forums, joining can be allowed for anyone.
-
-<!-- [rfced] Section 6.4:
-
-a) We see "add and remove operations" here but "Remove Proposal" in
-Section 3.6 and "Remove group operation" in Section 8.3.1.3.  Should
-"add and remove operations" be changed to "Add and Remove operations"?
-
-Original:
- On the one hand, an application could
- decide that a group administrator will be the only member to perform
- add and remove operations.
-
-b) Regarding "Remove Proposal" and "Add Proposal" as used in this
-document:  RFC 9420 uses "Remove proposal" and "Add proposal" in its
-text.  Would you like to use lowercase "proposal" in this document
-per RFC 9420? -->
-
 </t>
         <t>While MLS Application messages are always encrypted,
 MLS handshake messages can be sent either encrypted (in an MLS
