@@ -1057,10 +1057,10 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    for groups with multiple members who may each be offline at
    unpredictable times.
 
-      *Recommendation:* Use the default content mechanism defined in
-      Section 3.3 of [EXTENSIONS], unless the specific application
-      defines another mechanism that more appropriately addresses the
-      same requirements for that application of MLS.
+      *Recommendation:* Use the content mechanism defined in
+      [EXTENSIONS], unless the specific application defines another
+      mechanism that more appropriately addresses the same requirements
+      for that application of MLS.
 
    The MLS framing for application messages also provides a field where
    clients can send information that is authenticated but not encrypted.
