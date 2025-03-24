@@ -22,8 +22,8 @@ Abstract
    The Messaging Layer Security (MLS) protocol (RFC 9420) provides a
    group key agreement protocol for messaging applications.  MLS is
    meant to protect against eavesdropping, tampering, and message
-   forgery, and to provide Forward Secrecy (FS) and Post-Compromise
-   Security (PCS).
+   forgery, and to provide forward secrecy (FS) and post-compromise
+   security (PCS).
 
    This document describes the architecture for using MLS in a general
    secure group messaging infrastructure and defines the security goals
@@ -254,15 +254,14 @@ Table of Contents
       clients as well as various existing PKI roles (e.g., Certification
       Authorities).
 
-   It is important to note that the Authentication Service can be
-   completely abstract in the case of a Service Provider which allows
-   MLS clients to generate, distribute, and validate credentials
-   themselves.  As with the AS, the Delivery Service can be completely
-   abstract if users are able to distribute credentials and messages
-   without relying on a central Delivery Service (as in a peer-to-peer
-   system).  Note, though, that in such scenarios, clients will need to
-   implement logic that assures the delivery properties required of the
-   DS (see Section 5.2).
+   It is important to note that the AS can be completely abstract in the
+   case of a Service Provider which allows MLS clients to generate,
+   distribute, and validate credentials themselves.  As with the AS, the
+   DS can be completely abstract if users are able to distribute
+   credentials and messages without relying on a central DS (as in a
+   peer-to-peer system).  Note, though, that in such scenarios, clients
+   will need to implement logic that assures the delivery properties
+   required of the DS (see Section 5.2).
 
    Figure 1 shows the relationship of these concepts, with three clients
    and one group, and clients 2 and 3 being part of the group and client
@@ -349,11 +348,11 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
       material that includes the secret keying information necessary to
       join the group.
 
-   She sends both of these messages to the Delivery Service, which is
-   responsible for sending them to the appropriate people.  Note that
-   the security of MLS does not depend on the DS forwarding the Welcome
-   message only to Bob, as it is encrypted for him; it is simply not
-   necessary for other group members to receive it.
+   She sends both of these messages to the DS, which is responsible for
+   sending them to the appropriate people.  Note that the security of
+   MLS does not depend on the DS forwarding the Welcome message only to
+   Bob, as it is encrypted for him; it is simply not necessary for other
+   group members to receive it.
 
 3.4.  Step 4: Adding Charlie to the Group
 
@@ -539,25 +538,24 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    *  Routing MLS messages among clients.
 
-   While MLS depends on correct behavior by the Authentication Service
-   in order to provide endpoint authentication and hence confidentiality
-   of the group key, these properties do not depend on correct behavior
-   by the DS; even a malicious DS cannot add itself to groups or recover
-   the group key.  However, depending precisely on how MLS is used, the
-   DS may be able to determine group membership or prevent changes to
-   the group from taking place (e.g., by blocking group change
-   messages).
+   While MLS depends on correct behavior by the AS in order to provide
+   endpoint authentication and hence confidentiality of the group key,
+   these properties do not depend on correct behavior by the DS; even a
+   malicious DS cannot add itself to groups or recover the group key.
+   However, depending precisely on how MLS is used, the DS may be able
+   to determine group membership or prevent changes to the group from
+   taking place (e.g., by blocking group change messages).
 
 5.1.  Key Storage and Retrieval
 
    Upon joining the system, each client stores its initial cryptographic
-   key material with the Delivery Service.  This key material, called a
-   KeyPackage, advertises the functional abilities of the client such as
-   supported protocol versions, supported extensions, and the following
+   key material with the DS.  This key material, called a KeyPackage,
+   advertises the functional abilities of the client such as supported
+   protocol versions, supported extensions, and the following
    cryptographic information:
 
-   *  A credential from the Authentication Service attesting to the
-      binding between the identity and the client's signature key.
+   *  A credential from the AS attesting to the binding between the
+      identity and the client's signature key.
 
    *  The client's asymmetric encryption public key.
 
@@ -571,28 +569,28 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    ciphersuites, and end-user devices.
 
    When a client wishes to establish a group or add clients to a group,
-   it first contacts the Delivery Service to request KeyPackages for
-   each other client, authenticates the KeyPackages using the signature
-   keys, includes the KeyPackages in Add Proposals, and encrypts the
+   it first contacts the DS to request KeyPackages for each other
+   client, authenticates the KeyPackages using the signature keys,
+   includes the KeyPackages in Add Proposals, and encrypts the
    information needed to join the group (the _GroupInfo_ object) with an
    ephemeral key; it then separately encrypts the ephemeral key with the
    public encryption key (init_key) from each KeyPackage.  When a client
-   requests a KeyPackage in order to add a user to a group, the Delivery
-   Service should provide the minimum number of KeyPackages necessary to
-   satisfy the request.  For example, if the request specifies the MLS
-   version, the DS might provide one KeyPackage per supported
-   ciphersuite, even if it has multiple such KeyPackages to enable the
-   corresponding client to be added to multiple groups before needing to
-   upload more fresh KeyPackages.
+   requests a KeyPackage in order to add a user to a group, the DS
+   should provide the minimum number of KeyPackages necessary to satisfy
+   the request.  For example, if the request specifies the MLS version,
+   the DS might provide one KeyPackage per supported ciphersuite, even
+   if it has multiple such KeyPackages to enable the corresponding
+   client to be added to multiple groups before needing to upload more
+   fresh KeyPackages.
 
    In order to avoid replay attacks and provide forward secrecy for
    messages sent using the initial keying material, KeyPackages are
    intended to be used only once, and init_key is intended to be deleted
-   by the client after decryption of the Welcome message.  The Delivery
-   Service is responsible for ensuring that each KeyPackage is only used
-   to add its client to a single group, with the possible exception of a
-   "last resort" KeyPackage that is specially designated by the client
-   to be used multiple times.  Clients are responsible for providing new
+   by the client after decryption of the Welcome message.  The DS is
+   responsible for ensuring that each KeyPackage is only used to add its
+   client to a single group, with the possible exception of a "last
+   resort" KeyPackage that is specially designated by the client to be
+   used multiple times.  Clients are responsible for providing new
    KeyPackages as necessary in order to minimize the chance that the
    "last resort" KeyPackage will be used.
 
@@ -617,33 +615,32 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
 5.2.  Delivery of Messages
 
-   The main responsibility of the Delivery Service is to ensure delivery
-   of messages.  Some MLS messages need only be delivered to specific
-   clients (e.g., a Welcome message initializing a new member's state),
-   while others need to be delivered to all the members of a group.  The
-   Delivery Service may enable the latter delivery pattern via unicast
-   channels (sometimes known as "client fanout"), broadcast channels
-   ("server fanout"), or a mix of both.
+   The main responsibility of the DS is to ensure delivery of messages.
+   Some MLS messages need only be delivered to specific clients (e.g., a
+   Welcome message initializing a new member's state), while others need
+   to be delivered to all the members of a group.  The DS may enable the
+   latter delivery pattern via unicast channels (sometimes known as
+   "client fanout"), broadcast channels ("server fanout"), or a mix of
+   both.
 
-   For the most part, MLS does not require the Delivery Service to
-   deliver messages in any particular order.  Applications can set
-   policies that control their tolerance for out-of-order messages (see
-   Section 7), and messages that arrive significantly out of order can
-   be dropped without otherwise affecting the protocol.  There are two
-   exceptions to this.  First, Proposal messages should all arrive
-   before the Commit that references them.  Second, because an MLS group
-   has a linear history of epochs, the members of the group must agree
-   on the order in which changes are applied.  Concretely, the group
-   must agree on a single MLS Commit message that ends each epoch and
-   begins the next one.
+   For the most part, MLS does not require the DS to deliver messages in
+   any particular order.  Applications can set policies that control
+   their tolerance for out-of-order messages (see Section 7), and
+   messages that arrive significantly out of order can be dropped
+   without otherwise affecting the protocol.  There are two exceptions
+   to this.  First, Proposal messages should all arrive before the
+   Commit that references them.  Second, because an MLS group has a
+   linear history of epochs, the members of the group must agree on the
+   order in which changes are applied.  Concretely, the group must agree
+   on a single MLS Commit message that ends each epoch and begins the
+   next one.
 
    In practice, there's a realistic risk of two members generating
    Commit messages at the same time, based on the same epoch, and both
    attempting to send them to the group at the same time.  The extent to
    which this is a problem, and the appropriate solution, depend on the
-   design of the Delivery Service.  Per the CAP theorem [CAPBR], there
-   are two general classes of distributed systems that the Delivery
-   Service might fall into:
+   design of the DS.  Per the CAP theorem [CAPBR], there are two general
+   classes of distributed systems that the DS might fall into:
 
    *  Consistent and Partition-tolerant, or Strongly Consistent,
       systems, which can provide a globally consistent view of data but
@@ -656,64 +653,61 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    Strategies for sequencing messages in strongly and eventually
    consistent systems are described in the next two subsections.  Most
-   Delivery Services will use the Strongly Consistent paradigm, but this
-   remains a choice that can be handled in coordination with the client
-   and advertised in the KeyPackages.
+   DSs will use the Strongly Consistent paradigm, but this remains a
+   choice that can be handled in coordination with the client and
+   advertised in the KeyPackages.
 
-   However, note that a malicious Delivery Service could also reorder
-   messages or provide an inconsistent view to different users.  The
-   "generation" counter in MLS messages provides per-sender loss
-   detection and ordering that cannot be manipulated by the DS, but this
-   does not provide complete protection against partitioning.  A DS can
-   cause a partition in the group by partitioning key exchange messages;
-   this can be detected only by out-of-band comparison (e.g., confirming
-   that all clients have the same epoch_authenticator value).  A
-   mechanism for more robust protections is discussed in [EXTENSIONS].
+   However, note that a malicious DS could also reorder messages or
+   provide an inconsistent view to different users.  The "generation"
+   counter in MLS messages provides per-sender loss detection and
+   ordering that cannot be manipulated by the DS, but this does not
+   provide complete protection against partitioning.  A DS can cause a
+   partition in the group by partitioning key exchange messages; this
+   can be detected only by out-of-band comparison (e.g., confirming that
+   all clients have the same epoch_authenticator value).  A mechanism
+   for more robust protections is discussed in [EXTENSIONS].
 
-   Other forms of Delivery Service misbehavior are still possible that
-   are not easy to detect.  For instance, a Delivery Service can simply
-   refuse to relay messages to and from a given client.  Without some
-   sort of side information, other clients cannot generally detect this
-   form of Denial-of-Service (DoS) attack.
+   Other forms of DS misbehavior are still possible that are not easy to
+   detect.  For instance, a DS can simply refuse to relay messages to
+   and from a given client.  Without some sort of side information,
+   other clients cannot generally detect this form of Denial-of-Service
+   (DoS) attack.
 
 5.2.1.  Strongly Consistent
 
-   With this approach, the Delivery Service ensures that some types of
-   incoming messages have a linear order and all members agree on that
-   order.  The Delivery Service is trusted to break ties when two
-   members send a Commit message at the same time.
+   With this approach, the DS ensures that some types of incoming
+   messages have a linear order and all members agree on that order.
+   The Delivery Service is trusted to break ties when two members send a
+   Commit message at the same time.
 
-   As an example, there could be an "ordering server" Delivery Service
-   that broadcasts all messages received to all users and ensures that
-   all clients see messages in the same order.  This would allow clients
-   to only apply the first valid Commit for an epoch and ignore
-   subsequent Commits.  Clients that send a Commit would then wait to
-   apply it until it is broadcast back to them by the Delivery Service,
-   assuming that they do not receive another Commit first.
+   As an example, there could be an "ordering server" DS that broadcasts
+   all messages received to all users and ensures that all clients see
+   messages in the same order.  This would allow clients to only apply
+   the first valid Commit for an epoch and ignore subsequent Commits.
+   Clients that send a Commit would then wait to apply it until it is
+   broadcast back to them by the Delivery Service, assuming that they do
+   not receive another Commit first.
 
-   Alternatively, the Delivery Service can rely on the epoch and
-   content_type fields of an MLSMessage to provide an order only to
-   handshake messages, and possibly even filter or reject redundant
-   Commit messages proactively to prevent them from being broadcast.
-   There is some risk associated with filtering; this is discussed
-   further in Section 5.3.
+   Alternatively, the DS can rely on the epoch and content_type fields
+   of an MLSMessage to provide an order only to handshake messages, and
+   possibly even filter or reject redundant Commit messages proactively
+   to prevent them from being broadcast.  There is some risk associated
+   with filtering; this is discussed further in Section 5.3.
 
 5.2.2.  Eventually Consistent
 
-   With this approach, the Delivery Service is built in a way that may
-   be significantly more available or performant than a strongly
-   consistent system, but where it offers weaker consistency guarantees.
-   Messages may arrive to different clients in different orders and with
-   varying amounts of latency, which means clients are responsible for
+   With this approach, the DS is built in a way that may be
+   significantly more available or performant than a strongly consistent
+   system, but where it offers weaker consistency guarantees.  Messages
+   may arrive to different clients in different orders and with varying
+   amounts of latency, which means clients are responsible for
    reconciliation.
 
-   This type of Delivery Service might arise, for example, when group
-   members are sending each message to each other member individually or
-   when a distributed peer-to-peer network is used to broadcast
-   messages.
+   This type of DS might arise, for example, when group members are
+   sending each message to each other member individually or when a
+   distributed peer-to-peer network is used to broadcast messages.
 
-   Upon receiving a Commit from the Delivery Service, clients can
-   either:
+   Upon receiving a Commit from the DS, clients can either:
 
    1.  Pause sending new messages for a short amount of time to account
        for a reasonable degree of network latency and see if any other
@@ -732,8 +726,8 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
        provides forward secrecy.
 
    If the Commit references an unknown proposal, group members may need
-   to solicit the Delivery Service or other group members individually
-   for the contents of the proposal.
+   to solicit the DS or other group members individually for the
+   contents of the proposal.
 
 5.2.3.  Welcome Messages
 
@@ -785,15 +779,14 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    while the members think the epoch is n, and as a result, the group is
    stuck -- no member can send a Commit that the DS will accept.
 
-   Such "desynchronization" problems can arise even when the Delivery
-   Service takes no stance on which Commit is "correct" for an epoch.
-   The DS can enable clients to choose between Commits, for example by
-   providing Commits in the order received and allowing clients to
-   reject any Commits that violate their view of the group's policies.
-   As such, all honest and correctly implemented clients will arrive at
-   the same "first valid Commit" and choose to process it.  Malicious or
-   buggy clients that process a different Commit will end up in a forked
-   view of the group.
+   Such "desynchronization" problems can arise even when the DS takes no
+   stance on which Commit is "correct" for an epoch.  The DS can enable
+   clients to choose between Commits, for example by providing Commits
+   in the order received and allowing clients to reject any Commits that
+   violate their view of the group's policies.  As such, all honest and
+   correctly implemented clients will arrive at the same "first valid
+   Commit" and choose to process it.  Malicious or buggy clients that
+   process a different Commit will end up in a forked view of the group.
 
    When these desynchronizations happen, the application may choose to
    take action to restore the functionality of the group.  These actions
@@ -978,15 +971,14 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 6.5.  Handling Authentication Failures
 
    Within an MLS group, every member is authenticated to every other
-   member by means of credentials issued and verified by the
-   Authentication Service.  MLS does not prescribe what actions, if any,
-   an application should take in the event that a group member presents
-   an invalid credential.  For example, an application may require such
-   a member to be immediately evicted or may allow some grace period for
-   the problem to be remediated.  To avoid operational problems, it is
-   important for all clients in a group to have a consistent view of
-   which credentials in a group are valid, and how to respond to invalid
-   credentials.
+   member by means of credentials issued and verified by the AS.  MLS
+   does not prescribe what actions, if any, an application should take
+   in the event that a group member presents an invalid credential.  For
+   example, an application may require such a member to be immediately
+   evicted or may allow some grace period for the problem to be
+   remediated.  To avoid operational problems, it is important for all
+   clients in a group to have a consistent view of which credentials in
+   a group are valid, and how to respond to invalid credentials.
 
       *Recommendation:* Have a uniform credential validation process to
       ensure that all group members evaluate other members' credentials
@@ -1381,15 +1373,15 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    In general, we do not consider DoS resistance to be the
    responsibility of the protocol.  However, it should not be possible
-   for anyone aside from the Delivery Service to perform a trivial DoS
-   attack from which it is hard to recover.  This can be achieved
-   through the secure transport layer.
+   for anyone aside from the DS to perform a trivial DoS attack from
+   which it is hard to recover.  This can be achieved through the secure
+   transport layer.
 
    In the centralized setting, DoS protection can typically be performed
    by using tickets or cookies which identify users to a service for a
    certain number of connections.  Such a system helps in preventing
    anonymous clients from sending arbitrary numbers of group operation
-   messages to the Delivery Service or the MLS clients.
+   messages to the DS or the MLS clients.
 
       *Recommendation:* Use credentials uncorrelated with specific users
       to help prevent DoS attacks, in a privacy-preserving manner.  Note
@@ -1401,11 +1393,10 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    As noted above, MLS is designed to provide some robustness in the
    face of tampering within the secure transport, e.g., tampering by the
-   Delivery Service.  The confidentiality and authenticity properties of
-   MLS prevent the DS from reading or writing messages.  MLS also
-   provides a few tools for detecting message suppression, with the
-   caveat that message suppression cannot always be distinguished from
-   transport failure.
+   DS.  The confidentiality and authenticity properties of MLS prevent
+   the DS from reading or writing messages.  MLS also provides a few
+   tools for detecting message suppression, with the caveat that message
+   suppression cannot always be distinguished from transport failure.
 
    Each encrypted MLS message carries a per-sender incrementing
    "generation" number.  If a group member observes a gap in the
@@ -1414,12 +1405,12 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    group members to send authenticated acknowledgments of application
    messages received within a group.
 
-   As discussed in Section 5, the Delivery Service is trusted to select
-   the single Commit message that is applied in each epoch from among
-   the Commits sent by group members.  Since only one Commit per epoch
-   is meaningful, it's not useful for the DS to transmit multiple
-   Commits to clients.  The risk remains that the DS will use the
-   ability maliciously.
+   As discussed in Section 5, the DS is trusted to select the single
+   Commit message that is applied in each epoch from among the Commits
+   sent by group members.  Since only one Commit per epoch is
+   meaningful, it's not useful for the DS to transmit multiple Commits
+   to clients.  The risk remains that the DS will use the ability
+   maliciously.
 
    While it is difficult or impossible to prevent a network adversary
    from suppressing payloads in transit, in certain infrastructures such
@@ -1465,7 +1456,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
    MLS provides additional protection regarding secrecy of past messages
    and future messages.  These cryptographic security properties are
-   Forward Secrecy (FS) and Post-Compromise Security (PCS).
+   forward secrecy (FS) and post-compromise security (PCS).
 
    FS means that access to all encrypted traffic history combined with
    access to all current keying material on clients will not defeat the
@@ -1648,10 +1639,10 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    have previous Ratchet Secrets, it cannot decrypt past messages as
    long as those secrets and keys have been deleted.
 
-   Because of its Forward Secrecy guarantees, MLS will also retain
+   Because of its forward secrecy guarantees, MLS will also retain
    secrecy of all other AEAD keys generated for _other_ MLS clients,
    outside this dedicated chain of AEAD keys and nonces, even within the
-   epoch of the compromise.  MLS provides Post-Compromise Security
+   epoch of the compromise.  MLS provides post-compromise security
    against an active adaptive attacker across epochs for AEAD
    encryption, which means that as soon as the epoch is changed, if the
    attacker does not have access to more secret material they won't be
@@ -1815,18 +1806,16 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 8.4.1.1.  Privacy of the Network Connections
 
    There are many scenarios leading to communication between the
-   application on a device and the Delivery Service or the
-   Authentication Service.  In particular, when:
+   application on a device and the DS or the AS.  In particular, when:
 
-   *  The application connects to the Authentication Service to generate
-      or validate a new credential before distributing it.
+   *  The application connects to the AS to generate or validate a new
+      credential before distributing it.
 
-   *  The application fetches credentials at the Delivery Service prior
-      to creating a messaging group (one-to-one or more than two
-      clients).
+   *  The application fetches credentials at the DS prior to creating a
+      messaging group (one-to-one or more than two clients).
 
    *  The application fetches service provider information or messages
-      on the Delivery Service.
+      on the DS.
 
    *  The application sends service provider information or messages to
       the Delivery Service.
@@ -1909,11 +1898,10 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    the standpoint of privacy considerations.  In many modern messaging
    architectures, applications are using push notification mechanisms
    typically provided by OS vendors.  This is to make sure that when
-   messages are available at the Delivery Service (or via other
-   mechanisms if the DS is not a central server), the recipient
-   application on a device knows about it.  Sometimes the push
-   notification can contain the application message itself, which saves
-   a round trip with the DS.
+   messages are available at the DS (or via other mechanisms if the DS
+   is not a central server), the recipient application on a device knows
+   about it.  Sometimes the push notification can contain the
+   application message itself, which saves a round trip with the DS.
 
    To "push" this information to the device, the service provider and
    the OS infrastructures use unique per-device, per-application
@@ -1945,8 +1933,8 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
 
       *Recommendation:* If stronger privacy guarantees are needed with
       regard to the push notification provider, the client can choose to
-      periodically connect to the Delivery Service without the need of a
-      dedicated push notification infrastructure.
+      periodically connect to the DS without the need of a dedicated
+      push notification infrastructure.
 
    Applications can also consider anonymous systems for server fanout
    (for example, [Loopix]).
@@ -1975,11 +1963,11 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
       limit the ability of an adversary with no physical access to
       extract the top-level signature private key.
 
-   Note that historically some systems generate signature keys on the
-   Authentication Service and distribute the private keys to clients
-   along with their credential.  This is a dangerous practice because it
-   allows the AS or an attacker who has compromised the AS to silently
-   impersonate the client.
+   Note that historically some systems generate signature keys on the AS
+   and distribute the private keys to clients along with their
+   credential.  This is a dangerous practice because it allows the AS or
+   an attacker who has compromised the AS to silently impersonate the
+   client.
 
 8.4.3.1.  Authentication Compromise: Ghost Users and Impersonation
 
@@ -2029,9 +2017,9 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
       client should provide a log of state of the device so that the
       user can examine it.
 
-      *Recommendation:* Provide a key transparency mechanism for the
-      Authentication Service to allow public verification of the
-      credentials authenticated by this service.
+      *Recommendation:* Provide a key transparency mechanism for the AS
+      to allow public verification of the credentials authenticated by
+      this service.
 
    While the ways to handle MLS credentials are not defined by the
    protocol or the architecture documents, the MLS protocol has been
@@ -2043,13 +2031,12 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    using a QR code that can be scanned by the other parties.
 
       *Recommendation:* Provide one or more out-of-band authentication
-      mechanisms to limit the impact of an Authentication Service
-      compromise.
+      mechanisms to limit the impact of an AS compromise.
 
-   We note, again, that the Authentication Service may not be a
-   centralized system and could be realized by many mechanisms such as
-   establishing prior one-to-one deniable channels, gossiping, or using
-   trust on first use (TOFU) for credentials used by the MLS protocol.
+   We note, again, that the AS may not be a centralized system and could
+   be realized by many mechanisms such as establishing prior one-to-one
+   deniable channels, gossiping, or using trust on first use (TOFU) for
+   credentials used by the MLS protocol.
 
    Another important consideration is the ease of redistributing new
    keys on client compromise, which helps recovering security faster in
@@ -2067,7 +2054,7 @@ Welcome (Charlie) ----------------------------------------->     | Step 4
    can learn that a given client is sending the same message to a set of
    other clients.  In addition, there may be applications of MLS in
    which the group membership list is stored on some server associated
-   with the Delivery Service.
+   with the DS.
 
    While this knowledge is not a breach of the protocol's authentication
    or confidentiality guarantees, it is a serious issue for privacy.
