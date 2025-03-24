@@ -139,49 +139,6 @@ attesting to bindings between application-meaningful identifiers and the
 public key material used for authentication in the MLS protocol. The
 AS must also be able to generate credentials that encode these
 bindings and validate credentials provided by MLS clients.
-
-<!-- [rfced] Sections 2.2 and subsequent:  After the initial
-definition of "AS" in Section 2.2, we see alternating use of
-"AS" and "Authentication Service".  Would you like to use the
-abbreviation in running text after the initial definition?
-
-We have the same question for
-* "DS" and "Delivery Service"
-* "FS" and "Forward Secrecy"
-* "PCS" and "Post-Compromise Security"
-
-It seems that each of these terms is used often enough that the
-abbreviations could be used after the terms are first defined.
-
-A few examples (for "DS" and "AS"; "Delivery Services, which is
-  responsible ..." has been corrected):
- *  A Delivery Service (DS) which can receive and distribute messages
-    between group members.  In the case of group messaging, the
-    delivery service may also be responsible for acting as a
-    "broadcaster" where the sender sends a single message which is
-    then forwarded to each recipient in the group by the DS.
-...
- It is important to note that the Authentication Service can be
- completely abstract in the case of a Service Provider which allows
- MLS clients to generate, distribute, and validate credentials
- themselves.  As with the AS, the Delivery Service can be completely
- abstract if users are able to distribute credentials and messages
- without relying on a central Delivery Service (as in a peer-to-peer
- system).  Note, though, that in such scenarios, clients will need to
- implement logic that assures the delivery properties required of the
- DS (see Section 5.2).
-...
- She sends both of these messages to the Delivery Services, which is
- responsible for sending them to the appropriate people.  Note that
- the security of MLS does not depend on the DS forwarding the Welcome
- message only to Bob, as it is encrypted for him; it is simply not
- necessary for other group members to receive it.
-...
- The Authentication Service design is left to the infrastructure
- designers.  In most designs, a compromised AS is a serious matter, as
- the AS can serve incorrect or attacker-provided identities to
- clients. -->
-
 </t>
           </li>
           <li>
@@ -755,38 +712,6 @@ satisfy the request.  For example, if the request specifies the MLS version, the
 DS might provide one KeyPackage per supported ciphersuite, even if it has
 multiple such KeyPackages to enable the corresponding client to be added to
 multiple groups before needing to upload more fresh KeyPackages.
-
-<!-- [rfced] Section 5.1:  The only published RFC to date that
-mentions "init_key" is Normative Reference RFC 9420.  May we cite it
-here for ease of the reader?
-
-This question also applies to "epoch_authenticator" and any other
-parameters mentioned in this document and defined in RFC 9420.
-
-Alternatively, we could add this sentence to the end of the
-Introduction section:
-
- It is expected that readers are familiar with the terms used in
- [RFC9420].
-
-Original:
- When a client wishes to establish a group or add clients to a group,
- it first contacts the Delivery Service to request KeyPackages for
- each other client, authenticates the KeyPackages using the signature
- keys, includes the KeyPackages in Add Proposals, encrypts the
- information needed to join the group (the _GroupInfo_ object) with an
- ephemeral key, then separately encrypts the ephemeral key with the
- init_key from each KeyPackage.
-
-Suggested:
- When a client wishes to establish a group or add clients to a group,
- it first contacts the Delivery Service to request KeyPackages for
- each other client, authenticates the KeyPackages using the signature
- keys, includes the KeyPackages in Add Proposals, and encrypts the
- information needed to join the group (the _GroupInfo_ object) with an
- ephemeral key; it then separately encrypts the ephemeral key with
- the init_key [RFC9420] from each KeyPackage. -->
-
 </t>
         <t>In order to avoid replay attacks and provide forward secrecy for messages sent
 using the initial keying material, KeyPackages are intended to be used only
@@ -809,12 +734,6 @@ has been used is updating leaf keys as early as possible.</t>
             <t indent="3"><strong>Recommendation:</strong> Ensure that clients delete the private component
 of their <tt>init_key</tt> after processing a Welcome message, or after the
 rotation of "last resort" KeyPackage.</t>
-
-<!-- [rfced] Sections 5.1 and subsequent:  Do you think other documents may want to refer to specific recommendations in this document?  We wonder whether it would be helpful to number the recommendations (e.g., Recommendation 1, or Req 1).
-
-In addition, as <strong> is used for RECOMMENDATION, may we change this to Recommendation?  The use of capitalization seems unnecessary since it's already bold.
--->
-
         <t>Overall, it needs to be noted that key packages need to be updated when
 signature keys are changed.</t>
       </section>
@@ -1068,15 +987,6 @@ updates performed in current groups.</t>
         <t>Applications can strengthen connectivity among parallel groups by requiring
 periodic key updates from a user across all groups in which they have
 membership.
-
-<!-- [rfced] Section 6.2:  Does "they have" refer to "a user" (in
-which case "they have" should be "the user has") or something else?
-
-Original:
- Applications can strengthen connectivity among parallel groups by
- requiring periodic key updates from a user across all groups in which
- they have membership. -->
-
 </t>
         <t>MLS provides a pre-shared key (PSK) that can be used to link healing properties
 among parallel groups.  For example, suppose a common member M of two groups A
@@ -1122,23 +1032,6 @@ else being equal, using encrypted handshake messages provides stronger
 privacy properties than using unencrypted handshake messages,
 as it prevents intermediaries from learning about the structure
 of the group.
-
-<!-- [rfced] Section 6.4:  It is not clear what "for example" refers
-to in this sentence.  If the suggested text is not correct, please
-clarify.
-
-Original:
- Applications may be designed
- such that intermediaries need to see handshake messages, for example
- to enforce policy on which commits are allowed, or to provide MLS
- ratchet tree data in a central location.
-
-Suggested (removing the comma after "allowed"):
- Applications may be designed
- such that intermediaries need to see handshake messages - for
- example, to enforce policy on which commits are allowed or to
- provide MLS ratchet tree data in a central location. -->
-
 </t>
         <t>If handshake messages are encrypted, any access
 control policies must be applied at the client, so the application must ensure
@@ -1226,18 +1119,6 @@ offline at unpredictable times.</t>
 <xref target="I-D.ietf-mls-extensions"/>, unless the specific application defines another
 mechanism that more appropriately addresses the same requirements for that
 application of MLS.
-
-<!-- [rfced] Section 6.9:  We do not see the word "default" or any
-indication of a default mechanism in Section 3.3 of
-[I-D.ietf-mls-extensions].  Please confirm that the text and citation
-are correct and will be clear to readers.
-
-Original:
- *RECOMMENDATION:* Use the default content mechanism defined in
- Section 3.3 of [I-D.ietf-mls-extensions], unless the specific
- application defines another mechanism which more appropriately
- addresses the same requirements for that application of MLS. -->
-
 </t>
         <t>The MLS framing for application messages also provides a field where clients can
 send information that is authenticated but not encrypted.  Such information can
@@ -1282,23 +1163,6 @@ need to make compatible decisions. This section lists all of the dependencies of
 an MLS deployment that are external to the protocol specification, but would
 still need to be aligned within a given MLS deployment, or for two deployments
 to potentially interoperate.
-
-<!-- [rfced] Section 7:  This sentence is difficult to parse.  To
-what does ", or for two deployments to potentially interoperate"
-refer?  If the suggested text is not correct, please clarify.
-
-Original:
- This section lists all of the dependencies of an MLS
- deployment that are external to the protocol specification, but would
- still need to be aligned within a given MLS deployment, or for two
- deployments to potentially interoperate.
-
-Suggested:
- This section lists all of the dependencies of an MLS
- deployment that are external to the protocol specification but would
- still need to be aligned within a given MLS deployment so that two
- deployments can potentially interoperate. -->
-
 </t>
       <t>The protocol has a built-in ability to negotiate protocol versions,
 ciphersuites, extensions, credential types, and additional proposal types. For
@@ -1691,17 +1555,6 @@ it is later compromised.</t>
           <t>MLS partially defends against this problem by active members including
 new keying material. However, not much can be done on the inactive side especially in the
 case where the client has not processed messages.
-
-<!-- [rfced] Section 8.2.2:  We had trouble following this sentence.
-Does "by active members including freshness" mean "by active members
-ensuring freshness of data" or something else?
-
-Original:
- MLS partially defends against this problem by active members
- including freshness, however not much can be done on the inactive
- side especially in the case where the client has not processed
- messages. -->
-
 </t>
               <t indent="3"><strong>Recommendation:</strong> Mandate key updates from clients that are not otherwise
 sending messages and evict clients that are idle for too long.</t>
@@ -1753,15 +1606,6 @@ impair the ability of the user to recover from a compromise of one of their
 devices. In particular, state synchronization may make it easier for an attacker
 to use one compromised device to establish exclusive control of a user's
 account, locking them out entirely and preventing them from recovering.
-
-<!-- [rfced] Section 8.2.4:  Should "the clients' state remain" be
-"the clients' state remains" or "the clients' states remain"?
-
-Original:
- However, the application would need
- to provide a synchronization mechanism so that the clients' state
- remain consistent across changes to the MLS group. -->
-
 </t>
         </section>
       </section>
