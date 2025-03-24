@@ -1111,8 +1111,8 @@ that content over the lifetime of an MLS group. In many applications, this means
 managing format migrations for groups with multiple members who may each be
 offline at unpredictable times.
 
-> **Recommendation:** Use the default content mechanism defined in
-> {{Section 3.3 of EXTENSIONS}}, unless the specific application defines another
+> **Recommendation:** Use the content mechanism defined in
+> {{EXTENSIONS}}, unless the specific application defines another
 > mechanism that more appropriately addresses the same requirements for that
 > application of MLS.
 
