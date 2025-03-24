@@ -465,7 +465,7 @@ up his initial keying material. She then generates two messages:</t>
 that adds Bob to the group.</t>
           </li>
           <li>
-            <t>A <em>Welcome</em> message just to Bob encrypted with his initial keying material that
+            <t>A Welcome message just to Bob encrypted with his initial keying material that
 includes the secret keying information necessary to join the group.</t>
           </li>
 	</ul>
@@ -486,7 +486,7 @@ up his initial keying material and then generates two messages:</t>
 Charlie to the group.</t>
           </li>
           <li>
-            <t>A <em>Welcome</em> message just to Charlie encrypted with his initial keying material that
+            <t>A Welcome message just to Charlie encrypted with his initial keying material that
 includes the secret keying information necessary to join the group.</t>
           </li>
 	</ul>

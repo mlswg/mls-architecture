@@ -260,7 +260,7 @@ While the recommendations of this document are not mandatory to follow in order
 to interoperate at the protocol level, they affect the overall security
 guarantees that are achieved by a messaging application. This is especially true
 in the case of active adversaries that are able to compromise clients, the
-delivery service, or the authentication service.
+Delivery Service (DS), or the Authentication Service (AS).
 
 --- middle
 
@@ -307,7 +307,7 @@ A _Proposal_ message proposes
 a change to be made in the next epoch, such as adding or removing a member.
 A _Commit_ message initiates a new epoch by instructing members of the group to
 implement a collection of proposals. Proposals and Commits are collectively
-called _Handshake messages_.
+called _handshake messages_.
 A _KeyPackage_ provides keys that can be used to add the client to a group,
 including its LeafNode, and _Signature Key_.
 A _Welcome_ message provides a new member to the group with the information to
@@ -316,7 +316,7 @@ initialize their state for the epoch in which they were added.
 Of course most (but not all) applications use MLS to send encrypted group messages.
 An _application message_ is an MLS message with an arbitrary application payload.
 
-Finally, a _PublicMessage_ contains an integrity-protected MLS Handshake message,
+Finally, a _PublicMessage_ contains an integrity-protected MLS handshake message,
 while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
 or application message.
 
@@ -362,7 +362,7 @@ may even involve some action by users.  For example:
   existing PKI roles (e.g., Certification Authorities).
 
 It is important to note that the AS can be
-completely abstract in the case of a Service Provider which allows MLS
+completely abstract in the case of a service provider which allows MLS
 clients to generate, distribute, and validate credentials themselves.
 As with the AS, the DS can be completely abstract if
 users are able to distribute credentials and messages without relying
@@ -417,17 +417,17 @@ Initial Keying Material ----------------------------------->     |
 Get Bob Initial Keying Material --------------------------->     |
 <------------------------------- Bob Initial Keying Material     |
 Add Bob to Group ------------------------------------------>     | Step 3
-Welcome (Bob) --------------------------------------------->     |
+Welcome(Bob) ---------------------------------------------->     |
           <-------------------------------- Add Bob to Group     |
-          <----------------------------------- Welcome (Bob)     |
+          <------------------------------------ Welcome(Bob)     |
 
 Get Charlie Initial Keying Material ----------------------->     |
 <--------------------------- Charlie Initial Keying Material     |
 Add Charlie to Group -------------------------------------->     |
-Welcome (Charlie) ----------------------------------------->     | Step 4
+Welcome(Charlie) ------------------------------------------>     | Step 4
           <---------------------------- Add Charlie to Group     |
                      <----------------- Add Charlie to Group     |
-                     <-------------------- Welcome (Charlie)     |
+                     <--------------------- Welcome(Charlie)     |
 ~~~
 {: #fig-group-formation-example title="Group Formation Example"}
 
@@ -456,7 +456,7 @@ up his initial keying material. She then generates two messages:
 * A message to the entire group (which at this point is just her and Bob)
   that adds Bob to the group.
 
-* A _Welcome_ message just to Bob encrypted with his initial keying material that
+* A Welcome message just to Bob encrypted with his initial keying material that
   includes the secret keying information necessary to join the group.
 
 She sends both of these messages to the DS, which is responsible
@@ -474,7 +474,7 @@ up his initial keying material and then generates two messages:
 * A message to the entire group (consisting of her, Bob, and Charlie) adding
   Charlie to the group.
 
-* A _Welcome_ message just to Charlie encrypted with his initial keying material that
+* A Welcome message just to Charlie encrypted with his initial keying material that
   includes the secret keying information necessary to join the group.
 
 At the completion of this process, we have a group with Alice, Bob, and Charlie,
@@ -552,7 +552,7 @@ determine how to present this situation to users. For instance, it may render
 messages to and from a given user identically regardless of which client they
 are associated with, or it may choose to distinguish them.
 
-When a client is part of a Group, it is called a Member.  A group in MLS is
+When a client is part of a group, it is called a member.  A group in MLS is
 defined as the set of clients that have knowledge of the shared group secret
 established in the group key establishment phase.  Note that until a client has
 been added to the group and contributed to the group secret in a manner
@@ -745,7 +745,7 @@ DS might fall into:
 
 Strategies for sequencing messages in strongly and eventually consistent systems
 are described in the next two subsections. Most DSs will use the
-Strongly Consistent paradigm, but this remains a choice that can be handled in
+strongly consistent paradigm, but this remains a choice that can be handled in
 coordination with the client and advertised in the KeyPackages.
 
 However, note that a malicious DS could also reorder messages or
@@ -1002,7 +1002,7 @@ application could decide that a group administrator will be the only member to
 perform Add and Remove operations. On the other hand, in many settings such as
 open discussion forums, joining can be allowed for anyone.
 
-While MLS Application messages are always encrypted,
+While MLS application messages are always encrypted,
 MLS handshake messages can be sent either encrypted (in an MLS
 PrivateMessage) or unencrypted (in an MLS PublicMessage). Applications
 may be designed such that intermediaries need to see handshake
@@ -1369,7 +1369,7 @@ cryptographically binding it to the message.
 > **Recommendation:** Use the "Additional Authenticated Data" field of the
 > PrivateMessage instead of using other unauthenticated means of sending
 > metadata throughout the infrastructure. If the data should be kept private, the
-> infrastructure should use encrypted Application messages instead.
+> infrastructure should use encrypted application messages instead.
 
 ### Metadata Protection for Unencrypted Group Operations
 
@@ -1579,16 +1579,16 @@ the following compromise scenarios:
 
 ### Compromise of Symmetric Keying Material {#symmetric-key-compromise}
 
-As described above, each MLS epoch creates a new Group Secret.
+As described above, each MLS epoch creates a new group Secret.
 
-These group secrets are then used to create a per-sender Ratchet Secret, which
+These group secrets are then used to create a per-sender ratchet secret, which
 in turn is used to create a per-sender
 Authenticated Encryption with Associated Data (AEAD) {{!RFC5116}}
-key that is then used to encrypt MLS Plaintext messages.  Each time a message is
-sent, the Ratchet Secret is used to create a new Ratchet Secret and a new
+key that is then used to encrypt MLS plaintext messages.  Each time a message is
+sent, the ratchet secret is used to create a new ratchet secret and a new
 corresponding AEAD key.  Because of the properties of the key derivation
-function, it is not possible to compute a Ratchet Secret from its corresponding
-AEAD key or compute Ratchet Secret n-1 from Ratchet Secret n.
+function, it is not possible to compute a ratchet secret from its corresponding
+AEAD key or compute ratchet secret n-1 from ratchet secret n.
 
 Below, we consider the compromise of each of these pieces of keying material in
 turn, in ascending order of severity.  While this is a limited kind of
@@ -1598,22 +1598,22 @@ only part of the memory leaks to the adversary.
 #### Compromise of AEAD Keys
 
 In some circumstances, adversaries may have access to specific AEAD keys and
-nonces which protect an Application message or a Group Operation message. Compromise of
+nonces which protect an application message or a group Operation message. Compromise of
 these keys allows the attacker to decrypt the specific message encrypted with
-that key but no other; because the AEAD keys are derived from the Ratchet
-Secret, it cannot generate the next Ratchet Secret and hence not the next AEAD
+that key but no other; because the AEAD keys are derived from the ratchet
+secret, it cannot generate the next ratchet secret and hence not the next AEAD
 key.
 
-In the case of an Application message, an AEAD key compromise means that the
+In the case of an application message, an AEAD key compromise means that the
 encrypted application message will be leaked as well as the signature over that
 message. This means that the compromise has both confidentiality and privacy
 implications on the future AEAD encryptions of that chain.  In the case of a
-Group Operation message, only the privacy is affected, as the signature is
+group Operation message, only the privacy is affected, as the signature is
 revealed, because the secrets themselves are protected by Hybrid Public Key Encryption
 (HPKE).  Note
 that under that compromise scenario, authentication is not affected in either of
 these cases.  As every member of the group can compute the AEAD keys for all the
-chains (they have access to the Group Secrets) in order to send and receive
+chains (they have access to the group secrets) in order to send and receive
 messages, the authentication provided by the AEAD encryption layer of the common
 framing mechanism is weak. Successful decryption of an AEAD encrypted message
 only guarantees that some member of the group sent the message.
@@ -1625,10 +1625,10 @@ forms of symmetric key compromise described in {{symmetric-key-compromise}}.
 
 #### Compromise of Ratchet Secret Material
 
-When a Ratchet Secret is compromised, the adversary can compute both the current
+When a ratchet secret is compromised, the adversary can compute both the current
 AEAD keys for a given sender and any future keys for that sender in this
 epoch. Thus, it can decrypt current and future messages by the corresponding
-sender. However, because it does not have previous Ratchet Secrets, it cannot
+sender. However, because it does not have previous ratchet secrets, it cannot
 decrypt past messages as long as those secrets and keys have been deleted.
 
 Because of its forward secrecy guarantees, MLS will also retain secrecy of all
@@ -1641,14 +1641,14 @@ access any protected messages from future epochs.
 
 #### Compromise of the Group Secrets of a Single Group for One or More Group Epochs
 
-An adversary who gains access to a set of Group secrets -- as when a member of the
+An adversary who gains access to a set of group secrets -- as when a member of the
 group is compromised -- is significantly more powerful. In this section, we
 consider the case where the signature keys are not compromised. This can occur
 if the attacker has access to part of the memory containing the group secrets
 but not to the signature keys which might be stored in a secure enclave.
 
 In this scenario, the adversary gains the ability to compute any number of
-Ratchet Secrets for the epoch and their corresponding AEAD encryption keys and
+ratchet secrets for the epoch and their corresponding AEAD encryption keys and
 thus can encrypt and decrypt all messages for the compromised epochs.
 
 If the adversary is passive, it is expected from the PCS properties of the MLS
@@ -1813,7 +1813,7 @@ not be enough to provide strong privacy or anonymity properties.
 In the case where private data or metadata has to be persisted on the servers
 for functionality (mappings between identities and push tokens, group
 metadata, etc.), it should be stored encrypted at rest and only decrypted upon need
-during the execution. Honest Service Providers can rely on such "encryption at
+during the execution. Honest service provideros can rely on such "encryption at
 rest" mechanisms to be able to prevent access to the data when not using it.
 
 > **Recommendation:** Store cryptographic material used for server-side
@@ -1846,20 +1846,20 @@ clients, it can provide stale keys. This does not inherently lead to compromise
 of the message stream, but does allow the DS to attack post-compromise security to
 a limited extent. This threat can be mitigated by having initial keys expire.
 
-Initial keying material (KeyPackages) using the `basic` Credential type is more
+Initial keying material (KeyPackages) using the `basic` credential type is more
 vulnerable to replacement by a malicious or compromised DS, as there is no
 built-in cryptographic binding between the identity and the public key of the
 client.
 
-> **Recommendation:** Prefer a Credential type in KeyPackages which includes a
+> **Recommendation:** Prefer a credential type in KeyPackages which includes a
 > strong cryptographic binding between the identity and its key (for example, the
-> `x509` Credential type). When using the `basic` Credential type, take extra
+> `x509` credential type). When using the `basic` credential type, take extra
 > care to verify the identity (typically out of band).
 
 
 #### Privacy of Delivery and Push Notifications
 
-Push-tokens provide an important mechanism that is often ignored from
+push tokens provide an important mechanism that is often ignored from
 the standpoint of privacy considerations. In many modern messaging
 architectures, applications are using push notification mechanisms
 typically provided by OS vendors. This is to make sure that when
@@ -1871,7 +1871,7 @@ round trip with the DS.
 
 To "push" this information to the device, the service provider and the OS
 infrastructures use unique per-device, per-application identifiers called
-push-tokens. This means that the push notification provider and the service
+push tokens. This means that the push notification provider and the service
 provider have information on which devices receive information and at which
 point in time. Alternatively, non-mobile applications could use a WebSocket or
 persistent connection for notifications directly from the DS.
@@ -1888,9 +1888,9 @@ is not acceptable to create artificial delays for message retrieval.
 > delay notifications randomly across recipient devices using a mixnet or other
 > techniques.
 
-Note that with a legal request to ask the service provider for the push-token
+Note that with a legal request to ask the service provider for the push token
 associated with an identifier, it is easy to correlate the token with a second
-request to the company operating the push-notification system to get information
+request to the company operating the push notification system to get information
 about the device, which is often linked with a real identity via a cloud
 account, a credit card, or other information.
 
@@ -1932,33 +1932,33 @@ attacker who has compromised the AS to silently impersonate the client.
 
 #### Authentication Compromise: Ghost Users and Impersonation
 
-One important property of MLS is that all Members know which other members are
-in the group at all times. If all Members of the group and the Authentication
+One important property of MLS is that all members know which other members are
+in the group at all times. If all members of the group and the Authentication
 Service are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that Group.
 
 This guarantee applies to the cryptographic identities of the members.
 Details about how to verify the identity of a client depend on the MLS
-Credential type used. For example, cryptographic verification of credentials can
+credential type used. For example, cryptographic verification of credentials can
 be largely performed autonomously (e.g., without user interaction) by the
-clients themselves for the `x509` Credential type.
+clients themselves for the `x509` credential type.
 
-In contrast, when MLS clients use the `basic` Credential type, some other
+In contrast, when MLS clients use the `basic` credential type, some other
 mechanism must be used to verify identities. For instance, the Authentication
 Service could operate some sort of directory server to provide keys, or users
 could verify keys via an out-of-band mechanism.
 
-> **Recommendation:** Select the MLS Credential type with the strongest security
+> **Recommendation:** Select the MLS credential type with the strongest security
 > which is supported by all target members of an MLS group.
 
-> **Recommendation:** Do not use the same signature keypair across
+> **Recommendation:** Do not use the same signature key pair across
 > groups. Update all keys for all groups on a regular basis. Do not preserve
 > keys in different groups when suspecting a compromise.
 
 If the AS is compromised, it could validate a signature
-keypair (or generate a new one) for an attacker. The attacker could then use this keypair to join a
+key pair (or generate a new one) for an attacker. The attacker could then use this key pair to join a
 group as if it were another of the user's clients.  Because a user can have many
-MLS clients running the MLS protocol, it possibly has many signature keypairs
+MLS clients running the MLS protocol, it possibly has many signature key pairs
 for multiple devices. These attacks could be very difficult to detect,
 especially in large groups where the UI might not reflect all the changes back
 to the users. If the application participates in a key transparency mechanism in
@@ -2052,7 +2052,7 @@ whom replay is an important risk should apply mitigations at the application lay
 discussed below.
 
 In addition to the risks discussed in {{symmetric-key-compromise}}, an attacker
-with access to the Ratchet Secrets for an endpoint can replay PrivateMessage
+with access to the ratchet secrets for an endpoint can replay PrivateMessage
 objects sent by other members of the group by taking the signed content of the
 message and re-encrypting it with a new generation of the original sender's
 ratchet.  If the other members of the group interpret a message with a new
