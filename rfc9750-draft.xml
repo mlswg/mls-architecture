@@ -2318,23 +2318,6 @@ authentication and cross-group healing guarantees provided by MLS.</t>
           </front>
           <refcontent>Cryptology ePrint Archive</refcontent>
         </reference>
-
-<!-- [rfced] [BCK21]:  We updated this listing to use the title
-found on the provided URL, as we found "Cryptographic Security of the
-MLS RFC, Draft 11" on <https://eprint.iacr.org/2021/137> but again
-found "Security Analysis of the MLS Key Distribution" when we clicked
-"PDF" under "Available format(s)".  Please let us know any concerns.
-
-Original:
- [BCK21]    Brzuska, C., Cornelissen, E., and K. Kohbrok,
-            "Cryptographic Security of the MLS RFC, Draft 11", 2021,
-            <https://eprint.iacr.org/2021/137.pdf>.
-
-Currently:
- [BCK21]    Brzuska, C., Cornelissen, E., and K. Kohbrok, "Security
-            Analysis of the MLS Key Distribution", Cryptology ePrint
-            Archive, 2021, <https://eprint.iacr.org/2021/137.pdf>. -->
-
         <reference anchor="CHK21" target="https://www.usenix.org/system/files/sec21-cremers.pdf">
           <front>
             <title>The Complexities of Healing in Secure Group Messaging: Why Cross-Group Effects Matter</title>
