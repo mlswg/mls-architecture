@@ -330,13 +330,13 @@ may be a single service provider, a federated system, or some kind of
 peer-to-peer system. The service needs to provide two services that
 facilitate client communication using MLS:
 
-- An Authentication Service (AS) which is responsible for
+- An Authentication Service (AS), which is responsible for
   attesting to bindings between application-meaningful identifiers and the
   public key material used for authentication in the MLS protocol. The
   AS must also be able to generate credentials that encode these
   bindings and validate credentials provided by MLS clients.
 
-- A Delivery Service (DS)  which can receive and distribute
+- A Delivery Service (DS), which can receive and distribute
   messages between group members. In the case of group messaging, the delivery
   service may also be responsible for acting as a "broadcaster" where the sender
   sends a single message which is then forwarded to each recipient in the group
@@ -441,7 +441,7 @@ credentials from the AS. This is a one-time setup phase.
 ## Step 2: Initial Keying Material
 
 Alice, Bob, and Charlie authenticate to the DS and store some initial
-keying material which can be used to send encrypted messages to them
+keying material which is used to send encrypted messages to them
 for the first time. This keying material is authenticated with their
 long-term credentials. Although in principle this keying material
 can be reused for multiple senders, in order to provide forward secrecy
@@ -1408,8 +1408,8 @@ reading or writing messages.  MLS also provides a few tools for detecting
 message suppression, with the caveat that message suppression cannot always be
 distinguished from transport failure.
 
-Each encrypted MLS message carries a "generation" number which is a per-sender
-incrementing counter.  If a group member observes a gap in the generation
+Each encrypted MLS message carries a per-sender incrementing "generation" number.
+If a group member observes a gap in the generation
 sequence for a sender, then they know that they have missed a message from that
 sender.  MLS also provides a facility for group members to send authenticated
 acknowledgments of application messages received within a group.
@@ -1643,7 +1643,7 @@ access any protected messages from future epochs.
 
 An adversary who gains access to a set of Group secrets -- as when a member of the
 group is compromised -- is significantly more powerful. In this section, we
-consider the case where the signature keys are not compromised, which can occur
+consider the case where the signature keys are not compromised. This can occur
 if the attacker has access to part of the memory containing the group secrets
 but not to the signature keys which might be stored in a secure enclave.
 
@@ -1710,7 +1710,7 @@ the old credentials before the attacker will be unable to authenticate messages.
 
 Beware that in both oracle and private key access, an active adaptive attacker
 can follow the protocol and request to update its own credential. This in turn
-induces a signature key rotation which could provide the attacker with part or
+induces a signature key rotation, which could provide the attacker with part or
 the full value of the private key, depending on the architecture of the service
 provider.
 
