@@ -416,17 +416,17 @@ Initial Keying Material ----------------------------------->     |
 
 Get Bob Initial Keying Material --------------------------->     |
 <------------------------------- Bob Initial Keying Material     |
-Add Bob to Group ------------------------------------------>     | Step 3
+Add Bob to group ------------------------------------------>     | Step 3
 Welcome(Bob) ---------------------------------------------->     |
-          <-------------------------------- Add Bob to Group     |
+          <-------------------------------- Add Bob to group     |
           <------------------------------------ Welcome(Bob)     |
 
 Get Charlie Initial Keying Material ----------------------->     |
 <--------------------------- Charlie Initial Keying Material     |
-Add Charlie to Group -------------------------------------->     |
+Add Charlie to group -------------------------------------->     |
 Welcome(Charlie) ------------------------------------------>     | Step 4
-          <---------------------------- Add Charlie to Group     |
-                     <----------------- Add Charlie to Group     |
+          <---------------------------- Add Charlie to group     |
+                     <----------------- Add Charlie to group     |
                      <--------------------- Welcome(Charlie)     |
 ~~~
 {: #fig-group-formation-example title="Group Formation Example"}
