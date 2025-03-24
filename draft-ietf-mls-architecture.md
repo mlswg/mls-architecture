@@ -1876,10 +1876,10 @@ provider have information on which devices receive information and at which
 point in time. Alternatively, non-mobile applications could use a WebSocket or
 persistent connection for notifications directly from the DS.
 
-Even though they can't necessarily access the content, which is typically
-encrypted MLS messages, the service provider and the push notification provider
-have to be trusted to avoid making correlation on which devices are recipients
-of the same message.
+Even though the service provider and the push notification provider
+can't necessarily access the content (typically encrypted MLS
+messages), no technical mechanism in MLS prevents them from determining
+which devices are recipients of the same message.
 
 For secure messaging systems, push notifications are often sent in real time, as it
 is not acceptable to create artificial delays for message retrieval.
