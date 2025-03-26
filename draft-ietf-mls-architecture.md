@@ -447,7 +447,7 @@ for the first time. This keying material is authenticated with their
 long-term credentials. Although in principle this keying material
 can be reused for multiple senders, in order to provide forward secrecy
 it is better for this material to be regularly refreshed so that each
-sender can use a new key, and older keys deleted.
+sender can use a new key and delete older keys.
 
 ## Step 3: Adding Bob to the Group
 
@@ -672,7 +672,7 @@ versions and ciphersuites. As such, there may be multiple KeyPackages stored by
 each user for a mix of protocol versions, ciphersuites, and end-user devices.
 
 When a client wishes to establish a group or add clients to a group, it first
-contacts the DS to request KeyPackages for the other clients,
+contacts the DS to request KeyPackages for each of the other clients,
 authenticates the KeyPackages using the signature keys, includes the KeyPackages
 in Add proposals, and encrypts the information needed to join the group
 (the _GroupInfo_ object) with an ephemeral key; it then separately encrypts the
@@ -1282,7 +1282,7 @@ deployments for them to interoperate:
 - A policy for when two credentials represent the same client, distinguishing
   the following two cases:
   - When there are multiple devices for a given user.
-  - When a single has signature keys -- for instance, if the device has keys corresponding to multiple
+  - When a single device has multiple signature keys -- for instance, if the device has keys corresponding to multiple
     overlapping time periods.
 
 - A policy on how long to allow a member to stay in a group without updating its
