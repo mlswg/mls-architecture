@@ -1140,8 +1140,8 @@ future. Thus, MLS offers a version negotiation mechanism; this mechanism
 prevents version downgrade attacks where an attacker would actively rewrite
 messages with a lower protocol version than the messages originally offered by the
 endpoints. When multiple versions of MLS are available, the negotiation protocol
-guarantees that the version agreed upon will be the most preferred version supported in
-common by the group.
+guarantees that the creator is able to select the best version out of those
+suported in common by the group.
 
 In MLS 1.0, the creator of the group is responsible for selecting the best
 ciphersuite supported across clients. Each client is able to verify availability
@@ -1519,7 +1519,7 @@ properties, but defining the specific requirements and resulting notions of
 deniability requires further analysis.
 
 
-### Associating a User's Clients {#associating-a-users-clients}
+### Associating a User's Clients
 
 When a user has multiple devices, the base MLS protocol only describes how to
 operate each device as a distinct client in the MLS groups that the user is a
