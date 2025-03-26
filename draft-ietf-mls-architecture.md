@@ -1424,15 +1424,6 @@ by group members.  Since only one Commit per epoch is meaningful, it's not
 useful for the DS to transmit multiple Commits to clients.  The risk remains
 that the DS will use the ability maliciously.
 
-While it is difficult or impossible to prevent a network adversary from
-suppressing payloads in transit, in certain infrastructures such as banks or
-government settings, unidirectional transports can be used and be enforced via
-electronic or physical devices such as diodes. This can lead to payload
-corruption, which does not affect the security or privacy properties of the MLS
-protocol but does affect the reliability of the service. In that case, specific
-measures can be taken to ensure the appropriate level of redundancy and quality
-of service for MLS.
-
 ## Intended Security Guarantees
 
 MLS aims to provide a number of security guarantees, covering authentication, as
