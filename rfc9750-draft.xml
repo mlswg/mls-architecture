@@ -1891,7 +1891,7 @@ strong cryptographic binding between the identity and its key (for example, the
 care to verify the identity (typically out of band).</t>
           <section anchor="privacy-of-delivery-and-push-notifications">
             <name>Privacy of Delivery and Push Notifications</name>
-            <t>push tokens provide an important mechanism that is often ignored from the standpoint of privacy considerations. In many modern messaging architectures, applications are using
+            <t>Push tokens provide an important mechanism that is often ignored from the standpoint of privacy considerations. In many modern messaging architectures, applications are using
 push notification mechanisms typically provided by OS vendors. This is to make
 sure that when messages are available at the DS (or via other
 mechanisms if the DS is not a central server), the recipient application on a

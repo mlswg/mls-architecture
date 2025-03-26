@@ -1859,7 +1859,7 @@ client.
 
 #### Privacy of Delivery and Push Notifications
 
-push tokens provide an important mechanism that is often ignored from
+Push tokens provide an important mechanism that is often ignored from
 the standpoint of privacy considerations. In many modern messaging
 architectures, applications are using push notification mechanisms
 typically provided by OS vendors. This is to make sure that when
