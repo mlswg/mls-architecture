@@ -318,7 +318,7 @@ Of course most (but not all) applications use MLS to send encrypted group messag
 An _application message_ is an MLS message with an arbitrary application payload.
 
 Finally, a _PublicMessage_ contains an integrity-protected MLS handshake message,
-while a _PrivateMessage_ contains a confidential, integrity-protected Handshake
+while a _PrivateMessage_ contains a confidential, integrity-protected handshake
 or application message.
 
 For a more detailed explanation of these terms, please consult the MLS protocol
@@ -338,8 +338,8 @@ facilitate client communication using MLS:
   bindings and validate credentials provided by MLS clients.
 
 - A Delivery Service (DS), which can receive and distribute
-  messages between group members. In the case of group messaging, the delivery
-  service may also be responsible for acting as a "broadcaster" where the sender
+  messages between group members. In the case of group messaging, the DS
+  may also be responsible for acting as a "broadcaster" where the sender
   sends a single message which is then forwarded to each recipient in the group
   by the DS. The DS is also responsible for storing and delivering initial
   public key material required by MLS clients in order to proceed with the group
@@ -667,9 +667,9 @@ All the parameters in the KeyPackage are signed with the signature
 private key corresponding to the credential.
 As noted in {{group-members}}, users may own multiple clients, each
 with their own keying material. Each KeyPackage is specific to an MLS version
-and ciphersuite, but a client may want to offer support for multiple protocol
-versions and ciphersuites. As such, there may be multiple KeyPackages stored by
-each user for a mix of protocol versions, ciphersuites, and end-user devices.
+and cipher suite, but a client may want to offer support for multiple protocol
+versions and cipher suites. As such, there may be multiple KeyPackages stored by
+each user for a mix of protocol versions, cipher suites, and end-user devices.
 
 When a client wishes to establish a group or add clients to a group, it first
 contacts the DS to request KeyPackages for each of the other clients,
@@ -680,7 +680,7 @@ ephemeral key with the public encryption key (`init_key`) from each KeyPackage.
 When a client requests a KeyPackage in order to add a user to a group, the
 DS should provide the minimum number of KeyPackages necessary to
 satisfy the request.  For example, if the request specifies the MLS version, the
-DS might provide one KeyPackage per supported ciphersuite, even if it has
+DS might provide one KeyPackage per supported cipher suite, even if it has
 multiple such KeyPackages to enable the corresponding client to be added to
 multiple groups before needing to upload more fresh KeyPackages.
 
@@ -706,7 +706,7 @@ resort" KeyPackage will be used.
 
 > **Recommendation:** Ensure that clients delete the private component
 > of their `init_key` after processing a Welcome message, or after the
-> rotation of "last resort" KeyPackage.
+> rotation of the "last resort" KeyPackage.
 
 Overall, it needs to be noted that key packages need to be updated when
 signature keys are changed.
@@ -831,7 +831,7 @@ new members.
 
 This is particularly important when groups are being reinitialized. When a group
 is reinitialized, it is restarted with a different protocol version and/or
-ciphersuite but identical membership. Whenever an authorized member sends and
+cipher suite but identical membership. Whenever an authorized member sends and
 commits a ReInit proposal, this immediately freezes the existing group and
 triggers the creation of a new group with a new `group_id`.
 
@@ -1129,7 +1129,7 @@ it has not been tampered with.
 The protocol aims to be compatible with federated environments. While this
 document does not specify all necessary mechanisms required for federation,
 multiple MLS implementations can interoperate to form federated systems if they
-use compatible authentication mechanisms, ciphersuites, application content, and
+use compatible authentication mechanisms, cipher suites, application content, and
 infrastructure functionalities. Federation is described in more detail in
 {{?FEDERATION=I-D.ietf-mls-federation}}.
 
@@ -1144,15 +1144,15 @@ guarantees that the creator is able to select the best version out of those
 suported in common by the group.
 
 In MLS 1.0, the creator of the group is responsible for selecting the best
-ciphersuite supported across clients. Each client is able to verify availability
-of protocol version, ciphersuites, and extensions at all times once it has at
+cipher suite supported across clients. Each client is able to verify availability
+of protocol version, cipher suites, and extensions at all times once it has at
 least received the first group operation message.
 
 Each member of an MLS group advertises the protocol functionality they support.
 These capability advertisements can be updated over time, e.g., if client
 software is updated while the client is a member of a group. Thus, in addition
 to preventing downgrade attacks, the members of a group can also observe when it
-is safe to upgrade to a new ciphersuite or protocol version.
+is safe to upgrade to a new cipher suite or protocol version.
 
 # Operational Requirements
 
@@ -1165,7 +1165,7 @@ still need to be aligned within a given MLS deployment, or for two deployments
 to potentially interoperate.
 
 The protocol has a built-in ability to negotiate protocol versions,
-ciphersuites, extensions, credential types, and additional proposal types. For
+cipher suites, extensions, credential types, and additional proposal types. For
 two deployments to interoperate, they must have overlapping support in each of
 these categories. The `required_capabilities` extension (Section 7.2 of
 {{!RFC9420}}) can promote interoperability with a wider set of clients by
@@ -1257,7 +1257,7 @@ MLS requires the following policies to be defined, which restrict the set of
 acceptable behaviors in a group. These policies must be consistent between
 deployments for them to interoperate:
 
-- A policy on which ciphersuites are acceptable.
+- A policy on which cipher suites are acceptable.
 
 - A policy on any mandatory or forbidden MLS extensions.
 
@@ -1929,8 +1929,8 @@ attacker who has compromised the AS to silently impersonate the client.
 #### Authentication Compromise: Ghost Users and Impersonation
 
 One important property of MLS is that all members know which other members are
-in the group at all times. If all members of the group and the Authentication
-Service are honest, no parties other than the members of the current group can
+in the group at all times. If all members of the group and the AS
+are honest, no parties other than the members of the current group can
 read and write messages protected by the protocol for that group.
 
 This guarantee applies to the cryptographic identities of the members.
@@ -2038,7 +2038,7 @@ the protocol to securely implement the specification, which remains non-trivial.
 > the MLS clients from physical compromise. In such settings, HSMs and secure
 > enclaves can be used to protect signature keys.
 
-## No Protection against Replay by Insiders
+## No Protection Against Replay by Insiders
 
 MLS does not protect against one group member replaying a PrivateMessage sent by another
 group member within the same epoch that the message was originally sent. Similarly, MLS
